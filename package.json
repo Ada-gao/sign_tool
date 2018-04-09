@@ -26,7 +26,7 @@
     "lib-flexible": "^0.3.2",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
-    "vux": "^2.8.1"
+    "vux": "git+https://github.com/Ada-gao/vux-update.git"
   },
   "cordova": {
     "plugins": {
