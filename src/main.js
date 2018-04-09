@@ -3,8 +3,23 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import 'common/style/index.less'
+import 'lib-flexible'
+import * as filters from 'common/js/filter.js'
+import { LoadingPlugin } from 'vux'
+Vue.use(LoadingPlugin)
 
 Vue.config.productionTip = false
+
+Vue.directive('focus', {
+	inserted: function (el) {
+		el.focus()
+	}
+})
+
+Object.keys(filters).forEach(key => {
+	Vue.filter(key, filters[key])
+})
 
 /* eslint-disable no-new */
 new Vue({

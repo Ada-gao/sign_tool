@@ -1,0 +1,89 @@
+@import "./variable.less";
+
+/** 清除内外边距 **/
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, /* structural elements 结构元素 */
+dl, dt, dd, ul, ol, li, /* list elements 列表元素 */
+pre, /* text formatting elements 文本格式元素 */
+form, fieldset, legend, button, input, textarea, /* form elements 表单元素 */
+th, td /* table elements 表格元素 */ {
+  margin: 0;
+  padding: 0;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-family: 'PingFang SC', 'STHeitiSC-Light', 'Helvetica-Light', arial, sans-serif, 'Droid Sans Fallback';
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+//background: @color-background;
+  color: @color-text;
+  height: 100%;
+}
+
+body {
+ padding-top: constant(safe-area-inset-top); /* iOS 11.0 */
+ padding-top: env(safe-area-inset-top); /* iOS 11.2 */
+}
+
+/** 重置列表元素 **/
+ul, ol { list-style: none; }
+
+/** 重置文本格式元素 **/
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+input {
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+button {
+  border: none;
+  background-color: #0083c5;
+  color: #fff;
+}
+
+h1 {
+    font-size: 34px; /*px*/
+}
+
+p {
+    margin: 0;
+}
+
+.clearfix:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+
+i {
+  font-style: normal;
+}
+
+b {
+  font-weight: normal;
+  // color: #666;
+}
+
+.padding-r-60 {
+  padding-right: 60px;
+}
+
+.wrapper {
+  padding-top: 126px;
+}

@@ -9,10 +9,11 @@
 # install cordova
 sudo npm install -g cordova
 
-cordova platform add android ios browser
-
 # install dependencies
 npm install
+
+#install platform
+cordova platform add android ios browser
 
 # serve with hot reload at localhost:8080
 npm run dev

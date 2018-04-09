@@ -1,23 +1,28 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <tab-bottom v-show="$route.meta.navShow"></tab-bottom>
     <router-view/>
   </div>
 </template>
 
 <script>
+import TabBottom from '@/base/tabBottom/tabBottom'
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+  	TabBottom
+  }
 }
 </script>
 
-<style>
+<style lang="less">
+@import '~vux/src/styles/reset.less';
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  /*text-align: center;*/
+  color: #666;
+  height: 100%;
 }
 </style>

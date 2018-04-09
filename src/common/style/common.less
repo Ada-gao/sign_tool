@@ -1,0 +1,121 @@
+@import "./variable.less";
+.space {
+    width: 100%;
+    height: 20px; /*no*/
+    background-color: @color-bg-e;
+}
+.fr {
+    float: right;
+}
+
+.btn {
+    border: 1px solid #ccc; /*no*/
+    outline: none;
+    background-color: #fff;
+    color: #333;
+    font-size: 28px; /*px*/
+    padding: 6px 24px;
+    border-radius: 10px;
+}
+.btn-primary {
+    background-color: #0083c5;
+    color: #fff;
+}
+
+.btn-small {
+  width: 60px;
+  height: 32px;
+  font-size: 19px !important;
+  padding: 0px !important;
+  border-radius: 0 !important;
+}
+.bottom-remark {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #fff;
+    .add {
+        padding: 20px;
+        .addInput {
+            width: 100%;
+            height: 69px;
+            text-indent: 10px;
+            border-radius: 5px;
+            font-size: 28px; /*px*/
+        }
+        .right {
+            float: right;
+            border: 1px solid #666; /*no*/
+            border-radius: 20px;
+            padding: 3px 10px;
+            height: 100%;
+        }
+        .left {
+            margin-right: 120px;
+            padding: 18px 10px;
+            border: 1px solid #666; /*no*/
+            border-radius: 20px;
+        }
+    }   
+}
+//产品列表
+.flexbox-wrapper .vux-flexbox {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    .vux-flexbox-item {
+        padding: 33px;
+        box-sizing: border-box;
+        p {
+            margin-bottom: 6px;
+            margin-top: 0;
+        }
+    }
+    .vux-flexbox-item:nth-child(2) {
+        border-left: 1px solid #eee;
+    }
+    .item-left {
+        .rate {
+            color: #E23532;
+            span {
+                font-size: 40px; /*px*/
+            }
+        }
+        .text {
+            font-size: 24px; /*px*/
+        }
+    }
+    .item-right {
+        p {
+            font-size: 32px; /*px*/
+        }
+        span {
+            font-size: 22px; /*px*/
+            background-color: #F76E61;
+            color: #fff;
+            padding: 6px 13px;
+        }
+    }
+}
+
+// 得分字体
+.text-plus {
+  font-size: 30px; /*px*/
+  .red-text-1 {
+    color: #EE3826;
+    font-weight: bold;
+    margin: 0 5px;
+    font-size: 44px; /*px*/
+    margin-right: 24px;
+  }
+}
+
+// '二级市场'标签
+.red-label {
+    background-color: #F76E61;
+    // width: 122px;
+    // height: 36px;
+    font-size: 24px; /*px*/
+    color: #fff;
+    padding: 6px 16px;
+}
