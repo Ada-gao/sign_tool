@@ -1,6 +1,11 @@
-# vue_exp
+# Signtool
 
-> A Vue Expirement Projectt
+> 理财师端App
+
+## Prerequisite
+如果需要在iOS设备上运行，需要先安装Xcode
+如果需要在Android设备上运行，需要先安装Android Studio
+
 
 ## Build Setup
 
@@ -9,11 +14,11 @@
 # install cordova
 sudo npm install -g cordova
 
-# install dependencies
-npm install
-
 #install platform
 cordova platform add android ios browser
+
+# install dependencies
+npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
@@ -32,6 +37,10 @@ npm run e2e
 
 # run all tests
 npm test
-```
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+# run on ios devices
+npm run ios
+
+# run on android devices
+npm run android
+```
