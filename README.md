@@ -3,16 +3,25 @@
 > 理财师端App
 
 ## Prerequisite
-如果需要在iOS设备上运行，需要先安装Xcode
+
+先安装cordova
+``` bash
+# install cordova
+ sudo npm install -g cordova
+ ```
+
+如果需要在iOS设备上运行，需要安装Xcode;再安装ios-deploy
+
+``` bash
+ sudo npm install -g ios-deploy -unsafe-perm=true --allow-root
+ ```
+
 如果需要在Android设备上运行，需要先安装Android Studio
 
 
 ## Build Setup
 
-``` bash
 
-# install cordova
-sudo npm install -g cordova
 
 #install platform
 cordova platform add android ios browser
