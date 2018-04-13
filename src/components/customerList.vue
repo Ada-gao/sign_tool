@@ -4,7 +4,7 @@
 			<router-link slot="right" to="/newCustomer/0">新增潜客</router-link>
 		</x-header>
 		<x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询
-			<router-link slot="right" to="/a">a</router-link>
+			<!-- <router-link slot="right" to="/a">a</router-link> -->
 		</x-header>
 		<div class="search" :class="{cancelSearch: isCancel}">
 			<input class="ipt" type="text"

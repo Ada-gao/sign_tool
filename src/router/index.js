@@ -13,7 +13,7 @@ import InsuranceAllocation from '@/components/insuranceAllocation'
 import PdfReport from '@/components/pdfReport'
 import AssetAllocation from '@/components/assetAllocation'
 import Recommend from '@/components/recommend'
-import A from '@/components/a'
+// import A from '@/components/a'
 import ProductDetail from '@/components/productDetail'
 import AboutMe from '@/components/aboutMe'
 import MyInfo from '@/components/myInfo'
@@ -117,13 +117,13 @@ const router = new Router({
       meta: {
         navShow: false
       }
-    }, {
-      path: '/a',
-      name: 'A',
-      component: A,
-      meta: {
-        navShow: false
-      }
+    // }, {
+    //   path: '/a',
+    //   name: 'A',
+    //   component: A,
+    //   meta: {
+    //     navShow: false
+    //   }
     }, {
       path: '/productDetail',
       name: 'ProductDetail',
