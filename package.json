@@ -25,6 +25,7 @@
     "echarts-gl": "^1.1.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
     "vux": "git+https://github.com/Ada-gao/vux-update.git"
   },
   "cordova": {

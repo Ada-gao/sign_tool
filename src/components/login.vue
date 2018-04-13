@@ -32,7 +32,14 @@ export default {
     nextStep () {
       this.$store.state.isLogin = 100
       console.log(this.$router.currentRoute)
-      let url = this.$router.currentRoute.query.Rurl
+      let queryUrl = this.$router.currentRoute.query
+      let url = ''
+      if (queryUrl) {
+        url = this.$router.currentRoute.query.Rurl
+      } else {
+        url = 'customerList'
+      }
+      // let url = this.$router.currentRoute.query.Rurl
       this.$router.push({path: decodeURIComponent(url)})
     }
   }
