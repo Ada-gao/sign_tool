@@ -13,10 +13,17 @@ import InsuranceAllocation from '@/components/insuranceAllocation'
 import PdfReport from '@/components/pdfReport'
 import AssetAllocation from '@/components/assetAllocation'
 import Recommend from '@/components/recommend'
+import A from '@/components/a'
+import ProductDetail from '@/components/productDetail'
+import AboutMe from '@/components/aboutMe'
+import MyInfo from '@/components/myInfo'
+import MyPerformance from '@/components/myPerformance'
+import MyVersion from '@/components/myVersion'
+import Login from '@/components/login'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/HomePage',
@@ -30,7 +37,8 @@ export default new Router({
       name: 'CustomerList',
       component: CustomerList,
       meta: {
-      	navShow: true
+        navShow: true,
+        auth: true
       }
     }, {
       path: '/remark',
@@ -40,7 +48,7 @@ export default new Router({
       	navShow: false
       }
     }, {
-      path: '/customerManagement',
+      path: '/customerManagement/:id',
       name: 'CustomerManagement',
       component: CustomerManagement,
       meta: {
@@ -110,6 +118,56 @@ export default new Router({
         navShow: false
       }
     }, {
+      path: '/a',
+      name: 'A',
+      component: A,
+      meta: {
+        navShow: false
+      }
+    }, {
+      path: '/productDetail',
+      name: 'ProductDetail',
+      component: ProductDetail,
+      meta: {
+        navShow: false
+      }
+    }, {
+      path: '/aboutMe',
+      name: 'AboutMe',
+      component: AboutMe,
+      meta: {
+        navShow: true,
+        auth: true
+      }
+    }, {
+      path: '/myInfo',
+      name: 'MyInfo',
+      component: MyInfo,
+      meta: {
+        navShow: false
+      }
+    }, {
+      path: '/myPerformance',
+      name: 'MyPerformance',
+      component: MyPerformance,
+      meta: {
+        navShow: false
+      }
+    }, {
+      path: '/myVersion',
+      name: 'MyVersion',
+      component: MyVersion,
+      meta: {
+        navShow: false
+      }
+    }, {
+      path: '/login',
+      name: 'Login',
+      component: Login,
+      meta: {
+        navShow: false
+      }
+    }, {
       path: '/',
       redirect: 'HomePage',
       meta: {
@@ -118,3 +176,11 @@ export default new Router({
     }
   ]
 })
+
+// router.beforeEach((to, from, next) => {
+//   console.log(to)
+//   console.log(next)
+//   console.log(from)
+// })
+
+export default router

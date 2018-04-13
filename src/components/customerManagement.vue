@@ -230,7 +230,7 @@ export default {
 <style scoped lang="less">
 /*@import '~vux/src/styles/reset';*/
 .wrapper {
-	padding-top: 126px;
+	// padding-top: 126px;
 	.info {
 		.content {
 			// padding-left: 45px;

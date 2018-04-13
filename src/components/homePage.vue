@@ -1,8 +1,8 @@
 <template>
   <div>
-    <x-header :left-options="{showBack: false}">客户管理</x-header>
+    <x-header :left-options="{showBack: false}">产品</x-header>
     <div class="wrapper">
-			<img src="../assets/banner.jpg">
+			<img src="static/img/banner.jpg">
 			<div class="space"></div>
     	<group>
         <cell-box>

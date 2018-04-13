@@ -16,7 +16,7 @@
 						<group>
 							<x-number title="投资金额: "
 							  @on-change="change"
-								v-model="changeVal1"
+								v-model="item.changeVal"
 							  :min="minNum"
 								align=""
 								width="90px"
@@ -69,17 +69,21 @@ export default {
   data () {
     return {
       isAttention: 1,
-			minNum: 0,
-			changeVal1: 0,
-			changeVal2: 0
+			minNum: 0
     }
 	},
 	methods: {
 		change (val) {
-			// console.log(val)
-			let count = this.changeVal1 + this.changeVal2
-			console.log(count)
-			bus.$emit('emitNum', count)
+			let count = 0
+			let _data = this.productData
+			_data.forEach(item => {
+				count += item.changeVal
+			})
+			let emitData = {
+				count: count,
+				idx: this.productData[0].idx
+			}
+			bus.$emit('emitNum', emitData)
 		}
 	}
 }

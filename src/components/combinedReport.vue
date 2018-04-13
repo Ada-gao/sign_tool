@@ -413,9 +413,6 @@ export default {
 		color: #0083C5;
 	}
 }
-.wrapper {
-  padding-top: 126px;
-}
 .wrapper-ul {
   overflow: auto;
   #contChartPie1,

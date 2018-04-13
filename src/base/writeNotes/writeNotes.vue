@@ -26,7 +26,7 @@ export default {
 
 <style scoped="scoped" lang="less">
 .wrapper {
-	padding: 20px;
+	// padding: 20px;
 	height: 1000px;
 	.inputing {
 		border: none;
@@ -36,6 +36,8 @@ export default {
 		outline: none;
 		color: #999;
 		line-height: 1.5;
+		padding: 20px;
+		box-sizing: border-box;
 	}
 }
 </style>

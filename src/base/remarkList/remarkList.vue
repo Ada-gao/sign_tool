@@ -1,16 +1,16 @@
 <template>
   <div class="remark">
-    <group>
+    <!-- <group>
       <cell-box>
      	  <i class="icon-clipboard"></i>备注
       </cell-box>
-    </group>
+    </group> -->
     <ul>
      	<li v-for="(item, index) in remarkList" :key="index">
         <div class="iText">{{item.text}}</div>
         <span class="iTime">{{item.time}}</span>
-        <i class="icon icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i>
-        <router-link class="icon icon-eye2" to="/writeNotes">&nbsp;查看</router-link>
+        <!-- <i class="icon icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i> -->
+        <router-link class="iconfont icon-view view" to="/writeNotes">&nbsp;查看</router-link>
       </li>
     </ul>
     <div class="bottom-remark">
@@ -115,13 +115,19 @@ export default {
         	overflow: hidden;
 					text-overflow:ellipsis;
 					white-space: nowrap;
+					font-size: 30px; /*px*/
+				}
+				.iTime {
+					font-size: 24px; /*px*/
+				}
+        .view {
+					float: right;
+					margin-right: 30px;
+					font-size: 24px; /*px*/
         }
-        .icon {
-        	float: right;
-        }
-        a {
-        	margin-right: 30px;
-        }
+        // a {
+        // 	margin-right: 30px;
+        // }
 			}
 		}
 	}

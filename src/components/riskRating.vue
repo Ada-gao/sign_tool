@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<x-header :left-options="{backText: ''}">风险测评</x-header>
-    <div class="main">
+    <div class="wrapper">
       <investor :investor-data="investorInfo"></investor>
       <br>
       <step v-model="step" background-color='#fbf9fe' style="width: 80%; margin-left: 10%;">
@@ -139,13 +139,15 @@ export default {
   methods: {
   	nextStep () {
       this.step++
-      console.log(this.stepTitle[0][0].val)
-      if (this.step > 1) {
+      // console.log(this.step)
+      if (this.step > 0) {
         this.groupTitle = ''
       }
       if (this.step === 4) {
         this.isPosition = false
         this.buttonText = '最后提交'
+      } else if (this.step > 4) {
+        this.$router.push({name: 'CustomerManagement'})
       }
     },
     createData () {
@@ -241,8 +243,8 @@ export default {
 .position {
   position: fixed;
 }
-.main {
-  padding-top: 126px;
+.wrapper {
+  // padding-top: 126px;
   .intrest-rate {
     padding: 0 30px;
     margin: 42px 0;

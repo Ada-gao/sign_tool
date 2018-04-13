@@ -8,4 +8,9 @@ let percent = value => {
 	return value + '%'
 }
 
-export { twoDecimals, percent }
+let formatNum = value => {
+	value = Number(value).toFixed(0)
+	return value.toString()
+}
+
+export { twoDecimals, percent, formatNum }

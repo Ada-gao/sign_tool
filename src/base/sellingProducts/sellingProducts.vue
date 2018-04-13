@@ -1,7 +1,7 @@
 <template>
 	<div class="flexbox-wrapper">
 		<ul>
-			<li v-for="(item, index) in childData" :key="index">
+			<li v-for="(item, index) in childData" :key="index" @click="toProductDetail">
 				<flexbox :gutter="2" wrap="wrap">
 					<flexbox-item :span="4" class="item-left">
 						<div class="flex-product">
@@ -37,7 +37,12 @@ export default {
   	Flexbox,
   	FlexboxItem
   },
-  props: ['childData']
+	props: ['childData'],
+	methods: {
+		toProductDetail () {
+			this.$router.push('/productDetail')
+		}
+	}
 }
 </script>
 

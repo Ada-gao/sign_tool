@@ -3,7 +3,9 @@
 		<x-header v-show="isCancel===false" :left-options="{showBack: false}">客户
 			<router-link slot="right" to="/newCustomer/0">新增潜客</router-link>
 		</x-header>
-		<x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询</x-header>
+		<x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询
+			<router-link slot="right" to="/a">a</router-link>
+		</x-header>
 		<div class="search" :class="{cancelSearch: isCancel}">
 			<input class="ipt" type="text"
 				v-model.trim="searchKey"
@@ -15,7 +17,7 @@
 		<div class="space"></div>
 		<div v-show="isCancel===true" class="searchList">
 			<ul>
-				<li v-for="(item, index) in items" :key="index">
+				<li v-for="(item, index) in items" :key="index" @click="toLink">
 					<span>{{item.phoneNum}}</span>
 					<span class="ml-200">{{item.name}}</span>
 				</li>
@@ -28,7 +30,7 @@
 			</tab>
 			<ul v-show="idx === 0">
 				<li v-for="(item, index) in customers" :key="index">
-					<router-link to="/customerManagement">
+					<router-link :to="{name: 'CustomerManagement', params: {id: 1}}">
 						<p>{{item.name}}</p>
 						<p>{{item.phoneNum}}</p>
 						<x-icon type="ios-arrow-forward" size="30"></x-icon>
@@ -37,7 +39,7 @@
 			</ul>
 			<ul v-show="idx === 1">
 				<li v-for="(item, index) in customers1" :key="index">
-					<router-link to="/customerManagement">
+					<router-link :to="{name: 'CustomerManagement', params: {id: 1}}">
 						<p>{{item.name}}</p>
 						<p>{{item.phoneNum}}</p>
 						<x-icon type="ios-arrow-forward" size="30"></x-icon>
@@ -173,7 +175,10 @@ export default {
 			this.isCancel = false
 			this.searchKey = ''
 		},
-		searchEvent () {}
+		searchEvent () {},
+		toLink () {
+			this.$router.push({name: 'CustomerManagement', params: {id: 1}})
+		}
 	}
 }
 </script>

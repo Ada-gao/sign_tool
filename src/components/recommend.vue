@@ -6,12 +6,12 @@
       <group class="wrap-product">
         <cell
         title="理财: 125万"
-        :value="'新增' + value1 + '万'"
+        :value="'新增' + valList1.value1 + '万'"
         is-link
         :border-intent="false"
         :arrow-direction="showContent001 ? 'up' : 'down'"
         @click.native="showContent(showContent001=!showContent001)">
-          <i class="icon-radio-unchecked"></i>
+          <!-- <i class="icon-radio-unchecked"></i> -->
         </cell>
 
         <template v-if="showContent001">
@@ -23,7 +23,7 @@
 
         <cell
         title="固收: 200万"
-        :value="'新增' + value2 + '万'"
+        :value="'新增' + valList1.value2 + '万'"
         is-link
         :border-intent="false"
         :arrow-direction="showContent002 ? 'up' : 'down'"
@@ -38,7 +38,7 @@
 
         <cell
         title="二级市场: 25万"
-        :value="'新增' + value3 + '万'"
+        :value="'新增' + valList1.value3 + '万'"
         is-link
         :border-intent="false"
         :arrow-direction="showContent003 ? 'up' : 'down'"
@@ -53,7 +53,7 @@
 
         <cell
         title="另类: 150万"
-        :value="'新增' + value4 + '万'"
+        :value="'新增' + valList1.value4 + '万'"
         is-link
         :border-intent="false"
         :arrow-direction="showContent004 ? 'up' : 'down'"
@@ -65,12 +65,15 @@
           </cell-box>
         </template>
       </group>
+      <div class="btn_wrap" :class="isPosition ? 'position' : ''">
+        <x-button type="primary" @click.native="nextStep">确认生成报告</x-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { XHeader, Cell, CellBox, Group, GridItem } from 'vux'
+import { XHeader, Cell, CellBox, Group, GridItem, XButton } from 'vux'
 import Investor from 'base/investor/investor'
 import RecommendProducts from 'base/recommendProducts/recommendProducts'
 import bus from 'common/js/eventVue'
@@ -80,12 +83,15 @@ export default {
     return {
       showContent001: false,
       showContent002: false,
-      showContent003: false,
-      showContent004: true,
-      value1: 0,
-      value2: 0,
-      value3: 100,
-      value4: 0,
+      showContent003: true,
+      showContent004: false,
+      isPosition: false,
+      valList1: {
+        value1: 0,
+        value2: 0,
+        value3: 100,
+        value4: 0
+      },
       investorInfo: {
         name: '大卫史文森',
         profession: '专业投资者',
@@ -94,48 +100,62 @@ export default {
       },
       productList: {
         list1: [{
+          idx: 'value1',
           yieldRate: 10,
           title: '正收益产品1',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }, {
           yieldRate: 11,
           title: '正收益产品2',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }, {
           yieldRate: 11,
           title: '正收益产品2',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }],
         list2: [{
+          idx: 'value2',
           yieldRate: 12,
           title: '正收益产品1',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }, {
           yieldRate: 13,
           title: '正收益产品2',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }],
         list3: [{
+          idx: 'value3',
           yieldRate: 14,
           title: '正收益产品1',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 100
         }, {
           yieldRate: 15,
           title: '正收益产品2',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }],
         list4: [{
+          idx: 'value4',
           yieldRate: 16,
           title: '正收益产品1',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }, {
           yieldRate: 17,
           title: '正收益产品2',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }, {
           yieldRate: 18,
           title: '正收益产品2',
-          marketLabel: '二级市场'
+          marketLabel: '二级市场',
+          changeVal: 0
         }]
       }
     }
@@ -147,14 +167,23 @@ export default {
     CellBox,
     Group,
     RecommendProducts,
-    GridItem
+    GridItem,
+    XButton
   },
   mounted () {
     bus.$on('emitNum', msg => {
-      this.value3 = msg
+      let _val = this.valList1
+      for (let key in _val) {
+        if (key === msg.idx) {
+          _val[key] = msg.count
+        }
+      }
     })
   },
   methods: {
+    nextStep () {
+      this.$router.push({name: 'CustomerManagement'})
+    },
     // _setWrapperHeight () {
     //   let height1 = document.getElementsByClassName('vux-header')[0].clientHeight
     //   let height2 = this.$refs.investor.clientHeight
@@ -166,7 +195,7 @@ export default {
     // },
     showContent (index) {
       // this._setWrapperHeight()
-      console.log(index)
+      // console.log(index)
     }
   }
 }
@@ -181,7 +210,7 @@ export default {
 .weui-cells,
 .vux-no-group-title {
   margin-top: 0 !important;
-  > .vux-tap-active {
+  > .vux-tap-active.weui-cell_access {
     text-align: left;
     padding-top: 0;
     padding-bottom: 0;

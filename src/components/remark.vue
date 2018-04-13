@@ -4,13 +4,13 @@
 		<div class="wrapper">
 			<div class="search">
 				<div class="toggle-button">
-					<button class="btn" :class="{'btn-checked': isChecked}" @click="checkIndex(1)" style="border-right: none;">时间</button>
-					<button class="btn" :class="{'btn-checked': !isChecked}" @click="checkIndex(2)">搜索</button>
+					<button class="btn btn-no-radius" :class="{'btn-checked': isChecked}" @click="checkIndex(1)" style="border-right: none;">时间</button>
+					<button class="btn btn-no-radius" :class="{'btn-checked': !isChecked}" @click="checkIndex(2)">搜索</button>
 				</div>
 				<div class="toggle-item">
 					<div class="item01" v-show="isChecked">
 						<input type="text" />
-						<i class="icon-search"></i>
+						<i class="iconfont icon-search"></i>
 					</div>
 					<div class="item02" v-show="!isChecked">
 						日历选择器
@@ -108,5 +108,8 @@ export default {
 .btn-checked {
 	background-color: #0083c5;
 	color: #fff;
+}
+.btn-no-radius {
+	border-radius: 0;
 }
 </style>
