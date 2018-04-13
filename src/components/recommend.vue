@@ -182,7 +182,7 @@ export default {
   },
   methods: {
     nextStep () {
-      this.$router.push({name: 'CustomerManagement'})
+      this.$router.push({name: 'CustomerManagement', params: {id: 1}})
     },
     // _setWrapperHeight () {
     //   let height1 = document.getElementsByClassName('vux-header')[0].clientHeight
