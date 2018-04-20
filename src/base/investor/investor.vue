@@ -22,6 +22,7 @@ export default {
 	background-color: #eee;
   position: relative;
   color: #333;
+  line-height: 1.5;
   .ist-name {
     font-size: 32px; /*px*/
   }
@@ -33,6 +34,7 @@ export default {
     right: 31px;
     top: 50%;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
   }
 }
 </style>

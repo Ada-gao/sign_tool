@@ -7,7 +7,7 @@
     </group> -->
     <ul>
      	<li v-for="(item, index) in remarkList" :key="index">
-        <div class="iText">{{item.text}}</div>
+        <div class="iText text-overflow-one">{{item.text}}</div>
         <span class="iTime">{{item.time}}</span>
         <!-- <i class="icon icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i> -->
         <router-link class="iconfont icon-view view" to="/writeNotes">&nbsp;查看</router-link>
@@ -25,7 +25,7 @@
           <textarea id="inputing" name="" rows="" cols="" v-model="remarkInfo"></textarea>
         </div>
         <div style="text-align: right;">
-          <span @click="submitAddNew" class="vux-emit">新增备注</span>
+          <button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>
         </div>
       </x-dialog>
     </div>
@@ -112,9 +112,9 @@ export default {
         padding: 20px;
         .iText {
         	margin-bottom: 10px;
-        	overflow: hidden;
-					text-overflow:ellipsis;
-					white-space: nowrap;
+        	// overflow: hidden;
+					// text-overflow:ellipsis;
+					// white-space: nowrap;
 					font-size: 30px; /*px*/
 				}
 				.iTime {
@@ -124,10 +124,8 @@ export default {
 					float: right;
 					margin-right: 30px;
 					font-size: 24px; /*px*/
+					text-decoration: none;
         }
-        // a {
-        // 	margin-right: 30px;
-        // }
 			}
 		}
 	}

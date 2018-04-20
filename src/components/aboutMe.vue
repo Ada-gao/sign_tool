@@ -9,7 +9,7 @@
         <cell title="关于我们" :link="{name: 'MyVersion'}"></cell>
         <cell title="退出" @click.native="logout" is-link></cell>
         <!-- <x-switch title="退出" v-model="show3"></x-switch> -->
-        <cell title=""></cell>
+        <!-- <cell title=""></cell> -->
       </group>
       <actionsheet v-model="show3" :menus="menus3" @on-click-menu="click" show-cancel></actionsheet>
     </div>

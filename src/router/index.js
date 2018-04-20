@@ -125,7 +125,7 @@ const router = new Router({
     //     navShow: false
     //   }
     }, {
-      path: '/productDetail',
+      path: '/productDetail/:id',
       name: 'ProductDetail',
       component: ProductDetail,
       meta: {
@@ -176,11 +176,5 @@ const router = new Router({
     }
   ]
 })
-
-// router.beforeEach((to, from, next) => {
-//   console.log(to)
-//   console.log(next)
-//   console.log(from)
-// })
 
 export default router

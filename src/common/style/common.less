@@ -1,7 +1,7 @@
 @import "./variable.less";
 .space {
     width: 100%;
-    height: 20px; /*no*/
+    height: 20px; /*px*/
     background-color: @color-bg-e;
 }
 .fr {
@@ -23,8 +23,8 @@
 }
 
 .btn-small {
-  width: 60px;
-  height: 32px;
+  width: 70px;
+  height: 36px;
   font-size: 19px !important;
   padding: 0px !important;
   border-radius: 0 !important;
@@ -60,7 +60,7 @@
 }
 //产品列表
 .flexbox-wrapper .vux-flexbox {
-    border-top: 1px solid #eee;
+    border-top: 1px solid #eee; /*no*/
     padding-top: 20px;
     padding-bottom: 20px;
     .vux-flexbox-item {
@@ -72,7 +72,7 @@
         }
     }
     .vux-flexbox-item:nth-child(2) {
-        border-left: 1px solid #eee;
+        border-left: 1px solid #eee; /*no*/
     }
     .item-left {
         .rate {
@@ -86,6 +86,12 @@
         }
     }
     .item-right {
+        // [data-dpr="2"] p {
+        //     font-size: 32px;
+        // }
+        // [data-dpr="1"] p {
+        //     font-size: 14px;
+        // }
         p {
             font-size: 32px; /*px*/
         }
@@ -93,7 +99,7 @@
             font-size: 22px; /*px*/
             background-color: #F76E61;
             color: #fff;
-            padding: 6px 13px;
+            padding: 2px 13px; /*px*/
         }
     }
 }
@@ -127,6 +133,7 @@
   position: relative;
   width: 100%;
   bottom: 30px;
+  box-sizing: border-box;
   .weui-btn_primary {
     border-radius: 60px;
     background-color: #3693E0;
@@ -142,4 +149,11 @@
 }
 .position {
   position: fixed;
+}
+
+// .weui-cells::before {
+// 	border-top: 1px solid #D9D9D9; /*no*/
+// }
+.weui-cells::after {
+	border-bottom: 1px solid #D9D9D9; /*no*/
 }

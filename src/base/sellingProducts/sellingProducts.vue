@@ -40,7 +40,8 @@ export default {
 	props: ['childData'],
 	methods: {
 		toProductDetail () {
-			this.$router.push('/productDetail')
+			// this.$router.push('/productDetail')
+			this.$router.push({name: 'ProductDetail', params: {id: 1}})
 		}
 	}
 }

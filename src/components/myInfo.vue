@@ -7,7 +7,7 @@
         <cell title="手机号：" value=""></cell>
         <cell title="职位：" value=""></cell>
         <cell title="所属部门：" value=""></cell>
-        <cell title=""></cell>
+        <!-- <cell title=""></cell> -->
       </group>
     </div>
   </div>

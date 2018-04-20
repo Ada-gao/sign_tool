@@ -3,7 +3,7 @@
     <x-header :left-options="{backText: ''}">正收益理财产品</x-header>
     <div class="wrapper">
       <div class="rate-top">
-        <p class="text-plus-white"> <i class="text-1">8.44</i>%<span class="label">二级市场</span></p>
+        <p class="text-plus-white"> <i class="text-1">8.44</i>%<span class="label absolute-center-y">二级市场</span></p>
         <p>近一年收益</p>
       </div>
       <div class="introduce">
@@ -85,9 +85,10 @@ export default {
         background-color: #F76E61;
         font-size: 24px; /*px*/
         padding: 6px 16px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        // position: absolute;
+        // top: 50%;
+        // transform: translateY(-50%);
+        // -webkit-transform: translateY(-50%);
         margin-left: 32px;
       }
     }
@@ -98,7 +99,7 @@ export default {
     box-sizing: border-box;
     position: relative;
     font-size: 30px; /*px*/
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #eee; /*no*/
     .line-blue {
       width: 10px;
       height: 28px;

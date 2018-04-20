@@ -106,45 +106,45 @@ img {
 	// padding-top: 126px;
 	vertical-align: bottom;
 }
-.wrapper {
-	padding-bottom: 116px;
-	.vux-flexbox {
-		border-top: 1px solid #eee;
-		padding-top: 20px;
-		padding-bottom: 20px;
-	  .vux-flexbox-item:nth-child(2) {
-			border-left: 1px solid #eee;
-		}
-		.vux-flexbox-item {
-			padding: 20px;
-	    box-sizing: border-box;
-			.flex-product {
-				p {
-					margin-bottom: 6px;
-					margin-top: 0;
-				}
-				.text {
-					font-size: 10px; /*px*/
-				}
-				.flex-left .rate {
-					color: #f04155;
-					span {
-						font-size: 24px; /*px*/
-					}
-				}
-				.flex-right {
-					p:nth-child(1) {
-						font-size: 18px; /*px*/
-					}
-					span {
-						background-color: #fd6060;
-						color: #fff;
-						font-size: 12px; /*px*/
-						padding: 3px 6px;
-		      }
-				}
-			}
-		}
-	}
-}
+// .wrapper {
+// 	padding-bottom: 116px;
+// 	.vux-flexbox {
+// 		border-top: 1px solid #eee; /*no*/
+// 		padding-top: 20px;
+// 		padding-bottom: 20px;
+// 	  .vux-flexbox-item:nth-child(2) {
+// 			border-left: 1px solid #eee; /*no*/
+// 		}
+// 		.vux-flexbox-item {
+// 			padding: 20px;
+// 	    box-sizing: border-box;
+// 			.flex-product {
+// 				p {
+// 					margin-bottom: 6px;
+// 					margin-top: 0;
+// 				}
+// 				.text {
+// 					font-size: 10px; /*px*/
+// 				}
+// 				.flex-left .rate {
+// 					color: #f04155;
+// 					span {
+// 						font-size: 24px; /*px*/
+// 					}
+// 				}
+// 				.flex-right {
+// 					p:nth-child(1) {
+// 						font-size: 18px; /*px*/
+// 					}
+// 					span {
+// 						background-color: #fd6060;
+// 						color: #fff;
+// 						font-size: 12px; /*px*/
+// 						padding: 3px 6px;
+// 		      }
+// 				}
+// 			}
+// 		}
+// 	}
+// }
 </style>

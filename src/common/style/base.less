@@ -39,7 +39,7 @@ a {
 }
 
 input {
-  border: 1px solid #ccc;
+  border: 1px solid #ccc; /*no*/
   outline: none;
 }
 
@@ -79,6 +79,19 @@ b {
   padding-right: 60px;
 }
 
+.absolute-center-y {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+
 .wrapper {
   padding-top: 88px;
+}
+// 单行文本溢出
+.text-overflow-one {
+  overflow: hidden;
+	text-overflow:ellipsis;
+	white-space: nowrap;
 }

@@ -22,6 +22,7 @@
 					<span class="ml-200">{{item.name}}</span>
 				</li>
 			</ul>
+			<p v-show="!noResult" style="text-align: center">没有符合你的数据啦</p>
 		</div>
 		<div class="customer-list" v-show="isCancel===false">
 			<tab :line-width="5" active-color="#0083c5" v-model="idx">
@@ -132,11 +133,13 @@ export default {
   			}
   		],
 			isCancel: false,
-			idx: 0
+			idx: 0,
+			noResult: true
   	}
   },
   computed: {
   	items () {
+			let _this = this
 			let _search = this.searchKey
 			let _customers = this.customers
 			if (!_search) {
@@ -147,6 +150,9 @@ export default {
   					if (String(customer[key]).toLowerCase().indexOf(_search) > -1) {
 							customer = String(customer).replace(new RegExp(_search, 'g'), '<span class="search-text">' + _search + '</span>')
 							console.log(customer)
+							if (customer.length === 0) {
+								_this.noResult = false
+							}
 							return customer
 						}
   				})
@@ -162,6 +168,13 @@ export default {
   		// return _customers
 		}
 	},
+	watch: {
+		items (newVal, oldVal) {
+			if (newVal.length === 0) {
+				this.noResult = false
+			}
+		}
+	},
 	// mounted () {
 	// 	let replaceReg = new RegExp(this.searchKey, 'g')
 	// 	items.replace(replaceReg, '<b>' + this.searchKey + '</b>')
@@ -169,7 +182,6 @@ export default {
 	methods: {
 		onItemClick (index) {
 			this.idx = index
-			console.log(index)
 		},
 		cancelSearchEvent () {
 			this.isCancel = false
@@ -227,10 +239,12 @@ export default {
 		position: relative;
 		a {
 			display: block;
+			text-decoration: none;
 			svg {
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
+  			-webkit-transform: translateY(-50%);
 				right: 40px;
 				fill: #999;
 			}
@@ -252,5 +266,8 @@ export default {
 }
 .search-text {
 	color: #FF4747;
+}
+a {
+	text-decoration: none;
 }
 </style>

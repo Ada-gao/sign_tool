@@ -20,7 +20,7 @@ export default {
 	data () {
 		return {
 			ox1: 376,
-			oy1: 376,
+			oy1: 500,
 			angle1: 0,
 			angle2: 0,
 			// lastX: 0,
@@ -31,26 +31,46 @@ export default {
 		}
 	},
 	mounted () {
+		this.circleCenter('wheel')
 	},
 	methods: {
+		circleCenter (obj) {
+			obj = document.getElementsByClassName(obj)[0]
+			// console.log(obj)
+			let centerPointerLeft = obj.offsetLeft + obj.offsetWidth / 2
+			let centerPointerTop = obj.offsetTop + obj.offsetHeight / 2
+			let addWidth = obj.parentNode.offsetLeft
+			let addHeight = obj.parentNode.offsetTop
+			// return {
+				// debugger
+				this.ox1 = centerPointerLeft + addWidth
+				this.oy1 = centerPointerTop + addHeight
+			// }
+		},
 		touchStart (e) {
-			e.preventDefault()
+			this.circleCenter('wheel')
+			// console.log(this.circleCenter('wheel'))
+			// e.preventDefault()
 			let el = e.touches[0]
 			let mx1 = el.clientX
 			let my1 = el.clientY
 			// 落点的角度  test
 			this.angle1 = this.getAngle(this.ox1, this.oy1, mx1, my1)
+			// console.log('this.ox1: ' + this.ox1)
+			// console.log('this.oy1: ' + this.oy1)
 			console.log('this.angle1: ' + this.angle1)
 		},
 		touchMove (e) {
+			e.preventDefault()
 			let el = e.touches[0]
 			let mx2 = el.clientX
 			let my2 = el.clientY
 			this.angle2 = this.getAngle(this.ox1, this.oy1, mx2, my2)
 			// this.rotateAngle = this.angle2 - this.angle1
 			// console.log('this.angle2: ' + this.angle2)
-			// this.$refs.wheel.style.transform = 'rotate(`${this.rotateAngle}deg`)'
 			this.rotateEffect = 'transform:rotate(' + this.angle2 + 'deg)'
+			this.rotateEffect = '-webkit-transform:rotate(' + this.angle2 + 'deg)'
+			console.log('this.angle2: ' + this.angle2)
 			this.idx = Math.round((this.angle2 - 18) / 36)
 
 			// if (!this.lastX) {
@@ -59,6 +79,7 @@ export default {
 			// }
 		},
 		touchEnd (e) {
+			// e.preventDefault()
 			// let el = e.changedTouches[0]
 			// this.lastX = el.clientX
 			// this.lastY = el.clientY
@@ -69,7 +90,7 @@ export default {
 			let y = Math.abs(oy - my)
 			let z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
 			let cos = y / z
-			let radian = Math.acos(cos) // 求弧度
+			let radian = Math.cos(cos) // 求弧度
 			let angle = Math.floor(180 / (Math.PI / radian))
 
 			if (mx > ox && my === oy) {
@@ -111,27 +132,29 @@ export default {
 	background-color: #eee;
 	// overflow: hidden;
 	position: relative;
-	padding-top: 1px;
+	// padding-top: 1px;
+	padding: 20px;
+	box-sizing: border-box;
 	.num {
 		text-align: center;
     position: absolute;
     top: 50%;
     left: 50%;
-    z-index: 100;
+    z-index: 99;
     transform: translate(-50%, -50%);
     font-size: 0.610264rem;
     font-weight: 700;
 	}
 	.wheel {
-		width: 80%;
-		height: 80%;
+		width: 100%;
+		height: 100%;
 		border-radius: 50%;
-		margin: 10% auto;
+		// margin: 10% auto;
 		background-color: #EEEEEE;
 		box-shadow: 0 2px 10px #999;
 		position: relative;
 		overflow: hidden;
-		z-index: 100;
+		z-index: 99;
 		.indicator {
 			width: 30px;
 			height: 30px;

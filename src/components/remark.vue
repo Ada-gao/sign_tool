@@ -80,12 +80,14 @@ export default {
 			input {
 				width: 100%;
 				height: 100%;
+				text-indent: 10px;
 			}
 			i {
 				position: absolute;
 		    top: 50%;
 		    right: 20px;
 		    transform: translateY(-50%);
+  			-webkit-transform: translateY(-50%);
 		    font-size: 45px; /*px*/
 		  	color: #999;
 			}

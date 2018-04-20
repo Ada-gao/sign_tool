@@ -15,7 +15,7 @@
 				<p class="sum-up">得分总结：新增的投资会改善您资产的<span class="red-text">收益性、流动性、波动性</span>。</p>
 				<div class="add-invest">
 					<span>新增投资比例：</span>
-					<inline-x-number v-bind:min="minNum" width="183px" v-bind:step="stepNum" v-bind:value="inputVal" @on-change="change"></inline-x-number>
+					<inline-x-number v-bind:min="minNum" v-bind:step="stepNum" v-bind:value="inputVal" @on-change="change"></inline-x-number>
 					<span>万</span>
 					<div class="divide-line"></div>
 					<p class="text-plus">得分：<span class="red-text-1">{{investScore}}</span>分
@@ -93,7 +93,7 @@ export default {
           itemWidth: 17,
           itemGap: 17,
           textStyle: {
-            fontSize: 22, /* px */
+            fontSize: 22,
             padding: [0, 0, 0, 13]
           },
           data: _this.chartData.legendData.legendTitle,
@@ -174,7 +174,7 @@ export default {
               label: {
                 show: true,
                 position: 'right',
-                offset: [-25, -20],
+                offset: [-25, -15],
                 formatter: '{c}万',
                 color: '#333',
                 backgroundColor: {
@@ -197,6 +197,35 @@ export default {
             }
           }
         }]
+      }
+      let dpr = document.documentElement.getAttribute('data-dpr')
+      if (dpr === '1') {
+        options1.legend.itemHeight = 10
+        options1.legend.itemWidth = 10
+        options1.legend.bottom = 20
+        options1.legend.textStyle.fontSize = 12
+        options1.grid.top = 30
+        options1.grid.bottom = 60
+        options1.series[2].barWidth = 4
+        options1.series[3].barWidth = 4
+      } else if (dpr === '2') {
+        options1.legend.itemHeight = 17
+        options1.legend.itemWidth = 17
+        options1.legend.bottom = 40
+        options1.legend.textStyle.fontSize = 22
+        options1.grid.top = 60
+        options1.grid.bottom = 120
+        options1.series[2].barWidth = 8
+        options1.series[3].barWidth = 8
+      } else if (dpr === '3') {
+        options1.legend.itemHeight = 38
+        options1.legend.itemWidth = 38
+        options1.legend.bottom = 60
+        options1.legend.textStyle.fontSize = 38
+        options1.grid.top = 80
+        options1.grid.bottom = 140
+        options1.series[2].barWidth = 12
+        options1.series[3].barWidth = 12
       }
       myChart1.setOption(options1)
     },
@@ -318,6 +347,35 @@ export default {
           }
         }]
       }
+      let dpr = document.documentElement.getAttribute('data-dpr')
+      if (dpr === '1') {
+        options2.legend.itemHeight = 10
+        options2.legend.itemWidth = 10
+        options2.legend.bottom = 20
+        options2.legend.textStyle.fontSize = 12
+        options2.grid.top = 30
+        options2.grid.bottom = 60
+        options2.series[2].barWidth = 4
+        options2.series[3].barWidth = 4
+      } else if (dpr === '2') {
+        options2.legend.itemHeight = 17
+        options2.legend.itemWidth = 17
+        options2.legend.bottom = 40
+        options2.legend.textStyle.fontSize = 22
+        options2.grid.top = 60
+        options2.grid.bottom = 120
+        options2.series[2].barWidth = 8
+        options2.series[3].barWidth = 8
+      } else if (dpr === '3') {
+        options2.legend.itemHeight = 38
+        options2.legend.itemWidth = 38
+        options2.legend.bottom = 60
+        options2.legend.textStyle.fontSize = 38
+        options2.grid.top = 80
+        options2.grid.bottom = 140
+        options2.series[2].barWidth = 12
+        options2.series[3].barWidth = 12
+      }
       myChart2.setOption(options2)
     },
     toggleShowChart (num) {
@@ -400,7 +458,12 @@ export default {
 			height: 1px;
 			margin-top: 20px;
 			margin-bottom: 20px;
-		}*/
+    }*/
+    // .vux-inline-x-number {
+    //   .vux-number-input {
+    //     width: 143px !important; /*px*/
+    //   }
+    // }
 		> span {
       display: inline-block;
       font-size: 24px; /*px*/

@@ -28,20 +28,6 @@
             <span class="fr">{{cEmail}}</span>
           </cell-box>
         </group>
-        <!-- <div class="content">
-          <div class="content-text">
-            <label for="name">姓名：</label>
-            <span class="fr">{{cName}}</span>
-          </div>
-          <div class="content-text">
-          	<label for="phone">电话：</label>
-            <span class="fr">{{cPhone}}</span>
-          </div>
-          <div class="content-text">
-            <label for="email">邮箱：</label>
-            <span class="fr">{{cEmail}}</span>
-          </div>
-        </div> -->
     	</div>
     	<div class="space"></div>
     	<div class="product">
@@ -51,7 +37,7 @@
           	交易信息
           </cell-box>
         </group>
-				<div v-for="(listItem, index) in list" :key="index" class="cell-form">
+				<div v-for="(listItem, index) in list" :key="index" class="cell-form" @click="toLink1">
 					<div class="cell-form-top">
 						<label for="">{{listItem.name}}</label>
 						<span class="fr grade">{{listItem.mark}}</span>
@@ -86,8 +72,11 @@
           <cell-box>
           	<i class="iconfont icon-licai"></i>投资组合报告
           </cell-box>
-          <cell-box v-for="item in reportList" :link="item.toLink" :key="item.title">{{item.title}}</cell-box>
+          <!-- <cell-box v-for="item in reportList" :link="item.toLink" :key="item.title">{{item.title}}</cell-box> -->
         </group>
+				<group v-for="item in reportList" :link="item.toLink" :key="item.title">
+					<cell-box>{{item.title}}</cell-box>
+				</group>
     	</div>
     	<div class="space"></div>
     	<div class="remark">
@@ -98,10 +87,11 @@
         </group>
         <ul>
         	<li v-for="(item, index) in remarkList" :key="index">
-        		<div class="iText">{{item.text}}</div>
+        		<div class="iText text-overflow-one">{{item.text}}</div>
         		<span class="iTime">{{item.time}}</span>
         		<!-- <i class="icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i> -->
-        		<b class="fr"><i class="iconfont icon-view"></i>&nbsp;查看</b>
+        		<!-- <b class="fr"><i class="iconfont icon-view"></i>&nbsp;查看</b> -->
+						<router-link class="view fr" to="/writeNotes"><i class="iconfont icon-view"></i>&nbsp;查看</router-link>
         	</li>
         </ul>
 				<div class="space"></div>
@@ -185,9 +175,9 @@ export default {
   	}
   },
   methods: {
-  	deleteRemark (idx) {
-  		this.remarkList.splice(idx, 1)
-  	},
+  	// deleteRemark (idx) {
+  	// 	this.remarkList.splice(idx, 1)
+  	// },
   	addNew () {
   		this.showHideOnBlur = true
   		document.getElementById('inputing').focus()
@@ -222,6 +212,9 @@ export default {
 		},
 		toLink () {
 			this.$router.push({name: 'NewCustomer', params: {num: 1}})
+		},
+		toLink1 () {
+			this.$router.push({name: 'ProductDetail', params: {id: 1}})
 		}
   }
 }
@@ -231,17 +224,14 @@ export default {
 /*@import '~vux/src/styles/reset';*/
 .wrapper {
 	// padding-top: 126px;
-	.info {
-		.content {
-			// padding-left: 45px;
-			// padding-bottom: 30px;
-			padding: 0 34px 30px 45px;
-			font-size: 30px; /*px*/
-			.content-text {
-				margin-top: 30px;
-			}
-		}
-	}
+	// .info {
+		// .weui-cells::before {
+		// 	border-top: 1px solid #D9D9D9; /*no*/
+		// }
+		// .weui-cells::after {
+		// 	border-bottom: 1px solid #D9D9D9; /*no*/
+		// }
+	// }
 	.report {
 		.vux-tap-active {
 			padding-left: 45px;
@@ -253,7 +243,7 @@ export default {
 		.cell-form {
 			padding: 40px 34px 34px 40px;
 			font-size: 22px; /*px*/
-			border-bottom: 1px solid #eee;
+			border-bottom: 1px solid #eee; /*no*/
 			.cell-form-top {
 				margin-bottom: 16px;
 				label{
@@ -295,12 +285,15 @@ export default {
 		}
 		ul {
 			li {
-				border-bottom: 1px solid #eee;
+				border-bottom: 1px solid #eee; /*no*/
 				padding: 30px 40px;
 				font-size: 24px; /*px*/
         .iText {
 					margin-bottom: 10px;
 					font-size: 28px; /*px*/
+				}
+				.view {
+					color: #666;
 				}
 				.fr i {
 					font-size: 24px; /*px*/
@@ -319,8 +312,10 @@ export default {
 				width: 100%;
 				height: 100%;
 				outline: none;
-				border: 1px solid #ccc;
+				border: 1px solid #ccc; /*no*/
 				border-radius: 10px;
+				padding: 10px;
+				box-sizing: border-box;
 			}
 		}
 	}
@@ -336,6 +331,7 @@ export default {
 		right: 27px;
 		top: 50%;
 		transform: translateY(-50%);
+		-webkit-transform: translateY(-50%);
 		i {
 			margin-right: 12px;
 			color: #333;

@@ -13,44 +13,19 @@
 				<div class="flex-product">
 					<div class="flex-right">
 						<p class="r-title">{{item.title}}</p>
-						<group>
+						<!-- <group> -->
 							<x-number title="投资金额: "
 							  @on-change="change"
 								v-model="item.changeVal"
 							  :min="minNum"
 								align=""
-								width="90px"
 								fillable></x-number>
-						</group>
+						<!-- </group> -->
 						<span class="red-label">{{item.marketLabel}}</span>
 					</div>
 				</div>
 			</flexbox-item>
 		</flexbox>
-		<!-- <flexbox :gutter="2" wrap="wrap">
-			<flexbox-item :span="4" class="item-left">
-				<div class="flex-product">
-					<div class="flex-left">
-						<p class="rate"><span>12.00</span>%</p>
-						<p class="text">近一年收益</p>
-					</div>
-				</div>
-			</flexbox-item>
-			<flexbox-item>
-				<div class="flex-product">
-					<div class="flex-right">
-						<p class="r-title">正收益理财产品</p>
-						<group>
-							<x-number title="投资金额: "
-							  @on-change="change"
-								v-model="changeVal2"
-							 fillable :min="minNum" align="" width="90px"></x-number>
-						</group>
-						<span class="red-label">二级市场</span>
-					</div>
-				</div>
-			</flexbox-item>
-		</flexbox> -->
 	</div>
 </template>
 
@@ -91,12 +66,12 @@ export default {
 
 <style scoped lang="less">
 .vux-flexbox {
-	border-top: 1px solid #eee;
+	border-top: 1px solid #eee; /*no*/
 	padding-top: 20px;
   padding-bottom: 20px;
   position: relative;
   .vux-flexbox-item:nth-child(2) {
-		border-left: 1px solid #eee;
+		border-left: 1px solid #eee; /*no*/
 	}
 	.vux-flexbox-item {
 		padding: 20px;
@@ -122,6 +97,10 @@ export default {
 					}
 				}
 			}
+			// .weui-cells:before,
+			// .weui-cells:after {
+			// 	border: none!important;
+			// }
 			// .flex-right span {
 			// 	background-color: #fd6060;
 			// 	color: #fff;

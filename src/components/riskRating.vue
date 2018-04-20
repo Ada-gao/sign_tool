@@ -133,8 +133,11 @@ export default {
   	}
   },
   mounted () {
-  	this.createData()
+    this.createData()
     this.drawLineChart()
+    window.onresize = () => {
+      this.drawLineChart()
+    }
   },
   methods: {
   	nextStep () {
@@ -163,24 +166,27 @@ export default {
       let riskChart = document.getElementById('riskChart')
       riskChart.style.width = document.body.clientWidth + 'px'
       let myChart = echarts.init(riskChart)
+
       let options = {
         title: {
           text: '生命周期现金流',
           left: 37,
           textStyle: {
             color: '#666',
-            fontSize: 26
+            fontSize: 26,
+            fontWeight: 'normal'
           }
         },
         legend: {
           icon: 'roundRect',
           data: ['资产'],
           right: 26,
+          top: 0,
           itemHeight: 26,
           itemWidth: 26,
           textStyle: {
             fontSize: 26,
-            padding: [0, 0, 0, 13]
+            padding: [0, 0, 0, 10]
           }
         },
         xAxis: {
@@ -214,6 +220,27 @@ export default {
           }
         }]
       }
+      // debugger
+      let dpr = document.documentElement.getAttribute('data-dpr')
+      if (dpr === '1') {
+        options.title.textStyle.fontSize = 12
+        options.legend.itemHeight = 12
+        options.legend.itemWidth = 12
+        options.legend.textStyle.fontSize = 12
+        options.series[0].lineStyle.width = 2
+      } else if (dpr === '2') {
+        options.title.textStyle.fontSize = 26
+        options.legend.itemHeight = 26
+        options.legend.itemWidth = 26
+        options.legend.textStyle.fontSize = 26
+        options.series[0].lineStyle.width = 4
+      } else if (dpr === '3') {
+        options.title.textStyle.fontSize = 38
+        options.legend.itemHeight = 38
+        options.legend.itemWidth = 38
+        options.legend.textStyle.fontSize = 38
+        options.series[0].lineStyle.width = 6
+      }
       myChart.setOption(options)
     }
   }
@@ -227,6 +254,7 @@ export default {
   position: relative;
   width: 100%;
   bottom: 30px;
+  box-sizing: border-box;
   .weui-btn_primary {
     border-radius: 60px;
     background-color: #3693E0;
@@ -256,5 +284,9 @@ export default {
       }
     }
   }
+  // .vux-popup-picker-container .vux-popup-header .vux-popup-header-left{
+  //   font-size: 32px!important; /*px*/
+  //   padding: 10px;
+  // }
 }
 </style>

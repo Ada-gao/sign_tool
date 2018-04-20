@@ -39,11 +39,13 @@ export default {
 		}
 	}
 	.weui-grid {
-		padding: 0;
+    padding: 0;
+    text-decoration: none;
 	}
 	.grid-center {
     display: block;
     text-align: center;
+    text-decoration: none;
     i {
       font-size: 46px; /*px*/
       display: inline-block;

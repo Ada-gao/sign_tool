@@ -40,7 +40,8 @@ export default {
 	.weui-tabbar__item {
 		height: 96px;
 		font-size: 20px; /*px*/
-		box-sizing: border-box;
+    box-sizing: border-box;
+    text-decoration: none;
 		i {
 			font-size: 47px; /*px*/
 			display: block;

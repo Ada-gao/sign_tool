@@ -64,6 +64,7 @@
             <recommend-products :product-data="productList.list4"></recommend-products>
           </cell-box>
         </template>
+        <div class="divide-line"></div>
       </group>
       <div class="btn_wrap" :class="isPosition ? 'position' : ''">
         <x-button type="primary" @click.native="nextStep">确认生成报告</x-button>
