@@ -20,6 +20,8 @@
 <script type="text/ecmascript-6">
 import { XHeader, XButton, Countdown } from 'vux'
 import { setInterval, clearInterval } from 'timers'
+import * as types from 'common/js/types'
+import api from '@/axios/api'
 
 export default {
   data () {
@@ -38,10 +40,13 @@ export default {
     XButton,
     Countdown
   },
+  mounted () {
+    this.$store.commit(types.TITLE, 'Your Repositories')
+  },
   methods: {
     nextStep () {
-      this.$store.state.isLogin = 100
-      console.log(this.$router.currentRoute)
+      this.$store.state.token = '100'
+      // window.localStorage.setItem('token', this.$store.state.token)
       let queryUrl = this.$router.currentRoute.query
       let url = ''
       if (queryUrl) {
@@ -49,7 +54,6 @@ export default {
       } else {
         url = 'customerList'
       }
-      // let url = this.$router.currentRoute.query.Rurl
       this.$router.push({path: decodeURIComponent(url)})
     },
     getIdentifyingCode () {
@@ -67,11 +71,12 @@ export default {
           }
         }, 1000)
       }
+      this.$http.post(api.auth_verification
+      )
+        .then(response => {
+          this.num = response.data
+        })
     }
-    // finish (index) {
-    //   this.show = true
-    //   console.log('current index', index)
-    // }
   }
 }
 </script>

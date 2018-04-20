@@ -1,5 +1,8 @@
 import Vue from 'vue'
+import store from 'common/js/store.js'
 import Router from 'vue-router'
+import * as types from 'common/js/types'
+
 import HomePage from '@/components/homePage'
 import CustomerManagement from '@/components/customerManagement'
 import CombinedReport from '@/components/combinedReport'
@@ -175,6 +178,28 @@ const router = new Router({
       }
     }
   ]
+})
+
+// 页面刷新时，重新赋值 token
+if (window.localStorage.getItem('token')) {
+  store.commit(types.LOGIN, window.localStorage.getItem('token'))
+}
+
+// 登陆拦截
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(m => m.meta.auth)) {
+    console.log(store)
+    if (store.state.token) {
+      next()
+    } else {
+      next({
+        path: '/login',
+        query: { Rurl: to.fullPath }
+      })
+    }
+  } else {
+    next()
+  }
 })
 
 export default router
