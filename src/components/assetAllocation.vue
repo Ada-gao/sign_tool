@@ -127,6 +127,9 @@ export default {
           type: 'category',
           inverse: true,
           data: ['理财金额', '固收金额', '二级市场金额', '另类投资金额'],
+          nameTextStyle: {
+            fontSize: 12
+          },
           axisTick: {
             show: false
           },
@@ -167,11 +170,7 @@ export default {
           stack: '原有',
           data: [125, 200, 25, 150],
           barWidth: 8,
-          itemStyle: {
-            normal: {
-              color: '#FFCF94',
-              barBorderRadius: 10,
-              label: {
+          label: {
                 show: true,
                 position: 'right',
                 offset: [-25, -15],
@@ -180,8 +179,13 @@ export default {
                 backgroundColor: {
                   image: 'static/img/label1.png'
                 },
+                fontSize: 12,
                 padding: [3, 5, 10, 5]
-              }
+              },
+          itemStyle: {
+            normal: {
+              color: '#FFCF94',
+              barBorderRadius: 10
             }
           }
         }, {
@@ -208,6 +212,8 @@ export default {
         options1.grid.bottom = 60
         options1.series[2].barWidth = 4
         options1.series[3].barWidth = 4
+        options1.series[2].label.fontSize = 12
+        options1.yAxis.nameTextStyle.fontSize = 12
       } else if (dpr === '2') {
         options1.legend.itemHeight = 17
         options1.legend.itemWidth = 17
@@ -217,6 +223,8 @@ export default {
         options1.grid.bottom = 120
         options1.series[2].barWidth = 8
         options1.series[3].barWidth = 8
+        options1.series[2].label.fontSize = 22
+        options1.yAxis.nameTextStyle.fontSize = 22
       } else if (dpr === '3') {
         options1.legend.itemHeight = 38
         options1.legend.itemWidth = 38
@@ -226,6 +234,8 @@ export default {
         options1.grid.bottom = 140
         options1.series[2].barWidth = 12
         options1.series[3].barWidth = 12
+        options1.series[2].label.fontSize = 30
+        options1.yAxis.nameTextStyle.fontSize = 30
       }
       myChart1.setOption(options1)
     },
