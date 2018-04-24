@@ -66,8 +66,8 @@ export default async (url = '', data = {}, type = 'GET', method = 'fetch') => {
 							obj = JSON.parse(obj)
 						}
 						resolve(obj)
-					} else if (requestObj.status === 12002) {
-						reject('请求超时')
+					// } else if (requestObj.status === 12002) {
+					// 	reject('请求超时')
 					} else {
 						reject(requestObj)
 					}

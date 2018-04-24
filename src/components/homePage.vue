@@ -15,7 +15,7 @@
 			<div class="space"></div>
     	<group>
         <cell-box>
-        	<i class="iconfont icon-finance-3-copy"></i>固守
+        	<i class="iconfont icon-finance-3-copy"></i>固收
         </cell-box>
       </group>
       <div class="products-box">

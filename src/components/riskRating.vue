@@ -172,7 +172,7 @@ export default {
           left: 0,
           right: 0,
           bottom: 0,
-          top: 30,
+          top: 50,
           containLabel: true
         },
         title: {
@@ -246,6 +246,7 @@ export default {
         options.series[0].lineStyle.width = 2
         options.xAxis.axisLabel.fontSize = 12
         options.yAxis.axisLabel.fontSize = 12
+        // options.grid.top = 30
         // options.legend.right = 26
         // options.title.left = 37
       } else if (dpr === '2') {
@@ -256,6 +257,7 @@ export default {
         options.series[0].lineStyle.width = 4
         options.xAxis.axisLabel.fontSize = 20
         options.yAxis.axisLabel.fontSize = 20
+        options.grid.top = 70
         // options.legend.right = 52
         // options.title.left = 63
       } else if (dpr === '3') {
@@ -266,6 +268,7 @@ export default {
         options.series[0].lineStyle.width = 6
         options.xAxis.axisLabel.fontSize = 26
         options.yAxis.axisLabel.fontSize = 26
+        options.grid.top = 100
         // options.legend.right = 100
         // options.title.left = 63
       }

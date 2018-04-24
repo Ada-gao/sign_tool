@@ -35,7 +35,6 @@
 						<p>{{item.name}}</p>
 						<p style="margin-top: 10px">{{item.phoneNum}}</p>
 						<i class="iconfont icon-right"></i>
-						<!-- <x-icon type="ios-arrow-forward" size="30"></x-icon> -->
 					</router-link>
 				</li>
 			</ul>
@@ -43,8 +42,8 @@
 				<li v-for="(item, index) in customers1" :key="index">
 					<router-link :to="{name: 'CustomerManagement', params: {id: 1}}">
 						<p>{{item.name}}</p>
-						<p>{{item.phoneNum}}</p>
-						<x-icon type="ios-arrow-forward" size="30"></x-icon>
+						<p style="margin-top: 10px">{{item.phoneNum}}</p>
+						<i class="iconfont icon-right"></i>
 					</router-link>
 				</li>
 			</ul>
@@ -149,24 +148,17 @@ export default {
   			 return _customers.filter(function (customer) {
   				return Object.keys(customer).some(function (key) {
   					if (String(customer[key]).toLowerCase().indexOf(_search) > -1) {
-							customer = String(customer).replace(new RegExp(_search, 'g'), '<span class="search-text">' + _search + '</span>')
-							console.log(customer)
-							if (customer.length === 0) {
-								_this.noResult = false
-							}
-							return customer
+						// customer = String(customer).replace(new RegExp(_search, 'g'), '<span class="search-text">' + _search + '</span>')
+						if (customer.length === 0) {
+							_this.noResult = false
+						} else {
+							_this.noResult = true
 						}
+						return customer
+					}
   				})
   			})
 			}
-			// _customers.forEach(item => {
-			// 	let replaceReg = new RegExp(_search, 'g')
-			// 	let replaceString = '<span class="search-text">' + _search + '</span>'
-			// 	for (let key in item) {
-			// 		item[key] = item[key].replace(replaceReg, replaceString)
-			// 	}
-			// })
-  		// return _customers
 		}
 	},
 	watch: {
@@ -245,7 +237,7 @@ export default {
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
-  			-webkit-transform: translateY(-50%);
+  				-webkit-transform: translateY(-50%);
 				right: 40px;
 				font-size: 30px; /*px*/
 				font-weight: bold;
