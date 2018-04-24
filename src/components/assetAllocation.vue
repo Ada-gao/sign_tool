@@ -127,6 +127,9 @@ export default {
           type: 'category',
           inverse: true,
           data: ['理财金额', '固收金额', '二级市场金额', '另类投资金额'],
+          nameTextStyle: {
+            fontSize: 12
+          },
           axisTick: {
             show: false
           },
@@ -170,6 +173,21 @@ export default {
           stack: '原有',
           data: [125, 200, 25, 150],
           barWidth: 8,
+<<<<<<< HEAD
+=======
+          label: {
+                show: true,
+                position: 'right',
+                offset: [-25, -15],
+                formatter: '{c}万',
+                color: '#333',
+                backgroundColor: {
+                  image: 'static/img/label1.png'
+                },
+                fontSize: 12,
+                padding: [3, 5, 10, 5]
+              },
+>>>>>>> cbeb74197ac1d4452b2be6059217adbd5d19bde5
           itemStyle: {
             normal: {
               color: '#FFCF94',
