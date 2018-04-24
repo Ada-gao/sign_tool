@@ -33,8 +33,9 @@
 				<li v-for="(item, index) in customers" :key="index">
 					<router-link :to="{name: 'CustomerManagement', params: {id: 1}}">
 						<p>{{item.name}}</p>
-						<p>{{item.phoneNum}}</p>
-						<x-icon type="ios-arrow-forward" size="30"></x-icon>
+						<p style="margin-top: 10px">{{item.phoneNum}}</p>
+						<i class="iconfont icon-right"></i>
+						<!-- <x-icon type="ios-arrow-forward" size="30"></x-icon> -->
 					</router-link>
 				</li>
 			</ul>
@@ -232,21 +233,24 @@ export default {
 	background-color: #F5F5F5;
 	padding-bottom: 96px;
 	li {
-    background-color: #fff;
-    padding: 40px;
+		background-color: #fff;
+		padding: 40px;
 		font-size: 30px; /*px*/
 		margin-bottom: 20px;
 		position: relative;
 		a {
 			display: block;
 			text-decoration: none;
-			svg {
+			i {
 				position: absolute;
 				top: 50%;
 				transform: translateY(-50%);
   			-webkit-transform: translateY(-50%);
 				right: 40px;
-				fill: #999;
+				font-size: 30px; /*px*/
+				font-weight: bold;
+				color: #999;
+				// fill: #999;
 			}
 		}
 	}

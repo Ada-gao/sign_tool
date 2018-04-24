@@ -3,46 +3,74 @@ import store from 'common/js/store.js'
 import Router from 'vue-router'
 import * as types from 'common/js/types'
 
-import HomePage from '@/components/homePage'
-import CustomerManagement from '@/components/customerManagement'
-import CombinedReport from '@/components/combinedReport'
-import CustomerList from '@/components/customerList'
-import Remark from '@/components/remark'
-import NewCustomer from '@/components/newCustomer'
-import WriteNotes from '@/base/writeNotes/writeNotes'
-import RiskRating from '@/components/riskRating'
-import CashFlow from '@/components/cashFlow'
-import InsuranceAllocation from '@/components/insuranceAllocation'
-import PdfReport from '@/components/pdfReport'
-import AssetAllocation from '@/components/assetAllocation'
-import Recommend from '@/components/recommend'
-// import A from '@/components/a'
-import ProductDetail from '@/components/productDetail'
-import AboutMe from '@/components/aboutMe'
-import MyInfo from '@/components/myInfo'
-import MyPerformance from '@/components/myPerformance'
-import MyVersion from '@/components/myVersion'
-import Login from '@/components/login'
+const HomePage = r => require.ensure([], () => r(require('@/components/homePage')), 'homePage')
+const CustomerManagement = r => require.ensure([], () => r(require('@/components/customerManagement')), 'customerManagement')
+const CombinedReport = r => require.ensure([], () => r(require('@/components/combinedReport')), 'combinedReport')
+const CustomerList = r => require.ensure([], () => r(require('@/components/customerList')), 'customerList')
+const Remark = r => require.ensure([], () => r(require('@/components/remark')), 'remark')
+const NewCustomer = r => require.ensure([], () => r(require('@/components/newCustomer')), 'newCustomer')
+const WriteNotes = r => require.ensure([], () => r(require('@/base/writeNotes/writeNotes')), 'writeNotes')
+const RiskRating = r => require.ensure([], () => r(require('@/components/riskRating')), 'riskRating')
+const CashFlow = r => require.ensure([], () => r(require('@/components/cashFlow')), 'cashFlow')
+const InsuranceAllocation = r => require.ensure([], () => r(require('@/components/insuranceAllocation')), 'insuranceAllocation')
+const PdfReport = r => require.ensure([], () => r(require('@/components/pdfReport')), 'pdfReport')
+const AssetAllocation = r => require.ensure([], () => r(require('@/components/assetAllocation')), 'assetAllocation')
+const Recommend = r => require.ensure([], () => r(require('@/components/recommend')), 'recommend')
+const ProductDetail = r => require.ensure([], () => r(require('@/components/productDetail')), 'productDetail')
+const AboutMe = r => require.ensure([], () => r(require('@/components/aboutMe')), 'aboutMe')
+const MyInfo = r => require.ensure([], () => r(require('@/components/myInfo')), 'myInfo')
+const MyPerformance = r => require.ensure([], () => r(require('@/components/myPerformance')), 'myPerformance')
+const MyVersion = r => require.ensure([], () => r(require('@/components/myVersion')), 'myVersion')
+const Login = r => require.ensure([], () => r(require('@/components/login')), 'login')
+const Index = r => require.ensure([], () => r(require('@/components/index')), 'index')
+
+// // import A from '@/components/a'
 
 Vue.use(Router)
 
 const router = new Router({
   routes: [
     {
-      path: '/HomePage',
-      name: 'HomePage',
-      component: HomePage,
+      path: '/',
+      redirect: 'HomePage',
       meta: {
       	navShow: true
       }
     }, {
-      path: '/customerList',
-      name: 'CustomerList',
-      component: CustomerList,
-      meta: {
-        navShow: true,
-        auth: true
-      }
+      path: '/index',
+      name: 'Index',
+      component: Index,
+      children: [
+        {
+          path: '/HomePage',
+          name: 'HomePage',
+          component: HomePage
+        }, {
+          path: '/customerList',
+          name: 'CustomerList',
+          component: CustomerList,
+          meta: {
+            // navShow: true,
+            auth: true
+          }
+        }, {
+          path: '/aboutMe',
+          name: 'AboutMe',
+          component: AboutMe,
+          meta: {
+            // navShow: true,
+            auth: true
+          }
+        }
+      ]
+    // }, {
+    //   path: '/customerList',
+    //   name: 'CustomerList',
+    //   component: CustomerList,
+    //   meta: {
+    //     navShow: true,
+    //     auth: true
+    //   }
     }, {
       path: '/remark',
       name: 'Remark',
@@ -134,14 +162,14 @@ const router = new Router({
       meta: {
         navShow: false
       }
-    }, {
-      path: '/aboutMe',
-      name: 'AboutMe',
-      component: AboutMe,
-      meta: {
-        navShow: true,
-        auth: true
-      }
+    // }, {
+    //   path: '/aboutMe',
+    //   name: 'AboutMe',
+    //   component: AboutMe,
+    //   meta: {
+    //     navShow: true,
+    //     auth: true
+    //   }
     }, {
       path: '/myInfo',
       name: 'MyInfo',
@@ -169,12 +197,6 @@ const router = new Router({
       component: Login,
       meta: {
         navShow: false
-      }
-    }, {
-      path: '/',
-      redirect: 'HomePage',
-      meta: {
-      	navShow: true
       }
     }
   ]

@@ -98,7 +98,7 @@
 			</div>
       <div class="bottom-remark">
         <div class="add clearfix">
-          <input type="text" @click="addNew" class="addInput" placeholder="新增备注"/>
+          <input type="text" @click="addNew" class="addInput" v-model="remarkInput" placeholder="新增备注"/>
         </div>
       </div>
       <div v-transfer-dom>
@@ -153,6 +153,7 @@ export default {
 			}],
 			showHideOnBlur: false,
 			remarkInfo: null,
+			remarkInput: null,
 			cName: '金晓晓',
 			cPhone: '12345678901',
 			cEmail: '12345678901@163.com',
@@ -183,7 +184,8 @@ export default {
   		document.getElementById('inputing').focus()
   	},
   	submitAddNew () {
-  		this.showHideOnBlur = false
+			this.showHideOnBlur = false
+			this.remarkInput = null
   		let dateFormat = function (date, fmt) {
   			let o = {
   				'M+': date.getMonth() + 1,

@@ -40,6 +40,7 @@
       	<selling-products :child-data="prodcuts"></selling-products>
       </div>
     </div>
+		<router-view></router-view>
   </div>
 </template>
 

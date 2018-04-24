@@ -130,6 +130,9 @@ export default {
           axisTick: {
             show: false
           },
+          nameTextStyle: {
+            fontSize: 12
+          },
           axisLine: {
             lineStyle: {
               color: '#ccc'
@@ -170,19 +173,19 @@ export default {
           itemStyle: {
             normal: {
               color: '#FFCF94',
-              barBorderRadius: 10,
-              label: {
-                show: true,
-                position: 'right',
-                offset: [-25, -15],
-                formatter: '{c}万',
-                color: '#333',
-                backgroundColor: {
-                  image: 'static/img/label1.png'
-                },
-                padding: [3, 5, 10, 5]
-              }
+              barBorderRadius: 10
             }
+          },
+          label: {
+            show: true,
+            position: 'right',
+            offset: [-25, -15],
+            formatter: '{c}万',
+            color: '#333',
+            backgroundColor: {
+              image: 'static/img/label1.png'
+            },
+            padding: [3, 5, 10, 5]
           }
         }, {
           name: '理想投资比例',
@@ -208,6 +211,8 @@ export default {
         options1.grid.bottom = 60
         options1.series[2].barWidth = 4
         options1.series[3].barWidth = 4
+        options1.series[2].label.fontSize = 12
+        options1.yAxis.nameTextStyle.fontSize = 12
       } else if (dpr === '2') {
         options1.legend.itemHeight = 17
         options1.legend.itemWidth = 17
@@ -217,6 +222,8 @@ export default {
         options1.grid.bottom = 120
         options1.series[2].barWidth = 8
         options1.series[3].barWidth = 8
+        options1.series[2].label.fontSize = 22
+        options1.yAxis.nameTextStyle.fontSize = 22
       } else if (dpr === '3') {
         options1.legend.itemHeight = 38
         options1.legend.itemWidth = 38
@@ -226,6 +233,8 @@ export default {
         options1.grid.bottom = 140
         options1.series[2].barWidth = 12
         options1.series[3].barWidth = 12
+        options1.series[2].label.fontSize = 30
+        options1.yAxis.nameTextStyle.fontSize = 30
       }
       myChart1.setOption(options1)
     },

@@ -21,7 +21,8 @@
 import { XHeader, XButton, Countdown } from 'vux'
 import { setInterval, clearInterval } from 'timers'
 import * as types from 'common/js/types'
-import api from '@/axios/api'
+// import api from '@/axios/api'
+import {getVerification} from '../service/getData'
 
 export default {
   data () {
@@ -58,6 +59,12 @@ export default {
     },
     getIdentifyingCode () {
       const TIME_COUNT = 5
+      getVerification({
+        username: 'zhuangyinping@shuyun365.com'
+      }).then(res => {
+        console.log('进来了')
+        this.num = res.data
+      })
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false
@@ -71,11 +78,12 @@ export default {
           }
         }, 1000)
       }
-      this.$http.post(api.auth_verification
-      )
-        .then(response => {
-          this.num = response.data
-        })
+      // axios 方法
+      // this.$http.post(api.auth_verification
+      // )
+      //   .then(response => {
+      //     this.num = response.data
+      //   })
     }
   }
 }

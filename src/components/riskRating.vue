@@ -20,8 +20,8 @@
           <span class="text-plus">历史年华收益率 <i class="red-text-1">8.44</i>%</span>
           <span class="text-plus fr">波动收益率<i class="red-text-1">9.70</i>%</span>
         </div>
-        <div id="riskChart" style="width: 100%;height: 433px;margin-top: 30px;"></div>
-        <p style="padding: 0 30px;">如您一样的投资者更适合能随着时间推移提供相对稳定收益的低风险投资</p>
+        <div id="riskChart" style="width: 92%;height: 553px;margin: 0 auto;"></div>
+        <p style="width: 92%;margin: 30px auto;">如您一样的投资者更适合能随着时间推移提供相对稳定收益的低风险投资</p>
       </div>
       <div class="btn_wrap" :class="isPosition ? 'position' : ''">
         <x-button type="primary" @click.native="nextStep">{{buttonText}}</x-button>
@@ -164,13 +164,20 @@ export default {
     },
     drawLineChart () {
       let riskChart = document.getElementById('riskChart')
-      riskChart.style.width = document.body.clientWidth + 'px'
+      riskChart.style.width = document.body.clientWidth * 0.92 + 'px'
       let myChart = echarts.init(riskChart)
 
       let options = {
+        grid: {
+          left: 0,
+          right: 0,
+          bottom: 0,
+          top: 30,
+          containLabel: true
+        },
         title: {
           text: '生命周期现金流',
-          left: 37,
+          left: 0,
           textStyle: {
             color: '#666',
             fontSize: 26,
@@ -180,7 +187,7 @@ export default {
         legend: {
           icon: 'roundRect',
           data: ['资产'],
-          right: 26,
+          right: 0,
           top: 0,
           itemHeight: 26,
           itemWidth: 26,
@@ -191,7 +198,10 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: ['35', '40', '45', '50', '55', '60', '65', '70', '75', '80', '85']
+          data: ['35', '40', '45', '50', '55', '60', '65', '70', '75', '80', '85'],
+          axisLabel: {
+            fontSize: 12
+          }
         },
         yAxis: {
           type: 'value',
@@ -200,6 +210,12 @@ export default {
           },
           axisTick: {
             show: false
+          },
+          axisLabel: {
+            fontSize: 12,
+            formatter: (value) => {
+              return `${value}千万`
+            }
           }
         },
         series: [{
@@ -228,18 +244,30 @@ export default {
         options.legend.itemWidth = 12
         options.legend.textStyle.fontSize = 12
         options.series[0].lineStyle.width = 2
+        options.xAxis.axisLabel.fontSize = 12
+        options.yAxis.axisLabel.fontSize = 12
+        // options.legend.right = 26
+        // options.title.left = 37
       } else if (dpr === '2') {
         options.title.textStyle.fontSize = 26
         options.legend.itemHeight = 26
         options.legend.itemWidth = 26
         options.legend.textStyle.fontSize = 26
         options.series[0].lineStyle.width = 4
+        options.xAxis.axisLabel.fontSize = 20
+        options.yAxis.axisLabel.fontSize = 20
+        // options.legend.right = 52
+        // options.title.left = 63
       } else if (dpr === '3') {
         options.title.textStyle.fontSize = 38
         options.legend.itemHeight = 38
         options.legend.itemWidth = 38
         options.legend.textStyle.fontSize = 38
         options.series[0].lineStyle.width = 6
+        options.xAxis.axisLabel.fontSize = 26
+        options.yAxis.axisLabel.fontSize = 26
+        // options.legend.right = 100
+        // options.title.left = 63
       }
       myChart.setOption(options)
     }
@@ -284,9 +312,5 @@ export default {
       }
     }
   }
-  // .vux-popup-picker-container .vux-popup-header .vux-popup-header-left{
-  //   font-size: 32px!important; /*px*/
-  //   padding: 10px;
-  // }
 }
 </style>

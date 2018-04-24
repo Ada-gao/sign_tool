@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <tab-bottom v-show="$route.meta.navShow"></tab-bottom>
-    <router-view/>
+    <!-- <tab-bottom v-show="$route.meta.navShow"></tab-bottom> -->
+    <router-view></router-view>
   </div>
 </template>
 
