@@ -3,19 +3,20 @@
 		<x-header v-if="isMod==0" :left-options="{backText: ''}">新建客户</x-header>
 		<x-header v-if="isMod==1" :left-options="{backText: ''}">修改资料</x-header>
 		<group class="wrapper">
-      <x-input title="姓名:" placeholder="输入客户姓名" ref="input01" required></x-input>
-      <x-input title="国籍:" isASelection=true @selectOne="selectNation" placeholder="输入客户年龄" ref="input02" required></x-input>
-      <x-input title="电话:" placeholder="输入客户手机号码" ref="input03" required></x-input>
-      <x-input title="邮箱:" placeholder="输入客户邮箱" ref="input03" required></x-input>
+      <x-input title="姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" required></x-input>
+      <x-input title="国籍:" v-model="nationality" isASelection=true @selectOne="selectNation" placeholder="输入客户年龄" ref="input02" required></x-input>
+      <x-input title="电话:" v-model="mobile" placeholder="输入客户手机号码" ref="input03" required></x-input>
+      <x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input03" required></x-input>
     </group>
     <div class="btn_wrap">
-      <router-link class="next" to="/customerList">确定</router-link>
+      <button class="next" @click="submitCustomer">确定</button>
     </div>
 	</div>
 </template>
 
 <script>
 import { XHeader, Group, XInput, XButton } from 'vux'
+import { addCusomer } from '@/service/api/customers'
 
 export default {
 	name: 'NewCustomer',
@@ -28,16 +29,42 @@ export default {
   data () {
   	return {
       num: 1,
-      isMod: -1
+      isMod: -1,
+      name: '',
+      nationality: '',
+      mobile: '',
+      email: ''
   	}
   },
   mounted () {
-    this.isMod = this.$route.params.num
+    this.isMod = this.$route.params.isMod
+    console.log(this.isMod)
+    if (this.isMod === 1) {
+      console.log('需要获取数据')
+    }
   },
   methods: {
     selectNation (num) {
       this.num = num
       console.log(this.num)
+    },
+    submitCustomer () {
+      let params = {
+        name: this.name,
+        nationality: this.num === 1 ? '中国' : '其他',
+        mobile: this.mobile,
+        email: this.email
+      }
+      if (this.isMod === 0) {
+        addCusomer(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            this.$router.push({name: 'CustomerList'})
+          }
+        })
+      } else {
+        console.log('xiugai')
+      }
     }
   }
 }

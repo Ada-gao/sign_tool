@@ -21,14 +21,13 @@
 import { XHeader, XButton, Countdown } from 'vux'
 import { setInterval, clearInterval } from 'timers'
 import * as types from 'common/js/types'
-// import api from '@/axios/api'
-import {getVerification} from '../service/getData'
+import { getVerificationCode, getAuthToken } from '@/service/api/login'
 
 export default {
   data () {
     return {
       username: 'zhuangyinping@shuyun365.com',
-      num: 1234,
+      num: '',
       // time1: 5,
       show: true,
       count: ' ',
@@ -45,19 +44,29 @@ export default {
     this.$store.commit(types.TITLE, 'Your Repositories')
   },
   methods: {
-    nextStep () {
+     nextStep () {
       this.$store.state.token = '100'
-      // window.localStorage.setItem('token', this.$store.state.token)
-      let queryUrl = this.$router.currentRoute.query
-      let url = ''
-      if (queryUrl) {
-        url = this.$router.currentRoute.query.Rurl
-      } else {
-        url = 'customerList'
-      }
-      this.$router.push({path: decodeURIComponent(url)})
+      getAuthToken({
+        code: this.num,
+        username: this.username
+      }).then(res => {
+        if (res.status === 200) {
+          this.$store.state.token = res.data.token
+          window.localStorage.setItem('token', this.$store.state.token)
+          let queryUrl = this.$router.currentRoute.query
+          let url = ''
+          if (queryUrl) {
+            url = this.$router.currentRoute.query.Rurl
+          } else {
+            url = 'customerList'
+          }
+          this.$router.push({path: decodeURIComponent(url)})
+        } else {
+          return false
+        }
+      })
     },
-    async getIdentifyingCode () {
+    getIdentifyingCode () {
       const TIME_COUNT = 5
       if (!this.timer) {
         this.count = TIME_COUNT
@@ -72,8 +81,10 @@ export default {
           }
         }, 1000)
       }
-      let res = await getVerification(this.username)
-      console.log(res)
+      // let domain = document.domain === 'localhost' ? '10.60.2.141' : document.domain
+      getVerificationCode(this.username).then(res => {
+        console.log('数据库查看验证码')
+      })
     }
   }
 }

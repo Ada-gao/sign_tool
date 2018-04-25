@@ -13,19 +13,19 @@
         <group>
           <cell-box>
           	<label for="name">姓名：</label>
-            <span class="fr">{{cName}}</span>
+            <span class="fr">{{data.name}}</span>
           </cell-box>
         </group>
         <group>
           <cell-box>
           	<label for="phone">电话：</label>
-            <span class="fr">{{cPhone}}</span>
+            <span class="fr">{{data.mobile}}</span>
           </cell-box>
         </group>
         <group>
           <cell-box>
           	<label for="email">邮箱：</label>
-            <span class="fr">{{cEmail}}</span>
+            <span class="fr">{{data.email}}</span>
           </cell-box>
         </group>
     	</div>
@@ -117,6 +117,7 @@
 
 <script>
 import { XHeader, Group, Cell, CellBox, Flexbox, FlexboxItem, XDialog, TransferDomDirective as TransferDom, CellFormPreview } from 'vux'
+import { checkCusomersDetail } from '@/service/api/customers'
 
 export default {
   name: 'CustomerManagement',
@@ -135,6 +136,7 @@ export default {
   },
   data () {
   	return {
+			data: null,
   		reportList: [
 				{
 					title: '组合报告1',
@@ -154,9 +156,6 @@ export default {
 			showHideOnBlur: false,
 			remarkInfo: null,
 			remarkInput: null,
-			cName: '金晓晓',
-			cPhone: '12345678901',
-			cEmail: '12345678901@163.com',
 			list: [{
 				name: '正收益债券基金',
 				mark: '二级市场',
@@ -173,7 +172,11 @@ export default {
   mounted () {
   	if (this.showHideOnBlur) {
   		document.getElementById('inputing').focus()
-  	}
+		}
+		let clientId = this.$route.params.id
+		checkCusomersDetail(clientId).then(res => {
+			this.data = res.data
+		})
   },
   methods: {
   	// deleteRemark (idx) {
@@ -213,7 +216,7 @@ export default {
   		this.remarkInfo = ''
 		},
 		toLink () {
-			this.$router.push({name: 'NewCustomer', params: {num: 1}})
+			this.$router.push({name: 'NewCustomer', params: {isMod: 1}})
 		},
 		toLink1 () {
 			this.$router.push({name: 'ProductDetail', params: {id: 1}})

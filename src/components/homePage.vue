@@ -107,6 +107,9 @@ img {
 	// padding-top: 126px;
 	vertical-align: bottom;
 }
+.wrapper {
+	padding-bottom: 96px;
+}
 // .wrapper {
 // 	padding-bottom: 116px;
 // 	.vux-flexbox {

@@ -93,7 +93,7 @@ const router = new Router({
       	navShow: false
       }
     }, {
-      path: '/newCustomer/:num',
+      path: '/newCustomer/:isMod', // isMod: 1 修改  0 新增
       name: 'NewCustomer',
       component: NewCustomer,
       meta: {
@@ -210,7 +210,7 @@ if (window.localStorage.getItem('token')) {
 // 登陆拦截
 router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
-    console.log(store)
+    // console.log(store)
     if (store.state.token) {
       next()
     } else {
