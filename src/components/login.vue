@@ -51,15 +51,17 @@ export default {
         username: this.username
       }).then(res => {
         if (res.status === 200) {
+          debugger
           this.$store.state.token = res.data.token
           window.localStorage.setItem('token', this.$store.state.token)
           let queryUrl = this.$router.currentRoute.query
           let url = ''
           if (queryUrl) {
-            url = this.$router.currentRoute.query.Rurl
+            url = queryUrl.Rurl || queryUrl.redirect
           } else {
             url = 'customerList'
           }
+          console.log(queryUrl)
           this.$router.push({path: decodeURIComponent(url)})
         } else {
           return false

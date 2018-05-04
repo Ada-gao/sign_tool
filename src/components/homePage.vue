@@ -4,13 +4,29 @@
     <div class="wrapper">
 			<img src="static/img/banner.jpg">
 			<div class="space"></div>
-    	<group>
+			<div class="group-list" :data="productsList" v-for="item in productsList" :key="item.product_type_id">
+				<group>
+					<cell-box>
+						<i class="iconfont"
+							:class="{'icon-finance-3-copy': item.product_type_id === 3,
+							'icon-finance-2-copy': item.product_type_id === 2,
+							'icon-finance-1': item.product_type_id === 1,
+							'icon-finance-4': item.product_type_id === 4}"
+							></i>{{item.product_type_name}}
+					</cell-box>
+				</group>
+				<div class="products-box">
+					<selling-products :child-data="item.products"></selling-products>
+				</div>
+				<div class="space"></div>
+			</div>
+    	<!-- <group>
         <cell-box>
         	<i class="iconfont icon-finance-2-copy"></i>理财
         </cell-box>
       </group>
       <div class="products-box">
-      	<selling-products :child-data="prodcuts"></selling-products>
+      	<selling-products :child-data="products[0].list1"></selling-products>
       </div>
 			<div class="space"></div>
     	<group>
@@ -19,7 +35,7 @@
         </cell-box>
       </group>
       <div class="products-box">
-      	<selling-products :child-data="prodcuts"></selling-products>
+      	<selling-products :child-data="products[1].list2"></selling-products>
       </div>
 			<div class="space"></div>
     	<group>
@@ -28,7 +44,7 @@
         </cell-box>
       </group>
       <div class="products-box">
-      	<selling-products :child-data="prodcuts"></selling-products>
+      	<selling-products :child-data="products[2].list3"></selling-products>
       </div>
 			<div class="space"></div>
     	<group>
@@ -37,16 +53,18 @@
         </cell-box>
       </group>
       <div class="products-box">
-      	<selling-products :child-data="prodcuts"></selling-products>
-      </div>
+      	<selling-products :child-data="products[3].list4"></selling-products>
+      </div> -->
     </div>
-		<router-view></router-view>
+		<!-- <router-view></router-view> -->
   </div>
 </template>
 
 <script>
 import { XHeader, Group, CellBox } from 'vux'
 import SellingProducts from '@/base/sellingProducts/sellingProducts'
+import { getProducts } from '@/service/api/products'
+
 export default {
   name: 'HomePage',
   components: {
@@ -57,31 +75,43 @@ export default {
   },
   data () {
     return {
-    	prodcuts: [
-    		{
-    			rate: 13.00,
-    			pTitle: '正收益理财产品',
-    			pLabel: '二级市场'
-    		}, {
-    			rate: 12.00,
-    			pTitle: '正收益理财产品',
-    			pLabel: '二级市场'
-    		}, {
-    			rate: 13.00,
-    			pTitle: '正收益理财产品',
-    			pLabel: '二级市场'
-    		}, {
-    			rate: 12.00,
-    			pTitle: '正收益理财产品',
-    			pLabel: '二级市场'
-    		}, {
-    			rate: 13.00,
-    			pTitle: '正收益理财产品',
-    			pLabel: '二级市场'
-    		}
-    	]
+    	productsList: [
+				{
+					list1: {}
+				},
+				{
+					list2: {}
+				},
+				{
+					list3: {}
+				},
+				{
+					list4: {}
+				}
+			]
     }
-  }
+	},
+	mounted () {
+		getProducts().then(res => {
+			this.productsList = res.data
+			console.log(res.data)
+			// this.products.forEach(item => {
+			// 	if (item.product_type_name === '理财') {
+			// 		this.products[0].list1 = item.products
+			// 		console.log(this.products.list1)
+			// 	} else if (item.product_type_name === '固收') {
+			// 		console.log(this.products)
+			// 		this.products[1].list2 = item.products
+			// 	} else if (item.product_type_name === '二级市场') {
+			// 		console.log(this.products)
+			// 		this.products[2].list3 = item.products
+			// 	} else if (item.product_type_name === '另类投资') {
+			// 		console.log(this.products)
+			// 		this.products[3].list4 = item.products
+			// 	}
+			// })
+		})
+	}
 }
 </script>
 

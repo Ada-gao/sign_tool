@@ -177,13 +177,13 @@ export default {
           label: {
             show: true,
             position: 'right',
-            offset: [-25, -15],
+            offset: [-35, -15],
             formatter: '{c}万',
             color: '#333',
             backgroundColor: {
               image: 'static/img/label1.png'
             },
-            ontSize: 12,
+            fontSize: 12,
             padding: [3, 5, 10, 5]
           }
         }, {
@@ -224,9 +224,9 @@ export default {
         options1.series[2].label.fontSize = 22
         options1.yAxis.axisLabel.fontSize = 24
       } else if (dpr === '3') {
-        options1.legend.itemHeight = 38
-        options1.legend.itemWidth = 38
-        options1.legend.bottom = 60
+        options1.legend.itemHeight = 36
+        options1.legend.itemWidth = 36
+        options1.legend.bottom = 50
         options1.legend.textStyle.fontSize = 38
         options1.grid.top = 80
         options1.grid.bottom = 140
@@ -234,6 +234,7 @@ export default {
         options1.series[3].barWidth = 12
         options1.series[2].label.fontSize = 30
         options1.yAxis.axisLabel.fontSize = 30
+        options1.series[2].label.offset = [-55, -30]
       }
       myChart1.setOption(options1)
     },
@@ -327,19 +328,19 @@ export default {
           itemStyle: {
             normal: {
               color: '#FFCF94',
-              barBorderRadius: 10,
-              label: {
-                show: true,
-                position: 'right',
-                offset: [-25, -20],
-                formatter: '{c}%',
-                color: '#333',
-                backgroundColor: {
-                  image: 'static/img/label1.png'
-                },
-                padding: [3, 5, 10, 5]
-              }
+              barBorderRadius: 10
             }
+          },
+          label: {
+            show: true,
+            position: 'right',
+            offset: [-25, -20],
+            formatter: '{c}%',
+            color: '#333',
+            backgroundColor: {
+              image: 'static/img/label1.png'
+            },
+            padding: [3, 5, 10, 5]
           }
         }, {
           name: '理想投资比例',
@@ -365,6 +366,8 @@ export default {
         options2.grid.bottom = 60
         options2.series[2].barWidth = 4
         options2.series[3].barWidth = 4
+        options2.series[2].label.fontSize = 12
+        options2.yAxis.axisLabel.fontSize = 12
       } else if (dpr === '2') {
         options2.legend.itemHeight = 17
         options2.legend.itemWidth = 17
@@ -374,15 +377,20 @@ export default {
         options2.grid.bottom = 120
         options2.series[2].barWidth = 8
         options2.series[3].barWidth = 8
+        options2.series[2].label.fontSize = 22
+        options2.yAxis.axisLabel.fontSize = 24
       } else if (dpr === '3') {
-        options2.legend.itemHeight = 38
-        options2.legend.itemWidth = 38
-        options2.legend.bottom = 60
+        options2.legend.itemHeight = 36
+        options2.legend.itemWidth = 36
+        options2.legend.bottom = 50
         options2.legend.textStyle.fontSize = 38
         options2.grid.top = 80
         options2.grid.bottom = 140
         options2.series[2].barWidth = 12
         options2.series[3].barWidth = 12
+        options2.series[2].label.fontSize = 30
+        options2.yAxis.axisLabel.fontSize = 30
+        options2.series[2].label.offset = [-55, -30]
       }
       myChart2.setOption(options2)
     },

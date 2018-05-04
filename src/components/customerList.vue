@@ -9,7 +9,7 @@
 		<search-tool @searchHandler="updateSearchValue"></search-tool>
 		<div class="space"></div>
 		<!-- 展示搜索部分 -->
-		<div v-show="isCancel===true" class="searchList">
+		<div v-show="isCancel===true" class="search-list">
 			<h3 class="searchTitle">搜索结果</h3>
 			<ul :data="searchCustomers">
 				<li v-for="(item, index) in searchCustomers" :key="index" @click="toLink(item.client_id)">
@@ -34,7 +34,7 @@
 				</li>
 			</ul>
 			<ul v-show="idx === 1" :data="customers1">
-				<li v-for="(item, index) in customers1" :key="index">
+				<li v-for="(item, index) in customers1" :key="index" v-if="item.name">
 					<router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
 						<p>{{item.name}}</p>
 						<p style="margin-top: 10px">{{item.mobile}}</p>
@@ -191,7 +191,8 @@ export default {
 		}
 	}
 }
-.searchList {
+.search-list {
+	padding-bottom: 96px;
 	.searchTitle {
 		padding-top: 26px;
 		padding-left: 28px;

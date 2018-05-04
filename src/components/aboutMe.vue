@@ -11,13 +11,14 @@
         <!-- <x-switch title="退出" v-model="show3"></x-switch> -->
         <!-- <cell title=""></cell> -->
       </group>
-      <actionsheet v-model="show3" :menus="menus3" @on-click-menu="click" show-cancel></actionsheet>
+      <actionsheet v-model="show3" :menus="menus3" @on-click-menu="logoutEvent" show-cancel></actionsheet>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch } from 'vux'
+import { removeStore } from '@/config/mUtils'
 
 export default {
   data () {
@@ -37,8 +38,12 @@ export default {
     XSwitch
   },
   methods: {
-    click (key) {
-      console.log(key)
+    logoutEvent (key) {
+      if (key === 'men1') {
+        console.log(key)
+        removeStore('token')
+        this.$router.push({name: 'Login'})
+      }
     },
     logout () {
       this.show3 = !this.show3

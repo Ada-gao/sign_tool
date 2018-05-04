@@ -281,10 +281,10 @@ export default {
 <style scoped lang="less">
 .btn_wrap {
   padding: 0 37px;
-  margin-top: 2rem;
-  position: relative;
+  margin-top: 3rem;
+  position: fixed;
   width: 100%;
-  bottom: 30px;
+  bottom: 34px;
   box-sizing: border-box;
   .weui-btn_primary {
     border-radius: 60px;

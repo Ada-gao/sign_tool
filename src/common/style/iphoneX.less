@@ -1,0 +1,27 @@
+// 适配 iphoneX 样式
+@padding: 34px;
+@media only screen and (device-width: 375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) {
+  .vux-header {
+      padding-top: 54px; 
+  }
+  .wrapper {
+    padding-top: 142px;
+  }
+  .weui-tabbar {
+    padding-bottom: @padding;
+  }
+  .wrapper {
+    padding-bottom: @padding;
+    .bottom-remark {
+      padding-bottom: @padding;
+    }
+  }
+  .footer-button {
+    bottom: @padding;
+  }
+  // .index-wrapper {
+  //   .wrapper {
+  //     padding-bottom: 0;
+  //   }
+  // }
+}

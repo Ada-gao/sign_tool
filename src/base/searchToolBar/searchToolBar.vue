@@ -50,6 +50,7 @@ export default {
     clickEvent () {
       this.isCancel = true
       let data = {
+        _search: this.searchKey,
         isCancel: this.isCancel
       }
       this.$emit('searchHandler', data)

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="index-wrapper">
     <tab-bottom></tab-bottom>
     <router-view></router-view>
   </div>

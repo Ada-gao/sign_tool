@@ -32,14 +32,14 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: 'HomePage',
-      meta: {
-      	navShow: true
-      }
+      redirect: 'HomePage'
     }, {
       path: '/index',
       name: 'Index',
       component: Index,
+      // meta: {
+      //   auth: true
+      // },
       children: [
         {
           path: '/HomePage',
@@ -50,7 +50,6 @@ const router = new Router({
           name: 'CustomerList',
           component: CustomerList,
           meta: {
-            // navShow: true,
             auth: true
           }
         }, {
@@ -58,7 +57,6 @@ const router = new Router({
           name: 'AboutMe',
           component: AboutMe,
           meta: {
-            // navShow: true,
             auth: true
           }
         }
@@ -76,77 +74,88 @@ const router = new Router({
       name: 'Remark',
       component: Remark,
       meta: {
-      	navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/customerManagement/:id',
       name: 'CustomerManagement',
       component: CustomerManagement,
       meta: {
-      	navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/combinedReport',
       name: 'CombinedReport',
       component: CombinedReport,
       meta: {
-      	navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/newCustomer/:isMod', // isMod: 1 修改  0 新增
       name: 'NewCustomer',
       component: NewCustomer,
       meta: {
-      	navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/writeNotes',
       name: 'WriteNotes',
       component: WriteNotes,
       meta: {
-      	navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/riskRating',
       name: 'RiskRating',
       component: RiskRating,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/cashFlow',
       name: 'CashFlow',
       component: CashFlow,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/insuranceAllocation',
       name: 'InsuranceAllocation',
       component: InsuranceAllocation,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/pdfReport',
       name: 'PdfReport',
       component: PdfReport,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/assetAllocation',
       name: 'AssetAllocation',
       component: AssetAllocation,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/recommend',
       name: 'Recommend',
       component: Recommend,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     // }, {
     //   path: '/a',
@@ -175,21 +184,24 @@ const router = new Router({
       name: 'MyInfo',
       component: MyInfo,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/myPerformance',
       name: 'MyPerformance',
       component: MyPerformance,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/myVersion',
       name: 'MyVersion',
       component: MyVersion,
       meta: {
-        navShow: false
+        // navShow: false
+        auth: true
       }
     }, {
       path: '/login',
@@ -205,6 +217,8 @@ const router = new Router({
 // 页面刷新时，重新赋值 token
 if (window.localStorage.getItem('token')) {
   store.commit(types.LOGIN, window.localStorage.getItem('token'))
+} else {
+
 }
 
 // 登陆拦截

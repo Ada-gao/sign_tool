@@ -6,16 +6,17 @@
 					<flexbox-item :span="4" class="item-left">
 						<div class="flex-product">
 							<div class="flex-left">
-								<p class="rate"><span>{{item.rate | twoDecimals}}</span>%</p>
-								<p class="text">近一年收益</p>
+								<p class="rate"><span>{{item.expected_income | twoDecimals}}</span>%</p>
+								<!-- <p class="rate">{{item.expected_income}}</p> -->
+								<p class="text">近{{item.duration | upperNum}}年收益</p>
 							</div>
 						</div>
 					</flexbox-item>
 					<flexbox-item class="item-right">
 						<div class="flex-product">
 							<div class="flex-right">
-								<p>{{item.pTitle}}</p>
-								<span>{{item.pLabel}}</span>
+								<p>{{item.product_name}}</p>
+								<span>{{item.risk_level}}</span>
 							</div>
 						</div>
 					</flexbox-item>

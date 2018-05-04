@@ -14,13 +14,11 @@ export function checkCusomersList () {
 /**
  * 新增客户
  */
-export function addCusomer (client) {
+export function addCusomer (obj) {
     return axios({
         url: '/v1/crm/customers/',
         method: 'post',
-        data: {
-            client
-        }
+        data: obj
     })
 }
 

@@ -3,10 +3,10 @@
 		<x-header v-if="isMod==0" :left-options="{backText: ''}">新建客户</x-header>
 		<x-header v-if="isMod==1" :left-options="{backText: ''}">修改资料</x-header>
 		<group class="wrapper">
-      <x-input title="姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" required></x-input>
-      <x-input title="国籍:" v-model="nationality" isASelection=true @selectOne="selectNation" placeholder="输入客户年龄" ref="input02" required></x-input>
-      <x-input title="电话:" v-model="mobile" placeholder="输入客户手机号码" ref="input03" required></x-input>
-      <x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input03" required></x-input>
+      <x-input title="姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false" is-type="china-name" required></x-input>
+      <x-input title="国籍:" v-model="nationality" isASelection=true @selectOne="selectNation" placeholder="输入客户年龄" ref="input02" :show-clear="false" required></x-input>
+      <x-input title="电话:" v-model="mobile" placeholder="输入客户手机号码" ref="input03" :max='13' mask="999 9999 9999" is-type="china-mobile" :show-clear="false" required></x-input>
+      <x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input03" is-type="email" :show-clear="false" required></x-input>
     </group>
     <div class="btn_wrap">
       <button class="next" @click="submitCustomer">确定</button>
@@ -37,7 +37,7 @@ export default {
   	}
   },
   mounted () {
-    this.isMod = this.$route.params.isMod
+    this.isMod = Number(this.$route.params.isMod)
     console.log(this.isMod)
     if (this.isMod === 1) {
       console.log('需要获取数据')
@@ -63,7 +63,7 @@ export default {
           }
         })
       } else {
-        console.log('xiugai')
+        this.$router.push({name: 'CustomerManagement', params: {id: 1}})
       }
     }
   }
@@ -85,7 +85,7 @@ export default {
       border-radius: 10px;
     }
   }
-  .weui-cell:before {
+  .vux-x-input.weui-cell:before {
     border-top: 1px solid #D9D9D9; /*no*/
   }
   // .weui-cell:after {

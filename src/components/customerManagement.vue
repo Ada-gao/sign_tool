@@ -136,7 +136,7 @@ export default {
   },
   data () {
   	return {
-			data: null,
+			data: {},
   		reportList: [
 				{
 					title: '组合报告1',
