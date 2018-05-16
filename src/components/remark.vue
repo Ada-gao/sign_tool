@@ -9,19 +9,31 @@
 				</div>
 				<div class="toggle-item">
 					<div class="item01" v-show="isChecked">
-						<input type="text" />
+						<input type="text" class="text-search"/>
 						<i class="iconfont icon-search"></i>
 					</div>
 					<div class="item02" v-show="!isChecked">
-						日历选择器
-						<!--<group>
-							<datetime
-				        v-model="value1"
-				        @on-change="change"
-				        @on-cancel="log('cancel')"
-				        @on-confirm="log('confirm')"
-				        @on-hide="log('hide', $event)"></datetime>
-						</group>-->
+						<button class="time-search1" @click="open('pickerStart')">{{pickerValue1 | formatDate}}</button>
+						<mt-datetime-picker
+							ref="pickerStart"
+							type="date"
+							year-format="{value} 年"
+							month-format="{value} 月"
+							date-format="{value} 日"
+							@confirm="handleConfirm1"
+							:value="pickerValue1">
+						</mt-datetime-picker>
+						&nbsp;至
+						<button class="time-search2" @click="open('pickerEnd')">{{pickerValue2 | formatDate}}</button>
+						<mt-datetime-picker
+							ref="pickerEnd"
+							type="date"
+							year-format="{value} 年"
+							month-format="{value} 月"
+							date-format="{value} 日"
+							@confirm="handleConfirm2"
+							:value="pickerValue2">
+						</mt-datetime-picker>
 					</div>
 				</div>
 			</div>
@@ -31,8 +43,9 @@
 </template>
 
 <script>
-import { XHeader, ButtonTab, ButtonTabItem, Datetime, Group } from 'vux'
+import { XHeader, ButtonTab, ButtonTabItem, Datetime, Group, Calendar } from 'vux'
 import RemarkList from 'base/remarkList/remarkList'
+import { formatDate } from '@/common/js/date'
 
 export default {
   components: {
@@ -41,24 +54,39 @@ export default {
     ButtonTabItem,
     RemarkList,
     Datetime,
-    Group
+    Group,
+		Calendar
   },
   data () {
   	return {
   		isChecked: true,
-  		value1: null
+  		value1: '',
+  		value2: null,
+			demo5: [],
+			pickerVisible: false,
+			pickerValue1: new Date(),
+			pickerValue2: new Date()
   	}
+	},
+	filters: {
+    formatDate (time) {
+      var date = new Date(time)
+      return formatDate(date)
+    }
   },
   methods: {
   	checkIndex (num) {
   		num === 1 ? this.isChecked = true : this.isChecked = false
   	},
-  	change (value) {
-  		console.log(value)
-  	},
-  	log (str1, str2 = '') {
-      console.log(str1, str2)
-    }
+		open (picker) {
+			this.$refs[picker].open()
+		},
+		handleConfirm1 (val) {
+			this.pickerValue1 = val
+		},
+		handleConfirm2 (val) {
+			this.pickerValue2 = val
+		}
   }
 }
 </script>
@@ -72,12 +100,13 @@ export default {
 	.toggle-item {
 		margin-bottom: 40px;
 		height: 60px;
-		.item01 {
+		.item01,
+		.item02 {
 			width: 500px;
 			height: 100%;
 	    position: relative;
 	    margin-left: 100px;
-			input {
+			.text-search {
 				width: 100%;
 				height: 100%;
 				text-indent: 10px;
@@ -91,12 +120,23 @@ export default {
 		    font-size: 45px; /*px*/
 		  	color: #999;
 			}
-		}
-		.item02 {
-			.weui-cells {
-				height: 60px;
+			.time-search1,
+			.time-search2 {
+				width: 40%;
+				height: 100%;
+				display: inline-block;
+				position: relative;
+				background-color: #fff;
+				color: #666;
+				border: 1px solid #ccc;
+				font-size: 24px; /*px*/
 			}
 		}
+		// .item02 {
+		// 	.weui-cells {
+		// 		height: 60px;
+		// 	}
+		// }
 	}
 }
 .toggle-button {
@@ -113,5 +153,8 @@ export default {
 }
 .btn-no-radius {
 	border-radius: 0;
+}
+.vux-no-group-title {
+	height: 100%!important;
 }
 </style>
