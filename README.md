@@ -50,6 +50,6 @@ npm test
 # run on ios devices
 npm run ios
 
-# run on android devices
+# run on android devices, if error, try to run  chmod +x platforms/android/gradlew  to fix
 npm run android
 ```
