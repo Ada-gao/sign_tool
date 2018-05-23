@@ -44,7 +44,7 @@
 
 <script>
 import { XHeader, ButtonTab, ButtonTabItem, Datetime, Group, Calendar } from 'vux'
-import RemarkList from 'base/remarkList/remarkList'
+import RemarkList from '../base/remarkList/remarkList'
 import { formatDate } from '@/common/js/date'
 
 export default {

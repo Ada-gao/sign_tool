@@ -26,7 +26,7 @@ import { getVerificationCode, getAuthToken } from '@/service/api/login'
 export default {
   data () {
     return {
-      username: 'zhuangyinping@shuyun365.com',
+      username: '1046085296@qq.com',
       num: '',
       // time1: 5,
       show: true,
@@ -51,7 +51,7 @@ export default {
         username: this.username
       }).then(res => {
         if (res.status === 200) {
-          debugger
+//          debugger
           this.$store.state.token = res.data.token
           window.localStorage.setItem('token', this.$store.state.token)
           let queryUrl = this.$router.currentRoute.query

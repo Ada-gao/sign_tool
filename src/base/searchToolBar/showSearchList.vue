@@ -8,13 +8,13 @@ export default {
   computed: {
     ruleData () {
       let titleString = ''
-      let cont = ''
+//      let cont = ''
       if (this.msg.name.indexOf(this.searchValue) > -1) {
         titleString = this.msg.name
-        cont = this.msg.mobile
+//        cont = this.msg.mobile
       } else {
         titleString = this.msg.mobile
-        cont = this.msg.name
+//        cont = this.msg.name
       }
       if (!titleString) {
         return ''
@@ -27,9 +27,10 @@ export default {
         // 开始替换
         titleString = titleString.replace(replaceReg, replaceString)
         titleString = '<span style="width: 50%; display: inline-block">' + titleString + '</span>'
-        cont = '<span style="width: 50%">' + cont + '</span>'
+//        cont = '<span style="width: 50%">' + cont + '</span>'
       }
-      return titleString + ' ' + cont
+//      return titleString + ' ' + cont
+      return titleString
     }
   }
 }

@@ -44,7 +44,10 @@ const router = new Router({
         {
           path: '/HomePage',
           name: 'HomePage',
-          component: HomePage
+          component: HomePage,
+          meta: {
+            auth: true
+          }
         }, {
           path: '/customerList',
           name: 'CustomerList',
@@ -79,6 +82,7 @@ const router = new Router({
       }
     }, {
       path: '/customerManagement/:id',
+      props: true,
       name: 'CustomerManagement',
       component: CustomerManagement,
       meta: {

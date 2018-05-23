@@ -76,25 +76,25 @@ export default {
   data () {
     return {
     	productsList: [
-				{
-					list1: {}
-				},
-				{
-					list2: {}
-				},
-				{
-					list3: {}
-				},
-				{
-					list4: {}
-				}
+//				{
+//					list1: {}
+//				},
+//				{
+//					list2: {}
+//				},
+//				{
+//					list3: {}
+//				},
+//				{
+//					list4: {}
+//				}
 			]
     }
 	},
 	mounted () {
 		getProducts().then(res => {
 			this.productsList = res.data
-			console.log(res.data)
+			console.log(this.productsList)
 			// this.products.forEach(item => {
 			// 	if (item.product_type_name === '理财') {
 			// 		this.products[0].list1 = item.products

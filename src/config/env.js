@@ -11,11 +11,11 @@ let imgBaseUrl = ''
 
 if (process.env.NODE_ENV === 'development') {
     // debugger
-    baseUrl = 'http://10.60.2.141:5000/api/'
-    imgBaseUrl = 'http://10.60.2.141:5000/api/'
+    baseUrl = 'http://10.9.60.141:5000/api/'
+    imgBaseUrl = 'http://10.9.60.141:5000/api/'
 } else if (process.env.NODE_ENV === 'production') {
-    baseUrl = 'http://10.60.2.141:5000/api/'
-    imgBaseUrl = 'http://10.60.2.141:5000/api/'
+    baseUrl = 'http://10.9.60.141:5000/api/'
+    imgBaseUrl = 'http://10.9.60.141:5000/api/'
 }
 
 export { baseUrl, routerMode, imgBaseUrl }
