@@ -1,83 +1,100 @@
 <template>
   <div>
-    <x-header :left-options="{backText: ''}">客户主页</x-header>
+    <x-header :left-options="{backText: ''}">客户详情</x-header>
     <div class="wrapper">
-    	<div class="info">
+      <div class="info">
         <group>
           <cell-box>
-          	<i class="iconfont icon-friendadd"></i>客户信息
-						<span class="fr" @click="toLink"><i class="iconfont icon-brush"></i>修改</span>
-						<!-- <router-link style="position: absolute; right: 27px; top: 10px" to="/newCustomer/1"><i class="iconfont icon-brush"></i>修改</router-link> -->
+            <i class="iconfont icon-friendadd"></i>客户信息
+            <span class="fr">{{investorType}}</span>
+            <!--<span class="fr" @click="toLink"><i class="iconfont icon-brush"></i>修改</span>-->
+            <!-- <router-link style="position: absolute; right: 27px; top: 10px" to="/newCustomer/1"><i class="iconfont icon-brush"></i>修改</router-link> -->
           </cell-box>
         </group>
+        <div class="space"></div>
         <group>
           <cell-box>
-          	<label for="name">姓名：</label>
+            <label for="name">客户姓名：</label>
             <span class="fr">{{data.name}}</span>
           </cell-box>
-        </group>
-        <group>
           <cell-box>
-          	<label for="phone">电话：</label>
-            <span class="fr">{{data.mobile}}</span>
+            <label for="phone">国籍：</label>
+            <span
+              class="fr"
+              v-if="data.nationality === '0'"
+            >中国</span>
+            <span
+              class="fr"
+              v-else
+            >其他</span>
+          </cell-box>
+          <cell-box v-show="data.nationality === '中国'">
+            <label for="email">常驻中国城市：</label>
+            <span class="fr">{{data.city}}</span>
           </cell-box>
         </group>
-        <group>
+        <div class="space"></div>
+        <group class="no_bbottom">
           <cell-box>
-          	<label for="email">邮箱：</label>
-            <span class="fr">{{data.email}}</span>
+            <label>证件类型：</label>
+            <span
+              class="fr"
+              v-if="data.id_type ==='0'"
+            >身份证</span>
+            <span
+              class="fr"
+              v-if="data.id_type ==='1'"
+            >护照</span>
+            <span
+              class="fr"
+              v-if="data.id_type ==='2'"
+            >军官证</span>
+            <span
+              class="fr"
+              v-if="data.id_type ==='3'"
+            >台胞证</span>
+            <span
+              class="fr"
+              v-if="data.id_type ==='4'"
+            >港澳通行证</span>
+            <span
+              class="fr"
+              v-if="data.id_type ==='5'"
+            >其他</span>
+          </cell-box>
+          <cell-box>
+            <label>证件号码：</label>
+            <span class="fr">{{data.id_no}}</span>
+          </cell-box>
+          <cell-box>
+            <label>地址：</label>
+            <span class="fr">{{data.city}}</span>
           </cell-box>
         </group>
+        <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
     	</div>
     	<div class="space"></div>
     	<div class="product">
         <group>
-          <cell-box>
-          	<i class="iconfont icon-purchaseInfo"></i>
-          	交易信息
-          </cell-box>
+          <cell
+            is-lilnk
+            link="/productDetails"
+            value-align="left"
+            title="已购买产品"
+          >
+          </cell>
+          <cell
+            is-link
+            link="/productDetails"
+            title="投资者类型："
+            value="修改"
+
+          >
+            <!--<i slot="after-title">专业投资者</i>-->
+          </cell>
         </group>
-				<div v-for="(listItem, index) in list" :key="index" class="cell-form" @click="toLink1">
-					<div class="cell-form-top">
-						<label for="">{{listItem.name}}</label>
-						<span class="fr grade">{{listItem.mark}}</span>
-					</div>
-					<div class="cell-form-bottom">
-						金额：<span class="text-red">{{listItem.money}}万</span>
-						<span class="fr">{{listItem.time}}</span>
-					</div>
-				</div>
     	</div>
     	<div class="space"></div>
-			<div class="risk-evaluation">
-				<group>
-          <cell-box link="/riskRating">
-          	<i class="iconfont icon-fengxianguibi-"></i>风险测评
-          	<span class="padding-r-60">重新测评</span>
-          </cell-box>
-        </group>
-			</div>
-			<div class="space"></div>
-			<div class="asset-allocation">
-				<group>
-          <cell-box link="/assetAllocation">
-          	<i class="iconfont icon-intelligent"></i>资产配置
-          	<span class="padding-r-60">智能投顾</span>
-          </cell-box>
-        </group>
-			</div>
-			<div class="space"></div>
-    	<div class="report">
-        <group>
-          <cell-box>
-          	<i class="iconfont icon-licai"></i>投资组合报告
-          </cell-box>
-          <!-- <cell-box v-for="item in reportList" :link="item.toLink" :key="item.title">{{item.title}}</cell-box> -->
-        </group>
-				<group v-for="item in reportList" :link="item.toLink" :key="item.title">
-					<cell-box>{{item.title}}</cell-box>
-				</group>
-    	</div>
     	<div class="space"></div>
     	<div class="remark">
         <group>
@@ -137,6 +154,7 @@ export default {
   data () {
   	return {
 			data: {},
+      investorType: '',
   		reportList: [
 				{
 					title: '组合报告1',
@@ -174,6 +192,7 @@ export default {
   		document.getElementById('inputing').focus()
 		}
 		let clientId = this.$route.params.id
+    clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
 		checkCusomersDetail(clientId).then(res => {
 			this.data = res.data
 		})
@@ -237,6 +256,40 @@ export default {
 		// 	border-bottom: 1px solid #D9D9D9; /*no*/
 		// }
 	// }
+  .no_bbottom .weui-cells::after {
+    content: none;
+  }
+  .id_right {
+    text-align: right;
+    position: absolute;
+    right: 27px;
+    span {
+      position: static;
+      display: inline-block;
+      right: 0;
+      top: 0;
+      transform: translateY(0);
+    }
+  }
+  .callout {
+    display: block;
+    margin: 70px auto 12px;
+    width: 710px;
+    height: 72px;
+    text-align: center;
+    line-height: 72px;
+    background: #2672BA;
+    border-radius: 10px;
+    font-size: 28px;
+    color: #FFFFFF;
+    &:link,
+    &:visited,
+    &:hover,
+    &:active{
+      text-decoration: none;
+    }
+
+  }
 	.report {
 		.vux-tap-active {
 			padding-left: 45px;

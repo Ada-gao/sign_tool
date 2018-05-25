@@ -27,10 +27,10 @@
       <ul v-show="idx === 0" :data="customers">
         <li v-for="(item, index) in customers" :key="index">
           <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
-            <!--<p>{{item.name}}</p>-->
-            <!--<p style="margin-top: 10px">{{item.mobile}}</p>-->
             <p>
               <span class="left-item">{{item.name}}</span>
+              <span class="left-item">（{{item.client_no}}）</span>
+              <span class="left-item" style="display: block;">{{item.mobile}}</span>
               <span :class="[{'red-color': item.client_type === 1}, 'right-item']">{{item.client_type ? "专业投资者" : "普通投资者"}}</span>
             </p>
             <i class="iconfont icon-right"></i>
@@ -40,10 +40,10 @@
       <ul v-show="idx === 1" :data="customers1">
         <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
           <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
-            <!--<p>{{item.name}}</p>-->
-            <!--<p style="margin-top: 10px">{{item.mobile}}</p>-->
             <p>
               <span class="left-item">{{item.name}}</span>
+              <span class="left-item">{{item.client_no}}</span>
+              <span class="left-item" style="display: block;">{{item.mobile}}</span>
               <span class="right-item gray-item" v-show="item.certification_status === 0">未认证</span>
               <span class="right-item gray-item" v-show="item.certification_status === 1">认证待审核</span>
             </p>
@@ -59,8 +59,8 @@
   import {XHeader, Group, CellBox, XTable, Tab, TabItem} from 'vux'
   import SearchTool from 'base/searchToolBar/searchToolBar'
   import ShowSearch from 'base/searchToolBar/showSearchList'
-//  import {checkCusomersList} from '@/service/api/customers'
-  import {customerData} from '@/service/api/customerData'
+  import {checkCusomersList} from '@/service/api/customers'
+//  import {customerData} from '@/service/api/customerData'
 
   export default {
     components: {
@@ -87,56 +87,17 @@
       }
     },
     mounted () {
-//	  checkCusomersList().then(res => {
-//			let data = res.data
+      checkCusomersList().then(res => {
+			let data = res.data
 //      console.log(data)
-//		  data.forEach(item => {
-//			  if (item.client_class) {
-//				  this.customers.push(item)
-//			  } else {
-//				  this.customers1.push(item)
-//			  }
-//		  })
-//	  })
-
-      customerData.forEach(item => {
-        if (item.client_class) {
-          this.customers.push(item)
-        } else {
-          this.customers1.push(item)
-        }
-      })
-    },
-    computed: {
-      // items () {
-      // 	let _this = this
-      // 	let _search = this.searchKey
-      // 	let _customers = this.customers
-      // 	if (!_search) {
-      // 		return false
-      // 	} else {
-      // 		 return _customers.filter(function (customer) {
-      // 			return Object.keys(customer).some(function (key) {
-      // 				if (String(customer[key]).toLowerCase().indexOf(_search) > -1) {
-      // 				// customer = String(customer).replace(new RegExp(_search, 'g'), '<span class="search-text">' + _search + '</span>')
-      // 				if (customer.length === 0) {
-      // 					_this.loadedData = false
-      // 				} else {
-      // 					_this.loadedData = true
-      // 				}
-      // 				return customer
-      // 			}
-      // 			})
-      // 		})
-      // 	}
-      // }
-    },
-    watch: {
-      items (newVal, oldVal) {
-        if (newVal.length === 0) {
-          this.loadedData = false
-        }
-      }
+		  data.forEach(item => {
+			  if (item.client_class) {
+				  this.customers.push(item)
+			  } else {
+				  this.customers1.push(item)
+			  }
+		  })
+	  })
     },
     methods: {
       onItemClick (index) {
@@ -152,7 +113,7 @@
         }
 
         this.$axios({
-          url: '/v1/client/searchCustomers/',
+          url: '/v1/client/customers/',
           method: 'get',
           params: {
             q: this.searchVal
@@ -188,7 +149,9 @@
     background-color: #F5F5F5;
     padding-bottom: 96px;
     li {
+      box-sizing: border-box;
       background-color: #fff;
+      height: 155px;
       padding: 40px;
       font-size: 30px; /*px*/
       margin-bottom: 20px;
