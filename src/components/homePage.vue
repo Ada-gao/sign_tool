@@ -172,6 +172,7 @@ img {
 }
 .wrapper {
 	padding-bottom: 96px;
+	background: #fff;
 }
 .icon-finance-2-copy,.icon-finance-1{
 	color: #C61D1A;

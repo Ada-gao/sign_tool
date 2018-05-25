@@ -53,9 +53,9 @@
         </div>
         <group class="report-pdf">
         	<!-- <cell-box>产品信息</cell-box> -->
-        	<cell-box link="/pdfReport" ><i class="iconfont icon-ppt"></i>交易所需材料</cell-box>
-        	<cell-box link="/pdfReport"><i class="iconfont icon-ppt"></i>产品说明材料（产品信息ppt）</cell-box>
-        	<cell-box link="/pdfReport"><i class="iconfont icon-ppt"></i>产品公告（信息披露）</cell-box>
+        	<cell-box link="/pdfReport" >交易所需材料</cell-box>
+        	<cell-box link="/pptReport">产品说明材料（产品信息ppt）</cell-box>
+        	<cell-box link="/productReport">产品公告（信息披露）</cell-box>
         </group>
       </div>
       <!-- <div class="space"></div>
@@ -89,7 +89,7 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 @import "../common/style/variable.less";
 .vux-header{
   padding-top: 36px;
@@ -158,7 +158,7 @@ export default {
     .weui-cells.vux-no-group-title{
       // height: 126px;
       box-sizing: border-box;
-      background-color: #F5F5F5 !important;
+      background-color: #F5F5F5;
       i {
         font-size: 48px; /*px*/
         margin-right: 25px;

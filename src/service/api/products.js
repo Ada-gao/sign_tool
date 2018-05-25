@@ -38,7 +38,7 @@ export function getProductFiles (productId) {
  */
 export function getAnnoucement (productId) {
   return axios({
-    url: `/v1/product/${productId}/get_product_annoucement_files/`,
+    url: `/v1/product/${productId}/get_product_announcement_files/`,
     method: 'get'
   })
 }

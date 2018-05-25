@@ -6,7 +6,7 @@
 
 <script type="text/ecmascript-6">
 import { XHeader } from 'vux'
-import { getTransaction } from '@/service/api/products'
+import { getAnnoucement } from '@/service/api/products'
 
 export default {
   data () {
@@ -18,7 +18,7 @@ export default {
     XHeader
   },
   mounted () {
-		getTransaction(1).then(res => {
+		getAnnoucement(1).then(res => {
       console.log(res)
 		})
 	}
