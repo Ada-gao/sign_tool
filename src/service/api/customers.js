@@ -27,7 +27,7 @@ export function addCusomer (obj) {
  */
 export function searchCustomer (q) {
     return axios({
-        url: '/v1/client/searchCustomers/',
+        url: '/v1/client/customers/',
         method: 'get',
         params: {
             q

@@ -2,7 +2,7 @@
   <div class="search" :class="{cancelSearch: isCancel}">
 		<input class="ipt" type="text"
 			v-model.trim="searchKey"
-			placeholder="搜索 昵称"
+			placeholder="搜索"
 			@click="clickEvent"
 			@input="searchEvent"/>
 		<button class="btn-cancel" @click="cancelSearchEvent">取消</button>
@@ -28,7 +28,7 @@ export default {
       if (this.searchKey && this.searchKey.length > 0) {
         this.timer = setTimeout(() => {
           this.$emit('searchHandler', data)
-        }, 500)
+        }, 900)
       } else {
         this.$emit('searchHandler', data)
       }

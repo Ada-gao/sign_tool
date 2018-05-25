@@ -1,7 +1,8 @@
 <template>
   <div>
-    <x-header v-if="isMod==0" :left-options="{backText: ''}">新建客户</x-header>
-    <x-header v-if="isMod==1" :left-options="{backText: ''}">修改资料</x-header>
+    <x-header :left-options="{backText: ''}">新建客户</x-header>
+    <!--<x-header v-if="isMod==0" :left-options="{backText: ''}">新建客户</x-header>-->
+    <!--<x-header v-if="isMod==1" :left-options="{backText: ''}">修改资料</x-header>-->
     <group class="wrapper">
       <div class="add_tit">
         <i class="iconfont icon-web-icon-"></i>
@@ -9,35 +10,42 @@
       </div>
       <x-input title="客户姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false" is-type="china-name"
                required></x-input>
-      <x-input title="国籍:" v-model="nationality" isASelection=true  @selectOne="selectNation" placeholder="输入客户年龄"
+      <x-input title="国籍:"
+               v-model="nationality"
+               isASelection="true"
+               @selectOne="selectNation"
+               placeholder="输入客户年龄"
                ref="input02" :show-clear="false" required></x-input>
+      <x-address
+        id="x_address"
+        v-show="num === 1"
+        :title="title"
+        v-model="value"
+        raw-value
+        :list="addressData"
+        @on-shadow-change="onShadowChange"
+        placeholder="请选择地址"
+        :show.sync="showAddress"></x-address>
       <x-input title="手机号码:" v-model="mobile" placeholder="输入客户手机号码" ref="input03" :max='13' mask="999 9999 9999"
                is-type="china-mobile" :show-clear="false" required></x-input>
       <x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input04" is-type="email" :show-clear="false"
                required></x-input>
-      <div>
-        <mt-popup
-          v-model="popupVisible"
-          position="bottom"
-          popup-transition="popup-fade"
-        >
-
-          <mt-picker :slots="myAddressSlots" @change="onMyAddressChange"></mt-picker>
-        </mt-popup>
-        <p style="margin-top: 20px;text-align: center;">{{myAddressProvince}}  {{myAddressCity}} {{myAddresscounty}}</p>
-      </div>
     </group>
+    <p class="alert_message" v-show="mustFill">有遗漏的必填项未填写～</p>
     <div class="btn_wrap">
       <button class="next" @click="submitCustomer">确定</button>
     </div>
   </div>
 </template>
 
+<i18n>
+  select address:
+  zh-CN: 选择地址
+</i18n>
+
 <script>
-  import {XHeader, Group, XInput, XButton} from 'vux'
-  import {addCusomer} from '@/service/api/customers'
-  import {Picker, Popup} from 'mint-ui'
-  import myAddress from '@/service/api/address.json'
+  import { XHeader, Group, XInput, XButton, XAddress, ChinaAddressV4Data } from 'vux'
+  import { addCusomer } from '@/service/api/customers'
 
   export default {
     name: 'NewCustomer',
@@ -46,8 +54,7 @@
       Group,
       XInput,
       XButton,
-      'mt-picker': Picker,
-      'mt-popup': Popup
+      XAddress
     },
     data () {
       return {
@@ -57,39 +64,16 @@
         nationality: '',
         mobile: '',
         email: '',
+        ChinaLocation: '',
         popupVisible: false,
-        myAddressProvince: '省',
-        myAddressCity: '市',
-        myAddresscounty: '区/县',
-        myAddressSlots: [
-          {
-            flex: 1,
-            defaultIndex: 1,
-            values: Object.keys(myAddress),
-            className: 'slot1',
-            textAlign: 'center'
-          }, {
-            divider: true,
-            content: '-',
-            className: 'slot2'
-          }, {
-            flex: 1,
-            values: [],
-            className: 'slot3',
-            textAlign: 'center'
-          },
-          {
-            divider: true,
-            content: '-',
-            className: 'slot4'
-          },
-          {
-            flex: 1,
-            values: [],
-            className: 'slot5',
-            textAlign: 'center'
-          }
-        ]
+
+        title: '常驻中国城市',
+        value: [],
+        addressData: ChinaAddressV4Data,
+        showAddress: false,
+        names: '',
+        mustFill: false,
+        timer: null
       }
     },
     mounted () {
@@ -98,39 +82,34 @@
       if (this.isMod === 1) {
         console.log('需要获取数据')
       }
-
-      this.$nextTick(() => {
-        this.myAddressSlots[0].defaultIndex = 0
-      })
     },
     methods: {
-      onMyAddressChange (picker, values) {
-        if (myAddress[values[0]]) {
-          picker.setSlotValues(1, Object.keys(myAddress[values[0]]))
-
-          this.myAddressProvince = values[0]
-          this.myAddressCity = values[1]
-        }
-        if (myAddress[values[0]][values[1]]) {
-          picker.setSlotValues(2, Object.keys(myAddress[values[0]][values[1]]))
-
-//          this.myAddressProvince = values[0]
-//          this.myAddressCity = values[1]
-          this.myAddresscounty = values[2]
-        }
+      onShadowChange (ids, names) {
+        this.names = names.join()
+        this.myAddressProvince = names[0]
+        this.myAddressCity = names[1]
+      },
+      showPopup () {
+        this.popupVisible = true
       },
       selectNation (num) {
         this.num = num
-        console.log(this.num)
+        this.myAddressProvince = this.myAddressCity = this.myAddresscounty = ''
+        this.ChinaLocation = ''
+//        console.log(this.num)
       },
       submitCustomer () {
         let params = {
           name: this.name,
           nationality: this.num === 1 ? '中国' : '其他',
           mobile: this.mobile,
-          email: this.email
+          email: this.email,
+          ChinaLocation: this.num === 1 ? [this.myAddressProvince, this.myAddressCity] : null
         }
-        if (this.isMod === 0) {
+//        console.log(params)
+        if (this.name &&
+            this.mobile &&
+            this.email) {
           addCusomer(params).then(res => {
             console.log(res)
             if (res.status === 200) {
@@ -138,7 +117,12 @@
             }
           })
         } else {
-          this.$router.push({name: 'CustomerManagement', params: {id: 1}})
+            this.mustFill = true
+          clearTimeout(this.timer)
+          setTimeout(() => {
+                this.mustFill = false
+          }, 1000)
+  //          this.$router.push({name: 'CustomerManagement', params: {id: 1}})
         }
       }
     }
@@ -146,6 +130,11 @@
 </script>
 
 <style scoped lang="less">
+  .alert_message {
+    color: #cd0000;
+    margin-top: 10px;
+    padding-left: 20px;
+  }
   .wrapper {
     .add_tit {
       padding-left: 20px;
@@ -154,6 +143,13 @@
       i, span {
         vertical-align: middle;
         display: inline-block;
+      }
+    }
+    #x_address {
+      .weui-cells {
+        .weui-cell {
+          padding: 0 20px;
+        }
       }
     }
     .weui-cell {
@@ -179,6 +175,16 @@
     // .weui-cell:after {
     //   border-bottom: 1px solid #D9D9D9; /*no*/
     // }
+    .mint-popup {
+      width: 100%;
+    }
+    .confirm_picker {
+      height: 40px;
+      line-height: 40px;
+      width: 80px;
+      font-size: 24px;
+      border: none;
+    }
   }
 
   .btn_wrap {
