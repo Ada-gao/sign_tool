@@ -154,7 +154,7 @@ export default {
     }
   }
   .report-pdf {
-      background-color: #F5F5F5;    
+      background-color: #F5F5F5;
     .weui-cells.vux-no-group-title{
       // height: 126px;
       box-sizing: border-box;
