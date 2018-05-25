@@ -6,7 +6,7 @@ import router from '../router'
 import { getStore } from '@/config/mUtils'
 
 // axios 配置
-axios.defaults.timeout = 10000
+axios.defaults.timeout = 30000
 axios.defaults.baseURL = baseUrl
 axios.defaults.retry = 4
 axios.defaults.retryDelay = 1000

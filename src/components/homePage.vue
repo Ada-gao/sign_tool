@@ -1,10 +1,10 @@
 <template>
   <div>
-    <x-header :left-options="{showBack: false}">产品</x-header>
+    <x-header :left-options="{showBack: false}">首页</x-header>
     <div class="wrapper">
 			<img src="static/img/banner.jpg">
 			<div class="space"></div>
-			<div class="group-list" :data="productsList" v-for="item in productsList" :key="item.product_type_id">
+			<!-- <div class="group-list" :data="productsList" v-for="item in productsList" :key="item.product_type_id">
 				<group>
 					<cell-box>
 						<i class="iconfont"
@@ -19,49 +19,63 @@
 					<selling-products :child-data="item.products"></selling-products>
 				</div>
 				<div class="space"></div>
-			</div>
-    	<!-- <group>
-        <cell-box>
-        	<i class="iconfont icon-finance-2-copy"></i>理财
-        </cell-box>
+			</div> -->
+			<group class="group-list" :data="productsList" >
+				<cell
+				:title="name1"
+        is-link
+        :border-intent="false"
+        :arrow-direction=" showContent001 ? 'up' : 'down'"
+        @click.native="showContent(showContent001 =!showContent001)">
+				<i slot="icon" class="iconfont icon-finance-3-copy"></i></cell>
+
+				<selling-products :child-data="productsList[0].products" v-if="showContent001"></selling-products>
+
+        <div class="divide-line"></div>
+
+        <cell
+				:title="name2"
+        is-link
+        :border-intent="false"
+        :arrow-direction="showContent002 ? 'up' : 'down'"
+        @click.native="showContent(showContent002=!showContent002)">
+				<i slot="icon" class="iconfont icon-finance-2-copy"></i></cell>
+
+				<selling-products :child-data="productsList[1].products" v-if="showContent002"></selling-products>
+
+        <div class="divide-line"></div>
+
+        <cell
+				:title="name3"
+        is-link
+        :border-intent="false"
+        :arrow-direction="showContent003 ? 'up' : 'down'"
+        @click.native="showContent(showContent003=!showContent003)">
+				<i slot="icon" class="iconfont icon-finance-1"></i></cell>
+
+				<selling-products :child-data="productsList[2].products" v-if="showContent003"></selling-products>
+
+        <div class="divide-line"></div>
+
+				<cell
+        is-link
+				:title="name4"
+        :border-intent="false"
+        :arrow-direction="showContent004 ? 'up' : 'down'"
+        @click.native="showContent(showContent004 =!showContent004)">
+				<i slot="icon" class="iconfont icon-finance-4"></i></cell>
+				<selling-products :child-data="productsList[3].products" v-if="showContent004"></selling-products>
+
+        <div class="divide-line"></div>
+
       </group>
-      <div class="products-box">
-      	<selling-products :child-data="products[0].list1"></selling-products>
-      </div>
-			<div class="space"></div>
-    	<group>
-        <cell-box>
-        	<i class="iconfont icon-finance-3-copy"></i>固收
-        </cell-box>
-      </group>
-      <div class="products-box">
-      	<selling-products :child-data="products[1].list2"></selling-products>
-      </div>
-			<div class="space"></div>
-    	<group>
-        <cell-box>
-        	<i class="iconfont icon-finance-1"></i>二级市场产品
-        </cell-box>
-      </group>
-      <div class="products-box">
-      	<selling-products :child-data="products[2].list3"></selling-products>
-      </div>
-			<div class="space"></div>
-    	<group>
-        <cell-box>
-        	<i class="iconfont icon-finance-4"></i>另类投资
-        </cell-box>
-      </group>
-      <div class="products-box">
-      	<selling-products :child-data="products[3].list4"></selling-products>
-      </div> -->
     </div>
 		<!-- <router-view></router-view> -->
   </div>
 </template>
 
 <script>
-import { XHeader, Group, CellBox } from 'vux'
+import { XHeader, Group, CellBox, Cell } from 'vux'
 import SellingProducts from '@/base/sellingProducts/sellingProducts'
 import { getProducts } from '@/service/api/products'
 
@@ -70,12 +84,22 @@ export default {
   components: {
   	XHeader,
   	Group,
-  	CellBox,
+		CellBox,
+		Cell,
   	SellingProducts
+	},
+	methods: {
+    showContent (index) {
+      console.log(index)
+    }
   },
   data () {
     return {
-    	productsList: [
+				showContent001: false,
+      	showContent002: false,
+      	showContent003: false,
+				showContent004: false,
+    		productsList: [
 //				{
 //					list1: {}
 //				},
@@ -88,12 +112,21 @@ export default {
 //				{
 //					list4: {}
 //				}
-			]
+			],
+			name1: '固收',
+			name2: '理财',
+			name3: '二级市场',
+			name4: '另类'
     }
 	},
 	mounted () {
 		getProducts().then(res => {
+		// debugger
 			this.productsList = res.data
+			this.name1 = this.productsList[0].name
+			this.name2 = this.productsList[1].name
+			this.name3 = this.productsList[2].name
+			this.name4 = this.productsList[3].name
 			console.log(this.productsList)
 			// this.products.forEach(item => {
 			// 	if (item.product_type_name === '理财') {
@@ -139,6 +172,12 @@ img {
 }
 .wrapper {
 	padding-bottom: 96px;
+}
+.icon-finance-2-copy,.icon-finance-1{
+	color: #C61D1A;
+}
+.icon-finance-4{
+	color: orange;
 }
 // .wrapper {
 // 	padding-bottom: 116px;
