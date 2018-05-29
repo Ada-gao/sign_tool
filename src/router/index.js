@@ -14,8 +14,8 @@ const RiskRating = r => require.ensure([], () => r(require('@/components/riskRat
 const CashFlow = r => require.ensure([], () => r(require('@/components/cashFlow')), 'cashFlow')
 const InsuranceAllocation = r => require.ensure([], () => r(require('@/components/insuranceAllocation')), 'insuranceAllocation')
 const PdfReport = r => require.ensure([], () => r(require('@/components/pdfReport')), 'pdfReport')
-const PptReport = r => require.ensure([], () => r(require('@/components/pptReport')), 'pdfReport')
-const ProductReport = r => require.ensure([], () => r(require('@/components/productReport')), 'pdfReport')
+const PptReport = r => require.ensure([], () => r(require('@/components/pptReport')), 'pptReport')
+const ProductReport = r => require.ensure([], () => r(require('@/components/productReport')), 'productReport')
 const AssetAllocation = r => require.ensure([], () => r(require('@/components/assetAllocation')), 'assetAllocation')
 const Recommend = r => require.ensure([], () => r(require('@/components/recommend')), 'recommend')
 const ProductDetail = r => require.ensure([], () => r(require('@/components/productDetail')), 'productDetail')
@@ -140,28 +140,25 @@ const router = new Router({
         auth: true
       }
     }, {
-      path: '/pdfReport',
+      path: '/pdfReport/:id',
       name: 'PdfReport',
       component: PdfReport,
       meta: {
-        // navShow: false
-        auth: true
+        navShow: false
       }
     }, {
-      path: '/pptReport',
+      path: '/pptReport/:id',
       name: 'PptReport',
       component: PptReport,
       meta: {
-        // navShow: false
-        auth: true
+        navShow: false
       }
     }, {
-      path: '/productReport',
-      name: 'ProduvtReport',
+      path: '/productReport/:id',
+      name: 'ProductReport',
       component: ProductReport,
       meta: {
-        // navShow: false
-        auth: true
+        navShow: false
       }
     }, {
       path: '/assetAllocation',

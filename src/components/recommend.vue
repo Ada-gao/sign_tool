@@ -210,7 +210,7 @@ export default {
 }
 .weui-cells,
 .vux-no-group-title {
-  margin-top: 0 !important;
+  margin-top: 0;
   > .vux-tap-active.weui-cell_access {
     text-align: left;
     padding-top: 0;

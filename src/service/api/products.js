@@ -49,7 +49,7 @@ export function getAnnoucement (productId) {
  */
 export function sendProduct (obj) {
   return axios({
-    url: '/v1/product/send/product_files/',
+    url: '/v1/product/send/files/',
     method: 'post',
     data: obj
   })
@@ -61,7 +61,7 @@ export function sendProduct (obj) {
  */
 export function sendTrade (obj) {
   return axios({
-    url: '/v1/product/send/trade_files/',
+    url: '/v1/product/send/files/',
     method: 'post',
     data: obj
   })

@@ -1,7 +1,7 @@
 <template>
   <div class="index-wrapper">
-    <tab-bottom></tab-bottom>
     <router-view></router-view>
+    <tab-bottom></tab-bottom>
   </div>
 </template>
 

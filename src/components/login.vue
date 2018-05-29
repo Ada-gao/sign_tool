@@ -26,7 +26,7 @@ import { getVerificationCode, getAuthToken } from '@/service/api/login'
 export default {
   data () {
     return {
-      username: '1046085296@qq.com',
+      username: 'xuyuchun@shuyun365.com',
       num: '',
       // time1: 5,
       show: true,
@@ -51,18 +51,17 @@ export default {
         username: this.username
       }).then(res => {
         if (res.status === 200) {
-//          debugger
           this.$store.state.token = res.data.token
           window.localStorage.setItem('token', this.$store.state.token)
           let queryUrl = this.$router.currentRoute.query
-          let url = ''
+          // let url = ''
+          let name = ''
           if (queryUrl) {
-            url = queryUrl.Rurl || queryUrl.redirect
+            name = queryUrl.Rurl.slice(1) || queryUrl.redirect
           } else {
-            url = 'customerList'
+            name = 'CustomerList'
           }
-          console.log(queryUrl)
-          this.$router.push({path: decodeURIComponent(url)})
+          this.$router.push({name: name, params: {email: res.data.email, userId: res.data.user_id}})
         } else {
           return false
         }
