@@ -1,7 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import App from './App'
 import router from './router'
@@ -12,17 +11,12 @@ import * as filters from 'common/js/filter.js'
 import { LoadingPlugin } from 'vux'
 import { DatetimePicker } from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import { Checkbox, CheckboxGroup, Button, Dialog, Input, Collapse, CollapseItem } from 'element-ui'
-Vue.use(Checkbox)
-Vue.use(CheckboxGroup)
-Vue.use(Button)
-Vue.use(Dialog)
-Vue.use(Input)
-Vue.use(CollapseItem)
-Vue.use(Collapse)
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(LoadingPlugin)
 
+Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 Vue.directive('focus', {

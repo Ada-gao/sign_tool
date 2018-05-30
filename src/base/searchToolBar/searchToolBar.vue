@@ -2,7 +2,7 @@
   <div class="search" :class="{cancelSearch: isCancel}">
 		<input class="ipt" type="text"
 			v-model.trim="searchKey"
-			placeholder="搜索"
+			placeholder="搜索 昵称"
 			@click="clickEvent"
 			@input="searchEvent"/>
 		<button class="btn-cancel" @click="cancelSearchEvent">取消</button>
@@ -61,11 +61,12 @@ export default {
 
 <style scoped lang="less">
 .search {
-	padding: 161px 0 35px 30px;
+  padding: 128px 0 20px;
+  text-align: center;
 	.ipt {
 		border: 1px solid #ccc; /*no*/
 		padding: 21px 34px;
-		border-radius: 5px;
+		border-radius: 10px;
 		width: 636px;
 		height: 67px;
 		box-sizing: border-box;

@@ -78,7 +78,7 @@
         <group>
           <cell
             is-lilnk
-            link="/productDetails"
+            :link="'/purchasedProducts/'+clientId"
             value-align="left"
             title="已购买产品"
           >
@@ -86,7 +86,7 @@
           <cell
             is-link
             link="/productDetails"
-            title="投资者类型："
+            :title="'投资者类型：'+stat"
             value="修改"
 
           >
@@ -155,6 +155,8 @@ export default {
   	return {
 			data: {},
       investorType: '',
+      clientId: '',
+      stat: '',
   		reportList: [
 				{
 					title: '组合报告1',
@@ -195,6 +197,15 @@ export default {
     clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
 		checkCusomersDetail(clientId).then(res => {
 			this.data = res.data
+      this.clientId = res.data.client_id
+      switch (res.data.client_type) {
+        case '0':
+            this.stat = '普通投资者'
+              break
+        case '1':
+            this.stat = '专业投资者'
+              break
+      }
 		})
   },
   methods: {

@@ -31,7 +31,7 @@
               <span class="left-item">{{item.name}}</span>
               <span class="left-item">（{{item.client_no}}）</span>
               <span class="left-item" style="display: block;">{{item.mobile}}</span>
-              <span :class="[{'red-color': item.client_type === 1}, 'right-item']">{{item.client_type ? "专业投资者" : "普通投资者"}}</span>
+              <span :class="[{'red-color': item.client_type === '1'}, 'right-item']">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
             </p>
             <i class="iconfont icon-right"></i>
           </router-link>
@@ -39,13 +39,15 @@
       </ul>
       <ul v-show="idx === 1" :data="customers1">
         <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
-          <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
+          <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
             <p>
               <span class="left-item">{{item.name}}</span>
-              <span class="left-item">{{item.client_no}}</span>
+              <span class="left-item" v-show="item.client_no">（{{item.client_no}}）</span>
               <span class="left-item" style="display: block;">{{item.mobile}}</span>
-              <span class="right-item gray-item" v-show="item.certification_status === 0">未认证</span>
-              <span class="right-item gray-item" v-show="item.certification_status === 1">认证待审核</span>
+              <span class="right-item gray-item" v-show="item.certification_status === '0'">未认证</span>
+              <span class="right-item gray-item" v-show="item.certification_status === '1'">认证待审核</span>
+              <span class="right-item gray-item" v-show="item.certification_status === '2'">已认证</span>
+              <span class="right-item gray-item" v-show="item.certification_status === '3'">已驳回</span>
             </p>
             <i class="iconfont icon-right"></i>
           </router-link>
@@ -86,6 +88,16 @@
         CancelToken: this.$axios.CancelToken
       }
     },
+    created () {
+//        console.log(this.$route)
+    },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+          if (from.name === 'PotentialCustomerList') {
+            vm.idx = 1
+          }
+      })
+    },
     mounted () {
       checkCusomersList().then(res => {
 			let data = res.data
@@ -122,6 +134,7 @@
             this.cancel = c
           })
         }).then(res => {
+            console.log(res)
           if (res.status === 200) {
             if (res.data.length === 0) {
               this.loadedData = false
@@ -143,7 +156,6 @@
 <style scoped lang="less">
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/center.less';
-
   .customer-list ul {
     padding: 20px 25px;
     background-color: #F5F5F5;

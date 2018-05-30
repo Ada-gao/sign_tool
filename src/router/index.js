@@ -25,6 +25,10 @@ const MyPerformance = r => require.ensure([], () => r(require('@/components/myPe
 const MyVersion = r => require.ensure([], () => r(require('@/components/myVersion')), 'myVersion')
 const Login = r => require.ensure([], () => r(require('@/components/login')), 'login')
 const Index = r => require.ensure([], () => r(require('@/components/index')), 'index')
+const Certified = r => require.ensure([], () => r(require('@/components/certified')), 'certified')
+const PotentialCustomerList = r => require.ensure([], () => r(require('@/components/potentialCustomerList')), 'potentialCustomerList')
+const PurchasedProducts = r => require.ensure([], () => r(require('@/components/purchasedProducts')), 'purchasedProducts')
+const PerfectInfos = r => require.ensure([], () => r(require('@/components/perfectInfos')), 'perfectInfos')
 
 // // import A from '@/components/a'
 
@@ -228,6 +232,34 @@ const router = new Router({
       component: Login,
       meta: {
         navShow: false
+      }
+    }, {
+      path: '/certified/:id',
+      name: 'Certified',
+      component: Certified,
+      meta: {
+        auth: true
+      }
+    }, {
+      path: '/potentialCustomerList/:id',
+      name: 'PotentialCustomerList',
+      component: PotentialCustomerList,
+      meta: {
+        auth: true
+      }
+    }, {
+      path: '/purchasedProducts/:id',
+      name: 'PurchasedProducts',
+      component: PurchasedProducts,
+      meta: {
+        auth: true
+      }
+    }, {
+      path: '/perfectInfos',
+      name: 'PerfectInfos',
+      component: PerfectInfos,
+      meta: {
+        auth: true
       }
     }
   ]
