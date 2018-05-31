@@ -1,12 +1,12 @@
 <template>
 	<div class="flexbox-wrapper">
 		<ul>
-			<li v-for="(item, index) in childData" :key="index" @click="toProductDetail(item.product_id)">
+			<li v-for="(item, index) in childData" :key="index" @click="toProductDetail(item.product_id,item,newemail,newuserId)">
 				<flexbox :gutter="2" wrap="wrap">
 					<flexbox-item :span="4" class="item-left">
 						<div class="flex-product">
 							<div class="flex-left">
-								<p class="rate"><span>{{item.annualized_return | twoDecimals}}</span>%</p>
+								<p class="rate"><span class="number">{{item.annualized_return | twoDecimals}}</span>%</p>
 								<!-- <p class="rate">{{item.expected_income}}</p> -->
 								<p class="text">近一年收益</p>
 							</div>
@@ -16,8 +16,8 @@
 						<div class="flex-product">
 							<div class="flex-right">
 								<p>{{item.product_name}}</p>
-								<p>起投金额：{{item.minimal_amount}}</p>
-								<p>投资期限：{{item.investment_horizon}}</p>
+								<p>起投金额：{{item.minimal_amount}}万</p>
+								<p>投资期限：{{item.investment_horizon}}年</p>
 								<span v-if="item.product_status === 0" class="box red">在建</span>
 								<span v-else-if="item.product_status === 1" class="box blue">预热中</span>
 								<span v-else-if="item.product_status === 2" class="box red">募集中</span>
@@ -38,39 +38,70 @@
 import { XHeader, Group, CellBox, Flexbox, FlexboxItem } from 'vux'
 export default {
 	name: 'SellingProducts',
-  components: {
-  	XHeader,
-  	Group,
-  	CellBox,
-  	Flexbox,
-  	FlexboxItem
-  },
-	props: ['childData'],
+  	components: {
+		XHeader,
+		Group,
+		CellBox,
+		Flexbox,
+		FlexboxItem
+  	},
+	props: ['childData', 'email', 'userId'],
+	data () {
+	 	return {
+			 newemail: '',
+			 newuserId: ''
+		 }
+	},
 	methods: {
-		toProductDetail (id) {
-			// this.$router.push('/productDetail')
-			this.$router.push({name: 'ProductDetail', params: {id: id}})
+		toProductDetail (id, item, newemail, newuserId) {
+			console.log(newemail)
+			this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
 		}
+	},
+	mounted () {
+		this.newemail = this.email
+		this.newuserId = this.userId
 	}
 }
 </script>
 
 <style scoped lang="less">
+.vux-flexbox-item.item-left{
+	width: 247px;
+	.number{
+		font-size: 60px !important;
+		color: #C61D1A;
+	}
+	.text{
+		font-family: PingFangSC-Regular;
+		font-size: 24px;
+		color: #464646;
+	}
+}
 .vux-flexbox-item.item-right{
 	position: relative;
+	padding-top: 46px;
+	font-family: PingFangSC-Regular;
+	font-size: 30px;
+	color: #464646;
+		p{
+			font-size: 30px !important;
+		}
 }
 .flexbox-wrapper .vux-flexbox .item-right span.box{
 	position: absolute;
 	top: 0;
-	right: 20px;
-	width: 110px;
+	right: 10px;
+	width: 90px;
 	height: 49px;
 	border-radius: 10px;
 	font-size: 24px;
 	text-align: center;
 	line-height: 49px;
 }
-
+.flexbox-wrapper .vux-flexbox .item-right span{
+	font-family: PingFangSC-Semibold;
+}
 .flexbox-wrapper .vux-flexbox .item-right span.red {
 	background-color: #C61D1A;
 }

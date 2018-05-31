@@ -1,0 +1,18 @@
+{
+  "client_id": 0,
+  "mobile": "17612161114",
+  "id_type": "护照",
+  "id_no": "412326199901010001",
+  "email": "1046085296@qq.com",
+  "name": "刘龙",
+  "employee_id": 0,
+  "nationality": "中国",
+  "city": "上海",
+  "time_start": "2017-10-21",
+  "time_end": "2027-10-21",
+  "client_class": true,
+  "client_type": "0",
+  "status": 1,
+  "risk_level": "保守型",
+  "last_login": 0
+}

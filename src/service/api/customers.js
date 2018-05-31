@@ -110,10 +110,11 @@ export function checkCustomerBankDetail (clientId) {
 /**
  * 更新银行卡正面照
  */
-export function updateFrontPic (clientCertificationId) {
+export function updateFrontPic (clientCertificationId, obj) {
   return axios({
     url: `/v1/client/customers/${clientCertificationId}/bankcards/front/`,
-    method: 'put'
+    method: 'put',
+    data: obj
   })
 }
 
@@ -134,5 +135,27 @@ export function updateBackPic (clientCertificationId) {
 export function checkCustomerCertificate (clientId) {
   return axios({
     url: `/v1/client/customers/${clientId}/identity/`
+  })
+}
+
+/**
+ * 潜客完善信息上传文件
+ * @param clientId
+ * @param obj
+ * @returns {AxiosPromise}
+ */
+export function uploadFile (clientId, obj) {
+  return axios({
+    url: `/v1/client/customers/complete_info/${clientId}`,
+    method: 'post',
+    data: obj
+  })
+}
+
+export function perfectInfos (obj) {
+  return axios({
+    url: '/v1/client/customers/certification/',
+    method: 'post',
+    data: obj
   })
 }

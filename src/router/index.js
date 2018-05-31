@@ -14,6 +14,8 @@ const RiskRating = r => require.ensure([], () => r(require('@/components/riskRat
 const CashFlow = r => require.ensure([], () => r(require('@/components/cashFlow')), 'cashFlow')
 const InsuranceAllocation = r => require.ensure([], () => r(require('@/components/insuranceAllocation')), 'insuranceAllocation')
 const PdfReport = r => require.ensure([], () => r(require('@/components/pdfReport')), 'pdfReport')
+const PptReport = r => require.ensure([], () => r(require('@/components/pptReport')), 'pptReport')
+const ProductReport = r => require.ensure([], () => r(require('@/components/productReport')), 'productReport')
 const AssetAllocation = r => require.ensure([], () => r(require('@/components/assetAllocation')), 'assetAllocation')
 const Recommend = r => require.ensure([], () => r(require('@/components/recommend')), 'recommend')
 const ProductDetail = r => require.ensure([], () => r(require('@/components/productDetail')), 'productDetail')
@@ -23,6 +25,10 @@ const MyPerformance = r => require.ensure([], () => r(require('@/components/myPe
 const MyVersion = r => require.ensure([], () => r(require('@/components/myVersion')), 'myVersion')
 const Login = r => require.ensure([], () => r(require('@/components/login')), 'login')
 const Index = r => require.ensure([], () => r(require('@/components/index')), 'index')
+const Certified = r => require.ensure([], () => r(require('@/components/certified')), 'certified')
+const PotentialCustomerList = r => require.ensure([], () => r(require('@/components/potentialCustomerList')), 'potentialCustomerList')
+const PurchasedProducts = r => require.ensure([], () => r(require('@/components/purchasedProducts')), 'purchasedProducts')
+const PerfectInfos = r => require.ensure([], () => r(require('@/components/perfectInfos')), 'perfectInfos')
 
 // // import A from '@/components/a'
 
@@ -138,12 +144,25 @@ const router = new Router({
         auth: true
       }
     }, {
-      path: '/pdfReport',
+      path: '/pdfReport/:id',
       name: 'PdfReport',
       component: PdfReport,
       meta: {
-        // navShow: false
-        auth: true
+        navShow: false
+      }
+    }, {
+      path: '/pptReport/:id',
+      name: 'PptReport',
+      component: PptReport,
+      meta: {
+        navShow: false
+      }
+    }, {
+      path: '/productReport/:id',
+      name: 'ProductReport',
+      component: ProductReport,
+      meta: {
+        navShow: false
       }
     }, {
       path: '/assetAllocation',
@@ -213,6 +232,34 @@ const router = new Router({
       component: Login,
       meta: {
         navShow: false
+      }
+    }, {
+      path: '/certified/:id',
+      name: 'Certified',
+      component: Certified,
+      meta: {
+        auth: true
+      }
+    }, {
+      path: '/potentialCustomerList/:id',
+      name: 'PotentialCustomerList',
+      component: PotentialCustomerList,
+      meta: {
+        auth: true
+      }
+    }, {
+      path: '/purchasedProducts/:id',
+      name: 'PurchasedProducts',
+      component: PurchasedProducts,
+      meta: {
+        auth: true
+      }
+    }, {
+      path: '/perfectInfos',
+      name: 'PerfectInfos',
+      component: PerfectInfos,
+      meta: {
+        auth: true
       }
     }
   ]

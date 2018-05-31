@@ -2,13 +2,13 @@
 	<div>
     <tabbar v-model="idx">
       <tabbar-item :link="{name: 'HomePage'}" @on-item-click="clickThis">
-        <span slot="label"><i class="iconfont icon-manage_fill"></i>产品</span>
+        <span slot="label"><i class="iconfont">&#xe63f;</i>产品</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'CustomerList'}" @on-item-click="clickThis">
-        <span slot="label"><i class="iconfont icon-friend"></i>客户</span>
+        <span slot="label"><i class="iconfont">&#xe62c;</i>客户</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'AboutMe'}" @on-item-click="clickThis">
-        <span slot="label"><i class="iconfont icon-kehuguanli"></i>我的</span>
+        <span slot="label"><i class="iconfont">&#xe639;</i>我的</span>
       </tabbar-item>
     </tabbar>
 	</div>

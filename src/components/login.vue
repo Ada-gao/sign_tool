@@ -2,7 +2,7 @@
   <div class="page">
     <x-header :left-options="{showBack: false}">登陆</x-header>
     <div class="wrapper">
-      <input class="borderB-1" type="tel" v-model="username" placeholder="请输入手机号/邮箱地址"><br>
+      <input class="borderB-1" type="text" v-model="username" placeholder="请输入手机号/邮箱地址"><br>
       <div class="group">
         <input class="borderB-1" type="number" v-model="num" placeholder="请输入验证码">
         <button class="idt absolute-center-y" @click="getIdentifyingCode" v-show="show">获取验证码</button>
@@ -26,7 +26,7 @@ import { getVerificationCode, getAuthToken } from '@/service/api/login'
 export default {
   data () {
     return {
-      username: '1046085296@qq.com',
+      username: '',
       num: '',
       // time1: 5,
       show: true,
