@@ -1,25 +1,29 @@
 <template>
   <div>
-    <x-header :left-options="{backText: ''}">潜客详情</x-header>
-    <div class="wrapper">
+    <x-header :left-options="{backText: '',preventGoBack:true}"
+              @on-click-back="toLink1">潜客详情</x-header>
+    <div class="potential">
       <div class="info">
         <group>
           <cell-box>
             <i class="iconfont">&#xe62c;</i>潜客信息
             <!--<span class="fr" v-if="isFull">完善信息</span>-->
-            <router-link :to="{
-                                name: 'PerfectInfos',
-                                params: {
-                                          id: clientId,
-                                          name: clientName,
-                                          nationality: nationality,
-                                          mobile: mobile,
-                                          city: city
-                                         }
-                               }"
-                         class="fr"
-                         v-if="data.realname_status === '0'">完善信息
-            </router-link>
+            <!--<router-link :to="{-->
+            <!--name: 'PerfectInfos',-->
+            <!--params: {-->
+            <!--id: clientId,-->
+            <!--name: clientName,-->
+            <!--nationality: nationality,-->
+            <!--mobile: mobile,-->
+            <!--city: city-->
+            <!--}-->
+            <!--}"-->
+            <!--class="fr"-->
+            <!--v-if="data.realname_status === '0'">完善信息-->
+            <!--</router-link>-->
+            <span class="fr"
+                  @click="toLink"
+                  v-if="data.realname_status === '0'">完善信息</span>
             <span class="fr" v-else>已完善</span>
             <!--<span class="fr" @click="toLink"><i class="iconfont icon-brush"></i>修改</span>-->
             <!-- <router-link style="position: absolute; right: 27px; top: 10px" to="/newCustomer/1"><i class="iconfont icon-brush"></i>修改</router-link> -->
@@ -66,8 +70,8 @@
             is-link
             :link="'/certified/'+clientId"
             :title="'投资者类型：'+stat"
-            value="修改"
-
+            :value="modifiedVal"
+            :disabled="convert(data.realname_status, disabled)"
           >
             <!--<i slot="after-title">专业投资者</i>-->
           </cell>
@@ -83,11 +87,11 @@
         </group>
         <ul>
           <li v-for="(item, index) in remarkList" :key="index">
-            <div class="iText text-overflow-one">{{item.text}}</div>
-            <span class="iTime">{{item.time}}</span>
+            <div class="iText text-overflow-one">{{item.remark}}</div>
+            <span class="iTime">{{item.create_time}}</span>
             <!-- <i class="icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i> -->
             <!-- <b class="fr"><i class="iconfont icon-view"></i>&nbsp;查看</b> -->
-            <router-link class="view fr" to="/writeNotes"><i class="iconfont icon-view"></i>&nbsp;查看</router-link>
+            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i class="iconfont icon-view"></i>&nbsp;查看</router-link>
           </li>
         </ul>
         <div class="space"></div>
@@ -123,7 +127,7 @@
     TransferDomDirective as TransferDom,
     CellFormPreview
   } from 'vux'
-  import {checkCusomersDetail, perfectInfos} from '@/service/api/customers'
+  import {checkCusomersDetail, perfectInfos, addCustomerRemarks, checkCustomerRemarks} from '@/service/api/customers'
 
   export default {
     name: 'PotentialCustomerList',
@@ -145,21 +149,19 @@
         data: {},
         clientId: 0,
         clientName: '',
+        clientClass: '',
+        clientType: '',
         nationality: '',
         city: '',
         mobile: '',
         clientCertificationId: 0,
         stat: '',
-        remarkList: [{
-          text: '客户资金2月18号到期，愿意购买正收益理财产品',
-          time: '2018-1-8'
-        }, {
-          text: '客户正在搜寻二级市场产品',
-          time: '2018-1-8'
-        }],
+        remarkList: [],
         showHideOnBlur: false,
         remarkInfo: null,
-        remarkInput: null
+        remarkInput: null,
+        disabled: true,
+        modifiedVal: ''
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -169,9 +171,7 @@
 
       perfectInfos(obj).then(res => {
         if (res.status === 200) {
-            to.params.clientCertificationId = res.data.client_certification_id
-          console.log(to)
-//            this.clientCertificationId = res.data.client_certification_id
+          to.params.clientCertificationId = res.data.client_certification_id
           next()
         }
       })
@@ -180,6 +180,12 @@
       if (this.showHideOnBlur) {
         document.getElementById('inputing').focus()
       }
+      checkCustomerRemarks().then(res => {
+          if (res.status === 200) {
+              console.log(res.data)
+              this.remarkList = res.data
+          }
+      })
       this.clientId = this.$route.params.id
       checkCusomersDetail(this.clientId).then(res => {
         this.data = res.data
@@ -187,22 +193,56 @@
         this.mobile = res.data.mobile
         this.nationality = res.data.nationality
         this.city = res.data.city
+        this.clientClass = res.data.client_class
+        this.clientType = res.data.client_type
         switch (res.data.certification_status) {
           case '0':
-              this.stat = '未认证'
-                break
+            this.stat = '未认证'
+            break
           case '1':
-              this.stat = '待审核'
-                break
+            this.stat = '待审核'
+            this.modifiedVal = '修改'
+            break
           case '2':
-              this.stat = '已认证'
-                break
+            this.stat = '已认证'
+            this.modifiedVal = '修改'
+            break
           case '3':
-              this.stat = '已驳回'
+            this.stat = '已驳回'
+            this.modifiedVal = '修改'
         }
       })
     },
     methods: {
+        convert (state, disabled) {
+            switch (state) {
+              case '0':
+              case '1':
+              case '3':
+                  disabled = true
+                  break
+              case '2':
+                  disabled = false
+                    break
+            }
+            return disabled
+        },
+        toLink1 () {
+            this.$router.replace({name: 'CustomerList'})
+        },
+      toLink () {
+        let params = {
+          id: this.clientId,
+          name: this.clientName,
+          nationality: this.nationality,
+          mobile: this.mobile,
+          city: this.city,
+          clientClass: this.clientClass,
+          clientType: this.clientType
+        }
+        console.log(params)
+        this.$router.push({name: 'PerfectInfos', params: params})
+      },
       addNew () {
         this.showHideOnBlur = true
         document.getElementById('inputing').focus()
@@ -234,7 +274,16 @@
           text: this.remarkInfo.trim(),
           time: dateFormat(new Date(), 'yyyy-MM-dd')
         })
-        this.remarkInfo = ''
+
+        let params = {
+            remark: this.remarkInfo,
+            client_name: this.clientName
+        }
+        addCustomerRemarks(this.clientId, params).then(res => {
+            if (res.status === 200) {
+              this.remarkInfo = ''
+            }
+        })
       }
     }
   }
@@ -242,7 +291,14 @@
 
 <style scoped lang="less">
   /*@import '~vux/src/styles/reset';*/
-  .wrapper {
+  .v-transfer-dom .vux-x-dialog .weui-dialog {
+    width: 100%;
+    bottom: 0;
+    margin-bottom: 0;
+    height: auto;
+  }
+  .potential {
+    padding-top: 108px;
     .no_bbottom .weui-cells::after {
       content: none;
     }
@@ -373,6 +429,7 @@
       box-sizing: border-box;
     }
     a {
+      color: #333;
       position: absolute;
       right: 27px;
       top: 50%;

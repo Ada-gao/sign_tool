@@ -29,6 +29,7 @@ const Certified = r => require.ensure([], () => r(require('@/components/certifie
 const PotentialCustomerList = r => require.ensure([], () => r(require('@/components/potentialCustomerList')), 'potentialCustomerList')
 const PurchasedProducts = r => require.ensure([], () => r(require('@/components/purchasedProducts')), 'purchasedProducts')
 const PerfectInfos = r => require.ensure([], () => r(require('@/components/perfectInfos')), 'perfectInfos')
+const Bankcard = r => require.ensure([], () => r(require('@/components/bankcard')), 'bankcard')
 
 // // import A from '@/components/a'
 
@@ -258,6 +259,13 @@ const router = new Router({
       path: '/perfectInfos',
       name: 'PerfectInfos',
       component: PerfectInfos,
+      meta: {
+        auth: true
+      }
+    }, {
+      path: '/bankcard',
+      name: 'Bankcard',
+      component: Bankcard,
       meta: {
         auth: true
       }

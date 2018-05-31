@@ -75,6 +75,7 @@ export default {
       }
     },
      nextStep () {
+        console.log('click...')
       this.$store.state.token = '100'
       getAuthToken({
         code: this.num,
