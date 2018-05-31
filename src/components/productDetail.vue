@@ -1,6 +1,6 @@
 <template>
-  <div class="page">
-    <x-header :left-options="{backText: ''}">产品详情</x-header>
+  <div class="detailPage">
+    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">产品详情</x-header>
     <div class="wrapper">
       <div class="rate-top">
         <p class="text-plus-white">
@@ -44,9 +44,9 @@
         	<!-- <cell-box is-link @click="toPdfReport(id,item)">交易所需材料</cell-box>
         	<cell-box link="/pptReport">产品说明材料（产品信息ppt）</cell-box>
         	<cell-box link="/productReport">产品公告（信息披露）</cell-box>-->
-          <div class="doc" @click="toPdfReport(id,item,email,userId)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toPptReport(id,item,email,userId)">产品说明材料（产品信息ppt）<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toProductReport(id,item,email,userId)">产品公告（信息披露）<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toPdfReport(id,item)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toPptReport(id,item)">产品说明材料（产品信息ppt）<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toProductReport(id,item)">产品公告（信息披露）<span class="iconfont right">&#xe731;</span></div>
         </div>
       </div>
     </div>
@@ -60,9 +60,10 @@ export default {
   data () {
     return {
       item: [],
-      id: '',
-      email: '',
-      userId: ''
+      id: ''
+      // ,
+      // email: '',
+      // userId: ''
     }
   },
   components: {
@@ -71,22 +72,27 @@ export default {
     CellBox
   },
   methods: {
-    toPdfReport (id, item, email, userId) {
-      console.log(email)
-			this.$router.push({name: 'PdfReport', params: {id: id, item: item, email: email, userId: userId}})
+    back () {
+			this.$router.push({name: 'HomePage'})
     },
-    toPptReport (id, item, email, userId) {
-			this.$router.push({name: 'PptReport', params: {id: id, item: item, email: email, userId: userId}})
+    toPdfReport (id, item) {
+      // this.$router.push({name: 'PdfReport', params: {id: id, item: item, email: email, userId: userId}})
+			this.$router.push({name: 'PdfReport', params: {id: id, item: item}})
     },
-    toProductReport (id, item, email, userId) {
-			this.$router.push({name: 'ProductReport', params: {id: id, item: item, email: email, userId: userId}})
+    toPptReport (id, item) {
+      // this.$router.push({name: 'PptReport', params: {id: id, item: item, email: email, userId: userId}})
+			this.$router.push({name: 'PptReport', params: {id: id, item: item}})
+    },
+    toProductReport (id, item) {
+      // this.$router.push({name: 'ProductReport', params: {id: id, item: item, email: email, userId: userId}})
+			this.$router.push({name: 'ProductReport', params: {id: id, item: item}})
     }
   },
   mounted () {
     this.id = this.$route.params.id
     this.item = this.$route.params.item
-    this.email = this.$route.params.email
-    this.userId = this.$route.params.userId
+    // this.email = this.$route.params.email
+    // this.userId = this.$route.params.userId
   }
 }
 </script>
@@ -94,13 +100,13 @@ export default {
 <style lang="less">
 @import "../common/style/variable.less";
 .vux-header{
-  padding-top: 36px;
+  // padding-top: 36px;
   .vux-header-title{
     font-family: PingFangSC-Regular;
     font-size: 36px !important;
   }
 }
-.page{
+.detailPage{
   .wrapper {
     // letter-spacing: 2px;
     background: #F5F5F5;

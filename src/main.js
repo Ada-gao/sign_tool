@@ -12,7 +12,7 @@ import * as filters from 'common/js/filter.js'
 import { LoadingPlugin } from 'vux'
 import { DatetimePicker } from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import { Checkbox, CheckboxGroup, Button, Dialog, Input, Collapse, CollapseItem } from 'element-ui'
+import { Checkbox, CheckboxGroup, Button, Dialog, Input, Collapse, CollapseItem, Popover } from 'element-ui'
 Vue.use(Checkbox)
 Vue.use(CheckboxGroup)
 Vue.use(Button)
@@ -20,6 +20,7 @@ Vue.use(Dialog)
 Vue.use(Input)
 Vue.use(CollapseItem)
 Vue.use(Collapse)
+Vue.use(Popover)
 
 Vue.use(LoadingPlugin)
 

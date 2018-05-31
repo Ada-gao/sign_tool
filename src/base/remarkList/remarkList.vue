@@ -1,19 +1,17 @@
 <template>
   <div class="remark">
-    <!-- <group>
-      <cell-box>
-     	  <i class="icon-clipboard"></i>备注
-      </cell-box>
-    </group> -->
+    <group>
+      <cell-box>备注</cell-box>
+    </group>
     <ul>
-     	<li v-for="(item, index) in remarkList" :key="index">
-        <div class="iText text-overflow-one">{{item.text}}</div>
-        <span class="iTime">{{item.time}}</span>
+     	<li v-for="(item, index) in list" :key="index">
+        <div class="iText text-overflow-one">{{item.remark}}</div>
+        <span class="iTime">{{item.create_time}}</span>
         <!-- <i class="icon icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i> -->
-        <router-link class="iconfont icon-view view" to="/writeNotes">&nbsp;查看</router-link>
+        <router-link class="view" :to="{name:'WriteNotes', params: {remark: item.remark}}"><span class="iconfont eye">&#xe624;</span>&nbsp;查看</router-link>
       </li>
     </ul>
-    <div class="bottom-remark">
+    <!-- <div class="bottom-remark">
     	<div class="space"></div>
       <div class="add clearfix" @click="addNew">
         <input class="addInput" type="text" placeholder="新增备注"/>
@@ -28,7 +26,7 @@
           <button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>
         </div>
       </x-dialog>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -36,7 +34,8 @@
 import { Group, CellBox, XDialog, TransferDomDirective as TransferDom } from 'vux'
 
 export default {
-  name: 'RemarkList',
+	name: 'RemarkList',
+	props: ['list'],
   directives: {
   	TransferDom
   },
@@ -47,13 +46,6 @@ export default {
   },
   data () {
   	return {
-  		remarkList: [{
-  			text: '客户资金2月18号到期，愿意购买正收益理财产品,客户资金2月18号到期，愿意购买正收益理财产品',
-  			time: '2018-1-8'
-			}, {
-				text: '客户正在搜寻二级市场产品',
-				time: '2018-1-8'
-			}],
 			showHideOnBlur: false,
 			remarkInfo: null
   	}
@@ -61,11 +53,11 @@ export default {
   mounted () {
   	if (this.showHideOnBlur) {
   		document.getElementById('inputing').focus()
-  	}
+		}
   },
   methods: {
   	deleteRemark (idx) {
-  		this.remarkList.splice(idx, 1)
+  		this.list.splice(idx, 1)
   	},
   	addNew () {
   		this.showHideOnBlur = true
@@ -93,7 +85,7 @@ export default {
   			return fmt
   		}
   		if (this.remarkInfo.trim().length === 0) return
-  		this.remarkList.push({
+  		this.list.push({
   			text: this.remarkInfo.trim(),
   			time: dateFormat(new Date(), 'yyyy-MM-dd')
   		})
@@ -103,28 +95,57 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
 /*@import '~vux/src/styles/reset';*/
 .remark {
+	background: #fff;
+	.weui-cells{
+		height: 82px;
+		line-height: 82px;
+		.vux-cell-box.weui-cell{
+			padding: 0;
+			padding-left: 25px;
+			font-family: PingFangSC-Medium;
+			font-size: 30px;
+			color: #333333;
+		}
+	}
+	.weui-cells:before{
+		border-top: 0px;
+		height: 0px;
+	}
+	.weui-cells:after{
+		border: 1px solid #979797;
+	}
 		ul {
 			li {
-				border-bottom: 1px solid #eee; /*no*/
-        padding: 20px;
+				position: relative;
+				height: 132px;
+				padding: 20px 69px 0 72px;
         .iText {
-        	margin-bottom: 10px;
+        	margin-bottom: 23px;
         	// overflow: hidden;
 					// text-overflow:ellipsis;
 					// white-space: nowrap;
-					font-size: 30px; /*px*/
+					font-size: 26px;
+					color: #666666;
 				}
 				.iTime {
-					font-size: 24px; /*px*/
+					font-size: 24px;
+					color: #999;
 				}
         .view {
-					float: right;
 					margin-right: 30px;
-					font-size: 24px; /*px*/
+					font-size: 26px;
+					color: #2672BA;
 					text-decoration: none;
+					position: absolute;
+					right: 45px;
+					top: 71px;
+					.eye{
+						font-size: 45px;
+						vertical-align: middle;
+					}
         }
 			}
 		}

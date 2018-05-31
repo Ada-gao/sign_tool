@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div class="homePage">
     <x-header :left-options="{showBack: false}">首页</x-header>
     <div class="wrapper">
 			<img src="static/img/banner.png">
-			<div class="space"></div>
+			<!-- <div class="space"></div> -->
 			<group class="group-list" :data="productsList"  v-for="(item,index) in productsList" :key="item.product_type_id">
 				<cell
 				:title="item.name"
@@ -15,7 +15,8 @@
 				<i slot="icon" v-else-if="item.name === '理财'" class="iconfont red">&#xe605;</i>
 				<i slot="icon" v-else-if="item.name === '固收'" class="iconfont blue">&#xe607;</i>
 				<i slot="icon" v-else-if="item.name === '另类'" class="iconfont yellow">&#xe60b;</i></cell>
-				<selling-products :child-data="item.products" :email="email" :userId="userId" v-show="showContentList[index]"></selling-products>
+				 <!-- :email="email" :userId="userId" -->
+				<selling-products :child-data="item.products" v-show="showContentList[index]"></selling-products>
         <div class="divide-line"></div>
 			</group>
     </div>
@@ -50,15 +51,14 @@ export default {
 				'3': true,
 				'4': true
 			},
-			productsList: [],
-			email: '',
-			userId: ''
+			productsList: []
+			// email: '',
+			// userId: ''
     }
 	},
 	mounted () {
-		this.email = this.$route.params.email
-		this.userId = this.$route.params.userId
-		console.log(this.email)
+		// this.email = this.$route.params.email
+		// this.userId = this.$route.params.userId
 		getProducts().then(res => {
 			this.productsList = res.data
 		})
@@ -68,68 +68,73 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
-.vux-header{
-	height: 128px;
-}
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  // display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-img {
-	width: 100%;
-	// padding-top: 126px;
-	vertical-align: bottom;
-}
-.wrapper {
-	padding-bottom: 96px;
-	background: #F5F5F5;
-	.weui-cells i{
-		margin-right: 35px;
+.homePage{
+	.vux-header{
+		// height: 128px;
 	}
-	.weui-cell{
-		height: 70px;
-		line-height: 70px;
-		padding-left: 20px;
-		.weui-cell__hd{
-			.red{
-				color: #C61D1A;
-			}
-			.blue{
-				color: #597ac5;
-			}
-			.yellow{
-				color: #dea05b;
-			}
+	h1, h2 {
+		font-weight: normal;
+	}
+
+	ul {
+		list-style-type: none;
+		padding: 0;
+	}
+	li {
+		// display: inline-block;
+		margin: 0 10px;
+	}
+	a {
+		color: #42b983;
+	}
+	img {
+		width: 100%;
+		// padding-top: 126px;
+		vertical-align: bottom;
+	}
+	.wrapper {
+		padding-bottom: 96px;
+		background: #F5F5F5;
+		.weui-cells{
+			margin-top: 20px;
 		}
-		.vux-cell-bd.vux-cell-primary{
-			p{
-				label.vux-label{
-					font-family: PingFangSC-Semibold;
-					font-size: 32px;
-					color: #464646;
+		.weui-cells i{
+			margin-right: 35px;
+		}
+		.weui-cell{
+			height: 70px;
+			line-height: 70px;
+			padding-left: 20px;
+			.weui-cell__hd{
+				.red{
+					color: #C61D1A;
+				}
+				.blue{
+					color: #597ac5;
+				}
+				.yellow{
+					color: #dea05b;
+				}
+			}
+			.vux-cell-bd.vux-cell-primary{
+				p{
+					label.vux-label{
+						font-family: PingFangSC-Semibold;
+						font-size: 32px;
+						color: #464646;
+					}
 				}
 			}
 		}
+		.group-list{
+			margin-bottom: 20px;
+		}
 	}
-	.group-list{
-		margin-bottom: 20px;
+	.icon-finance-2-copy,.icon-finance-1{
+		color: #C61D1A;
 	}
-}
-.icon-finance-2-copy,.icon-finance-1{
-	color: #C61D1A;
-}
-.icon-finance-4{
-	color: orange;
+	.icon-finance-4{
+		color: orange;
+	}
 }
 </style>

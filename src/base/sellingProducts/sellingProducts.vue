@@ -1,7 +1,7 @@
 <template>
 	<div class="flexbox-wrapper">
 		<ul>
-			<li v-for="(item, index) in childData" :key="index" @click="toProductDetail(item.product_id,item,newemail,newuserId)">
+			<li v-for="(item, index) in childData" :key="index" @click="toProductDetail(item.product_id,item)">
 				<flexbox :gutter="2" wrap="wrap">
 					<flexbox-item :span="4" class="item-left">
 						<div class="flex-product">
@@ -44,24 +44,25 @@ export default {
 		CellBox,
 		Flexbox,
 		FlexboxItem
-  	},
-	props: ['childData', 'email', 'userId'],
-	data () {
-	 	return {
-			 newemail: '',
-			 newuserId: ''
-		 }
-	},
+	  },
+	  //, 'email', 'userId'
+	props: ['childData'],
+	// data () {
+	//  	return {
+	// 		 newemail: '',
+	// 		 newuserId: ''
+	// 	 }
+	// },
 	methods: {
-		toProductDetail (id, item, newemail, newuserId) {
-			console.log(newemail)
-			this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
+		toProductDetail (id, item) {
+			// this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
+			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
 		}
-	},
-	mounted () {
-		this.newemail = this.email
-		this.newuserId = this.userId
 	}
+	// mounted () {
+	// 	this.newemail = this.email
+	// 	this.newuserId = this.userId
+	// }
 }
 </script>
 

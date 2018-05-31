@@ -16,12 +16,13 @@
         <cell title="退出" @click.native="logout">
 				  <i slot="icon" class="iconfont icon">&#xe60c;</i>
         </cell>
-        <!-- <x-switch title="退出" v-model="show3"></x-switch> -->
-        <!-- <cell title=""></cell> -->
       </group>
-      <el-dialog title="您确定要退出吗？" :visible.sync="dialogTableVisible" :append-to-body="append" center>
-        <el-button type="primary" @click="sure">确 定</el-button>
-        <el-button type="primary" @click="cancle">取 消</el-button>
+      <!-- <actionsheet v-model="show3" :menus="menus3" @on-click-menu="logoutEvent" show-cancel></actionsheet> -->
+      <el-dialog title="您确定要退出吗？" :visible.sync="dialogTableVisible" :append-to-body="append" center :show-close="show" class="closeDialog">
+        <div class="button">
+          <el-button type="primary" @click="logoutEvent('men1')">确 定</el-button>
+          <el-button type="primary" @click="cancle">取 消</el-button>
+        </div>
       </el-dialog>
     </div>
   </div>
@@ -39,7 +40,8 @@ export default {
         men1: '确认退出'
       },
       dialogTableVisible: false,
-      append: true
+      append: true,
+      show: false
     }
   },
   components: {
@@ -66,7 +68,7 @@ export default {
       console.log('ssss')
     },
     cancle () {
-      console.log('cccc')
+      this.dialogTableVisible = false
     }
   }
 }
@@ -74,10 +76,19 @@ export default {
 
 <style lang="less">
 .mypage{
+  // .vux-header{
+  //   height: 128px;
+  // }
   .wrapper {
     padding-bottom: 0;
-    .weui-cells.vux-no-group-title{
-      margin-top: 22px;
+    .weui-cells{
+      margin-top: 0px;
+    }
+    .weui-cell:after{
+      border-top: 1px solid #CCCCCC;
+    }
+    .weui-cells:after{
+      border-bottom: 1px solid #CCCCCC;
     }
     .weui-cell {
       font-size: 30px; /*px*/
@@ -103,9 +114,46 @@ export default {
       }
     }
   }
+}
+.el-dialog__wrapper.closeDialog{
   .el-dialog.el-dialog--center{
     width: 580px;
     height: 345px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -172px !important;
+    margin-left: -290px;
+    border-radius: 10px;
+    .el-dialog__header{
+      padding-top: 96px;
+      .el-dialog__title{
+        font-family: PingFangSC-Regular;
+        font-size: 36px;
+        color: #333333;
+      }
+    }
+    .el-dialog__body{
+      margin-top: 40px;
+      text-align: center;
+      .button{
+        .el-button.el-button--primary{
+          width: 190px;
+          height: 80px;
+          background: #2A7DC1;
+          border-radius: 10px;
+          font-family: PingFangSC-Medium;
+          font-size: 36px;
+          color: #F0F0F0;
+        }
+        .el-button.el-button--primary:nth-child(1){
+          margin-right: 43px;
+        }
+        .el-button.el-button--primary:nth-child(2){
+          margin-left: 43px;
+        }
+      }
+    }
   }
 }
 </style>
