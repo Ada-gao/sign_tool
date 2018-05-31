@@ -5,7 +5,7 @@
     <!--<x-header v-if="isMod==1" :left-options="{backText: ''}">修改资料</x-header>-->
     <group class="wrapper">
       <div class="add_tit">
-        <i class="iconfont icon-web-icon-"></i>
+        <i class="iconfont">&#xe62c;</i>
         <span style="color: #2672ba">客户信息</span>
       </div>
       <x-input title="客户姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false" is-type="china-name"
@@ -31,7 +31,8 @@
       <x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input04" is-type="email" :show-clear="false"
                required></x-input>
     </group>
-    <p class="alert_message" v-show="mustFill">有遗漏的必填项未填写～</p>
+    <!--<p class="alert_message" v-show="mustFill">有遗漏的必填项未填写～</p>-->
+
     <div class="btn_wrap">
       <button class="next" @click="submitCustomer">确定</button>
     </div>
@@ -44,6 +45,7 @@
 </i18n>
 
 <script>
+//  import { MessageBox } from 'mint-ui'
   import { XHeader, Group, XInput, XButton, XAddress, ChinaAddressV4Data } from 'vux'
   import { addCusomer } from '@/service/api/customers'
 
@@ -71,9 +73,7 @@
         value: [],
         addressData: ChinaAddressV4Data,
         showAddress: false,
-        names: '',
-        mustFill: false,
-        timer: null
+        names: ''
       }
     },
     mounted () {
@@ -117,11 +117,12 @@
             }
           })
         } else {
-            this.mustFill = true
-          clearTimeout(this.timer)
-          setTimeout(() => {
-                this.mustFill = false
-          }, 1000)
+
+//            this.mustFill = true
+//          clearTimeout(this.timer)
+//          setTimeout(() => {
+//                this.mustFill = false
+//          }, 1000)
   //          this.$router.push({name: 'CustomerManagement', params: {id: 1}})
         }
       }
@@ -129,7 +130,7 @@
   }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
   .alert_message {
     color: #cd0000;
     margin-top: 10px;
@@ -209,4 +210,5 @@
       cursor: pointer;
     }
   }
+
 </style>

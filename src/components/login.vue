@@ -82,6 +82,7 @@ export default {
       }).then(res => {
         console.log(res)
         if (res.status === 200) {
+//          debugger
           this.$store.state.token = res.data.token
           window.localStorage.setItem('token', this.$store.state.token)
           let queryUrl = this.$router.currentRoute.query
