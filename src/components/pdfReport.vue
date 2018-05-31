@@ -147,6 +147,7 @@ export default {
   bottom: 0;
   background: #fff;
   height: 82px;
+  z-index: 55;
   label.el-checkbox {
     display: inline-block;
     margin-top: 0px;
