@@ -4,6 +4,7 @@ import Vue from 'vue'
 import axios from 'axios'
 import App from './App'
 import router from './router'
+import VueCordova from './vue-cordova/index'
 import store from 'common/js/store'
 import 'common/style/index.less'
 import 'lib-flexible'
@@ -18,6 +19,16 @@ Vue.use(LoadingPlugin)
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
+
+Vue.use(VueCordova)
+console.log('----------port:' + window.location.port)
+if (window.location.protocol === 'file:' || window.location.port === '8080' || window.location.port === '80' || window.location.port === '') {
+  console.log('attach cordova.js')
+  var cordovaScript = document.createElement('script')
+  cordovaScript.setAttribute('type', 'text/javascript')
+  cordovaScript.setAttribute('src', 'cordova.js')
+  document.body.appendChild(cordovaScript)
+}
 
 Vue.directive('focus', {
 	inserted: function (el) {

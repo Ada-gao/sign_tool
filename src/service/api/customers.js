@@ -119,12 +119,25 @@ export function updateFrontPic (clientCertificationId, obj) {
 }
 
 /**
- * 更新银行卡反面照
+ * 提交银行卡接口
+ * @param id
+ * @param obj
+ * @returns {AxiosPromise}
  */
-export function updateBackPic (clientCertificationId) {
+export function uploadBankCard (id, obj) {
   return axios({
-    url: `/v1/client/customers/${clientCertificationId}/bankcards/back/`,
-    method: 'put'
+    url: `/v1/client/customers/bankcards/${id}`,
+    method: 'post',
+    data: obj
+  })
+}
+/**
+ * 上传身份证正反面
+ */
+export function uploadID () {
+  return axios({
+    url: '/v1/common/file_upload/',
+    method: 'post'
   })
 }
 
@@ -152,9 +165,55 @@ export function uploadFile (clientId, obj) {
   })
 }
 
+/**
+ * 客户认证提交按钮
+ * @param obj
+ * @returns {AxiosPromise}
+ */
 export function perfectInfos (obj) {
   return axios({
     url: '/v1/client/customers/certification/',
+    method: 'post',
+    data: obj
+  })
+}
+
+/**
+ * 身份证上传页面提交
+ * @param obj
+ * @returns {AxiosPromise}
+ */
+export function uploadId (id, obj) {
+  return axios({
+    url: `/v1/client/customers/complete_info/${id}`,
+    method: 'post',
+    data: obj
+  })
+}
+
+/**
+ * 发送邮箱给理财师
+ * @param type
+ * @param obj
+ * @returns {AxiosPromise}
+ */
+export function sendEmail (type, obj) {
+  return axios({
+    url: `/v1/client/customers/files/${type}`,
+    method: 'post',
+    data: obj
+  })
+}
+
+/**
+ * 潜客发送资料
+ * @param id
+ * @param obj
+ * @returns {AxiosPromise}
+ */
+export function sendFiles (id, obj) {
+  return axios({
+    url: `/v1/client/customers/certification/${id}`,
     method: 'post',
     data: obj
   })

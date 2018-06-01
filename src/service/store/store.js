@@ -9,7 +9,6 @@ export default new Vuex.Store({
         user: {},
         token: null,
         title: ''
-
     },
     mutations: {
         [types.LOGIN]: (state, data) => {

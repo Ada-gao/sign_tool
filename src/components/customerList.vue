@@ -88,9 +88,6 @@
         CancelToken: this.$axios.CancelToken
       }
     },
-    created () {
-//        console.log(this.$route)
-    },
     beforeRouteEnter (to, from, next) {
       next(vm => {
           if (from.name === 'PotentialCustomerList') {
@@ -101,7 +98,6 @@
     mounted () {
       checkCusomersList().then(res => {
 			let data = res.data
-//      console.log(data)
 		  data.forEach(item => {
 			  if (item.client_class) {
 				  this.customers.push(item)
