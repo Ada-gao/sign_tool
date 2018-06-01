@@ -18,18 +18,23 @@
         </cell>
       </group>
       <!-- <actionsheet v-model="show3" :menus="menus3" @on-click-menu="logoutEvent" show-cancel></actionsheet> -->
-      <el-dialog title="您确定要退出吗？" :visible.sync="dialogTableVisible" :append-to-body="append" center :show-close="show" class="closeDialog">
+      <!-- <el-dialog title="您确定要退出吗？" :visible.sync="dialogTableVisible" :append-to-body="append" center :show-close="show" class="closeDialog">
         <div class="button">
           <el-button type="primary" @click="logoutEvent('men1')">确 定</el-button>
           <el-button type="primary" @click="cancle">取 消</el-button>
         </div>
-      </el-dialog>
+      </el-dialog> -->
+      <x-dialog v-model="dialogTableVisible" class="dialog-demo quitDialog" hide-on-blur>
+          <div class="quit">您确定要退出吗？</div>
+          <x-button @click.native="logoutEvent('men1')" type="primary">确 定</x-button>
+          <x-button @click.native="cancle" type="primary">取 消</x-button>
+      </x-dialog>
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch } from 'vux'
+import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton } from 'vux'
 import { removeStore } from '@/config/mUtils'
 
 export default {
@@ -50,7 +55,9 @@ export default {
     Cell,
     CellBox,
     Actionsheet,
-    XSwitch
+    XSwitch,
+    XDialog,
+    XButton
   },
   methods: {
     logoutEvent (key) {
@@ -113,47 +120,43 @@ export default {
         font-size: 38px!important; /*px*/
       }
     }
-  }
-}
-.el-dialog__wrapper.closeDialog{
-  .el-dialog.el-dialog--center{
-    width: 580px;
-    height: 345px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-top: -172px !important;
-    margin-left: -290px;
-    border-radius: 10px;
-    .el-dialog__header{
-      padding-top: 96px;
-      .el-dialog__title{
+    .quitDialog{
+      .weui-dialog{
+      width: 580px;
+      height: 345px;
+      background: #FFFFFF;
+      border-radius: 10px;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%,-50%);
+      padding: 0;
+      text-align: center;
+      .quit{
+        margin-top: 85px;
+        margin-bottom: 75px;
         font-family: PingFangSC-Regular;
         font-size: 36px;
         color: #333333;
       }
-    }
-    .el-dialog__body{
-      margin-top: 40px;
-      text-align: center;
-      .button{
-        .el-button.el-button--primary{
-          width: 190px;
-          height: 80px;
-          background: #2A7DC1;
-          border-radius: 10px;
-          font-family: PingFangSC-Medium;
-          font-size: 36px;
-          color: #F0F0F0;
-        }
-        .el-button.el-button--primary:nth-child(1){
-          margin-right: 43px;
-        }
-        .el-button.el-button--primary:nth-child(2){
-          margin-left: 43px;
-        }
+      .weui-btn.weui-btn_primary{
+        display: inline-block;
+        background: #2A7DC1;
+        border-radius: 10px;
+        width: 190px;
+        height: 80px;
+        font-family: PingFangSC-Medium;
+        font-size: 36px;
+        color: #F0F0F0;
+      }
+      .weui-btn.weui-btn_primary:first-child{
+        margin-left: 43px;
+      }
+      .weui-btn.weui-btn_primary:nth-child(2){
+        margin-right: 43px;
+      }
       }
     }
   }
 }
+
 </style>

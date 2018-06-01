@@ -15,4 +15,7 @@ export default {
 </script>
 
 <style lang="less">
+  .index-wrapper{
+    height: 100%;
+  }
 </style>

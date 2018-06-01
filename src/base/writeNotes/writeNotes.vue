@@ -46,7 +46,7 @@ export default {
 			position: relative;
 			.iconfont{
 				position: absolute;
-				bottom: -74px;
+				bottom: -72px;
 				font-size: 90px;
 				left: 100px;
 				color: #fff;
