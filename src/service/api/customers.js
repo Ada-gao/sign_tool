@@ -113,7 +113,7 @@ export function checkCustomerBankDetail (clientId) {
 export function updateFrontPic (clientCertificationId, obj) {
   return axios({
     url: `/v1/client/customers/${clientCertificationId}/bankcards/front/`,
-    method: 'put',
+    method: 'post',
     data: obj
   })
 }
@@ -178,6 +178,18 @@ export function perfectInfos (obj) {
   })
 }
 
+/**
+ * 更新银行卡正反面
+ * @param obj
+ * @returns {AxiosPromise}
+ */
+export function updateId (obj) {
+  return axios({
+    url: '/v1/common/file_upload/',
+    method: 'post',
+    data: obj
+  })
+}
 /**
  * 身份证上传页面提交
  * @param obj

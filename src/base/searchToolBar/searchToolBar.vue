@@ -2,7 +2,7 @@
   <div class="search" :class="{cancelSearch: isCancel}">
 		<input class="ipt" type="text"
 			v-model.trim="searchKey"
-			placeholder="搜索 昵称"
+			placeholder="搜索  客户名 手机号码"
 			@click="clickEvent"
 			@input="searchEvent"/>
 		<button class="btn-cancel" @click="cancelSearchEvent">取消</button>

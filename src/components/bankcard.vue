@@ -26,23 +26,7 @@
     <div class="space"></div>
     <div class="upload">证件信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
     <div class="upload_box">
-      <!--<button class="next" @click="submitCustomer">确定</button>-->
       <div class="upload_cont">
-        <!--<el-upload-->
-        <!--:action="getAction(clientCertificationId)"-->
-        <!--list-type="picture-card"-->
-        <!--accept="image/*"-->
-        <!--:on-change="uploadChange"-->
-        <!--:on-success="uploadSuccess"-->
-        <!--:headers="uploadData.headers"-->
-        <!--:file-list="uploadData.fileList"-->
-        <!--:on-preview="handlePictureCardPreview">-->
-        <!--<i class="iconfont">&#xe600;</i>-->
-        <!--</el-upload>-->
-        <!--<div class="card">银行卡</div>-->
-        <!--<el-dialog :visible.sync="uploadData.dialogVisible">-->
-        <!--<img width="100%" :src="uploadData.dialogImageUrl" alt="">-->
-        <!--</el-dialog>-->
         <form
           id="form"
           :action="getAction(clientCertificationId)"
@@ -56,7 +40,7 @@
             accept="image/png, image/jpeg, image/gif, image/jpg"
             @change="changepic"/>
           <label for="file" class='iconfont icon_bg'>&#xe600;</label> <br>
-          <img :src="imgSrc" id="show" width="200">
+          <img :src="imgSrc" id="show" v-show="imgSrc">
         </form>
       </div>
     </div>
@@ -152,23 +136,22 @@
     },
     methods: {
       changepic (value) {
-          let reads = new FileReader()
+        let reads = new FileReader()
         let file = document.getElementById('file').files[0]
         reads.readAsDataURL(file)
         reads.onload = (e) => {
-              this.imgSrc = e.target.result
+          this.imgSrc = e.target.result
         }
         let formData = new FormData()
         formData.append('file', file)
-        console.log(file)
         updateFrontPic(this.clientCertificationId, formData).then(res => {
         })
       },
       changeValue (value) {
-        console.log(value)
+//        console.log(value)
       },
       change (value) {
-        console.log('new Value', value)
+//        console.log('new Value', value)
       },
       toLink () {
         let params = {
@@ -184,43 +167,6 @@
       getAction (id) {
         return 'http://10.9.60.141:5000/api/v1/client/customers/' + id + '/bankcards/front/'
       },
-//      uploadChange (file) {
-//        const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'image/gif')
-//        const isLt1M = file.size / 1024 / 1024 < 1
-//
-//        if (!isIMAGE) {
-//          this.$message.error('上传文件只能是图片格式!')
-//          return false
-//        }
-//        if (!isLt1M) {
-//          this.$message.error('上传文件大小不能超过 1MB!')
-//          return false
-//        }
-//        let reader = new FileReader()
-//        reader.readAsDataURL(file.raw)
-//      },
-//      handlePictureCardPreview (file) {
-//        this.dialogImageUrl = file.url
-//        this.dialogVisible = true
-//      },
-//      uploadSuccess (file) {
-//        this.domHander()
-//        console.log(file)
-//        this.card_front_url = file.card_front_url
-//      },
-//      domHander () {
-//        document.querySelectorAll('.el-upload-list__item-delete').forEach((value, index) => {
-//          value.classList.add('el-upload-list__item-close')
-//          value.classList.remove('el-upload-list__item-delete')
-//        })
-//        Array.from(document.querySelectorAll('.el-icon-delete')).forEach((value, index) => {
-//          value.classList.add('el-icon-close')
-//          value.classList.remove('el-icon-delete')
-//        })
-//        Array.from(document.querySelectorAll('.el-icon-zoom-in')).forEach((value, index) => {
-//          value.parentNode.removeChild(value)
-//        })
-//      },
       submitBankInfos () {
         let bankId = ''
         switch (this.personInfo.bankName[0]) {
@@ -328,6 +274,7 @@
         text-align: center;
         width: 270px;
         height: 180px;
+        line-height: 180px;
         background-color: #ddd;
         border-radius: 8px;
         position: relative;

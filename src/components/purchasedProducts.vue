@@ -4,43 +4,42 @@
               left-options.preventGoBack="true"
               on-click-back="toLink(id)">已购买产品
     </x-header>
-    <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="全部" name="first">
-        <div class="space"></div>
-        <div class="">1</div>
-      </el-tab-pane>
-      <el-tab-pane label="理财" name="second">
-        <div class="space"></div>
-        <div class="">2</div>
-      </el-tab-pane>
-      <el-tab-pane label="二级市场" name="third">
-        <div class="space"></div>
-        <div class="">3</div>
-      </el-tab-pane>
-      <el-tab-pane label="固收" name="fourth">
-        <div class="space"></div>
-        <div class="">4</div>
-      </el-tab-pane>
-      <el-tab-pane label="另类投资" name="fifth">
-        <div class="space"></div>
-        <div class="">5</div>
-      </el-tab-pane>
-    </el-tabs>
+    <div class="content">
+      <ul class="tabbar">
+        <li v-for="(item,index) in tabBars"
+            :key="index"
+            @click="switchTab(index)"
+            :class="n === index ? 'active' : ''"
+        >{{item}}
+        </li>
+      </ul>
+      <div class="space"></div>
+      <selling-products :child-data="content[n]"></selling-products>
+    </div>
   </div>
 </template>
 <script>
   import {XHeader} from 'vux'
   import {checkSpecifiedPro} from '@/service/api/customers'
+  import SellingProducts from '@/base/sellingProducts/sellingProducts'
   export default {
     name: 'PurchasedProducts',
     components: {
-      XHeader
+      XHeader,
+      SellingProducts
     },
     data () {
       return {
         id: '',
-        productLists: [],
-        activeName: 'first'
+        n: 0,
+        tabBars: ['全部', '理财', '二级市场', '固收', '另类投资'],
+        content: {
+          '0': [],
+          '1': [],
+          '2': [],
+          '3': [],
+          '4': []
+        }
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -51,44 +50,65 @@
     mounted () {
       this.id = this.$route.params.id
       checkSpecifiedPro(this.id).then(res => {
-        this.productsList = res.data
-        console.log(this.productsList)
+        this.content['0'] = res.data
+        this.content['0'].forEach((value, index) => {
+          switch (value.product_type_id) {
+            case 1:
+              this.content['1'].push(value)
+              break
+            case 2:
+              this.content['2'].push(value)
+              break
+            case 3:
+              this.content['3'].push(value)
+              break
+            case 4:
+              this.content['4'].push(value)
+              break
+          }
+        })
       })
     },
     methods: {
-      handleClick (tab, event) {
-        console.log(tab, event)
+      switchTab (index) {
+          this.n = index
       }
     }
   }
 </script>
 <style lang="less">
-  .el-tabs {
-    padding-top: 108px;
-    .el-tabs__nav {
-      width: 100%;
-      .el-tabs__item {
-        height: 80px;
-        line-height: 80px;
-        width: 20%;
-        padding: 0;
-        text-align: center;
-        font-size: 30px;
-        color: #666;
-        font-weight: normal;
-      }
-      .el-tabs__item.is-active {
-        color: #409EFF;
-      }
-    }
-  }
-  .el-tabs__nav-wrap::after {
-    content: none;
-  }
   .purchased {
     .space {
       height: 20px;
       background-color: #f5f5f5;
+    }
+    .content {
+      padding-top: 108px;
+    }
+    ul.tabbar {
+      font-size: 0;
+      height: 80px;
+      line-height: 80px;
+      li {
+        font-size: 30px;
+        display: inline-block;
+        width: 20%;
+        text-align: center;
+        color: #666;
+        position: relative;
+      }
+      li.active {
+        color: #2672ba;
+      }
+      li.active::after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 10px;
+        background-color: #2672ba;
+        bottom: -5px;
+      }
     }
   }
 </style>

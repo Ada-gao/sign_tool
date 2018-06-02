@@ -10,7 +10,7 @@ import 'common/style/index.less'
 import 'lib-flexible'
 import * as filters from 'common/js/filter.js'
 import { LoadingPlugin } from 'vux'
-import { DatetimePicker } from 'mint-ui'
+import { DatetimePicker, Checklist } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -46,6 +46,7 @@ Object.keys(filters).forEach(key => {
 // Vue.use(DatetimePlugin)
 
 Vue.component(DatetimePicker.name, DatetimePicker)
+Vue.component(Checklist.name, Checklist)
 
 // 将 axios 挂载到 prototype 上，在组件中可以直接使用 this.$axios 访问
 Vue.prototype.$axios = axios
