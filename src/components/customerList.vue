@@ -90,7 +90,7 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-          if (from.name === 'PotentialCustomerList' || from.name === 'NewCustomer') {
+          if (from.name === 'PotentialCustomerList') {
             vm.idx = 1
           }
       })

@@ -113,7 +113,7 @@ export function checkCustomerBankDetail (clientId) {
 export function updateFrontPic (clientCertificationId, obj) {
   return axios({
     url: `/v1/client/customers/${clientCertificationId}/bankcards/front/`,
-    method: 'post',
+    method: 'put',
     data: obj
   })
 }

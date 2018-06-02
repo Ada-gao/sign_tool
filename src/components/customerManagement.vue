@@ -29,7 +29,7 @@
             >其他</span>
           </cell-box>
           <cell-box v-show="data.nationality === '中国'">
-            <label for="email">常住中国城市：</label>
+            <label for="email">常驻中国城市：</label>
             <span class="fr">{{data.city}}</span>
           </cell-box>
         </group>
@@ -73,7 +73,7 @@
         </group>
         <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
     	</div>
-    	<div class="space1"></div>
+    	<div class="space"></div>
     	<div class="product">
         <group>
           <cell
@@ -83,25 +83,24 @@
             title="已购买产品"
           >
           </cell>
-          <div class="space1"></div>
           <cell
             is-link
-            :link="{name: 'Certified',params: {type: clientType}}"
+            link="/productDetails"
             :title="'投资者类型：'+stat"
             value="修改"
+
           >
+            <!--<i slot="after-title">专业投资者</i>-->
           </cell>
-          <div class="space1"></div>
-          <cell is-link
-                :link="{name: 'BankcardInfos', params: {id: clientId}}"
-                title="银行卡信息"
-          ></cell>
-          <div class="space1"></div>
         </group>
     	</div>
+    	<div class="space"></div>
+    	<div class="space"></div>
     	<div class="remark">
         <group>
-          <cell-box>备注</cell-box>
+          <cell-box>
+          	<i class="iconfont icon-cart"></i>备注
+          </cell-box>
         </group>
         <ul>
         	<li v-for="(item, index) in remarkList" :key="index">
@@ -116,7 +115,7 @@
 			</div>
       <div class="bottom-remark">
         <div class="add clearfix">
-          <input type="text" @click="addNew" class="addInput" v-model="remarkInput" placeholder="填写备注"/>
+          <input type="text" @click="addNew" class="addInput" v-model="remarkInput" placeholder="新增备注"/>
         </div>
       </div>
       <div v-transfer-dom>
@@ -157,7 +156,6 @@ export default {
 			data: {},
       investorType: '',
       clientId: '',
-      clientType: '',
       stat: '',
   		reportList: [
 				{
@@ -200,7 +198,6 @@ export default {
 		checkCusomersDetail(clientId).then(res => {
 			this.data = res.data
       this.clientId = res.data.client_id
-      this.clientType = res.data.client_type
       switch (res.data.client_type) {
         case '0':
             this.stat = '普通投资者'
@@ -358,15 +355,14 @@ export default {
 		ul {
 			li {
 				border-bottom: 1px solid #eee; /*no*/
-				/*padding: 30px 40px;*/
-				padding: 20px 120px 0px 68px;
+				padding: 30px 40px;
 				font-size: 24px; /*px*/
         .iText {
 					margin-bottom: 10px;
 					font-size: 28px; /*px*/
 				}
 				.view {
-					color: #2672BA;
+					color: #666;
 				}
 				.fr i {
 					font-size: 24px; /*px*/
@@ -392,9 +388,6 @@ export default {
 			}
 		}
 	}
-  .weui-cells:after {
-    content: none;
-  }
 }
 .weui-cells {
 	.weui-cell {
@@ -416,12 +409,7 @@ export default {
 }
 .space {
 	width: 100%;
-	height: 20px;
-	background-color: #f5f5f5;
+	height: 10px;
+	background-color: #eee;
 }
-  .space1 {
-    width: 100%;
-    height: 10px;
-    background-color: #f5f5f5;
-  }
 </style>

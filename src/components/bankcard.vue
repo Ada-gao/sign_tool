@@ -29,21 +29,25 @@
       <!--<button class="next" @click="submitCustomer">确定</button>-->
       <div class="upload_cont">
         <!--<el-upload-->
-          <!--:action="getAction(clientCertificationId)"-->
-          <!--list-type="picture-card"-->
-          <!--accept="image/*"-->
-          <!--:on-change="uploadChange"-->
-          <!--:on-success="uploadSuccess"-->
-          <!--:headers="uploadData.headers"-->
-          <!--:file-list="uploadData.fileList"-->
-          <!--:on-preview="handlePictureCardPreview">-->
-          <!--<i class="iconfont">&#xe600;</i>-->
+        <!--:action="getAction(clientCertificationId)"-->
+        <!--list-type="picture-card"-->
+        <!--accept="image/*"-->
+        <!--:on-change="uploadChange"-->
+        <!--:on-success="uploadSuccess"-->
+        <!--:headers="uploadData.headers"-->
+        <!--:file-list="uploadData.fileList"-->
+        <!--:on-preview="handlePictureCardPreview">-->
+        <!--<i class="iconfont">&#xe600;</i>-->
         <!--</el-upload>-->
         <!--<div class="card">银行卡</div>-->
         <!--<el-dialog :visible.sync="uploadData.dialogVisible">-->
-          <!--<img width="100%" :src="uploadData.dialogImageUrl" alt="">-->
+        <!--<img width="100%" :src="uploadData.dialogImageUrl" alt="">-->
         <!--</el-dialog>-->
-        <!--<form :action="getAction(clientCertificationId)" enctype="multipart/form-data">-->
+        <form
+          id="form"
+          :action="getAction(clientCertificationId)"
+          method="post"
+          enctype="multipart/form-data">
           <input
             type="file"
             name="file"
@@ -53,7 +57,7 @@
             @change="changepic"/>
           <label for="file" class='iconfont icon_bg'>&#xe600;</label> <br>
           <img :src="imgSrc" id="show" width="200">
-        <!--</form>-->
+        </form>
       </div>
     </div>
     <div class="submit_form">
@@ -63,7 +67,7 @@
 </template>
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
-//  import {getStore} from '@/config/mUtils'
+  //  import {getStore} from '@/config/mUtils'
   import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
 
   export default {
@@ -148,22 +152,17 @@
     },
     methods: {
       changepic (value) {
-//          console.log(value)
-        let reads = new FileReader()
-        let f = document.getElementById('file').files[0]
-        reads.readAsDataURL(f)
+          let reads = new FileReader()
+        let file = document.getElementById('file').files[0]
+        reads.readAsDataURL(file)
         reads.onload = (e) => {
-          let params = {
-              file: f
-          }
-          console.log(params)
-          this.imgSrc = e.target.result
-          let config = {
-            headers: {'Content-Type': 'multipart/form-data'}
-          }
-          updateFrontPic(this.clientCertificationId, params, config).then(res => {
-          })
+              this.imgSrc = e.target.result
         }
+        let formData = new FormData()
+        formData.append('file', file)
+        console.log(file)
+        updateFrontPic(this.clientCertificationId, formData).then(res => {
+        })
       },
       changeValue (value) {
         console.log(value)
@@ -272,9 +271,6 @@
   }
 </script>
 <style lang="less">
-  .inputfile {
-    opacity: 0;
-  }
   .bankcard {
     .card {
       font-size: 30px;
@@ -344,6 +340,16 @@
           width: 100%;
           height: 100%;
           display: block;
+          left: 0;
+          top: 0;
+          z-index: 11;
+          opacity: 0;
+        }
+        #show {
+          position: absolute;
+          display: block;
+          width: 100%;
+          height: 100%;
           left: 0;
           top: 0;
         }

@@ -115,7 +115,7 @@ export default {
       text-align: center;
       height: 286px;
       // background-color: @color-bg-header;
-      /*background-image: url("../../static/img/detailBanner.png");*/
+      background-image: url("../../static/img/detailBanner.png");
       background-repeat: no-repeat;
       background-size: 100% 100%;
       color: #fff;

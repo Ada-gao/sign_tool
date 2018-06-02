@@ -8,8 +8,7 @@
         <i class="iconfont">&#xe62c;</i>
         <span style="color: #2672ba">客户信息</span>
       </div>
-      <div class="space"></div>
-      <x-input title="客户姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false"
+      <x-input title="客户姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false" is-type="china-name"
                required></x-input>
       <x-input title="国籍:"
                v-model="nationality"
@@ -138,11 +137,6 @@
     padding-left: 20px;
   }
   .wrapper {
-    height: auto;
-    .space {
-      height: 25px;
-      background-color: #f5f5f5;
-    }
     .add_tit {
       padding-left: 20px;
       height: 80px;
@@ -163,15 +157,9 @@
       padding-left: 20px;
       padding-right: 20px;
     }
-    .popup-picker .weui-cell {
-      height: 84px;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-    }
     // padding-top: 126px;
     .weui-cells .vux-x-input {
-      height: 84px;
+      height: 113px;
       box-sizing: border-box;
       button {
         width: 138px;
@@ -202,10 +190,10 @@
 
   .btn_wrap {
     padding: 0 37px;
-    margin-top: 119px;
-    /*position: fixed;*/
+    margin-top: 2rem;
+    position: fixed;
     width: 100%;
-    /*bottom: 30px;*/
+    bottom: 30px;
     .next {
       text-decoration: none;
       border-radius: 60px;
@@ -222,4 +210,5 @@
       cursor: pointer;
     }
   }
+
 </style>

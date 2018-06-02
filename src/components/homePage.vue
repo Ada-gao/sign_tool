@@ -7,10 +7,10 @@
 			<group class="group-list" :data="productsList"  v-for="(item,index) in productsList" :key="item.product_type_id">
 				<cell
 				:title="item.name"
-				is-link
-				:border-intent="false"
-				:arrow-direction=" showContentList[index] ? 'up' : 'down'"
-				@click.native="showContent(showContentList[index],index)">
+        is-link
+        :border-intent="false"
+        :arrow-direction=" showContentList[index] ? 'up' : 'down'"
+        @click.native="showContent(showContentList[index],index)">
 				<i slot="icon" v-if="item.name === '二级市场'" class="iconfont red">&#xe604;</i>
 				<i slot="icon" v-else-if="item.name === '理财'" class="iconfont red">&#xe605;</i>
 				<i slot="icon" v-else-if="item.name === '固收'" class="iconfont blue">&#xe607;</i>
@@ -69,8 +69,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 .homePage{
-	height: 100%;
-	background: #F5F5F5;
 	.vux-header{
 		// height: 128px;
 	}
@@ -95,9 +93,8 @@ export default {
 		vertical-align: bottom;
 	}
 	.wrapper {
-		margin-bottom: 96px;
+		padding-bottom: 96px;
 		background: #F5F5F5;
-		// height: calc(100% - 214px);
 		.weui-cells{
 			margin-top: 20px;
 		}
