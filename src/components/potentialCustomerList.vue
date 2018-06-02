@@ -1,7 +1,8 @@
 <template>
   <div>
     <x-header :left-options="{backText: '',preventGoBack:true}"
-              @on-click-back="toLink1">潜客详情</x-header>
+              @on-click-back="toLink1">潜客详情
+    </x-header>
     <div class="potential">
       <div class="info">
         <group>
@@ -73,7 +74,9 @@
           <li v-for="(item, index) in remarkList" :key="index">
             <div class="iText text-overflow-one">{{item.remark}}</div>
             <span class="iTime">{{item.create_time}}</span>
-            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i class="iconfont icon-view"></i>&nbsp;查看</router-link>
+            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i
+              class="iconfont icon-view"></i>&nbsp;查看
+            </router-link>
           </li>
         </ul>
         <div class="space"></div>
@@ -165,9 +168,9 @@
         document.getElementById('inputing').focus()
       }
       checkCustomerRemarks().then(res => {
-          if (res.status === 200) {
-              this.remarkList = res.data
-          }
+        if (res.status === 200) {
+          this.remarkList = res.data
+        }
       })
       this.clientId = this.$route.params.id
       checkCusomersDetail(this.clientId).then(res => {
@@ -199,22 +202,22 @@
       })
     },
     methods: {
-        convert (state, disabled) {
-            switch (state) {
-              case '0':
-              case '1':
-              case '3':
-                  disabled = true
-                  break
-              case '2':
-                  disabled = false
-                    break
-            }
-            return disabled
-        },
-        toLink1 () {
-            this.$router.replace({name: 'CustomerList'})
-        },
+      convert (state, disabled) {
+        switch (state) {
+          case '0':
+          case '1':
+          case '3':
+            disabled = true
+            break
+          case '2':
+            disabled = false
+            break
+        }
+        return disabled
+      },
+      toLink1 () {
+        this.$router.replace({name: 'CustomerList'})
+      },
       toLink () {
         let params = {
           id: this.clientId,
@@ -256,18 +259,18 @@
         }
         if (!this.remarkInfo || this.remarkInfo.trim().length === 0) return
         this.remarkList.push({
-          text: this.remarkInfo.trim(),
-          time: dateFormat(new Date(), 'yyyy-MM-dd')
+          remark: this.remarkInfo.trim(),
+          create_time: dateFormat(new Date(), 'yyyy-MM-dd')
         })
 
         let params = {
-            remark: this.remarkInfo,
-            client_name: this.clientName
+          remark: this.remarkInfo,
+          client_name: this.clientName
         }
         addCustomerRemarks(this.clientId, params).then(res => {
-            if (res.status === 200) {
-              this.remarkInfo = ''
-            }
+          if (res.status === 200) {
+            this.remarkInfo = ''
+          }
         })
       }
     }
@@ -282,6 +285,7 @@
     margin-bottom: 0;
     height: auto;
   }
+
   .potential {
     padding-top: 108px;
     .no_bbottom .weui-cells::after {

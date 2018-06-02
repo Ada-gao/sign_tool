@@ -28,21 +28,32 @@
     <div class="upload_box">
       <!--<button class="next" @click="submitCustomer">确定</button>-->
       <div class="upload_cont">
-        <el-upload
-          :action="getAction(clientCertificationId)"
-          list-type="picture-card"
-          accept="image/*"
-          :on-change="uploadChange"
-          :on-success="uploadSuccess"
-          :headers="uploadData.headers"
-          :file-list="uploadData.fileList"
-          :on-preview="handlePictureCardPreview">
-          <i class="iconfont">&#xe600;</i>
-        </el-upload>
-        <div class="card">银行卡</div>
-        <el-dialog :visible.sync="uploadData.dialogVisible">
-          <img width="100%" :src="uploadData.dialogImageUrl" alt="">
-        </el-dialog>
+        <!--<el-upload-->
+          <!--:action="getAction(clientCertificationId)"-->
+          <!--list-type="picture-card"-->
+          <!--accept="image/*"-->
+          <!--:on-change="uploadChange"-->
+          <!--:on-success="uploadSuccess"-->
+          <!--:headers="uploadData.headers"-->
+          <!--:file-list="uploadData.fileList"-->
+          <!--:on-preview="handlePictureCardPreview">-->
+          <!--<i class="iconfont">&#xe600;</i>-->
+        <!--</el-upload>-->
+        <!--<div class="card">银行卡</div>-->
+        <!--<el-dialog :visible.sync="uploadData.dialogVisible">-->
+          <!--<img width="100%" :src="uploadData.dialogImageUrl" alt="">-->
+        <!--</el-dialog>-->
+        <!--<form :action="getAction(clientCertificationId)" enctype="multipart/form-data">-->
+          <input
+            type="file"
+            name="file"
+            id="file"
+            class="inputfile"
+            accept="image/png, image/jpeg, image/gif, image/jpg"
+            @change="changepic"/>
+          <label for="file" class='iconfont icon_bg'>&#xe600;</label> <br>
+          <img :src="imgSrc" id="show" width="200">
+        <!--</form>-->
       </div>
     </div>
     <div class="submit_form">
@@ -52,8 +63,8 @@
 </template>
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
-  import {getStore} from '@/config/mUtils'
-  import {uploadBankCard} from '@/service/api/customers'
+//  import {getStore} from '@/config/mUtils'
+  import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
 
   export default {
     name: 'Bankcard',
@@ -66,13 +77,6 @@
     },
     data () {
       return {
-//        1 中国银行
-//        2 招商银行
-//        3 建设银行
-//        4 汇丰银行
-//        5 渣打银行
-//        6 花旗银行
-//        7 农业银行
         bankList: [[
           {
             name: '中国银行',
@@ -117,20 +121,21 @@
           bankCardNumber: ''
         },
         clientCertificationId: '',
-        uploadData: {
-          dialogVisible: false,
-          dialogImageUrl: '',
-          fileList: [],
-          headers: {
-            'X-Token': getStore('token')
-          },
-          card_front_url: ''
-        },
+//        uploadData: {
+//          dialogVisible: false,
+//          dialogImageUrl: '',
+//          fileList: [],
+//          headers: {
+//            'X-Token': getStore('token')
+//          },
+//          card_front_url: ''
+//        },
         name: '',
         nationality: '',
         mobile: '',
         city: '',
-        clientId: ''
+        clientId: '',
+        imgSrc: ''
       }
     },
     mounted () {
@@ -142,6 +147,24 @@
       this.clientCertificationId = this.$route.params.clientCertificationId
     },
     methods: {
+      changepic (value) {
+//          console.log(value)
+        let reads = new FileReader()
+        let f = document.getElementById('file').files[0]
+        reads.readAsDataURL(f)
+        reads.onload = (e) => {
+          let params = {
+              file: f
+          }
+          console.log(params)
+          this.imgSrc = e.target.result
+          let config = {
+            headers: {'Content-Type': 'multipart/form-data'}
+          }
+          updateFrontPic(this.clientCertificationId, params, config).then(res => {
+          })
+        }
+      },
       changeValue (value) {
         console.log(value)
       },
@@ -162,43 +185,43 @@
       getAction (id) {
         return 'http://10.9.60.141:5000/api/v1/client/customers/' + id + '/bankcards/front/'
       },
-      uploadChange (file) {
-        const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'image/gif')
-        const isLt1M = file.size / 1024 / 1024 < 1
-
-        if (!isIMAGE) {
-          this.$message.error('上传文件只能是图片格式!')
-          return false
-        }
-        if (!isLt1M) {
-          this.$message.error('上传文件大小不能超过 1MB!')
-          return false
-        }
-        let reader = new FileReader()
-        reader.readAsDataURL(file.raw)
-      },
-      handlePictureCardPreview (file) {
-        this.dialogImageUrl = file.url
-        this.dialogVisible = true
-      },
-      uploadSuccess (file) {
-        this.domHander()
-        console.log(file)
-        this.card_front_url = file.card_front_url
-      },
-      domHander () {
-        document.querySelectorAll('.el-upload-list__item-delete').forEach((value, index) => {
-          value.classList.add('el-upload-list__item-close')
-          value.classList.remove('el-upload-list__item-delete')
-        })
-        Array.from(document.querySelectorAll('.el-icon-delete')).forEach((value, index) => {
-          value.classList.add('el-icon-close')
-          value.classList.remove('el-icon-delete')
-        })
-        Array.from(document.querySelectorAll('.el-icon-zoom-in')).forEach((value, index) => {
-          value.parentNode.removeChild(value)
-        })
-      },
+//      uploadChange (file) {
+//        const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'image/gif')
+//        const isLt1M = file.size / 1024 / 1024 < 1
+//
+//        if (!isIMAGE) {
+//          this.$message.error('上传文件只能是图片格式!')
+//          return false
+//        }
+//        if (!isLt1M) {
+//          this.$message.error('上传文件大小不能超过 1MB!')
+//          return false
+//        }
+//        let reader = new FileReader()
+//        reader.readAsDataURL(file.raw)
+//      },
+//      handlePictureCardPreview (file) {
+//        this.dialogImageUrl = file.url
+//        this.dialogVisible = true
+//      },
+//      uploadSuccess (file) {
+//        this.domHander()
+//        console.log(file)
+//        this.card_front_url = file.card_front_url
+//      },
+//      domHander () {
+//        document.querySelectorAll('.el-upload-list__item-delete').forEach((value, index) => {
+//          value.classList.add('el-upload-list__item-close')
+//          value.classList.remove('el-upload-list__item-delete')
+//        })
+//        Array.from(document.querySelectorAll('.el-icon-delete')).forEach((value, index) => {
+//          value.classList.add('el-icon-close')
+//          value.classList.remove('el-icon-delete')
+//        })
+//        Array.from(document.querySelectorAll('.el-icon-zoom-in')).forEach((value, index) => {
+//          value.parentNode.removeChild(value)
+//        })
+//      },
       submitBankInfos () {
         let bankId = ''
         switch (this.personInfo.bankName[0]) {
@@ -249,6 +272,9 @@
   }
 </script>
 <style lang="less">
+  .inputfile {
+    opacity: 0;
+  }
   .bankcard {
     .card {
       font-size: 30px;
@@ -304,6 +330,23 @@
       box-sizing: border-box;
       .upload_cont {
         text-align: center;
+        width: 270px;
+        height: 180px;
+        background-color: #ddd;
+        border-radius: 8px;
+        position: relative;
+        margin: 0 auto;
+        .icon_bg {
+          font-size: 115px;
+        }
+        .inputfile {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: block;
+          left: 0;
+          top: 0;
+        }
       }
       .front_class {
         font-size: 30px;

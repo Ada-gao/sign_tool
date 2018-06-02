@@ -132,34 +132,37 @@ export default {
 //          debugger
           this.$store.state.token = res.data.token
           window.localStorage.setItem('token', this.$store.state.token)
-          let queryUrl = this.$router.currentRoute.query
-          let url = ''
+//          let queryUrl = this.$router.currentRoute.query
+//          let url = ''
           // let name = ''
-          if (queryUrl) {
+//          if (queryUrl) {
             // name = queryUrl.Rurl.slice(1) || queryUrl.redirect
-            url = queryUrl.Rurl || queryUrl.redirect
-          } else {
+//            url = queryUrl.Rurl || queryUrl.redirect
+//          } else {
             // name = 'CustomerList'
-            url = 'customerList'
-          }
-          console.log(queryUrl)
+//            url = 'customerList'
+//          }
+//          console.log(queryUrl)
           let data = {
             'email': res.data.email,
             'userId': res.data.user_id
           }
           window.localStorage.setItem('data', JSON.stringify(data))
-          this.$router.push({path: decodeURIComponent(url)})
+//          this.$router.push({path: decodeURIComponent(url)})
+          this.$router.push({name: 'HomePage'})
           // this.$router.push({name: name, params: {email: res.data.email, userId: res.data.user_id}})
         } else {
           return false
         }
       })
       .catch(err => {
-        this.errorTip = true
-        this.errorMsg = '验证码错误，请重新发送！'
-        setTimeout(() => {
-          this.errorMsg = ''
-          }, 5000)
+          if (err) {
+            this.errorTip = true
+            this.errorMsg = '验证码错误，请重新发送！'
+            setTimeout(() => {
+              this.errorMsg = ''
+            }, 5000)
+          }
       })
     },
     getIdentifyingCode () {
