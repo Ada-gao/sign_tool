@@ -300,10 +300,14 @@ export default {
       .suc{
         font-size: 100px;
         color: #74BA3B;
+        display: inline-block;
+        margin: 40px 0;
       }
       .noS{
         font-size: 100px;
         color: #C61D1A;
+        display: inline-block;
+        margin: 40px 0;
       }
       .success{
         // margin-top: 30px;
