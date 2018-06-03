@@ -143,42 +143,6 @@
           }
         })
       },
-      uploadChange (file) {
-        const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'image/gif')
-        const isLt1M = file.size / 1024 / 1024 < 1
-
-        if (!isIMAGE) {
-          this.$message.error('上传文件只能是图片格式!')
-          return false
-        }
-        if (!isLt1M) {
-          this.$message.error('上传文件大小不能超过 1MB!')
-          return false
-        }
-        let reader = new FileReader()
-        reader.readAsDataURL(file.raw)
-      },
-      handlePictureCardPreview (file) {
-        this.uploadData.dialogImageUrl = file.url
-        this.uploadData.dialogVisible = true
-      },
-      uploadSuccess (file) {
-        this.domHander()
-        this.card_front_url = file.card_front_url
-      },
-      domHander () {
-        document.querySelectorAll('.el-upload-list__item-delete').forEach((value, index) => {
-          value.classList.add('el-upload-list__item-close')
-          value.classList.remove('el-upload-list__item-delete')
-        })
-        Array.from(document.querySelectorAll('.el-icon-delete')).forEach((value, index) => {
-          value.classList.add('el-icon-close')
-          value.classList.remove('el-icon-delete')
-        })
-        Array.from(document.querySelectorAll('.el-icon-zoom-in')).forEach((value, index) => {
-          value.parentNode.removeChild(value)
-        })
-      },
       submitInfos () {
         sendFiles(this.uploadData.clientCertificationId, {certification_type: this.convert(this.radio)}).then(res => {
           if (res.status === 200) {

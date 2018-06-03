@@ -238,6 +238,7 @@
       font-size: 30px;
       color: #333;
       border-bottom: 1px solid #D9D9D9;
+      background-color: #fff;
       span {
         color: #999;
       }
@@ -263,6 +264,7 @@
       }
     }
     .upload_box {
+      background-color: #fff;
       height: 333px;
       padding: 51px 60px;
       padding-bottom: 0;

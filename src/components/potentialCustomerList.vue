@@ -52,7 +52,7 @@
       <div class="product">
         <group>
           <cell
-            is-link
+            :is-link="!convert(data.realname_status, disabled)"
             :link="{name: 'Certified',params: {
                  id: clientId,
                  email: email,
@@ -79,7 +79,6 @@
             </router-link>
           </li>
         </ul>
-        <div class="space"></div>
       </div>
       <div class="bottom-remark">
         <div class="add clearfix">
@@ -167,12 +166,12 @@
       if (this.showHideOnBlur) {
         document.getElementById('inputing').focus()
       }
-      checkCustomerRemarks().then(res => {
+      this.clientId = this.$route.params.id
+      checkCustomerRemarks(this.clientId).then(res => {
         if (res.status === 200) {
           this.remarkList = res.data
         }
       })
-      this.clientId = this.$route.params.id
       checkCusomersDetail(this.clientId).then(res => {
         this.data = res.data
         this.clientName = res.data.name

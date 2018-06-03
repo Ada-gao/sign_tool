@@ -104,13 +104,13 @@
           <cell-box>备注</cell-box>
         </group>
         <ul>
-        	<li v-for="(item, index) in remarkList" :key="index">
-        		<div class="iText text-overflow-one">{{item.text}}</div>
-        		<span class="iTime">{{item.time}}</span>
-        		<!-- <i class="icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i> -->
-        		<!-- <b class="fr"><i class="iconfont icon-view"></i>&nbsp;查看</b> -->
-						<router-link class="view fr" to="/writeNotes"><i class="iconfont icon-view"></i>&nbsp;查看</router-link>
-        	</li>
+          <li v-for="(item, index) in remarkList" :key="index">
+            <div class="iText text-overflow-one">{{item.remark}}</div>
+            <span class="iTime">{{item.create_time}}</span>
+            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i
+              class="iconfont icon-view"></i>&nbsp;查看
+            </router-link>
+          </li>
         </ul>
 				<div class="space"></div>
 			</div>
@@ -135,7 +135,7 @@
 
 <script>
 import { XHeader, Group, Cell, CellBox, Flexbox, FlexboxItem, XDialog, TransferDomDirective as TransferDom, CellFormPreview } from 'vux'
-import { checkCusomersDetail } from '@/service/api/customers'
+import { checkCusomersDetail, checkCustomerRemarks, addCustomerRemarks } from '@/service/api/customers'
 
 export default {
   name: 'CustomerManagement',
@@ -159,22 +159,7 @@ export default {
       clientId: '',
       clientType: '',
       stat: '',
-  		reportList: [
-				{
-					title: '组合报告1',
-					toLink: '/combinedReport'
-				}, {
-					title: '组合报告2',
-					toLink: '/combinedReport'
-				}
-  		],
-  		remarkList: [{
-  			text: '客户资金2月18号到期，愿意购买正收益理财产品',
-  			time: '2018-1-8'
-			}, {
-				text: '客户正在搜寻二级市场产品',
-				time: '2018-1-8'
-			}],
+  		remarkList: [],
 			showHideOnBlur: false,
 			remarkInfo: null,
 			remarkInput: null,
@@ -196,6 +181,11 @@ export default {
   		document.getElementById('inputing').focus()
 		}
 		let clientId = this.$route.params.id
+    checkCustomerRemarks(this.clientId).then(res => {
+      if (res.status === 200) {
+        this.remarkList = res.data
+      }
+    })
     clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
 		checkCusomersDetail(clientId).then(res => {
 			this.data = res.data
@@ -243,10 +233,18 @@ export default {
   		}
   		if (!this.remarkInfo || this.remarkInfo.trim().length === 0) return
   		this.remarkList.push({
-  			text: this.remarkInfo.trim(),
-  			time: dateFormat(new Date(), 'yyyy-MM-dd')
+  			remark: this.remarkInfo.trim(),
+  			create_time: dateFormat(new Date(), 'yyyy-MM-dd')
   		})
-  		this.remarkInfo = ''
+      let params = {
+        remark: this.remarkInfo,
+        client_name: this.clientName
+      }
+      addCustomerRemarks(this.clientId, params).then(res => {
+        if (res.status === 200) {
+          this.remarkInfo = ''
+        }
+      })
 		},
 		toLink () {
 			this.$router.push({name: 'NewCustomer', params: {isMod: 1}})
