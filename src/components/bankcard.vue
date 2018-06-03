@@ -29,7 +29,7 @@
         <div class="upload_cont" @click="selectcamera()">
           <input type="file"
                  id="file"
-                 @click.native="prevent"
+                 @click.native="prevent($event)"
                  accept="image/png, image/jpeg, image/gif, image/jpg"
                  class="inputfile">
           <div class='iconfont icon_bg'>&#xe600;</div>
@@ -183,6 +183,7 @@
         }
         let formData = new FormData()
         formData.append('file', file)
+        alert(formData)
         updateFrontPic(this.clientCertificationId, formData).then(res => {
           if (res.status === 200) {
               this.popupVisible = false
