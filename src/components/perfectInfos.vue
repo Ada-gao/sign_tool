@@ -1,7 +1,7 @@
 <template>
   <div class="perfect_infos">
     <x-header :left-options="{backText: ''}">客户认证</x-header>
-    <group class="perfect_group">
+    <group class="perfect_group wrapper">
       <div class="add_tit">
         <i class="iconfont">&#xe62c;</i>
         <span style="color: #2672ba">客户信息</span>
@@ -254,7 +254,7 @@
 
   .perfect_infos {
     .perfect_group {
-      padding-top: 118px;
+      /*padding-top: 118px;*/
     }
     .myBank {
       background-color: #fff;

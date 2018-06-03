@@ -4,48 +4,50 @@
               @on-click-back="toLink"
     >客户认证
     </x-header>
-    <group class="bankcard_cont">
-      <x-input title="持卡人："
-               v-model="personInfo.cardOwner"
-      ></x-input>
-      <!--<x-input title="开户银行："-->
-      <!--v-model="personInfo.bankAccount"-->
-      <!--&gt;</x-input>-->
-      <popup-picker title="开户银行："
-                    :data="bankList"
-                    v-model="personInfo.bankName"
-                    @on-change="changeValue"
-      ></popup-picker>
-      <x-input title="支行："
-               v-model="personInfo.branchBank"
-      ></x-input>
-      <x-input title="银行卡号："
-               v-model="personInfo.bankCardNumber"
-      ></x-input>
-    </group>
-    <div class="space"></div>
-    <div class="upload">证件信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
-    <div class="upload_box">
-      <div class="upload_cont">
-        <form
-          id="form"
-          :action="getAction(clientCertificationId)"
-          method="post"
-          enctype="multipart/form-data">
-          <input
-            type="file"
-            name="file"
-            id="file"
-            class="inputfile"
-            accept="image/png, image/jpeg, image/gif, image/jpg"
-            @change="changepic"/>
-          <label for="file" class='iconfont icon_bg'>&#xe600;</label> <br>
-          <img :src="imgSrc" id="show" v-show="imgSrc">
-        </form>
+    <div class="wrapper">
+      <group class="bankcard_cont">
+        <x-input title="持卡人："
+                 v-model="personInfo.cardOwner"
+        ></x-input>
+        <!--<x-input title="开户银行："-->
+        <!--v-model="personInfo.bankAccount"-->
+        <!--&gt;</x-input>-->
+        <popup-picker title="开户银行："
+                      :data="bankList"
+                      v-model="personInfo.bankName"
+                      @on-change="changeValue"
+        ></popup-picker>
+        <x-input title="支行："
+                 v-model="personInfo.branchBank"
+        ></x-input>
+        <x-input title="银行卡号："
+                 v-model="personInfo.bankCardNumber"
+        ></x-input>
+      </group>
+      <div class="space"></div>
+      <div class="upload">证件信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
+      <div class="upload_box">
+        <div class="upload_cont">
+          <form
+            id="form"
+            :action="getAction(clientCertificationId)"
+            method="post"
+            enctype="multipart/form-data">
+            <input
+              type="file"
+              name="file"
+              id="file"
+              class="inputfile"
+              accept="image/png, image/jpeg, image/gif, image/jpg"
+              @change="changepic"/>
+            <label for="file" class='iconfont icon_bg'>&#xe600;</label> <br>
+            <img :src="imgSrc" id="show" v-show="imgSrc">
+          </form>
+        </div>
       </div>
-    </div>
-    <div class="submit_form">
-      <button class="submit" @click="submitBankInfos">提交</button>
+      <div class="submit_form">
+        <button class="submit" @click="submitBankInfos">提交</button>
+      </div>
     </div>
   </div>
 </template>
@@ -224,7 +226,7 @@
       margin-top: 10px;
     }
     .bankcard_cont {
-      padding-top: 108px;
+      /*padding-top: 108px;*/
       .weui-cells .weui-cell {
         line-height: 82px;
         color: #333;

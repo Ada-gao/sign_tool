@@ -3,7 +3,7 @@
     <x-header :left-options="{backText: '',preventGoBack:true}"
               @on-click-back="toLink1">潜客详情
     </x-header>
-    <div class="potential">
+    <div class="potential wrapper">
       <div class="info">
         <group>
           <cell-box>
@@ -301,13 +301,8 @@
     margin-bottom: 0;
     height: auto;
   }
-  @media only screen and (width: 375px) and (height: 690px){
-    .potential {
-      padding-top: 145px;
-    }
-  }
   .potential {
-    padding-top: 108px;
+    /*padding-top: 108px;*/
     .no_bbottom .weui-cells::after {
       content: none;
     }
@@ -389,7 +384,7 @@
       margin-left: -8px;
     }
     .remark {
-      padding-bottom: 120px;
+      /*padding-bottom: 120px;*/
       background-color: #fff;
       .weui-cells .weui-cell {
         border-bottom: 1px solid #979797;
@@ -398,7 +393,7 @@
         font-size: 32px; /*px*/
       }
       ul {
-        padding-bottom: 20px;
+        /*padding-bottom: 20px;*/
         li {
           padding: 20px 120px 0 68px;
           font-size: 24px; /*px*/

@@ -4,7 +4,7 @@
               left-options.preventGoBack="true"
               on-click-back="toLink(id)">客户认证
     </x-header>
-    <div class="certified_cont">
+    <div class="certified_cont wrapper">
       <div class="radio_box">
         <!--<div class="type">投资者类型：</div>-->
         <mt-radio
@@ -225,7 +225,7 @@
       height: 22px;
     }
     .certified_cont {
-      padding-top: 108px;
+      /*padding-top: 108px;*/
       .radio_box {
         padding: 0 20px;
         background-color: #fff;

@@ -4,7 +4,7 @@
               left-options.preventGoBack="true"
               on-click-back="toLink(id)">已购买产品
     </x-header>
-    <div class="content">
+    <div class="content wrapper">
       <ul class="tabbar">
         <li v-for="(item,index) in tabBars"
             :key="index"
@@ -83,7 +83,7 @@
       background-color: #f5f5f5;
     }
     .content {
-      padding-top: 108px;
+      /*padding-top: 108px;*/
     }
     ul.tabbar {
       font-size: 0;

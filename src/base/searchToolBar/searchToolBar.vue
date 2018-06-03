@@ -61,7 +61,7 @@ export default {
 
 <style scoped lang="less">
 .search {
-  padding-top: 108px;
+  /*padding-top: 108px;*/
   text-align: center;
   background-color: #fff;
   height: 118px;
