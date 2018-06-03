@@ -120,9 +120,9 @@
         </div>
       </div>
       <div v-transfer-dom>
-        <x-dialog v-model="showHideOnBlur" class="dialog-demo" hide-on-blur>
+        <x-dialog v-model="showHideOnBlur" class="dialog-demo">
           <div class="img-box">
-            <textarea v-focus id="inputing" name="" rows="" cols="" v-model="remarkInfo"></textarea>
+            <x-textarea auto-focus id="inputing" ref="inputing" v-model="remarkInfo"></x-textarea>
           </div>
           <div style="text-align: right;">
             <button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>
@@ -134,7 +134,7 @@
 </template>
 
 <script>
-import { XHeader, Group, Cell, CellBox, Flexbox, FlexboxItem, XDialog, TransferDomDirective as TransferDom, CellFormPreview } from 'vux'
+import { XHeader, Group, Cell, CellBox, Flexbox, FlexboxItem, XDialog, XTextarea, TransferDomDirective as TransferDom, CellFormPreview } from 'vux'
 import { checkCusomersDetail, checkCustomerRemarks, addCustomerRemarks } from '@/service/api/customers'
 
 export default {
@@ -150,6 +150,7 @@ export default {
     Flexbox,
     FlexboxItem,
     XDialog,
+    XTextarea,
 		CellFormPreview
   },
   data () {
@@ -178,7 +179,9 @@ export default {
   },
   mounted () {
   	if (this.showHideOnBlur) {
-  		document.getElementById('inputing').focus()
+  	    console.log(this.$refs.inputing)
+//  		document.getElementById('inputing').focus()
+      this.$refs.inputing.focus()
 		}
 		let clientId = this.$route.params.id
     checkCustomerRemarks(this.clientId).then(res => {
@@ -207,7 +210,10 @@ export default {
   	// },
   	addNew () {
   		this.showHideOnBlur = true
-  		document.getElementById('inputing').focus()
+      console.log(this.$refs.inputing)
+//  		document.getElementById('inputing').focus()
+      this.$refs.inputing.focus()
+//  		document.getElementById('inputing').focus()
   	},
   	submitAddNew () {
 			this.showHideOnBlur = false

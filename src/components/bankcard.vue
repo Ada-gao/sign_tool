@@ -183,7 +183,7 @@
         }
         let formData = new FormData()
         formData.append('file', file)
-        alert(formData)
+        console.log(formData)
         updateFrontPic(this.clientCertificationId, formData).then(res => {
           if (res.status === 200) {
               this.popupVisible = false
