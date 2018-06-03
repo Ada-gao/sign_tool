@@ -2,26 +2,6 @@
   <div class="loginPage">
     <x-header :left-options="{showBack: false}">登录</x-header>
     <div class="wrapper">
-      <!-- <input class="borderB-1 user" type="tel" v-model="username" placeholder="请输入手机号/邮箱地址"><br> -->
-      <!-- <el-input
-        class="borderB-1 user"
-        placeholder="请您输入手机号"
-        v-model="username"
-        @change="userChange(username)">
-        <i slot="prefix" class="el-input__icon iconfont">&#xe631;</i>
-      </el-input>
-      <div class="userTip">{{msgTip}}</div>
-      <div class="group">
-        <el-input
-          class="borderB-1"
-          placeholder="请您输入验证码"
-          v-model="num"
-          @focus="numChange">
-          <i slot="prefix" class="el-input__icon iconfont">&#xe61b;</i>
-        </el-input>
-        <button class="idt absolute-center-y" @click="getIdentifyingCode" v-show="show">获取验证码</button>
-        <span class="btn btn-gray idt absolute-center-y" v-show="!show">{{count}} s</span>
-      </div> -->
       <group>
         <x-input
           class="borderB-1 user"
@@ -46,8 +26,6 @@
         </div>
       </group>
       <div class="error" >{{errorMsg}}</div>
-      <!-- <div class="noError" v-show="!errorTip"></div> -->
-      <!-- <x-button class="btn" @click="commit">提交</x-button> -->
       <div class="btn_wrap">
         <x-button type="primary" :disabled="logIn" @click.native="nextStep">登录</x-button>
       </div>
@@ -155,6 +133,7 @@ export default {
         }
       })
       .catch(err => {
+        if (err) {}
         this.errorTip = true
         this.errorMsg = '验证码错误，请重新发送！'
         setTimeout(() => {
