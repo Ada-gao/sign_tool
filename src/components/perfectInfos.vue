@@ -84,6 +84,7 @@
         </form>
       </div>
       <span class="front_class">正面</span>
+
       <span class="back_class">反面</span>
     </div>
     <div class="space"></div>

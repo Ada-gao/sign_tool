@@ -61,8 +61,11 @@ export default {
 
 <style scoped lang="less">
 .search {
-  padding: 128px 0 20px;
+  padding-top: 108px;
   text-align: center;
+  background-color: #fff;
+  height: 118px;
+  line-height: 118px;
 	.ipt {
 		border: 1px solid #ccc; /*no*/
 		padding: 21px 34px;

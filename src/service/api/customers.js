@@ -48,9 +48,9 @@ export function checkCusomersDetail (clientId) {
 /**
  * 查看所有客户备注以及信息过滤
  */
-export function checkCustomerRemarks () {
+export function checkCustomerRemarks (id) {
   return axios({
-    url: '/v1/client/customers/remarks/',
+    url: `/v1/client/customers/remarks/${id}`,
     method: 'get'
   })
 }
