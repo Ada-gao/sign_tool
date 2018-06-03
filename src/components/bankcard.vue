@@ -48,11 +48,22 @@
       <div class="submit_form">
         <button class="submit" @click="submitBankInfos">提交</button>
       </div>
+      <div @click="selectcamera()" style="font-size: 100px;">aaa</div>
+      <mt-popup v-model="popupVisible"
+                position="bottom"
+                style="width: 100%;font-size: 60px; text-align: center;line-height: 100px">
+        <div>
+          <div class='popup-item' @click="camera()">相机</div>
+          <div class='popup-item' @click="photo()">从相册中选取</div>
+          <div class='popup-item' @click="cancel()">取消</div>
+        </div>
+      </mt-popup>
     </div>
   </div>
 </template>
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
+  import {Popup} from 'mint-ui'
   //  import {getStore} from '@/config/mUtils'
   import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
 
@@ -63,7 +74,8 @@
       Group,
       Cell,
       XInput,
-      PopupPicker
+      PopupPicker,
+      'mt-popup': Popup
     },
     data () {
       return {
@@ -104,6 +116,7 @@
             index: '7'
           }
         ]],
+        popupVisible: false,
         personInfo: {
           cardOwner: '',
           bankName: [],
@@ -137,6 +150,36 @@
       this.clientCertificationId = this.$route.params.clientCertificationId
     },
     methods: {
+      selectcamera () {
+        this.popupVisible = true
+      },
+      cancel () {
+          this.popupVisible = false
+      },
+      camera () {
+        let cameraOptions = {
+          quality: 50,
+          sourceType: 1,
+          destinationType: 1
+        }
+        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
+      },
+      photo () {
+        let cameraOptions = {
+          quality: 50,
+          sourceType: 0,
+          destinationType: 1
+        }
+        console.log(this.cordova)
+        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
+      },
+      cameraSuccess (imageData) {
+          console.log(imageData)
+        this.image = imageData
+      },
+      cameraError (message) {
+        alert(message)
+      },
       changepic (value) {
         let reads = new FileReader()
         let file = document.getElementById('file').files[0]
