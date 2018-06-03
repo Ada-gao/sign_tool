@@ -15,7 +15,6 @@
         <popup-picker title="开户银行："
                       :data="bankList"
                       v-model="personInfo.bankName"
-                      @on-change="changeValue"
         ></popup-picker>
         <x-input title="支行："
                  v-model="personInfo.branchBank"
@@ -25,36 +24,39 @@
         ></x-input>
       </group>
       <div class="space"></div>
-      <div class="upload">证件信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
+      <div class="upload">银行卡信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
       <div class="upload_box">
-        <div class="upload_cont">
-          <form
-            id="form"
-            :action="getAction(clientCertificationId)"
-            method="post"
-            enctype="multipart/form-data">
-            <input
-              type="file"
-              name="file"
-              id="file"
-              class="inputfile"
-              accept="image/png, image/jpeg, image/gif, image/jpg"
-              @change="changepic"/>
-            <label for="file" class='iconfont icon_bg'>&#xe600;</label> <br>
-            <img :src="imgSrc" id="show" v-show="imgSrc">
-          </form>
+        <div class="upload_cont" @click="selectcamera()">
+          <input type="file"
+                 id="file"
+                 accept="image/png, image/jpeg, image/gif, image/jpg"
+                 class="inputfile">
+          <div class='iconfont icon_bg'>&#xe600;</div>
+          <img :src="imgSrc" id="show" v-show="imgSrc">
         </div>
       </div>
       <div class="submit_form">
         <button class="submit" @click="submitBankInfos">提交</button>
       </div>
+      <mt-popup v-model="popupVisible"
+                position="bottom"
+                class="camera_pop"
+                style="width: 100%;font-size: 30px; text-align: center;line-height: 90px; color: #333">
+        <div>
+          <div class='popup-item' @click="camera()" style="border: 1px solid #ccc;">相机</div>
+          <div class='popup-item' @click="photo()" style="border: 1px solid #ccc;">从相册中选取</div>
+          <div class='popup-item' @click="cancel()">取消</div>
+        </div>
+      </mt-popup>
     </div>
   </div>
 </template>
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
+  import {Popup} from 'mint-ui'
   //  import {getStore} from '@/config/mUtils'
   import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
+//  import {uploadBankCard} from '@/service/api/customers'
 
   export default {
     name: 'Bankcard',
@@ -63,7 +65,8 @@
       Group,
       Cell,
       XInput,
-      PopupPicker
+      PopupPicker,
+      'mt-popup': Popup
     },
     data () {
       return {
@@ -104,6 +107,7 @@
             index: '7'
           }
         ]],
+        popupVisible: false,
         personInfo: {
           cardOwner: '',
           bankName: [],
@@ -137,7 +141,36 @@
       this.clientCertificationId = this.$route.params.clientCertificationId
     },
     methods: {
-      changepic (value) {
+      selectcamera () {
+        this.popupVisible = true
+      },
+      cancel () {
+          this.popupVisible = false
+      },
+      camera () {
+        let cameraOptions = {
+          quality: 50,
+          sourceType: 1,
+          destinationType: 1
+        }
+        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
+      },
+      photo () {
+        let cameraOptions = {
+          quality: 50,
+          sourceType: 0,
+          destinationType: 1
+        }
+        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
+      },
+      cameraSuccess (imageData) {
+        this.imgSrc = imageData
+        this.uploadFile()
+      },
+      cameraError (message) {
+//        alert(message)
+      },
+      uploadFile () {
         let reads = new FileReader()
         let file = document.getElementById('file').files[0]
         reads.readAsDataURL(file)
@@ -148,12 +181,15 @@
         formData.append('file', file)
         updateFrontPic(this.clientCertificationId, formData).then(res => {
         })
-      },
-      changeValue (value) {
-//        console.log(value)
-      },
-      change (value) {
-//        console.log('new Value', value)
+//        let success = r => {
+//          console.log("上传成功! Code = " + r.responseCode)
+//        }
+//        let fail = error => {
+//          alert("上传失败! Code = " + error.code)
+//        }
+//        let options = new FileUploadOptions()
+//        options.fileKey = "file1"
+//        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1)
       },
       toLink () {
         let params = {
@@ -304,20 +340,6 @@
           left: 0;
           top: 0;
         }
-      }
-      .front_class {
-        font-size: 30px;
-        color: #333;
-        position: absolute;
-        left: 165px;
-        top: 240px;
-      }
-      .back_class {
-        top: 240px;
-        font-size: 30px;
-        color: #333;
-        position: absolute;
-        right: 165px;
       }
     }
   }
