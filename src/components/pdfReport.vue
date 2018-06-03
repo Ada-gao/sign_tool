@@ -298,7 +298,7 @@ export default {
       padding: 0;
       text-align: center;
       .suc{
-        display: inline-block;        
+        display: inline-block;
         font-size: 100px;
         color: #74BA3B;
         margin: 40px 0;
