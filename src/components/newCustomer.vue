@@ -40,11 +40,6 @@
   </div>
 </template>
 
-<i18n>
-  select address:
-  zh-CN: 选择地址
-</i18n>
-
 <script>
 //  import { MessageBox } from 'mint-ui'
   import { XHeader, Group, XInput, XButton, XAddress, ChinaAddressV4Data } from 'vux'

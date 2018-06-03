@@ -3,7 +3,7 @@
     <x-header :left-options="{backText: '',preventGoBack:true}"
               @on-click-back="toLink1">潜客详情
     </x-header>
-    <div class="potential">
+    <div class="potential wrapper">
       <div class="info">
         <group>
           <cell-box>
@@ -111,7 +111,7 @@
     TransferDomDirective as TransferDom,
     CellFormPreview
   } from 'vux'
-  import {checkCusomersDetail, perfectInfos, addCustomerRemarks, checkCustomerRemarks} from '@/service/api/customers'
+  import {checkCusomersDetail, perfectInfos, addCustomerRemarks} from '@/service/api/customers'
 
   export default {
     name: 'PotentialCustomerList',
@@ -167,9 +167,26 @@
         document.getElementById('inputing').focus()
       }
       this.clientId = this.$route.params.id
-      checkCustomerRemarks(this.clientId).then(res => {
+//      checkCustomerRemarks(this.clientId).then(res => {
+//        if (res.status === 200) {
+//          this.remarkList = res.data
+//        }
+//      })
+      this.$axios({
+        url: '/v1/client/customers/remarks/',
+        method: 'get',
+        params: {
+          'client_id': this.clientId
+        }
+      }).then(res => {
+        console.log(res)
         if (res.status === 200) {
-          this.remarkList = res.data
+          if (res.data.length === 0) {
+            this.loadedData = false
+            this.remarkList = []
+          } else {
+            this.remarkList = res.data
+          }
         }
       })
       checkCusomersDetail(this.clientId).then(res => {
@@ -284,9 +301,8 @@
     margin-bottom: 0;
     height: auto;
   }
-
   .potential {
-    padding-top: 108px;
+    /*padding-top: 108px;*/
     .no_bbottom .weui-cells::after {
       content: none;
     }
@@ -368,7 +384,8 @@
       margin-left: -8px;
     }
     .remark {
-      padding-bottom: 120px;
+      /*padding-bottom: 120px;*/
+      background-color: #fff;
       .weui-cells .weui-cell {
         border-bottom: 1px solid #979797;
       }
@@ -376,7 +393,7 @@
         font-size: 32px; /*px*/
       }
       ul {
-        padding-bottom: 20px;
+        /*padding-bottom: 20px;*/
         li {
           padding: 20px 120px 0 68px;
           font-size: 24px; /*px*/

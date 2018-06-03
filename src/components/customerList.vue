@@ -5,54 +5,56 @@
     </x-header>
     <x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询
     </x-header>
-    <!-- 搜索框组件部分 -->
-    <search-tool @searchHandler="updateSearchValue"></search-tool>
-    <div class="space"></div>
-    <!-- 展示搜索部分 -->
-    <div v-show="isCancel===true" class="search-list">
-      <h3 class="searchTitle">搜索结果</h3>
-      <ul :data="searchCustomers">
-        <li v-for="(item, index) in searchCustomers" :key="index" @click="toLink(item.client_id)">
-          <show-search :msg="item" :searchValue="searchVal"></show-search>
-        </li>
-      </ul>
-      <p v-show="!loadedData" style="text-align: center">没有符合你的数据啦</p>
-    </div>
-    <!-- 展示客户列表部分 -->
-    <div class="customer-list" v-show="!isCancel">
-      <tab :line-width="5" active-color="#0083c5" v-model="idx">
-        <tab-item selected @on-item-click="onItemClick">客户列表</tab-item>
-        <tab-item @on-item-click="onItemClick">潜客列表</tab-item>
-      </tab>
-      <ul v-show="idx === 0" :data="customers">
-        <li v-for="(item, index) in customers" :key="index">
-          <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
-            <p>
-              <span class="left-item">{{item.name}}</span>
-              <span class="left-item">（{{item.client_no}}）</span>
-              <span class="left-item" style="display: block;">{{item.mobile}}</span>
-              <span :class="[{'red-color': item.client_type === '1'}, 'right-item']">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
-            </p>
-            <i class="iconfont icon-right"></i>
-          </router-link>
-        </li>
-      </ul>
-      <ul v-show="idx === 1" :data="customers1">
-        <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
-          <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
-            <p>
-              <span class="left-item">{{item.name}}</span>
-              <span class="left-item" v-show="item.client_no">（{{item.client_no}}）</span>
-              <span class="left-item" style="display: block;">{{item.mobile}}</span>
-              <span class="right-item gray-item" v-show="item.certification_status === '0'">未认证</span>
-              <span class="right-item gray-item" v-show="item.certification_status === '1'">认证待审核</span>
-              <span class="right-item gray-item" v-show="item.certification_status === '2'">已认证</span>
-              <span class="right-item gray-item" v-show="item.certification_status === '3'">已驳回</span>
-            </p>
-            <i class="iconfont icon-right"></i>
-          </router-link>
-        </li>
-      </ul>
+    <div class="wrapper">
+      <!-- 搜索框组件部分 -->
+      <search-tool @searchHandler="updateSearchValue"></search-tool>
+      <div class="space"></div>
+      <!-- 展示搜索部分 -->
+      <div v-show="isCancel===true" class="search-list">
+        <h3 class="searchTitle">搜索结果</h3>
+        <ul :data="searchCustomers">
+          <li v-for="(item, index) in searchCustomers" :key="index" @click="toLink(item.client_id)">
+            <show-search :msg="item" :searchValue="searchVal"></show-search>
+          </li>
+        </ul>
+        <p v-show="!loadedData" style="text-align: center">没有符合你的数据啦</p>
+      </div>
+      <!-- 展示客户列表部分 -->
+      <div class="customer-list" v-show="!isCancel">
+        <tab :line-width="5" active-color="#0083c5" v-model="idx">
+          <tab-item selected @on-item-click="onItemClick">客户列表</tab-item>
+          <tab-item @on-item-click="onItemClick">潜客列表</tab-item>
+        </tab>
+        <ul v-show="idx === 0" :data="customers">
+          <li v-for="(item, index) in customers" :key="index">
+            <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
+              <p>
+                <span class="left-item">{{item.name}}</span>
+                <span class="left-item">（{{item.client_no}}）</span>
+                <span class="left-item" style="display: block;">{{item.mobile}}</span>
+                <span :class="[{'red-color': item.client_type === '1'}, 'right-item']">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
+              </p>
+              <i class="iconfont icon-right"></i>
+            </router-link>
+          </li>
+        </ul>
+        <ul v-show="idx === 1" :data="customers1">
+          <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
+            <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
+              <p>
+                <span class="left-item">{{item.name}}</span>
+                <span class="left-item" v-show="item.client_no">（{{item.client_no}}）</span>
+                <span class="left-item" style="display: block;">{{item.mobile}}</span>
+                <span class="right-item gray-item" v-show="item.certification_status === '0'">未认证</span>
+                <span class="right-item gray-item" v-show="item.certification_status === '1'">认证待审核</span>
+                <span class="right-item gray-item" v-show="item.certification_status === '2'">已认证</span>
+                <span class="right-item gray-item" v-show="item.certification_status === '3'">已驳回</span>
+              </p>
+              <i class="iconfont icon-right"></i>
+            </router-link>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>

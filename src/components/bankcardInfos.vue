@@ -1,7 +1,7 @@
 <template>
   <div class="bankcard_infos">
     <x-header :left-options="{backText: ''}">客户认证</x-header>
-    <div class="info_box">
+    <div class="wrapper">
       <group>
         <cell-box class="info_cell">
           <label>持卡人：</label>
@@ -63,7 +63,7 @@
     background-color: #f5f5f5;
   }
   .info_box {
-    padding-top: 108px;
+    /*padding-top: 108px;*/
   }
 
   .fr {

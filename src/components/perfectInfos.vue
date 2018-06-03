@@ -1,7 +1,7 @@
 <template>
   <div class="perfect_infos">
     <x-header :left-options="{backText: ''}">客户认证</x-header>
-    <group class="perfect_group">
+    <group class="perfect_group wrapper">
       <div class="add_tit">
         <i class="iconfont">&#xe62c;</i>
         <span style="color: #2672ba">客户信息</span>
@@ -254,7 +254,7 @@
 
   .perfect_infos {
     .perfect_group {
-      padding-top: 118px;
+      /*padding-top: 118px;*/
     }
     .myBank {
       background-color: #fff;
@@ -365,68 +365,6 @@
         color: #333;
         position: absolute;
         right: 165px;
-      }
-      .el-upload--picture-card {
-        border: none;
-        width: 270px;
-        height: 180px;
-        line-height: 180px;
-        background-color: #ddd;
-        margin-left: 0;
-        i.iconfont {
-          font-size: 110px;
-        }
-      }
-      .el-upload-list {
-        display: inline-block;
-        position: absolute;
-        .el-upload-list__item {
-          width: 270px;
-          height: 180px;
-          display: inline-block;
-          border: none;
-          .el-upload-list__item-name {
-            display: none;
-          }
-          .el-upload-list__item-status-label {
-            display: none;
-          }
-        }
-      }
-      .el-upload-list--picture-card .el-upload-list__item-actions span,
-      .el-upload-list--picture-card .el-upload-list__item .el-icon-close {
-        display: block;
-        right: 0;
-        top: 0;
-        width: 50px;
-        height: 50px;
-        text-align: center;
-        /*position: absolute;*/
-      }
-      .el-upload-list--picture-card .el-upload-list__item-actions span.el-upload-list__item-preview {
-        width: 100%;
-        height: 100%;
-      }
-      .el-dialog {
-        top: 25%;
-        margin: auto;
-        width: 500px;
-        .el-dialog__header {
-          padding: 0;
-          padding-bottom: 40px;
-          .el-dialog__headerbtn {
-            top: 0;
-            right: 0;
-          }
-        }
-        .el-dialog__body {
-          padding: 0 15px 10px;
-          color: #606266;
-          box-sizing: border-box;
-        }
-      }
-      .el-icon-close:before {
-        font-size: 36px;
       }
     }
     .submit_form {

@@ -4,7 +4,7 @@
               left-options.preventGoBack="true"
               on-click-back="toLink(id)">客户认证
     </x-header>
-    <div class="certified_cont">
+    <div class="certified_cont wrapper">
       <div class="radio_box">
         <!--<div class="type">投资者类型：</div>-->
         <mt-radio
@@ -225,7 +225,7 @@
       height: 22px;
     }
     .certified_cont {
-      padding-top: 108px;
+      /*padding-top: 108px;*/
       .radio_box {
         padding: 0 20px;
         background-color: #fff;
@@ -313,66 +313,6 @@
           font-size: 28px;
         }
       }
-    }
-
-    .el-upload--picture-card {
-      border: none;
-      width: 132px;
-      height: 120px;
-      line-height: 120px;
-      background-color: #ddd;
-      margin-left: 0;
-    }
-    .el-upload-list {
-      display: inline-block;
-      padding-left: 39px;
-      /*position: absolute;*/
-      .el-upload-list__item {
-        width: 132px;
-        height: 120px;
-        display: inline-block;
-        border: none;
-        .el-upload-list__item-name {
-          display: none;
-        }
-        .el-upload-list__item-status-label {
-          display: none;
-        }
-      }
-    }
-    .el-upload-list--picture-card .el-upload-list__item-actions span,
-    .el-upload-list--picture-card .el-upload-list__item .el-icon-close {
-      display: block;
-      right: 0;
-      top: 0;
-      width: 50px;
-      height: 50px;
-      text-align: right;
-    }
-    .el-upload-list--picture-card .el-upload-list__item-actions span.el-upload-list__item-preview {
-      width: 100%;
-      height: 100%;
-    }
-    .el-dialog {
-      top: 25%;
-      margin: auto;
-      width: 500px;
-      .el-dialog__header {
-        padding: 0;
-        padding-bottom: 40px;
-        .el-dialog__headerbtn {
-          top: 0;
-          right: 0;
-        }
-      }
-      .el-dialog__body {
-        padding: 0 15px 10px;
-        color: #606266;
-        box-sizing: border-box;
-      }
-    }
-    .el-icon-close:before {
-      font-size: 36px;
     }
   }
 </style>
