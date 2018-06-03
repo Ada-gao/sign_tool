@@ -29,6 +29,7 @@
         <div class="upload_cont" @click="selectcamera()">
           <input type="file"
                  id="file"
+                 @click.native="prevent"
                  accept="image/png, image/jpeg, image/gif, image/jpg"
                  class="inputfile">
           <div class='iconfont icon_bg'>&#xe600;</div>
@@ -141,6 +142,9 @@
       this.clientCertificationId = this.$route.params.clientCertificationId
     },
     methods: {
+        prevent (e) {
+            e.preventDefault()
+        },
       selectcamera () {
         this.popupVisible = true
       },
@@ -180,6 +184,9 @@
         let formData = new FormData()
         formData.append('file', file)
         updateFrontPic(this.clientCertificationId, formData).then(res => {
+          if (res.status === 200) {
+              alert('success')
+          }
         })
 //        let success = r => {
 //          console.log("上传成功! Code = " + r.responseCode)
