@@ -185,6 +185,7 @@
         formData.append('file', file)
         updateFrontPic(this.clientCertificationId, formData).then(res => {
           if (res.status === 200) {
+              this.popupVisible = false
               alert('success')
           }
         })
