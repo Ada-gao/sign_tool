@@ -6,7 +6,7 @@
 					<flexbox-item :span="4" class="item-left">
 						<div class="flex-product">
 							<div class="flex-left">
-								<p class="rate"><span class="number">{{item.annualized_return | twoDecimals}}</span>%</p>
+								<p class="rate"><span class="number">{{item.annualized_return}}</span>%</p>
 								<!-- <p class="rate">{{item.expected_income}}</p> -->
 								<p class="text">近一年收益</p>
 							</div>
@@ -16,7 +16,8 @@
 						<div class="flex-product">
 							<div class="flex-right">
 								<p>{{item.product_name}}</p>
-								<p>起投金额：{{item.minimal_amount}}万</p>
+								<p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
+                <p v-else>购买金额：{{item.amount}}万</p>
 								<p>投资期限：{{item.investment_horizon}}年</p>
 								<span v-if="item.product_status === 0" class="box red">在建</span>
 								<span v-else-if="item.product_status === 1" class="box blue">预热中</span>
@@ -55,6 +56,9 @@ export default {
 	// },
 	methods: {
 		toProductDetail (id, item) {
+		    if (item.minimal_amount === undefined) {
+		        return false
+        }
 			// this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
 			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
 		}

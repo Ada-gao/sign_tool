@@ -2,6 +2,7 @@
   <div class="loginPage">
     <x-header :left-options="{showBack: false}">登录</x-header>
     <div class="wrapper">
+<<<<<<< HEAD
       <group>
         <x-input
           class="borderB-1 user"
@@ -26,6 +27,32 @@
         </div>
       </group>
       <div class="error" >{{errorMsg}}</div>
+=======
+      <!-- <input class="borderB-1 user" type="tel" v-model="username" placeholder="请输入手机号/邮箱地址"><br> -->
+      <el-input
+        class="borderB-1 user"
+        placeholder="请您输入手机号"
+        v-model="username"
+        @change="userChange">
+        <i slot="prefix" class="el-input__icon iconfont">&#xe631;</i>
+      </el-input>
+      <div class="group">
+        <!-- <input class="borderB-1" type="number" v-model="num" placeholder="请输入验证码"> -->
+        <el-input
+          class="borderB-1"
+          placeholder="请您输入验证码"
+          v-model="num"
+          @focus="numChange">
+          <i slot="prefix" class="el-input__icon iconfont">&#xe61b;</i>
+        </el-input>
+        <button class="idt absolute-center-y" @click="getIdentifyingCode" v-show="show">获取验证码</button>
+        <!-- <countdown class="btn btn-gray idt absolute-center-y" v-model="time1" @on-finish="finish" v-show="!show"></countdown> -->
+        <span class="btn btn-gray idt absolute-center-y" v-show="!show">{{count}} s</span>
+      </div>
+      <div class="error" v-show="errorTip">验证码错误，请重新发送！</div>
+      <div class="noError" v-show="!errorTip"></div>
+      <!-- <x-button class="btn" @click="commit">提交</x-button> -->
+>>>>>>> fb669787eaab73e74fdc479c19736fd3bc79b592
       <div class="btn_wrap">
         <x-button type="primary" :disabled="logIn" @click.native="nextStep">登录</x-button>
       </div>
@@ -34,7 +61,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { XHeader, XButton, Countdown, XInput, Group } from 'vux'
+import { XHeader, XButton, Countdown } from 'vux'
 import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken } from '@/service/api/login'
@@ -51,11 +78,7 @@ export default {
       logIn: true,
       userLog: false,
       numLog: false,
-      // errorTip: false,
-      errorMsg: '',
-      msgTip: '',
-      clear: false
-      // telTip: false
+      errorTip: false
       // start: false
 
     }
@@ -63,34 +86,14 @@ export default {
   components: {
     XHeader,
     XButton,
-    Countdown,
-    XInput,
-    Group
+    Countdown
   },
   mounted () {
     this.$store.commit(types.TITLE, 'Your Repositories')
   },
   methods: {
-    userChange (username) {
-      if (/^[0-9]*$/.test(username)) {
-        if (!(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test(username))) {
-          console.log('手机号有误')
-          this.telTip = true
-          this.msgTip = '您输入的手机号有误'
-        } else {
-          this.userLog = true
-        }
-      } else if (!(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(username))) {
-        console.log('邮箱有误')
-        this.telTip = true
-        this.msgTip = '您输入的邮箱有误'
-      } else {
-        this.userLog = true
-      }
-      setTimeout(() => {
-          this.msgTip = ''
-          }, 3000)
-      // ^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$
+    userChange () {
+      this.userLog = true
     },
     numChange () {
       this.numLog = true
@@ -135,14 +138,13 @@ export default {
       .catch(err => {
         if (err) {}
         this.errorTip = true
-        this.errorMsg = '验证码错误，请重新发送！'
         setTimeout(() => {
-          this.errorMsg = ''
+          this.errorTip = false
           }, 5000)
       })
     },
     getIdentifyingCode () {
-      const TIME_COUNT = 60
+      const TIME_COUNT = 5
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false
@@ -169,38 +171,34 @@ export default {
 .loginPage{
   height: 100%;
   font-family: PingFangSC-Regular;
-  background: #F5F5F5;
   .wrapper {
-    .weui-cells{
-      background: #F5F5F5;
+    background: #F5F5F5;
+    height: 100%;
+    text-align: center;
+    .user{
+      margin-top: 150px;
+      margin-bottom: 50px;
     }
-    .weui-cells:after,.weui-cells:before{
-      border: none;
-    }
-    .borderB-1{
+    .el-input{
       width: 650px;
       height: 80px;
       color: #666666;
-      margin: 0 auto;
-      background: #FFFFFF;
-      border: 1px solid #AFAFAF;
-      border-radius: 8px;
-      font-size: 28px;
-      text-indent: 26px;
-      .weui-cell__hd{
+      .el-input__inner{
+        width: 100%;
+        height: 100%;
+        border: 1px solid #AFAFAF;
+        border-radius: 8px;
+        font-size: 28px;
+        text-indent: 66px;
+        padding: 0;
+      }
+      .el-input__prefix{
+        left: 26px;
         i{
           color: #666;
           font-size: 28px;
-          margin-right: 0;
         }
       }
-    }
-    .weui-cell{
-      padding: 0;
-    }
-    .user{
-      margin-top: 150px;
-      // margin-bottom: 50px;
     }
     .btn-gray {
       background-color: #999;
@@ -226,15 +224,6 @@ export default {
       height: 33px;
       line-height: 33px;
       margin: 33px auto;
-      font-size: 24px;
-      color: #B30000;
-    }
-    .userTip{
-      text-align: left;
-      width: 650px;
-      height: 33px;
-      line-height: 33px;
-      margin: 12px auto;
       font-size: 24px;
       color: #B30000;
     }

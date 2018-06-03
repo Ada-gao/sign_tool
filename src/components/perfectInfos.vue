@@ -9,7 +9,7 @@
       <div class="space"></div>
       <cell title="客户姓名：" :value="name"></cell>
       <cell title="国籍：" :value="nationality"></cell>
-      <cell title="常驻中国城市：" :value="city" v-if="nationality === '中国'"></cell>
+      <cell title="常住中国城市：" :value="city" v-if="nationality === '中国'"></cell>
       <cell title="手机号码：" :value="mobile"></cell>
       <x-input title="地址："
                v-model="address"
@@ -50,36 +50,38 @@
     <div class="upload_box">
       <!--<button class="next" @click="submitCustomer">确定</button>-->
       <div class="upload_cont1">
-        <el-upload
+        <form
+          id="form"
           :action="getAction()"
-          list-type="picture-card"
-          accept="image/*"
-          :on-change="uploadChange"
-          :on-success="uploadSuccess"
-          :headers="headers"
-          :file-list="fileList"
-          :on-preview="handlePictureCardPreview">
-          <i class="iconfont">&#xe600;</i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
+          method="post"
+          enctype="multipart/form-data">
+          <input
+            type="file"
+            name="file"
+            id="file1"
+            class="inputfile"
+            accept="image/png, image/jpeg, image/gif, image/jpg"
+            @change="changepic"/>
+          <label for="file1" class='iconfont icon_bg'>&#xe600;</label> <br>
+          <img :src="idImages.front" id="show" v-show="idImages.front">
+        </form>
       </div>
       <div class="upload_cont2">
-        <el-upload
+        <form
+          id="form1"
           :action="getAction()"
-          list-type="picture-card"
-          accept="image/*"
-          :on-change="uploadChange1"
-          :headers="headers"
-          :file-list="fileList1"
-          :on-success="uploadSuccess1"
-          :on-preview="handlePictureCardPreview1">
-          <i class="iconfont">&#xe600;</i>
-        </el-upload>
-        <el-dialog :visible.sync="dialogVisible1">
-          <img width="100%" :src="dialogImageUrl1" alt="">
-        </el-dialog>
+          method="post"
+          enctype="multipart/form-data">
+          <input
+            type="file"
+            name="file"
+            id="file2"
+            class="inputfile"
+            accept="image/png, image/jpeg, image/gif, image/jpg"
+            @change="changepic"/>
+          <label for="file2" class='iconfont icon_bg'>&#xe600;</label> <br>
+          <img :src="idImages.back" id="show1" v-show="idImages.back">
+        </form>
       </div>
       <span class="front_class">正面</span>
       <span class="back_class">反面</span>
@@ -98,8 +100,8 @@
 
 <script>
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, Alert} from 'vux'
-  import {uploadId} from '@/service/api/customers'
-  import {getStore} from '@/config/mUtils'
+  import {uploadId, updateId} from '@/service/api/customers'
+  //  import {getStore} from '@/config/mUtils'
 
   export default {
     name: 'PerfectInfos',
@@ -129,25 +131,16 @@
         endtime: '',
         minYear: 1900,
         maxYear: 3000,
-        dialogImageUrl: '',
-        dialogImageUrl1: '',
-        dialogVisible: false,
-        dialogVisible1: false,
         clientCertificationId: 0,
         certificationValue: [],
         certificateNumber: '',
-        fileList: [],
-        fileList1: [],
         idImages: {
           front: '',
           back: ''
         },
         certificationList: [['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']],
-        headers: {
-          'X-Token': getStore('token')
-        },
         alertMsg: false,
-        alertCont: '未绑定银行卡～',
+        alertCont: '还有信息没填哦～',
         isSubmit: null
       }
     },
@@ -178,69 +171,29 @@
       getAction () {
         return 'http://10.9.60.141:5000/api/v1/common/file_upload/'
       },
-      uploadChange (file) {
-        const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'image/gif')
-        const isLt1M = file.size / 1024 / 1024 < 1
-
-        if (!isIMAGE) {
-          this.$message.error('上传文件只能是图片格式!')
-          return false
+      changepic (value) {
+        let reads = new FileReader()
+        let idStr = ''
+        let imgStr = ''
+        if (value.path[2].className === 'upload_cont1') {
+          idStr = 'file1'
+          imgStr = 'front'
+        } else {
+          idStr = 'file2'
+          imgStr = 'back'
         }
-        if (!isLt1M) {
-          this.$message.error('上传文件大小不能超过 1MB!')
-          return false
+        let file = document.getElementById(idStr).files[0]
+        reads.readAsDataURL(file)
+        reads.onload = (e) => {
+          this.idImages[imgStr] = e.target.result
         }
-//        this.idImages.front = file.response.file_url
-        let reader = new FileReader()
-        reader.readAsDataURL(file.raw)
-      },
-      uploadChange1 (file) {
-        const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/png' || file.raw.type === 'image/gif')
-        const isLt1M = file.size / 1024 / 1024 < 1
-
-        if (!isIMAGE) {
-          this.$message.error('上传文件只能是图片格式!')
-          return false
-        }
-        if (!isLt1M) {
-          this.$message.error('上传文件大小不能超过 1MB!')
-          return false
-        }
-//        this.idImages.back = file.response.file_url
-        let reader = new FileReader()
-        reader.readAsDataURL(file.raw)
-      },
-      handlePictureCardPreview (file) {
-        this.dialogImageUrl = file.url
-        this.dialogVisible = true
-      },
-      handlePictureCardPreview1 (file) {
-        this.dialogImageUrl1 = file.url
-        this.dialogVisible1 = true
-      },
-      uploadSuccess (response, file, fileList) {
-        this.domHander()
-        this.idImages.front = response.file_url
-      },
-      uploadSuccess1 (response, file, fileList) {
-        this.domHander()
-        this.idImages.back = response.file_url
-      },
-      domHander () {
-        document.querySelectorAll('.el-upload-list__item-delete').forEach((value, index) => {
-          value.classList.add('el-upload-list__item-close')
-          value.classList.remove('el-upload-list__item-delete')
-        })
-        Array.from(document.querySelectorAll('.el-icon-delete')).forEach((value, index) => {
-          value.classList.add('el-icon-close')
-          value.classList.remove('el-icon-delete')
-        })
-        Array.from(document.querySelectorAll('.el-icon-zoom-in')).forEach((value, index) => {
-          value.parentNode.removeChild(value)
+        let formData = new FormData()
+        formData.append('file', file)
+        updateId(formData).then(res => {
         })
       },
       submitInfos () {
-        let idType = ''
+          let idType = ''
         if (this.$route.params.isSubmit) {
           this.alertMsg = false
         } else {
@@ -357,10 +310,41 @@
       .upload_cont1,
       .upload_cont2 {
         display: inline-block;
+        position: relative;
+        width: 270px;
+        height: 180px;
+        background-color: #ddd;
+        line-height: 180px;
+        text-align: center;
+        form {
+          height: 100%;
+        }
+        .icon_bg {
+          font-size: 115px;
+        }
+        #show,
+        #show1 {
+          position: absolute;
+          display: block;
+          width: 100%;
+          height: 100%;
+          left: 0;
+          top: 0;
+        }
+        .inputfile {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          display: block;
+          left: 0;
+          top: 0;
+          z-index: 11;
+          opacity: 0;
+        }
       }
       .upload_cont1:first-child,
       .upload_cont2:first-child {
-        margin-right: 60px;
+        margin-right: 80px;
       }
       .front_class {
         font-size: 30px;

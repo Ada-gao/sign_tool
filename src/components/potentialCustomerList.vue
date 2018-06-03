@@ -1,32 +1,17 @@
 <template>
   <div>
     <x-header :left-options="{backText: '',preventGoBack:true}"
-              @on-click-back="toLink1">潜客详情</x-header>
+              @on-click-back="toLink1">潜客详情
+    </x-header>
     <div class="potential">
       <div class="info">
         <group>
           <cell-box>
             <i class="iconfont">&#xe62c;</i>潜客信息
-            <!--<span class="fr" v-if="isFull">完善信息</span>-->
-            <!--<router-link :to="{-->
-            <!--name: 'PerfectInfos',-->
-            <!--params: {-->
-            <!--id: clientId,-->
-            <!--name: clientName,-->
-            <!--nationality: nationality,-->
-            <!--mobile: mobile,-->
-            <!--city: city-->
-            <!--}-->
-            <!--}"-->
-            <!--class="fr"-->
-            <!--v-if="data.realname_status === '0'">完善信息-->
-            <!--</router-link>-->
             <span class="fr"
                   @click="toLink"
                   v-if="data.realname_status === '0'">完善信息</span>
             <span class="fr" v-else>已完善</span>
-            <!--<span class="fr" @click="toLink"><i class="iconfont icon-brush"></i>修改</span>-->
-            <!-- <router-link style="position: absolute; right: 27px; top: 10px" to="/newCustomer/1"><i class="iconfont icon-brush"></i>修改</router-link> -->
           </cell-box>
         </group>
         <div class="space"></div>
@@ -47,7 +32,7 @@
             >其他</span>
           </cell-box>
           <cell-box v-show="data.nationality === '0'">
-            <label>常驻中国城市：</label>
+            <label>常住中国城市：</label>
             <span class="fr">{{data.city}}</span>
           </cell-box>
         </group>
@@ -68,12 +53,14 @@
         <group>
           <cell
             is-link
-            :link="'/certified/'+clientId"
+            :link="{name: 'Certified',params: {
+                 id: clientId,
+                 email: email,
+                 name: clientName}}"
             :title="'投资者类型：'+stat"
             :value="modifiedVal"
             :disabled="convert(data.realname_status, disabled)"
           >
-            <!--<i slot="after-title">专业投资者</i>-->
           </cell>
         </group>
       </div>
@@ -81,17 +68,15 @@
       <div class="space"></div>
       <div class="remark">
         <group>
-          <cell-box>
-            <i class="iconfont icon-cart"></i>备注
-          </cell-box>
+          <cell-box>备注</cell-box>
         </group>
         <ul>
           <li v-for="(item, index) in remarkList" :key="index">
             <div class="iText text-overflow-one">{{item.remark}}</div>
             <span class="iTime">{{item.create_time}}</span>
-            <!-- <i class="icon-trash-2" @click="deleteRemark(index)">&nbsp;删除</i> -->
-            <!-- <b class="fr"><i class="iconfont icon-view"></i>&nbsp;查看</b> -->
-            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i class="iconfont icon-view"></i>&nbsp;查看</router-link>
+            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i
+              class="iconfont icon-view"></i>&nbsp;查看
+            </router-link>
           </li>
         </ul>
         <div class="space"></div>
@@ -154,7 +139,9 @@
         nationality: '',
         city: '',
         mobile: '',
+        email: '',
         clientCertificationId: 0,
+        clientCertificationType: '',
         stat: '',
         remarkList: [],
         showHideOnBlur: false,
@@ -181,17 +168,18 @@
         document.getElementById('inputing').focus()
       }
       checkCustomerRemarks().then(res => {
-          if (res.status === 200) {
-              console.log(res.data)
-              this.remarkList = res.data
-          }
+        if (res.status === 200) {
+          this.remarkList = res.data
+        }
       })
       this.clientId = this.$route.params.id
       checkCusomersDetail(this.clientId).then(res => {
         this.data = res.data
         this.clientName = res.data.name
         this.mobile = res.data.mobile
+        this.email = res.data.email
         this.nationality = res.data.nationality
+        this.clientCertificationType = res.data.certification_type
         this.city = res.data.city
         this.clientClass = res.data.client_class
         this.clientType = res.data.client_type
@@ -201,7 +189,7 @@
             break
           case '1':
             this.stat = '待审核'
-            this.modifiedVal = '修改'
+//            this.modifiedVal = '修改'
             break
           case '2':
             this.stat = '已认证'
@@ -214,22 +202,22 @@
       })
     },
     methods: {
-        convert (state, disabled) {
-            switch (state) {
-              case '0':
-              case '1':
-              case '3':
-                  disabled = true
-                  break
-              case '2':
-                  disabled = false
-                    break
-            }
-            return disabled
-        },
-        toLink1 () {
-            this.$router.replace({name: 'CustomerList'})
-        },
+      convert (state, disabled) {
+        switch (state) {
+          case '0':
+          case '1':
+          case '3':
+            disabled = true
+            break
+          case '2':
+            disabled = false
+            break
+        }
+        return disabled
+      },
+      toLink1 () {
+        this.$router.replace({name: 'CustomerList'})
+      },
       toLink () {
         let params = {
           id: this.clientId,
@@ -271,18 +259,18 @@
         }
         if (!this.remarkInfo || this.remarkInfo.trim().length === 0) return
         this.remarkList.push({
-          text: this.remarkInfo.trim(),
-          time: dateFormat(new Date(), 'yyyy-MM-dd')
+          remark: this.remarkInfo.trim(),
+          create_time: dateFormat(new Date(), 'yyyy-MM-dd')
         })
 
         let params = {
-            remark: this.remarkInfo,
-            client_name: this.clientName
+          remark: this.remarkInfo,
+          client_name: this.clientName
         }
         addCustomerRemarks(this.clientId, params).then(res => {
-            if (res.status === 200) {
-              this.remarkInfo = ''
-            }
+          if (res.status === 200) {
+            this.remarkInfo = ''
+          }
         })
       }
     }
@@ -297,6 +285,7 @@
     margin-bottom: 0;
     height: auto;
   }
+
   .potential {
     padding-top: 108px;
     .no_bbottom .weui-cells::after {
@@ -381,20 +370,23 @@
     }
     .remark {
       padding-bottom: 120px;
+      .weui-cells .weui-cell {
+        border-bottom: 1px solid #979797;
+      }
       .weui-cells .weui-cell i {
         font-size: 32px; /*px*/
       }
       ul {
+        padding-bottom: 20px;
         li {
-          border-bottom: 1px solid #eee; /*no*/
-          padding: 30px 40px;
+          padding: 20px 120px 0 68px;
           font-size: 24px; /*px*/
           .iText {
             margin-bottom: 10px;
             font-size: 28px; /*px*/
           }
           .view {
-            color: #666;
+            color: #2672BA;
           }
           .fr i {
             font-size: 24px; /*px*/
