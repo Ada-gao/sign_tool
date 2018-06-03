@@ -12,12 +12,12 @@ import * as filters from 'common/js/filter.js'
 import { LoadingPlugin } from 'vux'
 import { DatetimePicker, Checklist } from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(LoadingPlugin)
 
-Vue.use(ElementUI)
+// Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 Vue.use(VueCordova)

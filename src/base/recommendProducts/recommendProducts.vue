@@ -5,7 +5,7 @@
 				<div class="flex-product">
 					<div class="flex-left">
 						<p class="rate"><span>{{item.yieldRate | twoDecimals}}</span>%</p>
-						<p class="text">近一年收益</p>
+						<p class="text">收益对标基准</p>
 					</div>
 				</div>
 			</flexbox-item>

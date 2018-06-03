@@ -67,7 +67,7 @@ export default {
 }
 .wrapper {
 	// padding: 20px;
-	height: 1000px;
+	// height: 1000px;
 
 	.inputing {
 		border: none;

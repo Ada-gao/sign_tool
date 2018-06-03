@@ -43,6 +43,7 @@ export default {
   .wrapper {
     // padding-top: 128px;
     background: #fff;
+    height: 100%;
     .logo{
       margin: 352px auto 166px;
       width: 157px;

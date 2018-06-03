@@ -1,6 +1,6 @@
 <template>
   <div class="pptPage">
-    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id,item)">交易所需材料</x-header>
+    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id,item)">产品说明材料</x-header>
     <div class="wrapper">
       <mt-checklist
         v-model="checkedList" :options="newNameList" @change="handleCheckedDocsChange">

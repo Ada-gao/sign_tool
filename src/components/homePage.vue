@@ -95,7 +95,7 @@ export default {
 		vertical-align: bottom;
 	}
 	.wrapper {
-		margin-bottom: 96px;
+		margin-bottom: 116px;
 		background: #F5F5F5;
 		// height: calc(100% - 214px);
 		.weui-cells{

@@ -8,7 +8,7 @@
 							<div class="flex-left">
 								<p class="rate"><span class="number">{{item.annualized_return}}</span>%</p>
 								<!-- <p class="rate">{{item.expected_income}}</p> -->
-								<p class="text">近一年收益</p>
+								<p class="text">收益对标基准</p>
 							</div>
 						</div>
 					</flexbox-item>
