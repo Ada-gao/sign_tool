@@ -2,7 +2,6 @@
   <div class="loginPage">
     <x-header :left-options="{showBack: false}">登录</x-header>
     <div class="wrapper">
-<<<<<<< HEAD
       <group>
         <x-input
           class="borderB-1 user"
@@ -27,32 +26,6 @@
         </div>
       </group>
       <div class="error" >{{errorMsg}}</div>
-=======
-      <!-- <input class="borderB-1 user" type="tel" v-model="username" placeholder="请输入手机号/邮箱地址"><br> -->
-      <el-input
-        class="borderB-1 user"
-        placeholder="请您输入手机号"
-        v-model="username"
-        @change="userChange">
-        <i slot="prefix" class="el-input__icon iconfont">&#xe631;</i>
-      </el-input>
-      <div class="group">
-        <!-- <input class="borderB-1" type="number" v-model="num" placeholder="请输入验证码"> -->
-        <el-input
-          class="borderB-1"
-          placeholder="请您输入验证码"
-          v-model="num"
-          @focus="numChange">
-          <i slot="prefix" class="el-input__icon iconfont">&#xe61b;</i>
-        </el-input>
-        <button class="idt absolute-center-y" @click="getIdentifyingCode" v-show="show">获取验证码</button>
-        <!-- <countdown class="btn btn-gray idt absolute-center-y" v-model="time1" @on-finish="finish" v-show="!show"></countdown> -->
-        <span class="btn btn-gray idt absolute-center-y" v-show="!show">{{count}} s</span>
-      </div>
-      <div class="error" v-show="errorTip">验证码错误，请重新发送！</div>
-      <div class="noError" v-show="!errorTip"></div>
-      <!-- <x-button class="btn" @click="commit">提交</x-button> -->
->>>>>>> fb669787eaab73e74fdc479c19736fd3bc79b592
       <div class="btn_wrap">
         <x-button type="primary" :disabled="logIn" @click.native="nextStep">登录</x-button>
       </div>
