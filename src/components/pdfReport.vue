@@ -298,12 +298,16 @@ export default {
       padding: 0;
       text-align: center;
       .suc{
+        display: inline-block;        
         font-size: 100px;
         color: #74BA3B;
+        margin: 40px 0;
       }
       .noS{
+        display: inline-block;
         font-size: 100px;
         color: #C61D1A;
+        margin: 40px 0;
       }
       .success{
         // margin-top: 30px;

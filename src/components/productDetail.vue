@@ -93,6 +93,7 @@ export default {
     this.item = this.$route.params.item
     // this.email = this.$route.params.email
     // this.userId = this.$route.params.userId
+    window.scroll(0, 0)
   }
 }
 </script>
