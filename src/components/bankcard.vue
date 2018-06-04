@@ -27,11 +27,10 @@
       <div class="upload">银行卡信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
       <div class="upload_box">
         <div class="upload_cont" @click="selectcamera()">
-          <input type="file"
-                 id="file"
-                 @click.native="prevent($event)"
-                 accept="image/png, image/jpeg, image/gif, image/jpg"
-                 class="inputfile">
+          <!--<input type="file"-->
+          <!--id="file"-->
+          <!--accept="image/png, image/jpeg, image/gif, image/jpg"-->
+          <!--class="inputfile">-->
           <div class='iconfont icon_bg'>&#xe600;</div>
           <img :src="imgSrc" id="show" v-show="imgSrc">
         </div>
@@ -56,8 +55,9 @@
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
   import {Popup} from 'mint-ui'
   //  import {getStore} from '@/config/mUtils'
-  import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
-//  import {uploadBankCard} from '@/service/api/customers'
+  //  import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
+  import {baseUrl} from '@/config/env'
+  import {uploadBankCard} from '@/service/api/customers'
 
   export default {
     name: 'Bankcard',
@@ -142,20 +142,21 @@
       this.clientCertificationId = this.$route.params.clientCertificationId
     },
     methods: {
-        prevent (e) {
-            e.preventDefault()
-        },
+      prevent (e) {
+        e.preventDefault()
+      },
       selectcamera () {
         this.popupVisible = true
       },
       cancel () {
-          this.popupVisible = false
+        this.popupVisible = false
       },
       camera () {
         let cameraOptions = {
           quality: 50,
           sourceType: 1,
-          destinationType: 1
+          destinationType: navigator.camera.DestinationType.FILE_URI,
+          saveToPhotoAlbum: true
         }
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
       },
@@ -163,39 +164,57 @@
         let cameraOptions = {
           quality: 50,
           sourceType: 0,
-          destinationType: 1
+          destinationType: navigator.camera.DestinationType.FILE_URI,
+          saveToPhotoAlbum: true
         }
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
       },
+      success () {
+
+      },
       cameraSuccess (imageData) {
         this.imgSrc = imageData
-        this.uploadFile()
+        console.log(imageData)
+//        let file = document.getElementById('file').files[0]
+//        console.log(file)
+        this.uploadFile(imageData)
       },
       cameraError (message) {
 //        alert(message)
       },
-      uploadFile () {
-        let reads = new FileReader()
-        let file = document.getElementById('file').files[0]
-        reads.readAsDataURL(file)
-        reads.onload = (e) => {
-          this.imgSrc = e.target.result
-        }
-        let formData = new FormData()
-        formData.append('file', file)
-        console.log(formData)
-        updateFrontPic(this.clientCertificationId, formData).then(res => {
-          if (res.status === 200) {
-              this.popupVisible = false
-              alert('success')
-          }
-        })
+      uploadFile (imageData) {
+//        let file = document.getElementById('file').files[0]
+//        console.log(file)
+//        let formData = new FormData()
+//        let file = {
+//            filename: imageData,
+//            url: imageData
+//        }
+//        formData.append('file', imageData)
+//        console.log(formData)
 //        let success = r => {
-//          console.log("上传成功! Code = " + r.responseCode)
+//          console.log('上传成功! Code = ' + r.responseCode)
 //        }
 //        let fail = error => {
-//          alert("上传失败! Code = " + error.code)
+//          alert('上传失败! Code = ' + error.code)
 //        }
+//        var options = new FileUploadOptions()
+//        options.fileKey = 'file'
+//        options.fileName = imageData.substr(imageData.lastIndexOf('/') + 1)
+//        options.mimeType = "image/jpeg"
+//        var params = {}
+//        params.value1 = 'test'
+//        params.value2 = 'param'
+//        options.params = params
+//        var ft = new FileTransfer()
+//        var SERVER = 'http://10.9.60.141:5000/api/v1/client/customers/' + this.clientCertificationId + '/bankcards/front/'
+//        ft.upload(imageData, encodeURI(SERVER), success, fail, options)
+//        updateFrontPic(this.clientCertificationId, formData).then(res => {
+//          if (res.status === 200) {
+//              this.popupVisible = false
+//              alert('success')
+//          }
+//        })
 //        let options = new FileUploadOptions()
 //        options.fileKey = "file1"
 //        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1)
@@ -212,7 +231,7 @@
         this.$router.replace({name: 'PerfectInfos', params: params})
       },
       getAction (id) {
-        return 'http://10.9.60.141:5000/api/v1/client/customers/' + id + '/bankcards/front/'
+        return baseUrl + 'v1/client/customers/' + id + '/bankcards/front/'
       },
       submitBankInfos () {
         let bankId = ''

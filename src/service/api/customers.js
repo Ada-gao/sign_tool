@@ -114,7 +114,10 @@ export function updateFrontPic (clientCertificationId, obj) {
   return axios({
     url: `/v1/client/customers/${clientCertificationId}/bankcards/front/`,
     method: 'post',
-    data: obj
+    data: obj,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 
