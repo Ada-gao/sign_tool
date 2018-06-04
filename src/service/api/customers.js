@@ -190,7 +190,10 @@ export function updateId (obj) {
   return axios({
     url: '/v1/common/file_upload/',
     method: 'post',
-    data: obj
+    data: obj,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 /**

@@ -49,39 +49,21 @@
 
     <div class="upload_box">
       <!--<button class="next" @click="submitCustomer">确定</button>-->
-      <div class="upload_cont1">
-        <form
-          id="form"
-          :action="getAction()"
-          method="post"
-          enctype="multipart/form-data">
-          <input
-            type="file"
-            name="file"
-            id="file1"
-            class="inputfile"
-            accept="image/png, image/jpeg, image/gif, image/jpg"
-            @change="changepic"/>
-          <label for="file1" class='iconfont icon_bg'>&#xe600;</label> <br>
-          <img :src="idImages.front" id="show" v-show="idImages.front">
-        </form>
+      <div class="upload_cont1" @click="selectcamera()">
+        <!--<input type="file"-->
+        <!--id="file"-->
+        <!--accept="image/png, image/jpeg, image/gif, image/jpg"-->
+        <!--class="inputfile">-->
+        <div class='iconfont icon_bg'>&#xe600;</div>
+        <img :src="imgSrc" id="show" v-show="imgSrc">
       </div>
-      <div class="upload_cont2">
-        <form
-          id="form1"
-          :action="getAction()"
-          method="post"
-          enctype="multipart/form-data">
-          <input
-            type="file"
-            name="file"
-            id="file2"
-            class="inputfile"
-            accept="image/png, image/jpeg, image/gif, image/jpg"
-            @change="changepic"/>
-          <label for="file2" class='iconfont icon_bg'>&#xe600;</label> <br>
-          <img :src="idImages.back" id="show1" v-show="idImages.back">
-        </form>
+      <div class="upload_cont2" @click="selectcamera()">
+        <!--<input type="file"-->
+        <!--id="file"-->
+        <!--accept="image/png, image/jpeg, image/gif, image/jpg"-->
+        <!--class="inputfile">-->
+        <div class='iconfont icon_bg'>&#xe600;</div>
+        <img :src="imgSrc1" id="show1" v-show="imgSrc1">
       </div>
       <span class="front_class">正面</span>
 
@@ -96,6 +78,15 @@
       <button class="submit" @click="submitInfos">提交</button>
     </div>
     <alert v-model="alertMsg" :content="alertCont"></alert>
+    <mt-popup v-model="popupVisible"
+              position="bottom"
+              class="camera_pop">
+      <div>
+        <div class='popup-item' @click="camera()">相机</div>
+        <div class='popup-item' @click="photo()">从相册中选取</div>
+        <div class='popup-item' @click="cancel()">取消</div>
+      </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -103,6 +94,8 @@
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, Alert} from 'vux'
   import {uploadId, updateId} from '@/service/api/customers'
   //  import {getStore} from '@/config/mUtils'
+  import {baseUrl} from '@/config/env'
+  import {Popup} from 'mint-ui'
 
   export default {
     name: 'PerfectInfos',
@@ -113,7 +106,8 @@
       XInput,
       Datetime,
       PopupPicker,
-      Alert
+      Alert,
+      'mt-popup': Popup
     },
     data () {
       return {
@@ -142,7 +136,10 @@
         certificationList: [['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']],
         alertMsg: false,
         alertCont: '还有信息没填哦～',
-        isSubmit: null
+        isSubmit: null,
+        imgSrc: '',
+        imgSrc1: '',
+        popupVisible: false
       }
     },
     mounted () {
@@ -170,27 +167,61 @@
         this.$router.replace({name: 'Bankcard', params: params})
       },
       getAction () {
-        return 'http://10.9.60.141:5000/api/v1/common/file_upload/'
+        return baseUrl + 'v1/common/file_upload/'
       },
-      changepic (value) {
-        let reads = new FileReader()
-        let idStr = ''
-        let imgStr = ''
-        if (value.path[2].className === 'upload_cont1') {
-          idStr = 'file1'
-          imgStr = 'front'
-        } else {
-          idStr = 'file2'
-          imgStr = 'back'
+      selectcamera () {
+        this.popupVisible = true
+      },
+      cancel () {
+        this.popupVisible = false
+      },
+      camera () {
+        let cameraOptions = {
+          quality: 50,
+          sourceType: 1,
+          destinationType: navigator.camera.DestinationType.DATA_URL,
+          saveToPhotoAlbum: true
         }
-        let file = document.getElementById(idStr).files[0]
-        reads.readAsDataURL(file)
-        reads.onload = (e) => {
-          this.idImages[imgStr] = e.target.result
+        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
+      },
+      photo () {
+        let cameraOptions = {
+          quality: 50,
+          sourceType: 0,
+          destinationType: navigator.camera.DestinationType.DATA_URL,
+          saveToPhotoAlbum: true
         }
+        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
+      },
+      cameraSuccess (imageData) {
+        this.uploadFile(imageData)
+      },
+      cameraError (message) {
+//        alert(message)
+      },
+      dataURLtoFile (imageData, filename) {
+        let arr = imageData.split(',')
+        let mime = arr[0].match(/:(.*?);/)[1]
+        let bstr = window.atob(arr[1])
+        let n = bstr.length
+        let u8arr = new Uint8Array(n)
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n)
+        }
+        let blob = new Blob([u8arr], {type: mime})
+        blob.lastModifiedDate = new Date()
+        blob.name = filename
+        return blob
+      },
+      uploadFile (imageData) {
+        let file = this.dataURLtoFile('data:image/jpeg;base64,' + imageData, 'test.jpeg')
         let formData = new FormData()
         formData.append('file', file)
         updateId(formData).then(res => {
+          if (res.status === 200) {
+            this.imgSrc = 'data:image/jpeg;base64,' + imageData
+            this.popupVisible = false
+          }
         })
       },
       submitInfos () {
@@ -251,7 +282,16 @@
   a:hover {
     text-decoration: none;
   }
-
+  .camera_pop {
+    width: 100%;
+    font-size: 30px;
+    text-align: center;
+    line-height: 90px;
+    color: #333;
+    .popup-item:not(:last-child) {
+      border-bottom: 1px solid #ccc;
+    }
+  }
   .perfect_infos {
     .perfect_group {
       /*padding-top: 118px;*/
@@ -327,6 +367,7 @@
         }
         .icon_bg {
           font-size: 115px;
+          color: #fff;
         }
         #show,
         #show1 {
