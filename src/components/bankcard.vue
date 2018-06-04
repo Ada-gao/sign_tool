@@ -40,11 +40,10 @@
       </div>
       <mt-popup v-model="popupVisible"
                 position="bottom"
-                class="camera_pop"
-                style="width: 100%;font-size: 30px; text-align: center;line-height: 90px; color: #333">
+                class="camera_pop">
         <div>
-          <div class='popup-item' @click="camera()" style="border: 1px solid #ccc;">相机</div>
-          <div class='popup-item' @click="photo()" style="border: 1px solid #ccc;">从相册中选取</div>
+          <div class='popup-item' @click="camera()">相机</div>
+          <div class='popup-item' @click="photo()">从相册中选取</div>
           <div class='popup-item' @click="cancel()">取消</div>
         </div>
       </mt-popup>
@@ -55,9 +54,9 @@
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
   import {Popup} from 'mint-ui'
   //  import {getStore} from '@/config/mUtils'
-  //  import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
+  import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
   import {baseUrl} from '@/config/env'
-  import {uploadBankCard} from '@/service/api/customers'
+  //  import {uploadBankCard} from '@/service/api/customers'
 
   export default {
     name: 'Bankcard',
@@ -142,9 +141,6 @@
       this.clientCertificationId = this.$route.params.clientCertificationId
     },
     methods: {
-      prevent (e) {
-        e.preventDefault()
-      },
       selectcamera () {
         this.popupVisible = true
       },
@@ -155,7 +151,7 @@
         let cameraOptions = {
           quality: 50,
           sourceType: 1,
-          destinationType: navigator.camera.DestinationType.FILE_URI,
+          destinationType: navigator.camera.DestinationType.DATA_URL,
           saveToPhotoAlbum: true
         }
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
@@ -164,60 +160,41 @@
         let cameraOptions = {
           quality: 50,
           sourceType: 0,
-          destinationType: navigator.camera.DestinationType.FILE_URI,
+          destinationType: navigator.camera.DestinationType.DATA_URL,
           saveToPhotoAlbum: true
         }
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
       },
-      success () {
-
-      },
       cameraSuccess (imageData) {
-        this.imgSrc = imageData
-        console.log(imageData)
-//        let file = document.getElementById('file').files[0]
-//        console.log(file)
         this.uploadFile(imageData)
       },
       cameraError (message) {
 //        alert(message)
       },
+      dataURLtoFile (imageData, filename) {
+        let arr = imageData.split(',')
+        let mime = arr[0].match(/:(.*?);/)[1]
+        let bstr = window.atob(arr[1])
+        let n = bstr.length
+        let u8arr = new Uint8Array(n)
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n)
+        }
+        let blob = new Blob([u8arr], {type: mime})
+        blob.lastModifiedDate = new Date()
+        blob.name = filename
+        return blob
+      },
       uploadFile (imageData) {
-//        let file = document.getElementById('file').files[0]
-//        console.log(file)
-//        let formData = new FormData()
-//        let file = {
-//            filename: imageData,
-//            url: imageData
-//        }
-//        formData.append('file', imageData)
-//        console.log(formData)
-//        let success = r => {
-//          console.log('上传成功! Code = ' + r.responseCode)
-//        }
-//        let fail = error => {
-//          alert('上传失败! Code = ' + error.code)
-//        }
-//        var options = new FileUploadOptions()
-//        options.fileKey = 'file'
-//        options.fileName = imageData.substr(imageData.lastIndexOf('/') + 1)
-//        options.mimeType = "image/jpeg"
-//        var params = {}
-//        params.value1 = 'test'
-//        params.value2 = 'param'
-//        options.params = params
-//        var ft = new FileTransfer()
-//        var SERVER = 'http://10.9.60.141:5000/api/v1/client/customers/' + this.clientCertificationId + '/bankcards/front/'
-//        ft.upload(imageData, encodeURI(SERVER), success, fail, options)
-//        updateFrontPic(this.clientCertificationId, formData).then(res => {
-//          if (res.status === 200) {
-//              this.popupVisible = false
-//              alert('success')
-//          }
-//        })
-//        let options = new FileUploadOptions()
-//        options.fileKey = "file1"
-//        options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1)
+        let file = this.dataURLtoFile('data:image/jpeg;base64,' + imageData, 'test.jpeg')
+        let formData = new FormData()
+        formData.append('file', file)
+        updateFrontPic(this.clientCertificationId, formData).then(res => {
+          if (res.status === 200) {
+            this.imgSrc = 'data:image/jpeg;base64,' + imageData
+            this.popupVisible = false
+          }
+        })
       },
       toLink () {
         let params = {
@@ -283,6 +260,17 @@
   }
 </script>
 <style lang="less">
+  .camera_pop {
+    width: 100%;
+    font-size: 30px;
+    text-align: center;
+    line-height: 90px;
+    color: #333;
+    .popup-item:not(:last-child) {
+      border-bottom: 1px solid #ccc;
+    }
+  }
+
   .bankcard {
     .card {
       font-size: 30px;
@@ -347,8 +335,16 @@
         border-radius: 8px;
         position: relative;
         margin: 0 auto;
+        .spinner {
+          position: absolute;
+          left: 50%;
+          margin-left: -50px;
+          top: 50%;
+          margin-top: -50px;
+        }
         .icon_bg {
           font-size: 115px;
+          color: #fff;
         }
         .inputfile {
           position: absolute;
