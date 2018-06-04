@@ -164,7 +164,8 @@ export default {
   }
   .mint-cell{
     display: block;
-    padding-left: 21px;
+    // padding-left: 21px !important;
+    padding: 0 0 0 21px !important;
     margin-left: 0px;
     margin-top: 8px;
     height: 82px;

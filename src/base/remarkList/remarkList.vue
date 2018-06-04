@@ -123,7 +123,9 @@ export default {
 				height: 132px;
 				padding: 20px 69px 0 72px;
         .iText {
-        	margin-bottom: 23px;
+					margin-bottom: 23px;
+					height: 41px;
+					line-height: 41px;
         	// overflow: hidden;
 					// text-overflow:ellipsis;
 					// white-space: nowrap;

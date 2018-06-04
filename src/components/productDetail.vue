@@ -123,8 +123,9 @@ export default {
       overflow: hidden;
       .text-plus-white {
         font-size: 48px; /*px*/
-        margin-top: 37px;
+        margin-top: 50px;
         position: relative;
+        height: 115px;
         .percent {
           font-family: PingFangSC-Regular;
           font-size: 72px;
@@ -139,14 +140,15 @@ export default {
           border-radius: 10px;
           font-size: 28px; /*px*/
           margin-left: 38px;
-          top: 37px;
+          top: 15px;
           font-family: PingFangSC-Semibold;
         }
       }
       .year{
         font-family: PingFangSC-Regular;
         font-size: 30px;
-        margin-top: 10px;
+        // margin-top: 40px;
+        height: 48px;
       }
     }
     .title {

@@ -55,6 +55,14 @@ export function checkCustomerRemarks (id) {
   })
 }
 
+export function checkAllCustomerRemarks (info) {
+  return axios({
+    url: `/v1/client/customers/remarks/`,
+    method: 'get',
+    params: info
+  })
+}
+
 /**
  * 新增客户备注
  */
