@@ -182,7 +182,7 @@ export function perfectInfos (obj) {
 }
 
 /**
- * 更新银行卡正反面
+ * 更新身份证正反面
  * @param obj
  * @returns {AxiosPromise}
  */

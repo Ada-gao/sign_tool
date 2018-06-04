@@ -26,37 +26,22 @@
       <div class="space"></div>
       <div class="upload">银行卡信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
       <div class="upload_box">
-        <div class="upload_cont" @click="selectcamera()">
-          <!--<input type="file"-->
-          <!--id="file"-->
-          <!--accept="image/png, image/jpeg, image/gif, image/jpg"-->
-          <!--class="inputfile">-->
-          <div class='iconfont icon_bg'>&#xe600;</div>
-          <img :src="imgSrc" id="show" v-show="imgSrc">
-        </div>
+        <camera :popupVisible="popupVisible"
+                @showPopup="showPopup"
+                class="upload_cont"
+                :isFromBank="fromBank"
+                @hidePopup="hidePopup"></camera>
       </div>
       <div class="submit_form">
         <button class="submit" @click="submitBankInfos">提交</button>
       </div>
-      <mt-popup v-model="popupVisible"
-                position="bottom"
-                class="camera_pop">
-        <div>
-          <div class='popup-item' @click="camera()">相机</div>
-          <div class='popup-item' @click="photo()">从相册中选取</div>
-          <div class='popup-item' @click="cancel()">取消</div>
-        </div>
-      </mt-popup>
     </div>
   </div>
 </template>
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
-  import {Popup} from 'mint-ui'
-  //  import {getStore} from '@/config/mUtils'
-  import {uploadBankCard, updateFrontPic} from '@/service/api/customers'
-  import {baseUrl} from '@/config/env'
-  //  import {uploadBankCard} from '@/service/api/customers'
+  import camera from '@/base/camera/camera'
+  import {uploadBankCard} from '@/service/api/customers'
 
   export default {
     name: 'Bankcard',
@@ -66,7 +51,7 @@
       Cell,
       XInput,
       PopupPicker,
-      'mt-popup': Popup
+      camera
     },
     data () {
       return {
@@ -115,21 +100,12 @@
           bankCardNumber: ''
         },
         clientCertificationId: '',
-//        uploadData: {
-//          dialogVisible: false,
-//          dialogImageUrl: '',
-//          fileList: [],
-//          headers: {
-//            'X-Token': getStore('token')
-//          },
-//          card_front_url: ''
-//        },
         name: '',
         nationality: '',
         mobile: '',
         city: '',
         clientId: '',
-        imgSrc: ''
+        fromBank: true
       }
     },
     mounted () {
@@ -141,60 +117,11 @@
       this.clientCertificationId = this.$route.params.clientCertificationId
     },
     methods: {
-      selectcamera () {
-        this.popupVisible = true
+      showPopup (data) {
+        this.popupVisible = data
       },
-      cancel () {
-        this.popupVisible = false
-      },
-      camera () {
-        let cameraOptions = {
-          quality: 50,
-          sourceType: 1,
-          destinationType: navigator.camera.DestinationType.DATA_URL,
-          saveToPhotoAlbum: true
-        }
-        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
-      },
-      photo () {
-        let cameraOptions = {
-          quality: 50,
-          sourceType: 0,
-          destinationType: navigator.camera.DestinationType.DATA_URL,
-          saveToPhotoAlbum: true
-        }
-        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
-      },
-      cameraSuccess (imageData) {
-        this.uploadFile(imageData)
-      },
-      cameraError (message) {
-//        alert(message)
-      },
-      dataURLtoFile (imageData, filename) {
-        let arr = imageData.split(',')
-        let mime = arr[0].match(/:(.*?);/)[1]
-        let bstr = window.atob(arr[1])
-        let n = bstr.length
-        let u8arr = new Uint8Array(n)
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n)
-        }
-        let blob = new Blob([u8arr], {type: mime})
-        blob.lastModifiedDate = new Date()
-        blob.name = filename
-        return blob
-      },
-      uploadFile (imageData) {
-        let file = this.dataURLtoFile('data:image/jpeg;base64,' + imageData, 'test.jpeg')
-        let formData = new FormData()
-        formData.append('file', file)
-        updateFrontPic(this.clientCertificationId, formData).then(res => {
-          if (res.status === 200) {
-            this.imgSrc = 'data:image/jpeg;base64,' + imageData
-            this.popupVisible = false
-          }
-        })
+      hidePopup (data) {
+        this.popupVisible = data
       },
       toLink () {
         let params = {
@@ -207,32 +134,29 @@
         }
         this.$router.replace({name: 'PerfectInfos', params: params})
       },
-      getAction (id) {
-        return baseUrl + 'v1/client/customers/' + id + '/bankcards/front/'
-      },
       submitBankInfos () {
         let bankId = ''
         switch (this.personInfo.bankName[0]) {
           case '中国银行':
-            bankId = '0'
-            break
-          case '招商银行':
             bankId = '1'
             break
-          case '建设银行':
+          case '招商银行':
             bankId = '2'
             break
-          case '汇丰银行':
+          case '建设银行':
             bankId = '3'
             break
-          case '渣打银行':
+          case '汇丰银行':
             bankId = '4'
             break
-          case '花旗银行':
+          case '渣打银行':
             bankId = '5'
             break
-          case '农业银行':
+          case '花旗银行':
             bankId = '6'
+            break
+          case '农业银行':
+            bankId = '7'
             break
         }
         let params = {
@@ -319,52 +243,13 @@
     }
     .upload_box {
       background-color: #fff;
-      height: 333px;
+      /*height: 333px;*/
       padding: 51px 60px;
-      padding-bottom: 0;
+      /*padding-bottom: 0;*/
       position: relative;
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
-      .upload_cont {
-        text-align: center;
-        width: 270px;
-        height: 180px;
-        line-height: 180px;
-        background-color: #ddd;
-        border-radius: 8px;
-        position: relative;
-        margin: 0 auto;
-        .spinner {
-          position: absolute;
-          left: 50%;
-          margin-left: -50px;
-          top: 50%;
-          margin-top: -50px;
-        }
-        .icon_bg {
-          font-size: 115px;
-          color: #fff;
-        }
-        .inputfile {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          display: block;
-          left: 0;
-          top: 0;
-          z-index: 11;
-          opacity: 0;
-        }
-        #show {
-          position: absolute;
-          display: block;
-          width: 100%;
-          height: 100%;
-          left: 0;
-          top: 0;
-        }
-      }
     }
   }
 </style>

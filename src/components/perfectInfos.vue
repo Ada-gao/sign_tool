@@ -48,23 +48,18 @@
     </group>
 
     <div class="upload_box">
-      <!--<button class="next" @click="submitCustomer">确定</button>-->
-      <div class="upload_cont1" @click="selectcamera()">
-        <!--<input type="file"-->
-        <!--id="file"-->
-        <!--accept="image/png, image/jpeg, image/gif, image/jpg"-->
-        <!--class="inputfile">-->
-        <div class='iconfont icon_bg'>&#xe600;</div>
-        <img :src="imgSrc" id="show" v-show="imgSrc">
-      </div>
-      <div class="upload_cont2" @click="selectcamera()">
-        <!--<input type="file"-->
-        <!--id="file"-->
-        <!--accept="image/png, image/jpeg, image/gif, image/jpg"-->
-        <!--class="inputfile">-->
-        <div class='iconfont icon_bg'>&#xe600;</div>
-        <img :src="imgSrc1" id="show1" v-show="imgSrc1">
-      </div>
+      <camera class="upload_cont1"
+              :popupVisible="popupVisible1"
+              :isFromBank="fromBank"
+              @showPopup="showPopup1"
+              @imgHandler="imageHandler1"
+              @hidePopup="hidePopup1"></camera>
+      <camera class="upload_cont2"
+              :popupVisible="popupVisible2"
+              :isFromBank="fromBank"
+              @imgHandler="imageHandler2"
+              @showPopup="showPopup2"
+              @hidePopup="hidePopup2"></camera>
       <span class="front_class">正面</span>
 
       <span class="back_class">反面</span>
@@ -78,24 +73,13 @@
       <button class="submit" @click="submitInfos">提交</button>
     </div>
     <alert v-model="alertMsg" :content="alertCont"></alert>
-    <mt-popup v-model="popupVisible"
-              position="bottom"
-              class="camera_pop">
-      <div>
-        <div class='popup-item' @click="camera()">相机</div>
-        <div class='popup-item' @click="photo()">从相册中选取</div>
-        <div class='popup-item' @click="cancel()">取消</div>
-      </div>
-    </mt-popup>
   </div>
 </template>
 
 <script>
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, Alert} from 'vux'
-  import {uploadId, updateId} from '@/service/api/customers'
-  //  import {getStore} from '@/config/mUtils'
-  import {baseUrl} from '@/config/env'
-  import {Popup} from 'mint-ui'
+  import {uploadId} from '@/service/api/customers'
+  import camera from '@/base/camera/camera'
 
   export default {
     name: 'PerfectInfos',
@@ -107,7 +91,7 @@
       Datetime,
       PopupPicker,
       Alert,
-      'mt-popup': Popup
+      camera
     },
     data () {
       return {
@@ -137,9 +121,9 @@
         alertMsg: false,
         alertCont: '还有信息没填哦～',
         isSubmit: null,
-        imgSrc: '',
-        imgSrc1: '',
-        popupVisible: false
+        popupVisible1: false,
+        popupVisible2: false,
+        fromBank: false
       }
     },
     mounted () {
@@ -155,6 +139,24 @@
       console.log(this.clientId)
     },
     methods: {
+      imageHandler1 (data) {
+        this.idImages.front = data
+      },
+      imageHandler2 (data) {
+        this.idImages.back = data
+      },
+      showPopup1 (data) {
+        this.popupVisible1 = data
+      },
+      hidePopup1 (data) {
+        this.popupVisible1 = data
+      },
+      showPopup2 (data) {
+        this.popupVisible2 = data
+      },
+      hidePopup2 (data) {
+        this.popupVisible2 = data
+      },
       toLink () {
         let params = {
           id: this.clientId,
@@ -165,64 +167,6 @@
           mobile: this.mobile
         }
         this.$router.replace({name: 'Bankcard', params: params})
-      },
-      getAction () {
-        return baseUrl + 'v1/common/file_upload/'
-      },
-      selectcamera () {
-        this.popupVisible = true
-      },
-      cancel () {
-        this.popupVisible = false
-      },
-      camera () {
-        let cameraOptions = {
-          quality: 50,
-          sourceType: 1,
-          destinationType: navigator.camera.DestinationType.DATA_URL,
-          saveToPhotoAlbum: true
-        }
-        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
-      },
-      photo () {
-        let cameraOptions = {
-          quality: 50,
-          sourceType: 0,
-          destinationType: navigator.camera.DestinationType.DATA_URL,
-          saveToPhotoAlbum: true
-        }
-        navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
-      },
-      cameraSuccess (imageData) {
-        this.uploadFile(imageData)
-      },
-      cameraError (message) {
-//        alert(message)
-      },
-      dataURLtoFile (imageData, filename) {
-        let arr = imageData.split(',')
-        let mime = arr[0].match(/:(.*?);/)[1]
-        let bstr = window.atob(arr[1])
-        let n = bstr.length
-        let u8arr = new Uint8Array(n)
-        while (n--) {
-          u8arr[n] = bstr.charCodeAt(n)
-        }
-        let blob = new Blob([u8arr], {type: mime})
-        blob.lastModifiedDate = new Date()
-        blob.name = filename
-        return blob
-      },
-      uploadFile (imageData) {
-        let file = this.dataURLtoFile('data:image/jpeg;base64,' + imageData, 'test.jpeg')
-        let formData = new FormData()
-        formData.append('file', file)
-        updateId(formData).then(res => {
-          if (res.status === 200) {
-            this.imgSrc = 'data:image/jpeg;base64,' + imageData
-            this.popupVisible = false
-          }
-        })
       },
       submitInfos () {
           let idType = ''
@@ -362,31 +306,9 @@
         background-color: #ddd;
         line-height: 180px;
         text-align: center;
-        form {
-          height: 100%;
-        }
         .icon_bg {
           font-size: 115px;
           color: #fff;
-        }
-        #show,
-        #show1 {
-          position: absolute;
-          display: block;
-          width: 100%;
-          height: 100%;
-          left: 0;
-          top: 0;
-        }
-        .inputfile {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          display: block;
-          left: 0;
-          top: 0;
-          z-index: 11;
-          opacity: 0;
         }
       }
       .upload_cont1:first-child,

@@ -15,7 +15,7 @@
                v-model="nationality"
                isASelection="true"
                @selectOne="selectNation"
-               placeholder="输入客户年龄"
+               placeholder="输入国籍"
                ref="input02" :show-clear="false" required></x-input>
       <x-address
         id="x_address"
@@ -62,28 +62,27 @@
         nationality: '',
         mobile: '',
         email: '',
-        ChinaLocation: '',
+        city: '',
         popupVisible: false,
-
         title: '常住中国城市',
         value: [],
         addressData: ChinaAddressV4Data,
-        showAddress: false,
-        names: ''
+        showAddress: false
       }
     },
     mounted () {
       this.isMod = Number(this.$route.params.isMod)
-      console.log(this.isMod)
+//      console.log(this.isMod)
       if (this.isMod === 1) {
         console.log('需要获取数据')
       }
     },
     methods: {
       onShadowChange (ids, names) {
-        this.names = names.join()
-        this.myAddressProvince = names[0]
-        this.myAddressCity = names[1]
+//        this.names = names.join()
+//        this.myAddressProvince = names[0]
+//        this.myAddressCity = names[1]
+        this.city = names[1]
       },
       showPopup () {
         this.popupVisible = true
@@ -91,18 +90,16 @@
       selectNation (num) {
         this.num = num
         this.myAddressProvince = this.myAddressCity = this.myAddresscounty = ''
-        this.ChinaLocation = ''
-//        console.log(this.num)
+        this.city = ''
       },
       submitCustomer () {
         let params = {
           name: this.name,
-          nationality: this.num === 1 ? '中国' : '其他',
+          nationality: this.num === 1 ? '0' : '1',
           mobile: this.mobile,
           email: this.email,
-          ChinaLocation: this.num === 1 ? [this.myAddressProvince, this.myAddressCity] : null
+          city: this.city
         }
-//        console.log(params)
         if (this.name &&
             this.mobile &&
             this.email) {
@@ -113,13 +110,6 @@
             }
           })
         } else {
-
-//            this.mustFill = true
-//          clearTimeout(this.timer)
-//          setTimeout(() => {
-//                this.mustFill = false
-//          }, 1000)
-  //          this.$router.push({name: 'CustomerManagement', params: {id: 1}})
         }
       }
     }
