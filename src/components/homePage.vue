@@ -1,6 +1,9 @@
 <template>
   <div class="homePage">
     <x-header :left-options="{showBack: false}">首页</x-header>
+	<div>
+		<mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
+	</div>
     <div class="wrapper">
 			<img src="static/img/banner.png">
 			<!-- <div class="space"></div> -->
@@ -51,7 +54,8 @@ export default {
 				'3': true,
 				'4': true
 			},
-			productsList: []
+			productsList: [],
+			spinner: true
 			// email: '',
 			// userId: ''
     }
@@ -60,7 +64,12 @@ export default {
 		// this.email = this.$route.params.email
 		// this.userId = this.$route.params.userId
 		getProducts().then(res => {
+			this.spinner = false
 			this.productsList = res.data
+		}).catch(err => {
+			if (err) {
+				this.spinner = false
+			}
 		})
 	}
 }
@@ -93,6 +102,14 @@ export default {
 		width: 100%;
 		// padding-top: 126px;
 		vertical-align: bottom;
+	}
+	.mint-spinner-fading-circle{
+		position: absolute;
+		z-index: 99;
+		top: 50%;
+		left: 50%;
+		width: 100px !important;
+		height: 100px !important;
 	}
 	.wrapper {
 		margin-bottom: 116px;
