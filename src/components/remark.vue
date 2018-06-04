@@ -32,21 +32,26 @@
 						</mt-datetime-picker>
 					</div>
 					<div class="item02" v-show="!isChecked">
-						<input type="text" class="text-search" placeholder="搜索 关键字"/>
-						<i class="iconfont">&#xe64e;</i>
+						<input type="text" class="text-search" v-model="keyValue" placeholder="搜索 关键字"/>
+						<i class="iconfont" @click="search()">&#xe64e;</i>
 					</div>
 				</div>
 			</div>
 			<remark-list :list="remarkList"></remark-list>
+      <x-dialog v-model="stopDialog" class="dialog-demo errDialog" hide-on-blur>
+          <i class="iconfont noS">&#xe626;</i>
+          <div class="err">{{errTip}}</div>
+          <x-button @click.native="noSelectSure" type="primary">确 定</x-button>
+      </x-dialog>
 		</div>
 	</div>
 </template>
 
 <script>
-import { XHeader, ButtonTab, ButtonTabItem, Datetime, Group, Calendar } from 'vux'
+import { XHeader, ButtonTab, ButtonTabItem, Datetime, Group, Calendar, XDialog, XButton } from 'vux'
 import RemarkList from '../base/remarkList/remarkList'
 import { formatDate } from '@/common/js/date'
-import { checkCustomerRemarks } from '@/service/api/customers'
+import { checkAllCustomerRemarks } from '@/service/api/customers'
 
 export default {
   components: {
@@ -56,7 +61,9 @@ export default {
     RemarkList,
     Datetime,
     Group,
-		Calendar
+    Calendar,
+    XDialog,
+    XButton
   },
   data () {
   	return {
@@ -67,7 +74,10 @@ export default {
 			pickerVisible: false,
 			pickerValue1: new Date(),
       pickerValue2: new Date(),
-      remarkList: []
+      remarkList: [],
+      keyValue: '',
+      stopDialog: false,
+      errTip: ''
   	}
 	},
 	filters: {
@@ -84,14 +94,46 @@ export default {
 			this.$refs[picker].open()
 		},
 		handleConfirm1 (val) {
-			this.pickerValue1 = val
+      this.pickerValue1 = val
+      let obj = {
+        from_date: formatDate(this.pickerValue1),
+        to_date: formatDate(this.pickerValue2)
+      }
+      if (this.pickerValue2.getTime() > this.pickerValue1.getTime()) {
+        checkAllCustomerRemarks(obj).then(res => {
+          this.remarkList = res.data
+        })
+      } else {
+        this.stopDialog = true
+        this.errTip = '开始时间不能大于结束时间'
+      }
 		},
 		handleConfirm2 (val) {
-			this.pickerValue2 = val
-		}
+      this.pickerValue2 = val
+      let obj = {
+        from_date: formatDate(this.pickerValue1),
+        to_date: formatDate(this.pickerValue2)
+      }
+      if (this.pickerValue2.getTime() > this.pickerValue1.getTime()) {
+        checkAllCustomerRemarks(obj).then(res => {
+          this.remarkList = res.data
+        })
+      } else {
+        this.stopDialog = true
+        this.errTip = '结束时间不能小于开始时间'
+      }
+    },
+    search () {
+      let obj = {
+        q: this.keyValue
+      }
+      checkAllCustomerRemarks(obj).then(res => {
+        this.remarkList = res.data
+		  })
+    }
   },
   mounted () {
-    checkCustomerRemarks().then(res => {
+    checkAllCustomerRemarks().then(res => {
       console.log(res.data)
       this.remarkList = res.data
 		})
@@ -194,6 +236,41 @@ export default {
       // .vux-no-group-title {
       //   height: 100%!important;
       // }
+      .vux-x-dialog.errDialog{
+        .weui-dialog{
+        width: 580px;
+        height: 345px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%,-50%);
+        padding: 0;
+        text-align: center;
+        .noS{
+          display: inline-block;
+          font-size: 100px;
+          color: #C61D1A;
+          margin: 40px 0;
+        }
+        .err{
+          // margin-top: 30px;
+          margin-bottom: 40px;
+          font-family: PingFangSC-Regular;
+          font-size: 30px;
+          color: #333333;
+        }
+        .weui-btn.weui-btn_primary{
+          background: #2A7DC1;
+          border-radius: 10px;
+          width: 280px;
+          height: 80px;
+          font-family: PingFangSC-Medium;
+          font-size: 36px;
+          color: #F0F0F0;
+        }
+      }
+    }
   }
 }
 </style>

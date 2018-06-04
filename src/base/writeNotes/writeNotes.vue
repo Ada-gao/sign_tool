@@ -44,6 +44,7 @@ export default {
     	border-radius: 8px;
 			border: 1px solid #ccc;
 			position: relative;
+			background: #fff;
 			.iconfont{
 				position: absolute;
 				bottom: -72px;
