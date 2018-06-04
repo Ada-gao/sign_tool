@@ -52,6 +52,9 @@ export default {
 		font-size: 26px; /*px*/
     box-sizing: border-box;
     text-decoration: none;
+    span{
+      font-size: 20px;
+    }
 		i {
 			font-size: 47px; /*px*/
 			display: block;

@@ -24,7 +24,7 @@
 
 
 #install platform
-cordova platform add android ios browser
+cordova platform add android@7.1.0 ios@4.5.4 browser@5.0.3
 
 # install dependencies
 npm install

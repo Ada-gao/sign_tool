@@ -25,7 +25,7 @@
           <p class="cont-text">基金管理人 : {{item.manager}}</p>
         </div>
         <div class="cont">
-          <p class="cont-text">年化收益率 ：{{item.annualized_return}}</p>
+          <p class="cont-text">收益对标基准 ：{{item.annualized_return}}</p>
           <!-- <p class="cont-text">发行额度 ：{{name}}</p> -->
           <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p>
           <p class="cont-text">追加金额 ：{{item.minimal_add_amount}}万</p>
@@ -45,8 +45,8 @@
         	<cell-box link="/pptReport">产品说明材料（产品信息ppt）</cell-box>
         	<cell-box link="/productReport">产品公告（信息披露）</cell-box>-->
           <div class="doc" @click="toPdfReport(id,item)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toPptReport(id,item)">产品说明材料（产品信息ppt）<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toProductReport(id,item)">产品公告（信息披露）<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toPptReport(id,item)">产品说明材料<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toProductReport(id,item)">产品公告<span class="iconfont right">&#xe731;</span></div>
         </div>
       </div>
     </div>
@@ -146,6 +146,7 @@ export default {
       .year{
         font-family: PingFangSC-Regular;
         font-size: 30px;
+        margin-top: 10px;
       }
     }
     .title {
@@ -176,7 +177,7 @@ export default {
       color: #333333;
       .cont-text {
         font-size: 28px; /*px*/
-        padding: 32px 0 32px 42px;
+        padding: 32px 0 32px 29px;
       }
     }
     .report-pdf {
