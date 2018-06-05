@@ -28,7 +28,7 @@
       <div class="upload_box">
         <camera :popupVisible="popupVisible"
                 @showPopup="showPopup"
-                class="upload_cont"
+                class=""
                 :isFromBank="fromBank"
                 @hidePopup="hidePopup"></camera>
       </div>

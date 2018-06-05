@@ -22,7 +22,6 @@
         <div class="upload">请您上传资料</div>
         <camera :popupVisible="popupVisible"
                 @showPopup="showCamera"
-                class="upload_cont"
                 :isFromBank="fromBank"
                 @hidePopup="hideCamera"></camera>
       </div>

@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div class="upload_cont" @click="selectcamera()">
-      <div class='iconfont icon_bg' v-if="fromBank === 2">+</div>
-      <div class='iconfont icon_bg' v-else>&#xe600;</div>
-      <div>
-        <ul v-if="fromBank === 2" class="ul">
+    <div class="upload_cont" :class="{'upload_small': fromBank === 2}">
+
+      <div v-if="fromBank === 2" style="display: inline-block;height: 120px">
+        <ul class="ul">
           <li v-for="(item, index) in fileArr"
               :key="index"
               v-show="item">
@@ -12,16 +11,28 @@
             <span class="delete_img" @click='delImage(index)'>x</span>
           </li>
         </ul>
+        <div class="addsmall_box" @click="selectcamera()">
+          <span class="iconfont icon_bg">+</span>
+          <mt-spinner class="spinner"
+                      :size="spinnerSet.size"
+                      color="#aaa"
+                      v-show="spinnerSet.show"
+                      :type="spinnerSet.type"></mt-spinner>
+        </div>
+      </div>
+
+      <div v-else class="addbig_box" @click="selectcamera()">
+        <span class='iconfont icon_bg'>&#xe600;</span>
         <img :src="imgSrc"
              class="show"
-             v-show="imgSrc"
-             v-else>
+             v-show="imgSrc">
+        <mt-spinner class="spinner"
+                    :size="spinnerSet.size"
+                    color="#aaa"
+                    v-show="spinnerSet.show"
+                    :type="spinnerSet.type"></mt-spinner>
       </div>
-      <mt-spinner class="spinner"
-                  :size="spinnerSet.size"
-                  color="#aaa"
-                  v-show="spinnerSet.show"
-                  :type="spinnerSet.type"></mt-spinner>
+
     </div>
     <mt-popup v-model="show"
               position="bottom"
@@ -32,7 +43,7 @@
         <div class='popup-item' @click="cancel()">取消</div>
       </div>
     </mt-popup>
-    <div v-show="alertMsg">上传图片失败</div>
+    <div v-show="alertMsg" style="line-height: 36px">上传图片失败</div>
   </div>
 </template>
 <script>
@@ -48,6 +59,7 @@
     data () {
       return {
         imgSrc: '',
+        fileArr: [],
         show: this.popupVisible,
         certificationId: '',
         alertMsg: false,
@@ -62,6 +74,7 @@
     },
     mounted () {
       this.certificationId = this.$route.params.clientCertificationId
+      console.log(this.fromBank)
 //        console.log(this.certificationId)
     },
     methods: {
@@ -129,10 +142,7 @@
             if (res.status === 200) {
               this.spinnerSet.show = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
-//                console.log(res.data)
-//            this.popupVisible = false
             }
-            console.log(res)
           }).catch(err => {
             console.log('error: ' + err)
             this.alertMsg = true
@@ -142,7 +152,7 @@
             if (res.status === 200) {
               this.spinnerSet.show = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
-              this.idSrc = res.status.file_url
+              this.idSrc = res.data.file_url
               this.$emit('imgHandler', this.idSrc)
             }
           }).catch(err => {
@@ -160,6 +170,9 @@
             this.alertMsg = true
           })
         }
+      },
+      delImage (index) {
+        this.fileArr.splice(index, 1)
       }
     }
   }
@@ -203,6 +216,69 @@
       height: 100%;
       left: 0;
       top: 0;
+    }
+  }
+
+  .upload_small {
+    width: 100%;
+    background-color: #fff;
+    height: 120px;
+    text-align: left;
+    padding-left: 20px;
+    .ul {
+      display: inline-block;
+      height: 120px;
+      li {
+        width: 132px;
+        height: 120px;
+        position: relative;
+        display: inline-block;
+        img {
+          display: inline-block;
+          width: 100%;
+          height: 100%;
+        }
+        .delete_img {
+          position: absolute;
+          text-align: right;
+          top: -20px;
+          right: 0;
+          font-size: 50px;
+          line-height: 30px;
+          color: #000;
+          width: 50px;
+          height: 50px;
+        }
+      }
+      li:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+    .addsmall_box {
+      display: inline-block;
+      position: relative;
+      width: 132px;
+      height: 120px;
+      background-color: #ddd;
+      border-radius: 8px;
+      text-align: center;
+      .icon_bg {
+        font-size: 60px;
+        display: inline-block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        line-height: 110px;
+      }
+      .spinner {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -50px;
+        margin-top: -50px;
+      }
     }
   }
 </style>
