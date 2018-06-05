@@ -123,7 +123,7 @@
         isSubmit: null,
         popupVisible1: false,
         popupVisible2: false,
-        fromBank: false
+        fromBank: 1
       }
     },
     mounted () {

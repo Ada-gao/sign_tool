@@ -105,7 +105,7 @@
         mobile: '',
         city: '',
         clientId: '',
-        fromBank: true
+        fromBank: 0
       }
     },
     mounted () {

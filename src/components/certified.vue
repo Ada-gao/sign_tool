@@ -20,7 +20,11 @@
       <div class="space"></div>
       <div class="upload_file">
         <div class="upload">请您上传资料</div>
-
+        <camera :popupVisible="popupVisible"
+                @showPopup="showCamera"
+                class="upload_cont"
+                :isFromBank="fromBank"
+                @hidePopup="hideCamera"></camera>
       </div>
       <div class="submit_form">
         <button class="submit" @click="submitInfos">提交</button>
@@ -49,14 +53,18 @@
   import {Popup, Radio} from 'mint-ui'
   import {sendEmail, sendFiles} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
+  import camera from '@/base/camera/camera'
   export default {
     components: {
       XHeader,
+      camera,
       'mt-popup': Popup,
       'mt-radio': Radio
     },
     data () {
       return {
+        popupVisible: false,
+        fromBank: 2,
         radio: '',
         oldRadio: '',
         type: '',
@@ -94,6 +102,12 @@
       })
     },
     methods: {
+      showCamera (data) {
+        this.popupVisible = data
+      },
+      hideCamera (data) {
+        this.popupVisible = data
+      },
       getAction (id) {
         return 'http://10.9.60.141:5000/api/v1/client/customers/certfiles/' + id
       },

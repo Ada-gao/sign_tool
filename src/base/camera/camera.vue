@@ -1,8 +1,22 @@
 <template>
   <div>
     <div class="upload_cont" @click="selectcamera()">
-      <div class='iconfont icon_bg'>&#xe600;</div>
-      <img :src="imgSrc" class="show" v-show="imgSrc">
+      <div class='iconfont icon_bg' v-if="fromBank === 2">+</div>
+      <div class='iconfont icon_bg' v-else>&#xe600;</div>
+      <div>
+        <ul v-if="fromBank === 2" class="ul">
+          <li v-for="(item, index) in fileArr"
+              :key="index"
+              v-show="item">
+            <img :src="item" v-show="item">
+            <span class="delete_img" @click='delImage(index)'>x</span>
+          </li>
+        </ul>
+        <img :src="imgSrc"
+             class="show"
+             v-show="imgSrc"
+             v-else>
+      </div>
       <mt-spinner class="spinner"
                   :size="spinnerSet.size"
                   color="#aaa"
@@ -22,7 +36,7 @@
   </div>
 </template>
 <script>
-  import {updateFrontPic, updateId} from '@/service/api/customers'
+  import {updateFrontPic, updateId, addMateials} from '@/service/api/customers'
   import {Popup, Spinner} from 'mint-ui'
   export default {
     name: 'Camera',
@@ -110,7 +124,7 @@
         let file = this.dataURLtoFile('data:image/jpeg;base64,' + imageData, 'test.jpeg')
         let formData = new FormData()
         formData.append('file', file)
-        if (this.fromBank) {
+        if (this.fromBank === 0) {
           updateFrontPic(this.certificationId, formData).then(res => {
             if (res.status === 200) {
               this.spinnerSet.show = false
@@ -123,13 +137,23 @@
             console.log('error: ' + err)
             this.alertMsg = true
           })
-        } else {
+        } else if (this.fromBank === 1) {
           updateId(formData).then(res => {
             if (res.status === 200) {
               this.spinnerSet.show = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
               this.idSrc = res.status.file_url
               this.$emit('imgHandler', this.idSrc)
+            }
+          }).catch(err => {
+            console.log('error: ' + err)
+            this.alertMsg = true
+          })
+        } else if (this.fromBank === 2) {
+          addMateials(this.certificationId, formData).then(res => {
+            if (res.status === 200) {
+              this.spinnerSet.show = false
+              this.fileArr.push('data:image/jpeg;base64,' + imageData)
             }
           }).catch(err => {
             console.log('error: ' + err)

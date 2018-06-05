@@ -231,6 +231,17 @@ export function sendEmail (type, obj) {
   })
 }
 
+export function addMateials (id, obj) {
+  return axios({
+    url: `/v1/client/customers/certfiles/${id}`,
+    method: 'post',
+    data: obj,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+}
+
 /**
  * 潜客发送资料
  * @param id

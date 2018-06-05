@@ -244,7 +244,7 @@
           clientClass: this.clientClass,
           clientType: this.clientType
         }
-        console.log(params)
+//        console.log(params)
         this.$router.push({name: 'PerfectInfos', params: params})
       },
       addNew () {
