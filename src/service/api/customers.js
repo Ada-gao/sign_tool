@@ -48,10 +48,11 @@ export function checkCusomersDetail (clientId) {
 /**
  * 查看所有客户备注以及信息过滤
  */
-export function checkCustomerRemarks (id) {
+export function checkCustomerRemarks (obj) {
   return axios({
-    url: `/v1/client/customers/remarks/${id}`,
-    method: 'get'
+    url: '/v1/client/customers/remarks/',
+    method: 'get',
+    data: obj
   })
 }
 
