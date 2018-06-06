@@ -64,14 +64,14 @@ export default {
   /*padding-top: 108px;*/
   text-align: center;
   background-color: #fff;
-  height: 118px;
-  line-height: 118px;
+  height: 110px;
+  line-height: 110px;
 	.ipt {
 		border: 1px solid #ccc; /*no*/
-		padding: 21px 34px;
+    padding-left: 32px;
 		border-radius: 10px;
-		width: 636px;
-		height: 67px;
+		width: 665px;
+		height: 70px;
 		box-sizing: border-box;
 		font-size: 28px; /*px*/
 	}

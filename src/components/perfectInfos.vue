@@ -51,12 +51,14 @@
       <camera class="upload_cont1"
               :popupVisible="popupVisible1"
               :isFromBank="fromBank"
+              :cerId="cerId"
               @showPopup="showPopup1"
               @imgHandler="imageHandler1"
               @hidePopup="hidePopup1"></camera>
       <camera class="upload_cont2"
               :popupVisible="popupVisible2"
               :isFromBank="fromBank"
+              :cerId="cerId"
               @imgHandler="imageHandler2"
               @showPopup="showPopup2"
               @hidePopup="hidePopup2"></camera>
@@ -85,7 +87,7 @@
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
   import {uploadId, perfectInfos} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
-  import {getStore, setStore} from '@/config/mUtils'
+  import {getStore} from '@/config/mUtils'
 
   export default {
     name: 'PerfectInfos',
@@ -102,6 +104,7 @@
     },
     data () {
       return {
+          cerId: null,
         num: 1,
         isMod: -1,
         address: '',
@@ -134,16 +137,7 @@
       }
     },
     mounted () {
-      let obj = {}
       let info = JSON.parse(getStore('selfInfos'))
-      obj.client_id = info.client_id
-      obj.client_name = info.client_name
-      perfectInfos(obj).then(res => {
-        if (res.status === 200) {
-          this.client_certification_id = info.client_certification_id = res.data.client_certification_id
-          setStore('selfInfos', info)
-        }
-      })
       this.isSubmit = this.$route.params.isSubmit
       this.name = info.name
       this.nationality = info.nationality === '0' ? '中国' : '其他'
@@ -152,6 +146,14 @@
       this.client_id = info.client_id
       this.client_class = info.client_class
       this.client_type = info.client_type
+      let obj = {}
+      obj.client_id = info.client_id
+      obj.client_name = info.client_name
+      perfectInfos(obj).then(res => {
+        if (res.status === 200) {
+          this.client_certification_id = res.data.client_certification_id
+        }
+      })
     },
     methods: {
       hideAlert () {
@@ -215,6 +217,7 @@
           id_back_url: this.idImages.back
         }
         console.log(params)
+        console.log('cerId' + this.client_certification_id)
         uploadId(this.client_certification_id, params).then(res => {
           if (res.status === 200) {
             this.$router.push({name: 'PotentialCustomerList', params: {id: this.client_id}})
@@ -281,15 +284,15 @@
       background-color: #fff;
       height: 82px;
       line-height: 82px;
-      padding-left: 20px;
+      padding: 0 20px;
       font-size: 32px;
       color: #333;
       position: relative;
       i {
         position: absolute;
-        right: 20px;
+        right: 0;
         font-size: 66px;
-        color: #c8c8cd;
+        color: #C8C8CD;
       }
     }
     .grayMyBank {

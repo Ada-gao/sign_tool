@@ -48,11 +48,13 @@ export function checkCusomersDetail (clientId) {
 /**
  * 查看所有客户备注以及信息过滤
  */
-export function checkCustomerRemarks (obj) {
+export function checkCustomerRemarks (id) {
   return axios({
     url: '/v1/client/customers/remarks/',
     method: 'get',
-    data: obj
+    params: {
+      client_id: id
+    }
   })
 }
 
@@ -254,5 +256,12 @@ export function sendFiles (id, obj) {
     url: `/v1/client/customers/certification/${id}`,
     method: 'post',
     data: obj
+  })
+}
+
+export function deleteDetail (cerId, fileId) {
+  return axios({
+    url: `/v1/client/customers/certfiles/${cerId}/${fileId}/`,
+    method: 'post'
   })
 }

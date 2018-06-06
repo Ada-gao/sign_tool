@@ -122,7 +122,7 @@
       <div v-transfer-dom>
         <x-dialog v-model="showHideOnBlur" class="dialog-demo">
           <div class="img-box">
-            <x-textarea auto-focus id="inputing" ref="inputing" v-model="remarkInfo"></x-textarea>
+            <x-textarea name="description" auto-focus id="inputing" ref="inputing" v-model="remarkInfo"></x-textarea>
           </div>
           <div style="text-align: right;">
             <button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>
@@ -207,7 +207,6 @@ export default {
   	addNew () {
   		this.showHideOnBlur = true
       console.log(this.$refs.inputing)
-      this.$refs.inputing.focus()
   	},
   	submitAddNew () {
 			this.showHideOnBlur = false

@@ -5,7 +5,7 @@
       <div class="info">
         <group>
           <cell-box>
-            <i class="iconfont">&#xe62c;</i>潜客信息
+            <i class="iconfont">&#xe62c;</i><span style="color:#2672ba">潜客信息</span>
             <span class="fr"
                   @click="toLink"
                   v-if="data.realname_status === '0'">完善信息</span>
@@ -15,11 +15,11 @@
         <div class="space"></div>
         <group>
           <cell-box>
-            <label>客户姓名：</label>
+            <label style="color:#333">客户姓名：</label>
             <span class="fr">{{data.name}}</span>
           </cell-box>
           <cell-box>
-            <label>国籍：</label>
+            <label style="color:#333">国籍：</label>
             <span
               class="fr"
               v-if="data.nationality === '0'"
@@ -30,18 +30,18 @@
             >其他</span>
           </cell-box>
           <cell-box v-show="data.nationality === '0'">
-            <label>常住中国城市：</label>
+            <label style="color:#333">常住中国城市：</label>
             <span class="fr">{{data.city}}</span>
           </cell-box>
         </group>
         <div class="space"></div>
         <group class="no_bbottom">
           <cell-box>
-            <label>邮箱：</label>
+            <label style="color:#333">邮箱：</label>
             <span class="fr">{{data.email}}</span>
           </cell-box>
           <cell-box>
-            <label>手机号：</label>
+            <label style="color:#333">手机号：</label>
             <span class="fr">{{data.mobile}}</span>
           </cell-box>
         </group>
@@ -49,12 +49,9 @@
       <div class="space"></div>
       <div class="product">
         <group>
-          <cell
+          <cell style="color:#333"
             :is-link="!convert(data.realname_status, disabled)"
-            :link="{name: 'Certified',params: {
-                 id: client_id,
-                 email: email,
-                 name: client_name}}"
+            :link="{name: 'Certified',params: {id: client_id}}"
             :title="'投资者类型：'+stat"
             :value="modifiedVal"
             :disabled="convert(data.realname_status, disabled)"
@@ -63,36 +60,42 @@
         </group>
       </div>
       <div class="space"></div>
-      <div class="space"></div>
       <div class="remark">
         <group>
           <cell-box>备注</cell-box>
         </group>
-        <ul>
+        <ul :class="{'no_padding' : remarkList.length === 0}">
           <li v-for="(item, index) in remarkList" :key="index">
             <div class="iText text-overflow-one">{{item.remark}}</div>
             <span class="iTime">{{item.create_time}}</span>
-            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i
-              class="iconfont icon-view"></i>&nbsp;查看
+            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}">
+              <i class="iconfont" style="font-size:36px;vertical-align: middle;">&#xe624;</i>
+              <span class="font-size:26px;color:#2672ba;vertical-align: middle;">查看</span>
             </router-link>
           </li>
         </ul>
       </div>
       <div class="bottom-remark">
-        <div class="add clearfix">
-          <input type="text" @click="addNew" class="addInput" v-model="remarkInput" placeholder="新增备注"/>
-        </div>
+        <!--<div class="add clearfix">-->
+        <!--<input type="text" @click="addNew" class="addInput" v-model="remarkInput" placeholder="新增备注"/>-->
+        <!--</div>-->
+        <div class="add clearfix" @click="addNew">新增备注</div>
       </div>
-      <div v-transfer-dom>
-        <x-dialog v-model="showHideOnBlur" class="dialog-demo" hide-on-blur>
-          <div class="img-box">
-            <textarea v-focus id="inputing" name="" rows="" cols="" v-model="remarkInfo"></textarea>
-          </div>
-          <div style="text-align: right;">
-            <button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>
-          </div>
-        </x-dialog>
-      </div>
+      <!--<div v-transfer-dom>-->
+        <!--<x-dialog v-model="showHideOnBlur" class="dialog-demo" hide-on-blur>-->
+          <!--<div class="img-box">-->
+            <!--<textarea v-focus id="inputing" v-model="remarkInfo"></textarea>-->
+          <!--</div>-->
+          <!--<div style="text-align: right;">-->
+            <!--<button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>-->
+          <!--</div>-->
+        <!--</x-dialog>-->
+      <!--</div>-->
+
+      <x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>
+        <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
+        <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
+      </x-dialog>
     </div>
   </div>
 </template>
@@ -115,7 +118,7 @@
     checkCustomerRemarks
   } from '@/service/api/customers'
 
-  import {setStore} from '@/config/mUtils'
+  import {setStore, getStore, removeStore} from '@/config/mUtils'
 
   export default {
     name: 'PotentialCustomerList',
@@ -148,7 +151,7 @@
         stat: '',
         remarkList: [],
         showHideOnBlur: false,
-        remarkInfo: null,
+        remarkInfo: '',
         remarkInput: null,
         disabled: true,
         modifiedVal: ''
@@ -156,7 +159,8 @@
     },
     mounted () {
       this.client_id = this.$route.params.id
-      checkCustomerRemarks({'client_id': this.client_id}).then(res => {
+      console.log(this.client_id)
+      checkCustomerRemarks(this.client_id).then(res => {
         if (res.status === 200) {
           if (res.data.length > 0) {
             this.remarkList = res.data
@@ -164,8 +168,10 @@
         }
       })
       checkCusomersDetail(this.client_id).then(res => {
-        let selfInfos = Object.assign({}, res.data)
-        setStore('selfInfos', selfInfos)
+        if (!JSON.parse(getStore('selfInfos'))) {
+          let selfInfos = Object.assign({}, res.data)
+          setStore('selfInfos', selfInfos)
+        }
         this.data = res.data
         this.client_name = res.data.name
         this.mobile = res.data.mobile
@@ -208,6 +214,7 @@
         return disabled
       },
       toLink1 () {
+        removeStore('selfInfos')
         this.$router.replace({name: 'CustomerList'})
       },
       toLink () {
@@ -225,7 +232,7 @@
       },
       addNew () {
         this.showHideOnBlur = true
-        document.getElementById('inputing').focus()
+        this.$refs.textarea.focus()
       },
       submitAddNew () {
         this.showHideOnBlur = false
@@ -369,21 +376,34 @@
       .weui-cells .weui-cell i {
         font-size: 32px; /*px*/
       }
+      .no_padding {
+        padding-bottom: 0;
+      }
       ul {
-        /*padding-bottom: 20px;*/
+        padding-bottom: 20px;
+        max-height: 440px;
+        overflow-y: scroll;
         li {
-          padding: 20px 120px 0 68px;
-          font-size: 24px; /*px*/
+          height: 110px;
+          padding: 0 120px 0 68px;
+          font-size: 26px;
+          color: #666;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
           .iText {
+            padding-top: 20px;
             margin-bottom: 10px;
-            font-size: 28px; /*px*/
+            /*font-size: 28px;*/
           }
           .view {
             color: #2672BA;
+            line-height: 30px;
           }
           .fr i {
-            font-size: 24px; /*px*/
+            font-size: 36px;
             padding-right: 15px;
+            vertical-align: top;
           }
         }
       }
@@ -412,6 +432,7 @@
       height: 80px;
       line-height: 80px;
       box-sizing: border-box;
+      padding: 0 20px;
     }
     a {
       color: #333;
@@ -440,7 +461,7 @@
 
   .space {
     width: 100%;
-    height: 10px;
+    height: 20px;
     background-color: #eee;
   }
 </style>

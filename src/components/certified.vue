@@ -23,6 +23,7 @@
         <camera :popupVisible="popupVisible"
                 @showPopup="showCamera"
                 :isFromBank="fromBank"
+                :cerId="uploadData.clientCertificationId"
                 @hidePopup="hideCamera"></camera>
       </div>
       <div class="submit_form">
@@ -50,7 +51,7 @@
 <script>
   import {XHeader} from 'vux'
   import {Popup, Radio} from 'mint-ui'
-  import {sendEmail, sendFiles} from '@/service/api/customers'
+  import {sendEmail, sendFiles, perfectInfos} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import camera from '@/base/camera/camera'
   export default {
@@ -71,7 +72,8 @@
         timer: null,
         uploadData: {
           clientCertificationId: '',
-          card_front_url: ''
+          card_front_url: '',
+          fileId: ''
         },
         showEmailBox: false,
         showConvertBox: false,
@@ -84,11 +86,20 @@
       }
     },
     mounted () {
-      this.uploadData.clientCertificationId = this.$route.params.clientCertificationId
+      let obj = {}
+      let info = JSON.parse(getStore('selfInfos'))
+      obj.client_id = info.client_id
+      obj.client_name = info.client_name
+      perfectInfos(obj).then(res => {
+        if (res.status === 200) {
+          this.uploadData.clientCertificationId = res.data.client_certification_id
+          console.log('certified：' + this.uploadData.clientCertificationId)
+        }
+      })
       this.userInfos.emailAddress = JSON.parse(getStore('data')).email
-      this.userInfos.name = this.$route.params.name
-      this.userInfos.id = this.$route.params.id
-      this.userInfos.type = this.$route.params.type
+      this.userInfos.name = info.client_name
+      this.userInfos.id = info.client_id
+      this.userInfos.type = info.client_type
       if (this.userInfos.type === '0') {
           this.radio = '普通投资者'
       } else if (this.userInfos.type === '1') {

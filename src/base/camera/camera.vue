@@ -43,20 +43,25 @@
         <div class='popup-item' @click="cancel()">取消</div>
       </div>
     </mt-popup>
-    <div v-show="alertMsg" style="line-height: 36px">上传图片失败</div>
+    <div v-show="alertMsg" style="line-height: 36px;position: absolute;left:66px">上传图片失败</div>
   </div>
 </template>
 <script>
-  import {updateFrontPic, updateId, addMateials} from '@/service/api/customers'
+  import {
+    updateFrontPic,
+    updateId,
+    addMateials,
+    deleteDetail
+  } from '@/service/api/customers'
   import {Popup, Spinner} from 'mint-ui'
-  import {getStore} from '@/config/mUtils'
+  //  import {getStore} from '@/config/mUtils'
   export default {
     name: 'Camera',
     components: {
       'mt-popup': Popup,
       'mt-spinner': Spinner
     },
-    props: ['popupVisible', 'isFromBank'],
+    props: ['popupVisible', 'isFromBank', 'cerId'],
     data () {
       return {
         imgSrc: '',
@@ -70,19 +75,18 @@
           type: 'fading-circle',
           size: 100,
           show: false
-        }
+        },
+        fileId: []
       }
     },
     mounted () {
-      let info = JSON.parse(getStore('selfInfos'))
-      this.certificationId = info.client_certification_id
-      console.log(this.fromBank)
-//        console.log(this.certificationId)
+//      console.log('cerId:' + this.cerId)
     },
     methods: {
       selectcamera () {
         this.show = true
         this.$emit('showPopup', this.show)
+        console.log(this.cerId)
       },
       cancel () {
         this.show = false
@@ -105,7 +109,7 @@
           quality: 50,
           sourceType: 0,
           destinationType: navigator.camera.DestinationType.DATA_URL,
-          saveToPhotoAlbum: true,
+//          saveToPhotoAlbum: true,
           encodingType: navigator.camera.EncodingType.JPEG
         }
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
@@ -140,7 +144,7 @@
         let formData = new FormData()
         formData.append('file', file)
         if (this.fromBank === 0) {
-          updateFrontPic(this.certificationId, formData).then(res => {
+          updateFrontPic(this.cerId, formData).then(res => {
             if (res.status === 200) {
               this.spinnerSet.show = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
@@ -162,8 +166,10 @@
             this.alertMsg = true
           })
         } else if (this.fromBank === 2) {
-          addMateials(this.certificationId, formData).then(res => {
+          addMateials(this.cerId, formData).then(res => {
             if (res.status === 200) {
+//                console.log(res)
+              this.fileId.push(res.data.client_cert_file_id)
               this.spinnerSet.show = false
               this.fileArr.push('data:image/jpeg;base64,' + imageData)
             }
@@ -174,6 +180,14 @@
         }
       },
       delImage (index) {
+        console.log('index: ' + index)
+        console.log(this.fileId[index])
+        deleteDetail(this.cerId, this.fileId[index]).then(res => {
+          if (res.status === 200) {
+            this.fileId.splice(index, 1)
+            console.log(this.fileId)
+          }
+        })
         this.fileArr.splice(index, 1)
       }
     }
