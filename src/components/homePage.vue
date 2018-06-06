@@ -108,8 +108,9 @@ export default {
 		z-index: 99;
 		top: 50%;
 		left: 50%;
-		width: 100px !important;
-		height: 100px !important;
+		transform: translate(-50%,-50%);
+		width: 80px !important;
+		height: 80px !important;
 	}
 	.wrapper {
 		margin-bottom: 116px;

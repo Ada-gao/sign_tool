@@ -47,7 +47,7 @@ export default {
 			background: #fff;
 			.iconfont{
 				position: absolute;
-				bottom: -72px;
+				bottom: -69px;
 				font-size: 90px;
 				left: 100px;
 				color: #fff;
