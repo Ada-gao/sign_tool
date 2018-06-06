@@ -116,7 +116,6 @@
       updateSearchValue (data) {
         this.searchVal = data._search
         this.isCancel = data.isCancel
-
         if (this.searchVal === '' || !this.searchVal) {
           this.searchCustomers = []
           return

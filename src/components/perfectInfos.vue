@@ -500,19 +500,24 @@
       <span class="back_class">反面</span>
     </div>
     <div class="space"></div>
-    <div class="myBank" @click="toLink">
+    <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
       <span>银行卡</span>
       <i class="iconfont">&#xe731;</i>
     </div>
     <div class="submit_form">
       <button class="submit" @click="submitInfos">提交</button>
     </div>
-    <alert v-model="alertMsg" :content="alertCont"></alert>
+    <!--<alert v-model="alertMsg" :content="alertCont"></alert>-->
+
+    <x-dialog v-model="dialogTableVisible" class="dialog-demo quitDialog" hide-on-blur>
+      <div class="quit">{{alertCont}}</div>
+      <x-button type="primary">确 定</x-button>
+    </x-dialog>
   </div>
 </template>
 
 <script>
-  import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, Alert} from 'vux'
+  import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
   import {uploadId, perfectInfos} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
   import {getStore, setStore} from '@/config/mUtils'
@@ -526,7 +531,8 @@
       XInput,
       Datetime,
       PopupPicker,
-      Alert,
+      XDialog,
+      XButton,
       camera
     },
     data () {
@@ -609,6 +615,9 @@
         this.popupVisible2 = data
       },
       toLink () {
+          if (this.isSubmit) {
+              return false
+          }
         let info = JSON.parse(getStore('selfInfos'))
         info.birthday = this.datetime
         info.address = this.address
@@ -622,7 +631,7 @@
       },
       submitInfos () {
         let idType = ''
-        if (this.$route.params.isSubmit) {
+        if (this.isSubmit) {
           this.alertMsg = false
         } else {
           this.alertMsg = true
@@ -688,9 +697,43 @@
     }
   }
   .perfect_infos {
-    .perfect_group {
-      /*padding-top: 118px;*/
+    .quitDialog{
+      .weui-dialog{
+        width: 580px;
+        height: 345px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%,-50%);
+        padding: 0;
+        text-align: center;
+        .quit{
+          margin-top: 85px;
+          margin-bottom: 75px;
+          font-family: PingFangSC-Regular;
+          font-size: 36px;
+          color: #333333;
+        }
+        .weui-btn.weui-btn_primary{
+          display: inline-block;
+          background: #2A7DC1;
+          border-radius: 10px;
+          width: 190px;
+          height: 80px;
+          font-family: PingFangSC-Medium;
+          font-size: 36px;
+          color: #F0F0F0;
+        }
+        .weui-btn.weui-btn_primary:first-child{
+          margin-left: 43px;
+        }
+        .weui-btn.weui-btn_primary:nth-child(2){
+          margin-right: 43px;
+        }
+      }
     }
+
     .myBank {
       background-color: #fff;
       height: 82px;
@@ -704,6 +747,12 @@
         right: 20px;
         font-size: 66px;
         color: #c8c8cd;
+      }
+    }
+    .grayMyBank {
+      color: #b2b2b2;
+      i {
+        color: #b2b2b2;
       }
     }
     .space {
