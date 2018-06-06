@@ -48,10 +48,11 @@ export function checkCusomersDetail (clientId) {
 /**
  * 查看所有客户备注以及信息过滤
  */
-export function checkCustomerRemarks (id) {
+export function checkCustomerRemarks (obj) {
   return axios({
-    url: `/v1/client/customers/remarks/${id}`,
-    method: 'get'
+    url: '/v1/client/customers/remarks/',
+    method: 'get',
+    data: obj
   })
 }
 
@@ -190,7 +191,7 @@ export function perfectInfos (obj) {
 }
 
 /**
- * 更新银行卡正反面
+ * 更新身份证正反面
  * @param obj
  * @returns {AxiosPromise}
  */
@@ -228,6 +229,17 @@ export function sendEmail (type, obj) {
     url: `/v1/client/customers/files/${type}`,
     method: 'post',
     data: obj
+  })
+}
+
+export function addMateials (id, obj) {
+  return axios({
+    url: `/v1/client/customers/certfiles/${id}`,
+    method: 'post',
+    data: obj,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }
 

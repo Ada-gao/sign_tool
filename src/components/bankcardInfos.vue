@@ -92,6 +92,11 @@
     }
     .img {
       text-align: center;
+      img {
+        display: inline-block;
+        width: 270px;
+        height: 180px;
+      }
     }
   }
 </style>
