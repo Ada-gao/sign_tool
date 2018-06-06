@@ -261,14 +261,16 @@ const router = new Router({
       name: 'PerfectInfos',
       component: PerfectInfos,
       meta: {
-        auth: true
+        auth: true,
+        keepAlive: true
       }
     }, {
       path: '/bankcard',
       name: 'Bankcard',
       component: Bankcard,
       meta: {
-        auth: true
+        auth: true,
+        keepAlive: true
       }
     }, {
       path: '/bankcardInfos',

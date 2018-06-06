@@ -134,8 +134,23 @@
 </template>
 
 <script>
-import { XHeader, Group, Cell, CellBox, Flexbox, FlexboxItem, XDialog, XTextarea, TransferDomDirective as TransferDom, CellFormPreview } from 'vux'
-import { checkCusomersDetail, checkCustomerRemarks, addCustomerRemarks } from '@/service/api/customers'
+import {
+    XHeader,
+  Group,
+  Cell,
+  CellBox,
+  Flexbox,
+  FlexboxItem,
+  XDialog,
+  XTextarea,
+  TransferDomDirective as TransferDom,
+  CellFormPreview
+} from 'vux'
+import {
+    checkCusomersDetail,
+  checkCustomerRemarks,
+  addCustomerRemarks
+} from '@/service/api/customers'
 
 export default {
   name: 'CustomerManagement',
@@ -163,26 +178,10 @@ export default {
   		remarkList: [],
 			showHideOnBlur: false,
 			remarkInfo: null,
-			remarkInput: null,
-			list: [{
-				name: '正收益债券基金',
-				mark: '二级市场',
-				money: '1000',
-				time: '2017/8/12 12:12'
-			}, {
-				name: '正收益基金',
-				mark: '二级市场',
-				money: '2000',
-				time: '2017/8/12 12:12'
-			}]
+			remarkInput: null
   	}
   },
   mounted () {
-  	if (this.showHideOnBlur) {
-  	    console.log(this.$refs.inputing)
-//  		document.getElementById('inputing').focus()
-      this.$refs.inputing.focus()
-		}
 		let clientId = this.$route.params.id
     checkCustomerRemarks(this.clientId).then(res => {
       if (res.status === 200) {
@@ -205,15 +204,10 @@ export default {
 		})
   },
   methods: {
-  	// deleteRemark (idx) {
-  	// 	this.remarkList.splice(idx, 1)
-  	// },
   	addNew () {
   		this.showHideOnBlur = true
       console.log(this.$refs.inputing)
-//  		document.getElementById('inputing').focus()
       this.$refs.inputing.focus()
-//  		document.getElementById('inputing').focus()
   	},
   	submitAddNew () {
 			this.showHideOnBlur = false
@@ -263,17 +257,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-/*@import '~vux/src/styles/reset';*/
 .wrapper {
-	// padding-top: 126px;
-	// .info {
-		// .weui-cells::before {
-		// 	border-top: 1px solid #D9D9D9; /*no*/
-		// }
-		// .weui-cells::after {
-		// 	border-bottom: 1px solid #D9D9D9; /*no*/
-		// }
-	// }
   .no_bbottom .weui-cells::after {
     content: none;
   }

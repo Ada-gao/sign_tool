@@ -115,8 +115,8 @@ export default {
         code: this.num,
         username: this.username,
         platform: this.platform,
-        app_version: 'v1.0',
-        registration_id: this.device.uuid
+        app_version: 'v1.0'
+//        registration_id: this.device.uuid
       }).then(res => {
         console.log(res)
         if (res.status === 200) {
@@ -176,8 +176,8 @@ export default {
       let obj = {
         username: this.username,
         platform: this.platform,
-        app_version: 'v1.0',
-        registration_id: this.device.uuid
+        app_version: 'v1.0'
+//        registration_id: this.device.uuid
       }
       getVerificationCode(obj).then(res => {
         console.log('数据库查看验证码')

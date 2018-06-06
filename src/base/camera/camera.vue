@@ -49,6 +49,7 @@
 <script>
   import {updateFrontPic, updateId, addMateials} from '@/service/api/customers'
   import {Popup, Spinner} from 'mint-ui'
+  import {getStore} from '@/config/mUtils'
   export default {
     name: 'Camera',
     components: {
@@ -73,7 +74,8 @@
       }
     },
     mounted () {
-      this.certificationId = this.$route.params.clientCertificationId
+      let info = JSON.parse(getStore('selfInfos'))
+      this.certificationId = info.client_certification_id
       console.log(this.fromBank)
 //        console.log(this.certificationId)
     },

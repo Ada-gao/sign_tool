@@ -372,6 +372,7 @@
       this.client_class = info.client_class
       this.client_type = info.client_type
       this.client_certification_id = info.client_certification_id
+      console.log(this.client_certification_id)
     },
     methods: {
       showPopup (data) {
