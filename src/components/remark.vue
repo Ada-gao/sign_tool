@@ -37,7 +37,11 @@
 					</div>
 				</div>
 			</div>
-			<remark-list :list="remarkList"></remark-list>
+			<remark-list :list="remarkList" v-if="show"></remark-list>
+      <div class="noRemark" v-if="!show">
+        <img src="static/img/remarkInfo.png" alt="">
+        <span>暂时没有备注信息</span>
+      </div>
       <x-dialog v-model="stopDialog" class="dialog-demo errDialog" hide-on-blur>
           <i class="iconfont noS">&#xe626;</i>
           <div class="err">{{errTip}}</div>
@@ -77,7 +81,8 @@ export default {
       remarkList: [],
       keyValue: '',
       stopDialog: false,
-      errTip: ''
+      errTip: '',
+      show: true
   	}
 	},
 	filters: {
@@ -134,8 +139,10 @@ export default {
   },
   mounted () {
     checkAllCustomerRemarks().then(res => {
-      console.log(res.data)
       this.remarkList = res.data
+      if (res.data.length === 0) {
+        this.show = false
+      }
 		})
   }
 }
@@ -154,7 +161,7 @@ export default {
   // }
   .wrapper{
     // padding-top: 128px;
-    height: 100%;
+    height: calc(100% - 118px);
     background-color: #F5F5F5;
     .search {
         text-align: center;
@@ -236,6 +243,9 @@ export default {
       // .vux-no-group-title {
       //   height: 100%!important;
       // }
+      .noRemark{
+        height: calc(100% - 256px);
+      }
       .vux-x-dialog.errDialog{
         .weui-dialog{
         width: 580px;

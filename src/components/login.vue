@@ -40,6 +40,7 @@ import { XHeader, XButton, Countdown, XInput, Group } from 'vux'
 import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken } from '@/service/api/login'
+import Vue from 'vue'
 
 export default {
   data () {
@@ -56,10 +57,11 @@ export default {
       // errorTip: false,
       errorMsg: '',
       msgTip: '',
-      clear: false
+      clear: false,
+      platform: '',
+      device: ''
       // telTip: false
       // start: false
-
     }
   },
   components: {
@@ -71,6 +73,12 @@ export default {
   },
   mounted () {
     this.$store.commit(types.TITLE, 'Your Repositories')
+    const u = navigator.userAgent
+    if ((u.indexOf('Android') > -1 || u.indexOf('Adr') > -1) === true) {
+      this.platform = 'Android'
+    } else if (!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) === true) {
+      this.platform = 'iOS'
+    }
   },
   methods: {
     userChange (username) {
@@ -105,7 +113,10 @@ export default {
       this.$store.state.token = '100'
       getAuthToken({
         code: this.num,
-        username: this.username
+        username: this.username,
+        platform: this.platform,
+        app_version: 'v1.0',
+        registration_id: this.device.uuid
       }).then(res => {
         console.log(res)
         if (res.status === 200) {
@@ -161,8 +172,23 @@ export default {
         }, 1000)
       }
       // let domain = document.domain === 'localhost' ? '10.60.2.141' : document.domain
-      getVerificationCode(this.username).then(res => {
+      this.device = Vue.cordova.device
+      let obj = {
+        username: this.username,
+        platform: this.platform,
+        app_version: 'v1.0',
+        registration_id: this.device.uuid
+      }
+      getVerificationCode(obj).then(res => {
         console.log('数据库查看验证码')
+      })
+      .catch(err => {
+        if (err) {
+          this.errorMsg = '请输入手机号'
+          setTimeout(() => {
+            this.errorMsg = ''
+          }, 5000)
+        }
       })
     }
   }
@@ -245,6 +271,7 @@ export default {
     .btn_wrap{
       position: static;
       margin-top: 0px;
+      text-align: center;
       .weui-btn.weui-btn_primary{
         width: 650px;
         height: 80px;

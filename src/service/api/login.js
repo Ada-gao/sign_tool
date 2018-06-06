@@ -4,11 +4,11 @@ import axios from '../../config/axios'
 /**
  * 获取用户验证码
  */
-export function getVerificationCode (username) {
+export function getVerificationCode (obj) {
     return axios({
         url: '/v1/auth/verification_code/',
         method: 'post',
-        data: { username }
+        data: obj
     })
 }
 
