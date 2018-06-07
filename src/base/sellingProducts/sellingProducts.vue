@@ -17,7 +17,7 @@
 							<div class="flex-right">
 								<p>{{item.product_name}}</p>
 								<p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
-                <p v-else>购买金额：{{item.amount}}万</p>
+                				<p v-else>购买金额：{{item.amount}}万</p>
 								<p>投资期限：{{item.investment_horizon}}年</p>
 								<span v-if="item.product_status === 0" class="box red">在建</span>
 								<span v-else-if="item.product_status === 1" class="box blue">预热中</span>
@@ -58,14 +58,17 @@ export default {
 		toProductDetail (id, item) {
 		    if (item.minimal_amount === undefined) {
 		        return false
-        }
+		}
+		console.log(item)
+		window.localStorage.setItem('productDetail', JSON.stringify(item))
 			// this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
 			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
 		}
 	}
 	// mounted () {
-	// 	this.newemail = this.email
-	// 	this.newuserId = this.userId
+	// 	// this.newemail = this.email
+	// 	// this.newuserId = this.userId
+	// 	console.log(this.childData)
 	// }
 }
 </script>
@@ -95,7 +98,7 @@ export default {
 }
 .flexbox-wrapper .vux-flexbox .item-right span.box{
 	position: absolute;
-	top: 0;
+	top: -20px;
 	right: 10px;
 	width: 90px;
 	height: 49px;

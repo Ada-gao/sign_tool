@@ -30,6 +30,15 @@ if (window.location.protocol === 'file:' || window.location.port === '8080' || w
   document.body.appendChild(cordovaScript)
 }
 
+// window.setInterval(() => {
+//   if (!navigator.onLine) {
+//     console.log('no')
+//     router.push({name: 'NoInternet'})
+//   } else {
+//     console.log('yyy')
+//   }
+// }, 2000)
+
 Vue.directive('focus', {
 	inserted: function (el) {
 		el.focus()
