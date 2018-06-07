@@ -40,7 +40,7 @@
 			<remark-list :list="remarkList" v-if="show"></remark-list>
       <div class="noRemark" v-if="!show">
         <img src="static/img/remarkInfo.png" alt="">
-        <span>暂时没有备注信息</span>
+        <div>暂时没有备注信息</div>
       </div>
       <x-dialog v-model="stopDialog" class="dialog-demo errDialog" hide-on-blur>
           <i class="iconfont noS">&#xe626;</i>
@@ -82,7 +82,7 @@ export default {
       keyValue: '',
       stopDialog: false,
       errTip: '',
-      show: true
+      show: null
   	}
 	},
 	filters: {
@@ -142,6 +142,8 @@ export default {
       this.remarkList = res.data
       if (res.data.length === 0) {
         this.show = false
+      } else {
+        this.show = true
       }
 		})
   }
@@ -245,6 +247,16 @@ export default {
       // }
       .noRemark{
         height: calc(100% - 256px);
+        text-align: center;
+        padding-top: 190px;
+        img{
+          margin-bottom: 90px;
+        }
+        div{
+          font-family: PingFangSC-Regular;
+          font-size: 32px;
+          color: #888888;
+        }
       }
       .vux-x-dialog.errDialog{
         .weui-dialog{

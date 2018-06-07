@@ -44,9 +44,9 @@
         	<!-- <cell-box is-link @click="toPdfReport(id,item)">交易所需材料</cell-box>
         	<cell-box link="/pptReport">产品说明材料（产品信息ppt）</cell-box>
         	<cell-box link="/productReport">产品公告（信息披露）</cell-box>-->
-          <div class="doc" @click="toPdfReport(id,item)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toPptReport(id,item)">产品说明材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toProductReport(id,item)">产品公告<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toPptReport(id)">产品说明材料<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toProductReport(id)">产品公告<span class="iconfont right">&#xe731;</span></div>
         </div>
       </div>
     </div>
@@ -75,22 +75,22 @@ export default {
     back () {
 			this.$router.push({name: 'HomePage'})
     },
-    toPdfReport (id, item) {
+    toPdfReport (id) {
       // this.$router.push({name: 'PdfReport', params: {id: id, item: item, email: email, userId: userId}})
-			this.$router.push({name: 'PdfReport', params: {id: id, item: item}})
+			this.$router.push({name: 'PdfReport', params: {id: id}})
     },
-    toPptReport (id, item) {
+    toPptReport (id) {
       // this.$router.push({name: 'PptReport', params: {id: id, item: item, email: email, userId: userId}})
-			this.$router.push({name: 'PptReport', params: {id: id, item: item}})
+			this.$router.push({name: 'PptReport', params: {id: id}})
     },
-    toProductReport (id, item) {
+    toProductReport (id) {
       // this.$router.push({name: 'ProductReport', params: {id: id, item: item, email: email, userId: userId}})
-			this.$router.push({name: 'ProductReport', params: {id: id, item: item}})
+			this.$router.push({name: 'ProductReport', params: {id: id}})
     }
   },
   mounted () {
     this.id = this.$route.params.id
-    this.item = this.$route.params.item
+    this.item = JSON.parse(window.localStorage.getItem('productDetail'))
     // this.email = this.$route.params.email
     // this.userId = this.$route.params.userId
     window.scroll(0, 0)

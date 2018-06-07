@@ -17,7 +17,9 @@
 				<i slot="icon" v-if="item.name === '二级市场'" class="iconfont red">&#xe604;</i>
 				<i slot="icon" v-else-if="item.name === '理财'" class="iconfont red">&#xe605;</i>
 				<i slot="icon" v-else-if="item.name === '固收'" class="iconfont blue">&#xe607;</i>
-				<i slot="icon" v-else-if="item.name === '另类'" class="iconfont yellow">&#xe60b;</i></cell>
+				<i slot="icon" v-else-if="item.name === '另类'" class="iconfont yellow">&#xe60b;</i>
+				<i slot="icon" v-else class="iconfont yellow">&#xe633;</i>
+				</cell>
 				 <!-- :email="email" :userId="userId" -->
 				<selling-products :child-data="item.products" v-show="showContentList[index]"></selling-products>
         <div class="divide-line"></div>
@@ -127,6 +129,9 @@ export default {
 			line-height: 70px;
 			padding-left: 20px;
 			.weui-cell__hd{
+				i{
+					vertical-align: middle;
+				}
 				.red{
 					color: #C61D1A;
 				}
