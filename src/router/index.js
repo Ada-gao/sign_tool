@@ -270,8 +270,7 @@ const router = new Router({
       name: 'Bankcard',
       component: Bankcard,
       meta: {
-        auth: true,
-        keepAlive: true
+        auth: true
       }
     }, {
       path: '/bankcardInfos',

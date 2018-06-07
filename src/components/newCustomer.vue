@@ -1,21 +1,20 @@
 <template>
   <div>
-    <x-header :left-options="{backText: ''}">新建客户</x-header>
-    <!--<x-header v-if="isMod==0" :left-options="{backText: ''}">新建客户</x-header>-->
-    <!--<x-header v-if="isMod==1" :left-options="{backText: ''}">修改资料</x-header>-->
+    <x-header :left-options="{backText: ''}">新建潜客</x-header>
     <group class="wrapper">
       <div class="add_tit">
-        <i class="iconfont">&#xe62c;</i>
+        <i class="iconfont">&#xe61a;</i>
         <span style="color: #2672ba">客户信息</span>
       </div>
       <div class="space"></div>
-      <x-input title="客户姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false"
-               required></x-input>
+      <!--<x-input title="客户姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false"-->
+      <mt-field label="客户姓名：" placeholder="输入客户姓名" v-model="name" class="new_field"></mt-field>
+
+      <!--required></x-input>-->
       <x-input title="国籍:"
                v-model="nationality"
                isASelection="true"
                @selectOne="selectNation"
-               placeholder="输入国籍"
                ref="input02" :show-clear="false" required></x-input>
       <x-address
         id="x_address"
@@ -27,22 +26,33 @@
         @on-shadow-change="onShadowChange"
         placeholder="请选择地址"
         :show.sync="showAddress"></x-address>
-      <x-input title="手机号码:" v-model="mobile" placeholder="输入客户手机号码" ref="input03" :max='13' mask="999 9999 9999"
-               is-type="china-mobile" :show-clear="false" required></x-input>
-      <x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input04" is-type="email" :show-clear="false"
-               required></x-input>
+      <!--<x-input title="手机号码:" v-model="mobile" placeholder="输入客户手机号码" ref="input03" :max='13' mask="999 9999 9999"-->
+               <!--is-type="china-mobile" :show-clear="false" required></x-input>-->
+      <!--<x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input04" is-type="email" :show-clear="false"-->
+               <!--required></x-input>-->
+      <mt-field label="手机号码：" placeholder="输入客户手机号码" v-model="mobile" class="new_field"></mt-field>
+      <mt-field label="邮箱：" placeholder="输入客户邮箱" v-model="email" class="new_field"></mt-field>
     </group>
     <!--<p class="alert_message" v-show="mustFill">有遗漏的必填项未填写～</p>-->
 
-    <div class="btn_wrap">
-      <button class="next" @click="submitCustomer">确定</button>
-    </div>
+    <!--<div class="btn_wrap">-->
+      <!--<button class="next" @click="submitCustomer">确定</button>-->
+    <!--</div>-->
+    <button class="next" @click="submitCustomer">确 定</button>
   </div>
 </template>
 
 <script>
 //  import { MessageBox } from 'mint-ui'
-  import { XHeader, Group, XInput, XButton, XAddress, ChinaAddressV4Data } from 'vux'
+  import {
+      XHeader,
+    Group,
+    XInput,
+    XButton,
+    XAddress,
+    ChinaAddressV4Data
+  } from 'vux'
+  import {Field} from 'mint-ui'
   import { addCusomer } from '@/service/api/customers'
 
   export default {
@@ -52,7 +62,8 @@
       Group,
       XInput,
       XButton,
-      XAddress
+      XAddress,
+      'mt-field': Field
     },
     data () {
       return {
@@ -72,7 +83,6 @@
     },
     mounted () {
       this.isMod = Number(this.$route.params.isMod)
-//      console.log(this.isMod)
       if (this.isMod === 1) {
         console.log('需要获取数据')
       }
@@ -124,8 +134,35 @@
   }
   .wrapper {
     height: auto;
+    .weui-label {
+      color: #333;
+    }
+    .weui-cell__bd {
+      text-align: right;
+    }
+    .new_field {
+      height: 82px;
+      padding: 0 20px;
+      border-top: 1px solid #d9d9d9;
+      .mint-cell-wrapper {
+        padding: 0;
+      }
+      .mint-cell-title {
+        color: #333;
+        font-size: 30px;
+        width: auto;
+      }
+      .mint-field-core {
+        text-align: right;
+        font-size: 30px;
+        color: #999;
+      }
+      .mint-field-state {
+        display: none;
+      }
+    }
     .space {
-      height: 25px;
+      height: 20px;
       background-color: #f5f5f5;
     }
     .add_tit {
@@ -153,11 +190,18 @@
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
+      padding: 0 20px;
+      .vux-cell-primary {
+        padding-right: 15px;
+        position: relative;
+        right: -60px;
+      }
     }
     // padding-top: 126px;
     .weui-cells .vux-x-input {
       height: 84px;
       box-sizing: border-box;
+      padding: 0 20px;
       button {
         width: 138px;
         height: 62px;
@@ -185,26 +229,16 @@
     }
   }
 
-  .btn_wrap {
-    padding: 0 37px;
-    margin-top: 119px;
-    /*position: fixed;*/
-    width: 100%;
-    /*bottom: 30px;*/
-    .next {
-      text-decoration: none;
-      border-radius: 60px;
-      background-color: #3693E0;
-      width: 644px;
-      height: 88px;
-      box-sizing: border-box;
-      display: inline-block;
-      text-align: center;
-      color: #fff;
-      line-height: 88px;
-      font-size: 32px; /*px*/
-      letter-spacing: 20px;
-      cursor: pointer;
-    }
+  .next {
+    display: block;
+    width: 710px;
+    height: 72px;
+    line-height: 72px;
+    font-size: 28px;
+    color: #fff;
+    border-radius: 10px;
+    background-color: #2672BA;
+    margin: 0 auto;
+    margin-top: 120px;
   }
 </style>
