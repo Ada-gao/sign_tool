@@ -145,15 +145,6 @@ export function uploadBankCard (id, obj) {
     data: obj
   })
 }
-/**
- * 上传身份证正反面
- */
-export function uploadID () {
-  return axios({
-    url: '/v1/common/file_upload/',
-    method: 'post'
-  })
-}
 
 /**
  * 查看客户证件信息
@@ -259,9 +250,41 @@ export function sendFiles (id, obj) {
   })
 }
 
+/**
+ * 投资者类型修改页面删除资料
+ * @param cerId
+ * @param fileId
+ * @returns {AxiosPromise}
+ */
 export function deleteDetail (cerId, fileId) {
   return axios({
     url: `/v1/client/customers/certfiles/${cerId}/${fileId}/`,
     method: 'post'
+  })
+}
+
+/**
+ * 新增潜客时发送验证码
+ * @param phoneNumber
+ * @returns {AxiosPromise}
+ */
+export function sendVerCode (phoneNumber) {
+  return axios({
+    url: '/v1/client/customers/verification_code/',
+    method: 'post',
+    data: phoneNumber
+  })
+}
+
+/**
+ * 新增潜客时手机号验证码输入时点击确定校验
+ * @param obj
+ * @returns {AxiosPromise}
+ */
+export function confirmVercode (obj) {
+  return axios({
+    url: '/v1/client/customers/validated/',
+    method: 'post',
+    data: obj
   })
 }

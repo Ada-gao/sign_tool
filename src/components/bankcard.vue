@@ -5,16 +5,23 @@
       <group class="bankcard_cont">
         <x-input title="持卡人："
                  v-model="personInfo.cardOwner"
+                 show-clear="false"
+                 class="x_iptname"
         ></x-input>
         <popup-picker title="开户银行："
                       :data="bankList"
+                      class="x_bank"
                       v-model="personInfo.bankName"
         ></popup-picker>
         <x-input title="支行："
+                 class="x_branch"
                  v-model="personInfo.branchBank"
+                 show-clear="false"
         ></x-input>
         <x-input title="银行卡号："
+                 class="x_cardnumber"
                  v-model="personInfo.bankCardNumber"
+                 show-clear="false"
         ></x-input>
       </group>
       <div class="space"></div>
@@ -35,7 +42,7 @@
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
   import camera from '@/base/camera/camera'
-  import {uploadBankCard, perfectInfos} from '@/service/api/customers'
+  import {uploadBankCard} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
 
   export default {
@@ -104,20 +111,22 @@
       }
     },
     mounted () {
-      let obj = {}
+//      let obj = {}
       let info = JSON.parse(getStore('selfInfos'))
-      obj.client_id = info.client_id
-      obj.client_name = info.client_name
-      perfectInfos(obj).then(res => {
-        if (res.status === 200) {
-          this.client_certification_id = res.data.client_certification_id
-          console.log('bankCard：' + this.client_certification_id)
-        }
-      })
+//      obj.client_id = info.client_id
+//      obj.client_name = info.client_name
+      this.client_certification_id = info.client_certification_id
+//      perfectInfos(obj).then(res => {
+//        if (res.status === 200) {
+//          this.client_certification_id = res.data.client_certification_id
+//          console.log('bankCard：' + this.client_certification_id)
+//        }
+//      })
     },
     methods: {
       showPopup (data) {
         this.popupVisible = data
+        console.log(this.client_certification_id)
       },
       hidePopup (data) {
         this.popupVisible = data
@@ -189,6 +198,17 @@
         color: #333;
         height: 82px;
         padding: 0 20px;
+      }
+      .x_iptname,
+      .x_branch,
+      .x_cardnumber {
+        .weui-cell__ft {
+          display: none;
+        }
+        .weui-input {
+          text-align: right;
+          color: #999;
+        }
       }
     }
     .upload {

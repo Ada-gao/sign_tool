@@ -4,12 +4,13 @@
     <div class="potential wrapper">
       <div class="info">
         <group>
-          <cell-box>
-            <i class="iconfont">&#xe62c;</i><span style="color:#2672ba">潜客信息</span>
+          <cell-box style="color: #2672ba;">
+            <i class="iconfont">&#xe62c;</i>潜客信息
             <span class="fr"
                   @click="toLink"
+                  style="color:#666;"
                   v-if="data.realname_status === '0'">完善信息</span>
-            <span class="fr" v-else>已完善</span>
+            <span class="fr" v-else style="color:#666;">已完善</span>
           </cell-box>
         </group>
         <div class="space"></div>

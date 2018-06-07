@@ -1,65 +1,86 @@
 <template>
   <div>
-    <x-header :left-options="{backText: ''}">新建潜客</x-header>
+    <x-header :left-options="{backText: ''}">新增潜客</x-header>
     <group class="wrapper">
+      <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
+        <div class="quit">{{alertCont}}</div>
+        <x-button type="primary" @click.native="hideAlert">确 定</x-button>
+      </x-dialog>
+      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog" hide-on-blur>
+        <div class="msg_title">请输入验证码：</div>
+        <input type="text" class="msg_ipt" v-model="verificate.code">
+        <x-button type="primary" @click.native="hideVerBox">确 定</x-button>
+      </x-dialog>
+
       <div class="add_tit">
         <i class="iconfont">&#xe61a;</i>
         <span style="color: #2672ba">客户信息</span>
       </div>
       <div class="space"></div>
-      <!--<x-input title="客户姓名:" v-model="name" placeholder="输入客户姓名" ref="input01" :show-clear="false"-->
-      <mt-field label="客户姓名：" placeholder="输入客户姓名" v-model="name" class="new_field"></mt-field>
-
-      <!--required></x-input>-->
+      <mt-field disableClear
+                label="客户姓名："
+                placeholder="输入客户姓名"
+                v-model="name"
+                class="new_field"></mt-field>
       <x-input title="国籍:"
                v-model="nationality"
                isASelection="true"
                @selectOne="selectNation"
-               ref="input02" :show-clear="false" required></x-input>
-      <x-address
-        id="x_address"
-        v-show="num === 1"
-        :title="title"
-        v-model="value"
-        raw-value
-        :list="addressData"
-        @on-shadow-change="onShadowChange"
-        placeholder="请选择地址"
-        :show.sync="showAddress"></x-address>
-      <!--<x-input title="手机号码:" v-model="mobile" placeholder="输入客户手机号码" ref="input03" :max='13' mask="999 9999 9999"-->
-               <!--is-type="china-mobile" :show-clear="false" required></x-input>-->
-      <!--<x-input title="邮箱:" v-model="email" placeholder="输入客户邮箱" ref="input04" is-type="email" :show-clear="false"-->
-               <!--required></x-input>-->
-      <mt-field label="手机号码：" placeholder="输入客户手机号码" v-model="mobile" class="new_field"></mt-field>
-      <mt-field label="邮箱：" placeholder="输入客户邮箱" v-model="email" class="new_field"></mt-field>
+               ref="input02"
+               :show-clear="false"
+               required></x-input>
+      <x-address id="x_address"
+                 v-show="num === 1"
+                 :title="title"
+                 v-model="value"
+                 raw-value
+                 :list="addressData"
+                 @on-shadow-change="onShadowChange"
+                 placeholder="请选择地址"
+                 :show.sync="showAddress"></x-address>
+      <mt-field disableClear
+                type="tel"
+                label="手机号码："
+                placeholder="输入客户手机号码"
+                :attr="{ maxlength: 11 }"
+                v-model="mobile"
+                class="new_field">
+        <span class="verificate"
+              v-if="!verificate.isTimeout"
+              @click="sendVerCode">发送验证码</span>
+        <span class="verificate"
+              v-else>{{verificate.num}}s</span>
+      </mt-field>
+      <mt-field disableClear
+                type="email"
+                label="邮箱（非必填项）："
+                placeholder="输入客户邮箱"
+                v-model="email"
+                class="new_field"></mt-field>
     </group>
-    <!--<p class="alert_message" v-show="mustFill">有遗漏的必填项未填写～</p>-->
-
-    <!--<div class="btn_wrap">-->
-      <!--<button class="next" @click="submitCustomer">确定</button>-->
-    <!--</div>-->
     <button class="next" @click="submitCustomer">确 定</button>
   </div>
 </template>
 
 <script>
-//  import { MessageBox } from 'mint-ui'
   import {
-      XHeader,
+    XHeader,
     Group,
     XInput,
     XButton,
     XAddress,
+    XDialog,
     ChinaAddressV4Data
   } from 'vux'
   import {Field} from 'mint-ui'
-  import { addCusomer } from '@/service/api/customers'
+  import {addCusomer, sendVerCode, confirmVercode} from '@/service/api/customers'
 
   export default {
     name: 'NewCustomer',
     components: {
       XHeader,
       Group,
+      XDialog,
       XInput,
       XButton,
       XAddress,
@@ -67,6 +88,15 @@
     },
     data () {
       return {
+        verificate: {
+          isShow: false,
+          timer: null,
+          num: 60,
+          isTimeout: false,
+          code: ''
+        },
+        alertMsg: false,
+        alertCont: '还有必填项没填',
         num: 1,
         isMod: -1,
         name: '',
@@ -88,6 +118,43 @@
       }
     },
     methods: {
+      hideVerBox () {
+        this.verificate.isShow = this.verificate.isTimeout = false
+        clearInterval(this.verificate.timer)
+        this.verificate.num = 60
+        let params = {
+            code: this.verificate.code,
+          mobile: this.mobile
+        }
+        confirmVercode(params).then(res => {
+            if (res.status === 200) {}
+        })
+      },
+      sendVerCode () {
+        this.verificate.isShow = this.verificate.isTimeout = true
+        let params = {
+            mobile: this.mobile
+        }
+        sendVerCode(params).then(res => {
+            if (res.status === 200) {
+                console.log(res)
+              this.verificate.isTimeout = false
+              this.verificate.num = 60
+              clearInterval(this.verificate.timer)
+            }
+        })
+        this.verificate.timer = setInterval(() => {
+          --this.verificate.num
+          if (this.verificate.num === 0) {
+            this.verificate.isTimeout = false
+            this.verificate.num = 60
+            clearInterval(this.verificate.timer)
+          }
+        }, 1000)
+      },
+      hideAlert () {
+        this.alertMsg = false
+      },
       onShadowChange (ids, names) {
 //        this.names = names.join()
 //        this.myAddressProvince = names[0]
@@ -110,16 +177,18 @@
           email: this.email,
           city: this.city
         }
+        if (!params.name || !params.mobile) {
+          this.alertMsg = true
+          return false
+        }
         if (this.name &&
-            this.mobile &&
-            this.email) {
+          this.mobile) {
           addCusomer(params).then(res => {
             console.log(res)
             if (res.status === 200) {
               this.$router.push({name: 'CustomerList'})
             }
           })
-        } else {
         }
       }
     }
@@ -132,7 +201,73 @@
     margin-top: 10px;
     padding-left: 20px;
   }
+
   .wrapper {
+    .verificate {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      background-color: #2672ba;
+      color: #f0f0f0;
+      width: 140px;
+      font-size: 22px;
+      text-align: center;
+      border-radius: 10px;
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+    .quitDialog,
+    .msg_dialog {
+      .weui-dialog {
+        width: 580px;
+        height: 345px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+        padding: 0;
+        text-align: center;
+        .quit {
+          margin-top: 85px;
+          margin-bottom: 75px;
+          font-family: PingFangSC-Regular;
+          font-size: 36px;
+          color: #333333;
+        }
+        .weui-btn.weui-btn_primary {
+          display: inline-block;
+          background: #2A7DC1;
+          border-radius: 10px;
+          width: 190px;
+          height: 80px;
+          font-family: PingFangSC-Medium;
+          font-size: 36px;
+          color: #F0F0F0;
+        }
+      }
+    }
+    .msg_dialog {
+      .weui-dialog {
+        height: 330px;
+      }
+      .msg_title {
+        color: #333;
+        font-size: 30px;
+        margin: 30px auto;
+      }
+      .msg_ipt {
+        font-size: 30px;
+        color: #333;
+        text-align: center;
+        border-color: #999;
+        display: block;
+        margin: 0 auto;
+        width: 300px;
+        height: 60px;
+        margin-bottom: 30px;
+      }
+    }
     height: auto;
     .weui-label {
       color: #333;

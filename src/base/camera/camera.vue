@@ -168,7 +168,6 @@
         } else if (this.fromBank === 2) {
           addMateials(this.cerId, formData).then(res => {
             if (res.status === 200) {
-//                console.log(res)
               this.fileId.push(res.data.client_cert_file_id)
               this.spinnerSet.show = false
               this.fileArr.push('data:image/jpeg;base64,' + imageData)
@@ -180,12 +179,9 @@
         }
       },
       delImage (index) {
-        console.log('index: ' + index)
-        console.log(this.fileId[index])
         deleteDetail(this.cerId, this.fileId[index]).then(res => {
           if (res.status === 200) {
             this.fileId.splice(index, 1)
-            console.log(this.fileId)
           }
         })
         this.fileArr.splice(index, 1)

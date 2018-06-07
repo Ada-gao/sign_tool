@@ -165,18 +165,23 @@
 .weui-cells::after {
 	border-bottom: 1px solid #D9D9D9; /*no*/
 }
+
 .potential {
   .add_remark_x {
     .weui-dialog {
       width: 580px;
-      margin-left: -290px;
-      left: 50%;
+      //margin-left: -290px;
+      //left: 50%;
       height: 320px;
       border-radius: 10px;
-      bottom: 50%;
-      margin-bottom: -160px;
+      //bottom: 50%;
+      //margin-bottom: -160px;
       padding-left: 0;
       padding-right: 0;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%,-50%);
+      text-align: center;
     }
     .add_remark_t {
       width: 530px;
@@ -189,6 +194,7 @@
       color: #666;
       padding: 10px;
       box-sizing: border-box;
+      outline: none;
     }
     .add_remark_btn {
       font-size: 30px;
@@ -206,4 +212,18 @@
       margin-top: 20px;
     }
   }
+}
+
+.perfect_infos,
+.wrapper {
+  .celll_datetime,
+  .cell_starttime,
+  .cell_endtime {
+    .weui-cell__ft.vux-cell-primary.vux-datetime-value {
+      padding-right: 25px!important;
+    }
+  }
+}
+.vux-header .vux-header-right a.add_newcustomer {
+  font-size: 30px;
 }

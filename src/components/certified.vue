@@ -30,22 +30,35 @@
         <button class="submit" @click="submitInfos">提交</button>
       </div>
     </div>
-    <mt-popup v-model="showEmailBox" closeOnClickModal="false">
-      <div class="email_box1">
-        <div class="title">请确认您的邮箱</div>
-        <div class="email_address">{{userInfos.emailAddress}}</div>
-        <button @click="hidePopup">确定</button>
-      </div>
-    </mt-popup>
-    <mt-popup v-model="showConvertBox" closeOnClickModel="false">
-      <div class="convert_box">
-        <div class="title"> 您的确定要变更为{{radio}}吗？</div>
-        <div class="btn_box">
-          <button class="ensure" @click="ensure">确定</button>
-          <button class="cancel" @click="cancel">取消</button>
+    <div class="popup_box">
+
+      <mt-popup v-model="showEmailBox" closeOnClickModal="false">
+        <div class="email_box1">
+          <div class="title">请确认您的邮箱</div>
+          <div class="email_address">{{userInfos.emailAddress}}</div>
+          <button @click="hidePopup">确定</button>
         </div>
-      </div>
-    </mt-popup>
+      </mt-popup>
+      <mt-popup v-model="showConvertBox" closeOnClickModel="false">
+        <div class="convert_box">
+          <div class="title"> 您的确定要变更为{{radio}}吗？</div>
+          <div class="btn_box">
+            <button class="ensure" @click="ensure">确定</button>
+            <button class="cancel" @click="cancel">取消</button>
+          </div>
+        </div>
+      </mt-popup>
+      <mt-popup v-model="showSubmit.isShow" closeOnclickModel="false">
+        <div class="confirm_box">
+          <i class="iconfont icon_success"
+             v-show="showSubmit.isSuccess != 2">&#xe60a;</i>
+          <i class="iconfont icon_fail"
+             v-show="showSubmit.isSuccess === 2">&#xe626;</i>
+          <div class="confirm_cont" :class="{'fail': showSubmit.isSuccess === 2}">{{showSubmit.cont}}</div>
+          <span class="confirm_btn" @click="popupConfirm(toRoute(showSubmit.isSuccess))">确 定</span>
+        </div>
+      </mt-popup>
+    </div>
   </div>
 </template>
 <script>
@@ -63,6 +76,12 @@
     },
     data () {
       return {
+        showSubmit: {
+          isShow: false,
+          cont: '您的资料已上传成功！',
+//          cont: '对不起！上传失败 请您重新上传资料',
+          isSuccess: 0
+        },
         popupVisible: false,
         fromBank: 2,
         radio: '',
@@ -101,7 +120,7 @@
       this.userInfos.id = info.client_id
       this.userInfos.type = info.client_type
       if (this.userInfos.type === '0') {
-          this.radio = '普通投资者'
+        this.radio = '普通投资者'
       } else if (this.userInfos.type === '1') {
         this.radio = '专业投资者'
       }
@@ -167,11 +186,28 @@
           }
         })
       },
+      popupConfirm (fn) {
+        if (fn) {
+          fn()
+        }
+      },
+      toRoute (status) {
+        if (status === 1) {
+          this.$router.replace({name: 'PotentialCustomerList', params: {id: this.userInfos.id}})
+        }
+        this.showSubmit.isShow = false
+      },
       submitInfos () {
         sendFiles(this.uploadData.clientCertificationId, {certification_type: this.convert(this.radio)}).then(res => {
           if (res.status === 200) {
-            this.$router.replace({name: 'PotentialCustomerList', params: {id: this.userInfos.id}})
+            this.showSubmit.isShow = true
+            this.showSubmit.isSuccess = 1
           }
+        }).catch(err => {
+          console.log('error: ' + err)
+          this.showSubmit.isShow = true
+          this.showSubmit.isSuccess = 2
+          this.showSubmit.cont = '对不起！上传失败 请您重新上传资料'
         })
       }
     }
@@ -179,6 +215,48 @@
 </script>
 <style lang="less">
   @import url("//unpkg.com/element-ui@2.3.9/lib/theme-chalk/index.css");
+
+  .popup_box {
+    .confirm_box {
+      font-size: 0;
+      width: 580px;
+      height: 345px;
+      box-sizing: border-box;
+      text-align: center;
+      padding-top: 20px;
+      .icon_success {
+        font-size: 70px;
+        color: #74BA3B;
+      }
+      .icon_fail {
+        font-size: 70px;
+        color:#C61D1A;
+      }
+      .confirm_cont {
+        font-family: PingFangSC-Regular;
+        font-size: 30px;
+        color: #333333;
+        margin: 0 auto;
+        margin-bottom: 50px;
+        margin-top: 26px;
+      }
+      .fail {
+        width: 270px;
+        margin-bottom: 40px;
+      }
+      .confirm_btn {
+        background: #2A7DC1;
+        border-radius: 10px;
+        display: inline-block;
+        width: 280px;
+        height: 80px;
+        line-height: 80px;
+        color: #f0f0f0;
+        font-size: 36px;
+        font-family: PingFangSC-Regular;
+      }
+    }
+  }
 
   .mint-popup {
     border-radius: 10px;
@@ -293,6 +371,10 @@
             width: 16px;
             height: 16px;
           }
+        }
+        .mint-cell-wrapper {
+          background-image: none;
+          -webkit-background-image: none;
         }
       }
       .email_box {
