@@ -1,15 +1,24 @@
 <template>
   <div class="pdfPage">
-    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id,item)">交易所需材料</x-header>
+    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">交易所需材料</x-header>
     <div class="wrapper">
-      <mt-checklist
-        v-model="checkedList" :options="newNameList" @change="handleCheckedDocsChange">
-      </mt-checklist>
+      <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true">
+        <template slot-scope="props">
+            <div @click="get(props.item)">
+            <!-- <mt-button type="default">default</mt-button> -->
+						<i class="eye iconfont">&#xe6ce;</i>
+            </div>
+        </template>
+        </check-list>
     </div>
     <div class="select">
-      <mt-checklist
+     <!-- <mt-checklist
         v-model="checkAll" :options="option" :label="newList" @change="handleCheckAllChange">
-      </mt-checklist>
+      </mt-checklist> -->
+    <div :class="'my_checkbox' + (this.flag ? ' checked' : '' )">
+      <div :class="'box mint-toast-icon mintui mintui-success' + (this.flag ? ' checked' : '' )" @click="checkAll"></div>
+      <div class="name">全选</div>
+    </div>
       <button class="button" @click="sendEmail">发送到邮箱</button>
       <x-dialog v-model="dialogTableVisible" class="dialog-demo pdfCloseDialog" hide-on-blur>
           <div class="confirm">请确认您的邮箱</div>
@@ -33,15 +42,24 @@
     </div>
   </div>
 </template>
-
 <script type="text/ecmascript-6">
+import CheckList from '@/base/checkList/checkList'
 import { XHeader, XDialog, XInput, XButton } from 'vux'
 import { getTransaction, sendTrade } from '@/service/api/products'
 
 export default {
+  components: {
+    CheckList,
+    XHeader,
+    XDialog,
+    XInput,
+    XButton
+  },
   data () {
     return {
-        checkAll: [],
+      value: [],
+      flag: false,
+    //   checkAll: [],
         checkedList: [],
         checkedVal: '',
         documentList: [],
@@ -58,54 +76,36 @@ export default {
         clear: false,
         noSelectDialog: false
     }
-  },
-  components: {
-    XHeader,
-    XDialog,
-    XInput,
-    XButton
+	},
+	watch: {
+    value: {
+      handler: function (newVal, oldVal) {
+        this.flag = !this.documentList.some(item => newVal.indexOf(item) === -1)
+      },
+      deep: true
+    }
   },
   methods: {
-    back (id, item) {
-      // this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newEmail, userId: newUserId}})
-			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
+    get (test) {
+      console.log(test)
     },
-    handleCheckAllChange (val) {
-      this.checkedList = val.length ? this.newUrlList : []
-      let inputParent = document.querySelector('.mint-checklist')
-      Array.from(inputParent.querySelectorAll('input[type="checkbox"]')).forEach((item, index) => {
-        item.setAttribute('checked', true)
-        if (val.length) {
-          item.parentNode.nextElementSibling.classList.add('color')
-        } else {
-          item.parentNode.nextElementSibling.classList.remove('color')
-        }
-      })
-      },
-      handleCheckedDocsChange (value) {
-      let inputParent = document.querySelector('.mint-checklist')
-      Array.from(inputParent.querySelectorAll('input[type="checkbox"]')).forEach((item, index) => {
-        if (item.checked) {
-          item.parentNode.nextElementSibling.classList.add('color')
-        } else {
-          item.parentNode.nextElementSibling.classList.remove('color')
-        }
-      })
-        let checkedCount = value.length
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.newNameList.length
-        let allInput = document.querySelector('.select input.mint-checkbox-input')
-        if (checkedCount === this.newNameList.length) {
-          allInput.checked = true
-        } else {
-          allInput.checked = false
-        }
-      },
+    checkAll () {
+			this.flag = !this.flag
+      this.$refs.checkList.checkAll(this.flag)
+    },
+    back (id) {
+      // this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newEmail, userId: newUserId}})
+			this.$router.push({name: 'ProductDetail', params: {id: id}})
+    },
       sendEmail () {
-        this.dialogTableVisible = true
+				this.dialogTableVisible = true
       },
       sendMessage () {
-        this.dialogTableVisible = false
-        //
+				this.dialogTableVisible = false
+				this.checkedList = []
+				this.value.map((item, index) => {
+					this.checkedList.push(item.transaction_file_id)
+				})
         let obj = {'email': this.newEmail, 'checkedList': this.checkedList, 'userId': this.newUserId, 'type': 0}
         sendTrade(obj).then(res => {
           console.log(res)
@@ -121,16 +121,18 @@ export default {
       noSelectSure () {
         this.noSelectDialog = false
       }
-  },
-  mounted () {
-    this.id = this.$route.params.id
-    this.item = this.$route.params.item
-    // this.newEmail = this.$route.params.email
-    // this.newUserId = this.$route.params.userId
-    this.newEmail = JSON.parse(window.localStorage.getItem('data')).email
-    this.newUserId = JSON.parse(window.localStorage.getItem('data')).userId
+	},
+	created () {
+		this.id = this.$route.params.id
+		this.$nextTick(function () {
 		getTransaction(this.id).then(res => {
-      this.documentList = res.data
+			this.documentList = res.data
+	// 		this.documentList.push({
+  //   "file_path": "fjhkherf",
+  //   "name": "交易文件4",
+  //   "product_id": 3,
+  //   "transaction_file_id": 4
+  // })
       const list = []
       const nameList = []
       const urlList = []
@@ -140,13 +142,20 @@ export default {
         urlList.push(item.transaction_file_id)
       })
       this.newList = list
-      this.newNameList = nameList
-      this.newUrlList = urlList
-    })
+      this.value = nameList
+			this.newUrlList = urlList
+			})
+		})
+	},
+  mounted () {
+    this.item = this.$route.params.item
+    // this.newEmail = this.$route.params.email
+    // this.newUserId = this.$route.params.userId
+    this.newEmail = JSON.parse(window.localStorage.getItem('data')).email
+    this.newUserId = JSON.parse(window.localStorage.getItem('data')).userId
 	}
 }
 </script>
-
 <style lang="less">
 .pdfPage{
   height: 100%;
@@ -155,95 +164,85 @@ export default {
     background: #F5F5F5;
     padding-bottom: 8px;
     margin-bottom: 82px;
-  }
-  .el-checkbox-group{
-    // margin-bottom: 82px;
-  }
-  .mint-checklist-title{
-    display: none;
-  }
-  .mint-cell{
-    display: block;
-    // padding-left: 21px !important;
-    padding: 0 0 0 21px !important;
-    margin-left: 0px;
-    margin-top: 8px;
-    height: 82px;
-    line-height: 82px;
-    background: #fff;
-    text-decoration: none;
-    .mint-cell-wrapper{
-      height: 100%;
-      padding: 0;
-      background: none;
-      .mint-cell-title{
-        .mint-checklist-label{
-          .mint-checkbox{
-            .mint-checkbox-core{
-              width: 25px;
-              height: 25px;
-              border: 1px solid #666666;
-              border-radius: 4px;
-            }
-            .mint-checkbox-core::after{
-              border: 2px solid #2672BA;
-              border-top: 0px;
-              border-left: 0px;
-              width: 10px;
-              height: 17px;
-              top: 0;
-              left: 6px;
-            }
-            .mint-checkbox-input:checked + .mint-checkbox-core{
-              background: #fff;
-              border: 1px solid #2672BA;
-            }
-          }
-          .mint-checkbox-label{
-            font-family: PingFangSC-Regular;
-            font-size: 28px;
-            color: #333333;
-          }
-          .color{
-            color: #2672BA;
-          }
+		.eye{
+			font-size: 40px;
+			color: #2A7DC1;
+		}
+	}
+	.select{
+		width: 100%;
+		padding: 0 20px;
+		position: fixed;
+		bottom: 0;
+		background: #fff;
+		height: 82px;
+		z-index: 55;
+		box-sizing: border-box;
+		.my_checkbox{
+   		display: flex;
+      justify-content: space-between;
+      align-items: center;
+			height: 100%;
+			line-height: 100%;
+      .box{
+        width: 25px;
+        height: 25px;
+        border-radius: 20%;
+        border: 1px solid #666;
+				position: absolute;
+				top: 50%;
+        transform: translate(0, -50%);
+        &::before{
+          color: #2672BA;
+          font-size: 6px;
+          width: 25px;
+          height: 25px;
+          position: absolute;
+          left: 0;
+          top: 0;
+          border-radius: 20%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transform: rotate(45deg) scale(0);
+          transition: transform .2s;
         }
       }
-    }
-  }
-}
-.demo1-item {
-  border: 1px solid #ececec;
-  padding: 5px 15px;
-}
-.demo1-item-selected {
-  border: 1px solid green;
-}
-.select{
-  width: 100%;
-  position: fixed;
-  bottom: 0;
-  background: #fff;
-  height: 82px;
-  z-index: 55;
-  label.el-checkbox {
-    display: inline-block;
-    margin-top: 0px;
-  }
-  .button{
+      .name{
+        flex-grow: 1;
+				margin-left: 40px;
+				font-family: PingFangSC-Regular;
+        font-size: 28px;
+        color: #333333;
+      }
+      &.checked{
+        .box{
+					background-color: #fff;
+          border: 1px solid #2672BA;
+          &::before{
+						transform: rotate(0deg) scale(1);
+          }
+        }
+        .name{
+					color: #2672BA;
+        }
+      }
+	}
+	.button{
     width: 156px;
     height: 50px;
     position: absolute;
-    right: 22px;
-    top: 20px;
+    right: 20px;
+		top: 50%;
+		transform: translate(0, -50%);
     background: #2A7DC1;
     border-radius: 10px;
     font-family: PingFangSC-Regular;
     font-size: 20px;
     color: #F0F0F0;
     outline: none;
-  }
-  .vux-x-dialog.pdfCloseDialog{
+	}
+	.vux-x-dialog.pdfCloseDialog{
     .weui-dialog{
       width: 580px;
       height: 345px;
@@ -328,5 +327,6 @@ export default {
       }
     }
   }
+	}
 }
 </style>

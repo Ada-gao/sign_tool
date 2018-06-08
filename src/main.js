@@ -10,7 +10,7 @@ import 'common/style/index.less'
 import 'lib-flexible'
 import * as filters from 'common/js/filter.js'
 import { LoadingPlugin } from 'vux'
-import { DatetimePicker, Checklist, Spinner, Search } from 'mint-ui'
+import { DatetimePicker, Checklist, Spinner, Search, Button } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 // import ElementUI from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
@@ -58,6 +58,7 @@ Vue.component(DatetimePicker.name, DatetimePicker)
 Vue.component(Checklist.name, Checklist)
 Vue.component(Spinner.name, Spinner)
 Vue.component(Search.name, Search)
+Vue.component(Button.name, Button)
 
 // 将 axios 挂载到 prototype 上，在组件中可以直接使用 this.$axios 访问
 Vue.prototype.$axios = axios

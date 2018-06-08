@@ -32,6 +32,7 @@ const PerfectInfos = r => require.ensure([], () => r(require('@/components/perfe
 const Bankcard = r => require.ensure([], () => r(require('@/components/bankcard')), 'bankcard')
 const BankcardInfos = r => require.ensure([], () => r(require('@/components/bankcardInfos')), 'bankcardInfos')
 const NoInternet = r => require.ensure([], () => r(require('@/components/noInternet')), 'noInternet')
+const Report = r => require.ensure([], () => r(require('@/base/report/pdf')), 'report')
 
 // // import A from '@/components/a'
 
@@ -284,6 +285,14 @@ const router = new Router({
       path: '/noInternet',
       name: 'NoInternet',
       component: NoInternet,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/report',
+      name: 'Report',
+      component: Report,
       meta: {
         auth: true
       }
