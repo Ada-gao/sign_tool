@@ -6,7 +6,7 @@
         <div class="quit">{{alertCont}}</div>
         <x-button type="primary" @click.native="hideAlert">确 定</x-button>
       </x-dialog>
-      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog" hide-on-blur>
+      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog">
         <div class="msg_title">请输入验证码：</div>
         <input type="text" class="msg_ipt" v-model="verificate.code">
         <x-button type="primary" @click.native="hideVerBox">确 定</x-button>
@@ -72,7 +72,7 @@
     XDialog,
     ChinaAddressV4Data
   } from 'vux'
-  import {Field} from 'mint-ui'
+  import {Field, Toast} from 'mint-ui'
   import {addCusomer, sendVerCode, confirmVercode} from '@/service/api/customers'
 
   export default {
@@ -104,6 +104,9 @@
         mobile: '',
         email: '',
         city: '',
+        mobile_validated: '0',
+        validated_timestamp: '',
+        validated_by: '',
         popupVisible: false,
         title: '常住中国城市',
         value: [],
@@ -127,20 +130,33 @@
           mobile: this.mobile
         }
         confirmVercode(params).then(res => {
-            if (res.status === 200) {}
+            if (res.status === 200) {
+                this.validated_timestamp = res.data.validated_timestamp
+              this.mobile_validated = res.data.mobile_validated
+              this.validated_by = res.data.validated_by
+            }
         })
       },
       sendVerCode () {
+        if (!this.mobile || this.mobile.length !== 11) {
+          Toast({
+            message: '请输入有效的手机号',
+            position: 'top',
+            duration: 10000,
+            className: 'toast_class'
+          })
+            return false
+        }
         this.verificate.isShow = this.verificate.isTimeout = true
         let params = {
-            mobile: this.mobile
+          mobile: this.mobile
         }
         sendVerCode(params).then(res => {
             if (res.status === 200) {
                 console.log(res)
-              this.verificate.isTimeout = false
-              this.verificate.num = 60
-              clearInterval(this.verificate.timer)
+//              this.verificate.isTimeout = false
+//              this.verificate.num = 60
+//              clearInterval(this.verificate.timer)
             }
         })
         this.verificate.timer = setInterval(() => {
@@ -175,7 +191,10 @@
           nationality: this.num === 1 ? '0' : '1',
           mobile: this.mobile,
           email: this.email,
-          city: this.city
+          city: this.city,
+          mobile_validated: this.mobile_validated,
+          validated_timestamp: this.validated_timestamp,
+          validated_by: this.validated_by
         }
         if (!params.name || !params.mobile) {
           this.alertMsg = true
@@ -203,71 +222,71 @@
   }
 
   .wrapper {
-    .verificate {
-      display: inline-block;
-      height: 40px;
-      line-height: 40px;
-      background-color: #2672ba;
-      color: #f0f0f0;
-      width: 140px;
-      font-size: 22px;
-      text-align: center;
-      border-radius: 10px;
-      margin-left: 10px;
-      vertical-align: middle;
-    }
-    .quitDialog,
-    .msg_dialog {
-      .weui-dialog {
-        width: 580px;
-        height: 345px;
-        background: #FFFFFF;
-        border-radius: 10px;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%);
-        padding: 0;
-        text-align: center;
-        .quit {
-          margin-top: 85px;
-          margin-bottom: 75px;
-          font-family: PingFangSC-Regular;
-          font-size: 36px;
-          color: #333333;
-        }
-        .weui-btn.weui-btn_primary {
-          display: inline-block;
-          background: #2A7DC1;
-          border-radius: 10px;
-          width: 190px;
-          height: 80px;
-          font-family: PingFangSC-Medium;
-          font-size: 36px;
-          color: #F0F0F0;
-        }
-      }
-    }
-    .msg_dialog {
-      .weui-dialog {
-        height: 330px;
-      }
-      .msg_title {
-        color: #333;
-        font-size: 30px;
-        margin: 30px auto;
-      }
-      .msg_ipt {
-        font-size: 30px;
-        color: #333;
-        text-align: center;
-        border-color: #999;
-        display: block;
-        margin: 0 auto;
-        width: 300px;
-        height: 60px;
-        margin-bottom: 30px;
-      }
-    }
+    /*.verificate {*/
+      /*display: inline-block;*/
+      /*height: 40px;*/
+      /*line-height: 40px;*/
+      /*background-color: #2672ba;*/
+      /*color: #f0f0f0;*/
+      /*width: 140px;*/
+      /*font-size: 22px;*/
+      /*text-align: center;*/
+      /*border-radius: 10px;*/
+      /*margin-left: 10px;*/
+      /*vertical-align: middle;*/
+    /*}*/
+    /*.quitDialog,*/
+    /*.msg_dialog {*/
+      /*.weui-dialog {*/
+        /*width: 580px;*/
+        /*height: 345px;*/
+        /*background: #FFFFFF;*/
+        /*border-radius: 10px;*/
+        /*top: 50% !important;*/
+        /*left: 50% !important;*/
+        /*transform: translate(-50%, -50%);*/
+        /*padding: 0;*/
+        /*text-align: center;*/
+        /*.quit {*/
+          /*margin-top: 85px;*/
+          /*margin-bottom: 75px;*/
+          /*font-family: PingFangSC-Regular;*/
+          /*font-size: 36px;*/
+          /*color: #333333;*/
+        /*}*/
+        /*.weui-btn.weui-btn_primary {*/
+          /*display: inline-block;*/
+          /*background: #2A7DC1;*/
+          /*border-radius: 10px;*/
+          /*width: 190px;*/
+          /*height: 80px;*/
+          /*font-family: PingFangSC-Medium;*/
+          /*font-size: 36px;*/
+          /*color: #F0F0F0;*/
+        /*}*/
+      /*}*/
+    /*}*/
+    /*.msg_dialog {*/
+      /*.weui-dialog {*/
+        /*height: 330px;*/
+      /*}*/
+      /*.msg_title {*/
+        /*color: #333;*/
+        /*font-size: 30px;*/
+        /*margin: 30px auto;*/
+      /*}*/
+      /*.msg_ipt {*/
+        /*font-size: 30px;*/
+        /*color: #333;*/
+        /*text-align: center;*/
+        /*border-color: #999;*/
+        /*display: block;*/
+        /*margin: 0 auto;*/
+        /*width: 300px;*/
+        /*height: 60px;*/
+        /*margin-bottom: 30px;*/
+      /*}*/
+    /*}*/
     height: auto;
     .weui-label {
       color: #333;
