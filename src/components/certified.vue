@@ -105,11 +105,11 @@
       }
     },
     mounted () {
-      let obj = {}
+//      let obj = {}
       let info = JSON.parse(getStore('selfInfos'))
-      obj.client_id = info.client_id
-      obj.client_name = info.client_name
-      perfectInfos(obj).then(res => {
+//      obj.client_id = info.client_id
+//      obj.client_name = info.client_name
+      perfectInfos({client_id: this.client_id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
           console.log('certified：' + this.uploadData.clientCertificationId)

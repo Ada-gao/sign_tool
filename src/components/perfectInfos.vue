@@ -141,9 +141,26 @@
         fromBank: 1
       }
     },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        let info = JSON.parse(getStore('selfInfos'))
+        vm.client_certification_id = info.client_certification_id
+        if (!info.client_certification_id) {
+          perfectInfos({client_id: info.client_id}).then(res => {
+            info.client_certification_id = res.data.client_certification_id
+            vm.client_certification_id = res.data.client_certification_id
+            setStore('selfInfos', info)
+//            console.log('perfectInfos: ' + vm.client_certification_id)
+          })
+        }
+      })
+    },
     beforeRouteLeave (to, from, next) {
+      let info = JSON.parse(getStore('selfInfos'))
+//      console.log(info)
       if (to.name === 'PotentialCustomerList') {
-        from.meta.keepAlive = false
+        info.client_certification_id = 0
+        setStore('selfInfos', info)
       }
       next()
     },
@@ -157,18 +174,6 @@
       this.client_id = info.client_id
       this.client_class = info.client_class
       this.client_type = info.client_type
-      let obj = {}
-      obj.client_id = info.client_id
-      obj.client_name = info.client_name
-      perfectInfos(obj).then(res => {
-        if (res.status === 200) {
-          this.client_certification_id = info.client_certification_id = res.data.client_certification_id
-          setStore('selfInfos', info)
-//          this.client_certification_id = res.data.client_certification_id
-        }
-      }).catch(err => {
-        console.log('error: ' + err)
-      })
     },
     methods: {
       hideAlert () {
@@ -232,7 +237,7 @@
           id_back_url: this.idImages.back
         }
         console.log(params)
-        console.log('cerId' + this.client_certification_id)
+//        console.log('cerId' + this.client_certification_id)
         if (!params.birthday ||
           !params.address ||
           !params.id_no ||
@@ -270,7 +275,20 @@
   }
 
   .perfect_infos {
-    .quitDialog {
+    .verificate {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      background-color: #2672ba;
+      color: #f0f0f0;
+      width: 140px;
+      font-size: 22px;
+      text-align: center;
+      border-radius: 10px;
+      vertical-align: middle;
+    }
+    .quitDialog,
+    .msg_dialog {
       .weui-dialog {
         width: 580px;
         height: 345px;
@@ -298,12 +316,27 @@
           font-size: 36px;
           color: #F0F0F0;
         }
-        .weui-btn.weui-btn_primary:first-child {
-          margin-left: 43px;
-        }
-        .weui-btn.weui-btn_primary:nth-child(2) {
-          margin-right: 43px;
-        }
+      }
+    }
+    .msg_dialog {
+      .weui-dialog {
+        height: 330px;
+      }
+      .msg_title {
+        color: #333;
+        font-size: 30px;
+        margin: 30px auto;
+      }
+      .msg_ipt {
+        font-size: 30px;
+        color: #333;
+        text-align: center;
+        border-color: #999;
+        display: block;
+        margin: 0 auto;
+        width: 300px;
+        height: 60px;
+        margin-bottom: 30px;
       }
     }
 
