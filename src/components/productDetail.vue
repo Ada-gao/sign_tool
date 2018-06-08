@@ -77,6 +77,7 @@ export default {
     },
     toPdfReport (id) {
       // this.$router.push({name: 'PdfReport', params: {id: id, item: item, email: email, userId: userId}})
+      // this.$router.push({name: 'PdfReport', params: {id: id}})
 			this.$router.push({name: 'PdfReport', params: {id: id}})
     },
     toPptReport (id) {

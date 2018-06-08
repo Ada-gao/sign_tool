@@ -8,7 +8,8 @@
           placeholder="请您输入手机号"
           v-model="username"
           :show-clear="clear"
-          @on-change="userChange(username)">
+          @on-blur="userChange(username)"
+          @on-enter="userChange(username)">
           <i slot="label" class="iconfont">&#xe631;</i>
         </x-input>
         <div class="userTip">{{msgTip}}</div>

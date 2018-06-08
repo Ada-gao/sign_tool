@@ -21,6 +21,7 @@ axios.interceptors.request.use(
         return config
     },
     err => {
+        console.log('dfghjdk')
         return Promise.reject(err)
     })
 
