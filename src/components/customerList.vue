@@ -1,7 +1,7 @@
 <template>
   <div>
     <x-header v-show="isCancel===false" :left-options="{showBack: false}">客户
-      <router-link slot="right" :to="{name: 'NewCustomer', params: {isMod: 0}}" style="font-size: 30px">新增潜客
+      <router-link slot="right" :to="{name: 'NewCustomer', params: {isMod: 0}}" class="add_newcustomer">新增潜客
       </router-link>
     </x-header>
     <x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询
@@ -30,13 +30,19 @@
         <ul v-show="idx === 0" :data="customers">
           <li v-for="(item, index) in customers" :key="index">
             <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
-              <p>
-                <span class="left-item">{{item.name}}</span>
-                <span class="left-item">（{{item.client_no}}）</span>
-                <span class="left-item" style="display: block;">{{item.mobile}}</span>
-                <span
-                  :class="[{'red-color': item.client_type === '1'}, 'right-item']">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
-              </p>
+              <div class="customer_list">
+                <div class="customer_left">
+                  <span>{{item.name}}</span>
+                  <span v-show="item.client_no">（{{item.client_no}}）</span>
+                  <span style="display: block;">{{item.mobile}}</span>
+                </div>
+                <div class="customer_right">
+                  <span :class="[{'red_color': item.client_type === '1'}]">
+                    {{item.client_type === "1" ? "专业投资者" : "普通投资者"}}
+                  </span>
+                  <i class="iconfont icon-right"></i>
+                </div>
+              </div>
               <i class="iconfont icon-right"></i>
             </router-link>
           </li>
@@ -44,16 +50,20 @@
         <ul v-show="idx === 1" :data="customers1">
           <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
             <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
-              <p>
-                <span class="left-item">{{item.name}}</span>
-                <span class="left-item" v-show="item.client_no">（{{item.client_no}}）</span>
-                <span class="left-item" style="display: block;">{{item.mobile}}</span>
-                <span class="right-item gray-item" v-show="item.certification_status === '0'">未认证</span>
-                <span class="right-item gray-item" v-show="item.certification_status === '1'">认证待审核</span>
-                <span class="right-item gray-item" v-show="item.certification_status === '2'">已认证</span>
-                <span class="right-item gray-item" v-show="item.certification_status === '3'">已驳回</span>
-              </p>
-              <i class="iconfont icon-right"></i>
+              <div class="customer_list">
+                <div class="customer_left">
+                  <span>{{item.name}}</span>
+                  <span v-show="item.client_no">（{{item.client_no}}）</span>
+                  <span style="display: block;">{{item.mobile}}</span>
+                </div>
+                <div class="customer_right">
+                  <span class="gray_item" v-show="item.certification_status === '0'">未认证</span>
+                  <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
+                  <span class="gray_item" v-show="item.certification_status === '2'">已认证</span>
+                  <span class="gray_item" v-show="item.certification_status === '3'">已驳回</span>
+                  <i class="iconfont icon-right"></i>
+                </div>
+              </div>
             </router-link>
           </li>
         </ul>
@@ -164,7 +174,6 @@
 <style scoped lang="less">
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/center.less';
-
   .tabbar {
     /*height: 80px;*/
     /*line-height: 80px;*/
@@ -207,44 +216,50 @@
     background-color: #F5F5F5;
     padding-bottom: 96px;
     li {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
       box-sizing: border-box;
       background-color: #fff;
-      height: 155px;
-      padding: 32px 47px 32px 32px;
       font-size: 30px; /*px*/
       margin-bottom: 20px;
-      position: relative;
       a {
+        width: 100%;
         display: block;
+        height: 155px;
         text-decoration: none;
-        .left-item,
-        .right-item {
-          color: #0083c5;
-        }
-        .right-item {
+        position: relative;
+        .customer_left,
+        .customer_right {
+          position: absolute;
+          font-family: PingFangSC-Regular;
           font-size: 28px;
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          -webkit-transform: translateY(-50%);
-          right: 100px;
+          color: #2672BA;
+          height: 155px;
         }
-        .gray-item {
-          color: #999;
+        .customer_left {
+          left: 34px;
+          margin-top: 38px;
+          height: auto;
+          line-height: 40px;
         }
-        .red-color {
-          color: #a10c0c;
-        }
-        i {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          -webkit-transform: translateY(-50%);
-          right: 40px;
-          font-size: 30px; /*px*/
-          font-weight: bold;
-          color: #999;
-          // fill: #999;
+        .customer_right {
+          line-height: 155px;
+          right: 47px;
+          .red_color {
+            color: #A10C0C;
+          }
+          /*top: 54px;*/
+          span {
+            vertical-align: middle;
+          }
+          .gray_item {
+            color: #999;
+          }
+          .icon-right {
+            font-size: 40px;
+            color: #999;
+            vertical-align: middle;
+          }
         }
       }
     }

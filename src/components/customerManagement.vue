@@ -119,16 +119,20 @@
           <input type="text" @click="addNew" class="addInput" v-model="remarkInput" placeholder="填写备注"/>
         </div>
       </div>
-      <div v-transfer-dom>
-        <x-dialog v-model="showHideOnBlur" class="dialog-demo">
-          <div class="img-box">
-            <x-textarea name="description" auto-focus id="inputing" ref="inputing" v-model="remarkInfo"></x-textarea>
-          </div>
-          <div style="text-align: right;">
-            <button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>
-          </div>
-        </x-dialog>
-      </div>
+      <!--<div v-transfer-dom>-->
+        <!--<x-dialog v-model="showHideOnBlur" class="dialog-demo">-->
+          <!--<div class="img-box">-->
+            <!--<x-textarea name="description" auto-focus id="inputing" ref="inputing" v-model="remarkInfo"></x-textarea>-->
+          <!--</div>-->
+          <!--<div style="text-align: right;">-->
+            <!--<button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>-->
+          <!--</div>-->
+        <!--</x-dialog>-->
+      <!--</div>-->
+      <x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>
+        <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
+        <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
+      </x-dialog>
     </div>
   </div>
 </template>
@@ -184,7 +188,7 @@ export default {
   mounted () {
 		let clientId = this.$route.params.id
     checkCustomerRemarks(this.clientId).then(res => {
-      if (res.status === 200) {
+      if (res.data.length > 0) {
         this.remarkList = res.data
       }
     })
@@ -205,8 +209,8 @@ export default {
   },
   methods: {
   	addNew () {
-  		this.showHideOnBlur = true
-      console.log(this.$refs.inputing)
+      this.showHideOnBlur = true
+      this.$refs.textarea.focus()
   	},
   	submitAddNew () {
 			this.showHideOnBlur = false

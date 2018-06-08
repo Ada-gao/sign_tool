@@ -2,19 +2,31 @@
   <div class="bankcard">
     <x-header :left-options="{backText: ''}">客户认证</x-header>
     <div class="wrapper">
+      <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
+        <div class="quit">{{alertCont}}</div>
+        <x-button type="primary" @click.native="hideAlert">确 定</x-button>
+      </x-dialog>
+
       <group class="bankcard_cont">
         <x-input title="持卡人："
                  v-model="personInfo.cardOwner"
+                 :show-clear="false"
+                 class="x_iptname"
         ></x-input>
         <popup-picker title="开户银行："
                       :data="bankList"
+                      class="x_bank"
                       v-model="personInfo.bankName"
         ></popup-picker>
         <x-input title="支行："
+                 class="x_branch"
                  v-model="personInfo.branchBank"
+                 :show-clear="false"
         ></x-input>
         <x-input title="银行卡号："
+                 class="x_cardnumber"
                  v-model="personInfo.bankCardNumber"
+                 :show-clear="false"
         ></x-input>
       </group>
       <div class="space"></div>
@@ -33,9 +45,9 @@
   </div>
 </template>
 <script>
-  import {XHeader, Group, Cell, XInput, PopupPicker} from 'vux'
+  import {XHeader, Group, Cell, XInput, PopupPicker, XDialog, XButton} from 'vux'
   import camera from '@/base/camera/camera'
-  import {uploadBankCard, perfectInfos} from '@/service/api/customers'
+  import {uploadBankCard} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
 
   export default {
@@ -46,10 +58,14 @@
       Cell,
       XInput,
       PopupPicker,
-      camera
+      camera,
+      XDialog,
+      XButton
     },
     data () {
       return {
+        alertMsg: false,
+        alertCont: '还有信息没填哦～',
         bankList: [[
           {
             name: '中国银行',
@@ -103,21 +119,22 @@
         fromBank: 0
       }
     },
+//    beforeRouteLeave (to, from, next) {
+//      to.meta.keepAlive = true
+//      next()
+//    },
     mounted () {
-      let obj = {}
       let info = JSON.parse(getStore('selfInfos'))
-      obj.client_id = info.client_id
-      obj.client_name = info.client_name
-      perfectInfos(obj).then(res => {
-        if (res.status === 200) {
-          this.client_certification_id = res.data.client_certification_id
-          console.log('bankCard：' + this.client_certification_id)
-        }
-      })
+      this.client_certification_id = info.client_certification_id
+//      console.log('bankcard:' + this.client_certification_id)
     },
     methods: {
+      hideAlert () {
+        this.alertMsg = false
+      },
       showPopup (data) {
         this.popupVisible = data
+        console.log(this.client_certification_id)
       },
       hidePopup (data) {
         this.popupVisible = data
@@ -153,6 +170,13 @@
           name: this.personInfo.cardOwner,
           bank_id: bankId
         }
+        if (!params.card_no ||
+            !params.sub_branch_name ||
+            !params.name ||
+            !params.bank_id) {
+            this.alertMsg = true
+          return false
+        }
         uploadBankCard(this.client_certification_id, params).then(res => {
           if (res.status === 200) {
             let info = JSON.parse(getStore('selfInfos'))
@@ -177,6 +201,26 @@
   }
 
   .bankcard {
+    .quitDialog {
+      .weui-dialog {
+        width: 580px;
+        height: 345px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+        padding: 0;
+        text-align: center;
+        .quit {
+          margin-top: 85px;
+          margin-bottom: 75px;
+          font-family: PingFangSC-Regular;
+          font-size: 36px;
+          color: #333333;
+        }
+      }
+    }
     .card {
       font-size: 30px;
       color: #333;
@@ -189,6 +233,17 @@
         color: #333;
         height: 82px;
         padding: 0 20px;
+      }
+      .x_iptname,
+      .x_branch,
+      .x_cardnumber {
+        .weui-cell__ft {
+          display: none;
+        }
+        .weui-input {
+          text-align: right;
+          color: #999;
+        }
       }
     }
     .upload {

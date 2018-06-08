@@ -65,7 +65,6 @@ export default {
   text-align: center;
   background-color: #fff;
   height: 110px;
-  line-height: 110px;
 	.ipt {
 		border: 1px solid #ccc; /*no*/
     padding-left: 32px;
@@ -74,6 +73,7 @@ export default {
 		height: 70px;
 		box-sizing: border-box;
 		font-size: 28px; /*px*/
+    margin-top: 20px;
 	}
 	.btn-cancel {
 		outline: none;

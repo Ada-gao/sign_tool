@@ -10,7 +10,7 @@
       <cell title="客户姓名：" :value="name"></cell>
       <cell title="国籍：" :value="nationality"></cell>
       <cell title="常住中国城市：" :value="city" v-if="nationality === '中国'"></cell>
-      <cell title="手机号码：" :value="mobile"></cell>
+      <cell title="手机号码：" :value="mobile" class="cell_mobile"></cell>
       <x-input title="地址："
                v-model="address"
                ref="address"
@@ -21,25 +21,30 @@
       <div class="space"></div>
       <datetime
         v-model="datetime"
+        class="celll_datetime"
         :min-year="minYear"
         :max-year="maxYear"
         title="出生日期："></datetime>
       <div class="space"></div>
       <popup-picker title="证件类型："
+                    class="cell_certificate"
                     :data="certificationList"
                     v-model="certificationValue"></popup-picker>
       <x-input title="证件号码："
+               class="cell_id"
                v-model="certificateNumber"
                ref="certificateCode"
                :show-clear="false"
       ></x-input>
       <datetime
         v-model="starttime"
+        class="cell_starttime"
         title="证件有效期起始时间："></datetime>
       <datetime
         v-model="endtime"
         :min-year="minYear"
         :max-year="maxYear"
+        class="cell_endtime"
         title="证件有效期结束时间："></datetime>
       <div class="space"></div>
       <div class="upload">
@@ -68,7 +73,7 @@
     </div>
     <div class="space"></div>
     <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
-      <span>银行卡</span>
+      <span>银行卡（非必填项）</span>
       <i class="iconfont">&#xe731;</i>
     </div>
     <div class="submit_form">
@@ -87,7 +92,7 @@
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
   import {uploadId, perfectInfos} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
-  import {getStore} from '@/config/mUtils'
+  import {getStore, setStore} from '@/config/mUtils'
 
   export default {
     name: 'PerfectInfos',
@@ -104,7 +109,7 @@
     },
     data () {
       return {
-          cerId: null,
+        cerId: null,
         num: 1,
         isMod: -1,
         address: '',
@@ -136,6 +141,29 @@
         fromBank: 1
       }
     },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        let info = JSON.parse(getStore('selfInfos'))
+        vm.client_certification_id = info.client_certification_id
+        if (!info.client_certification_id) {
+          perfectInfos({client_id: info.client_id}).then(res => {
+            info.client_certification_id = res.data.client_certification_id
+            vm.client_certification_id = res.data.client_certification_id
+            setStore('selfInfos', info)
+//            console.log('perfectInfos: ' + vm.client_certification_id)
+          })
+        }
+      })
+    },
+    beforeRouteLeave (to, from, next) {
+      let info = JSON.parse(getStore('selfInfos'))
+//      console.log(info)
+      if (to.name === 'PotentialCustomerList') {
+        info.client_certification_id = 0
+        setStore('selfInfos', info)
+      }
+      next()
+    },
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
       this.isSubmit = this.$route.params.isSubmit
@@ -146,18 +174,10 @@
       this.client_id = info.client_id
       this.client_class = info.client_class
       this.client_type = info.client_type
-      let obj = {}
-      obj.client_id = info.client_id
-      obj.client_name = info.client_name
-      perfectInfos(obj).then(res => {
-        if (res.status === 200) {
-          this.client_certification_id = res.data.client_certification_id
-        }
-      })
     },
     methods: {
       hideAlert () {
-          this.alertMsg = false
+        this.alertMsg = false
       },
       imageHandler1 (data) {
         this.idImages.front = data
@@ -217,7 +237,17 @@
           id_back_url: this.idImages.back
         }
         console.log(params)
-        console.log('cerId' + this.client_certification_id)
+//        console.log('cerId' + this.client_certification_id)
+        if (!params.birthday ||
+          !params.address ||
+          !params.id_no ||
+          !params.id_start_date ||
+          !params.id_expiration ||
+          !params.id_front_url ||
+          !params.id_back_url) {
+          this.alertMsg = true
+          return false
+        }
         uploadId(this.client_certification_id, params).then(res => {
           if (res.status === 200) {
             this.$router.push({name: 'PotentialCustomerList', params: {id: this.client_id}})
@@ -232,6 +262,7 @@
   a:hover {
     text-decoration: none;
   }
+
   .camera_pop {
     width: 100%;
     font-size: 30px;
@@ -242,26 +273,40 @@
       border-bottom: 1px solid #ccc;
     }
   }
+
   .perfect_infos {
-    .quitDialog{
-      .weui-dialog{
+    .verificate {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      background-color: #2672ba;
+      color: #f0f0f0;
+      width: 140px;
+      font-size: 22px;
+      text-align: center;
+      border-radius: 10px;
+      vertical-align: middle;
+    }
+    .quitDialog,
+    .msg_dialog {
+      .weui-dialog {
         width: 580px;
         height: 345px;
         background: #FFFFFF;
         border-radius: 10px;
         top: 50% !important;
         left: 50% !important;
-        transform: translate(-50%,-50%);
+        transform: translate(-50%, -50%);
         padding: 0;
         text-align: center;
-        .quit{
+        .quit {
           margin-top: 85px;
           margin-bottom: 75px;
           font-family: PingFangSC-Regular;
           font-size: 36px;
           color: #333333;
         }
-        .weui-btn.weui-btn_primary{
+        .weui-btn.weui-btn_primary {
           display: inline-block;
           background: #2A7DC1;
           border-radius: 10px;
@@ -271,12 +316,27 @@
           font-size: 36px;
           color: #F0F0F0;
         }
-        .weui-btn.weui-btn_primary:first-child{
-          margin-left: 43px;
-        }
-        .weui-btn.weui-btn_primary:nth-child(2){
-          margin-right: 43px;
-        }
+      }
+    }
+    .msg_dialog {
+      .weui-dialog {
+        height: 330px;
+      }
+      .msg_title {
+        color: #333;
+        font-size: 30px;
+        margin: 30px auto;
+      }
+      .msg_ipt {
+        font-size: 30px;
+        color: #333;
+        text-align: center;
+        border-color: #999;
+        display: block;
+        margin: 0 auto;
+        width: 300px;
+        height: 60px;
+        margin-bottom: 30px;
       }
     }
 
@@ -318,6 +378,9 @@
     .weui-cells .weui-cell.address {
       height: 130px;
       align-items: flex-start;
+      .weui-cell__ft {
+        display: none;
+      }
       .vux-label {
         color: #333;
       }
@@ -390,6 +453,24 @@
         border-radius: 10px;
         color: #fff;
         font-size: 28px;
+      }
+    }
+
+    .cell_mobile {
+      a {
+        color: #999;
+      }
+    }
+    .address input.weui-input {
+      color: #999;
+      text-align: right;
+    }
+    .cell_certificate {
+    }
+    .cell_id {
+      .weui-input {
+        color: #999;
+        text-align: right;
       }
     }
   }

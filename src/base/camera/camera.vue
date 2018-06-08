@@ -13,11 +13,11 @@
         </ul>
         <div class="addsmall_box" @click="selectcamera()">
           <span class="iconfont icon_bg">+</span>
-          <mt-spinner class="spinner"
-                      :size="spinnerSet.size"
-                      color="#aaa"
-                      v-show="spinnerSet.show"
-                      :type="spinnerSet.type"></mt-spinner>
+          <!--<mt-spinner class="spinner"-->
+                      <!--:size="spinnerSet.size"-->
+                      <!--color="#aaa"-->
+                      <!--v-show="spinnerSet.show"-->
+                      <!--:type="spinnerSet.type"></mt-spinner>-->
         </div>
       </div>
 
@@ -26,11 +26,11 @@
         <img :src="imgSrc"
              class="show"
              v-show="imgSrc">
-        <mt-spinner class="spinner"
-                    :size="spinnerSet.size"
-                    color="#aaa"
-                    v-show="spinnerSet.show"
-                    :type="spinnerSet.type"></mt-spinner>
+        <!--<mt-spinner class="spinner"-->
+                    <!--:size="spinnerSet.size"-->
+                    <!--color="#aaa"-->
+                    <!--v-show="spinnerSet.show"-->
+                    <!--:type="spinnerSet.type"></mt-spinner>-->
       </div>
 
     </div>
@@ -43,7 +43,7 @@
         <div class='popup-item' @click="cancel()">取消</div>
       </div>
     </mt-popup>
-    <div v-show="alertMsg" style="line-height: 36px;position: absolute;left:66px">上传图片失败</div>
+    <div class="fail_msg" v-show="alertMsg">上传图片失败</div>
   </div>
 </template>
 <script>
@@ -53,13 +53,14 @@
     addMateials,
     deleteDetail
   } from '@/service/api/customers'
-  import {Popup, Spinner} from 'mint-ui'
+//  import {Popup, Spinner} from 'mint-ui'
+  import {Popup} from 'mint-ui'
   //  import {getStore} from '@/config/mUtils'
   export default {
     name: 'Camera',
     components: {
-      'mt-popup': Popup,
-      'mt-spinner': Spinner
+      'mt-popup': Popup
+//      'mt-spinner': Spinner
     },
     props: ['popupVisible', 'isFromBank', 'cerId'],
     data () {
@@ -71,11 +72,11 @@
         alertMsg: false,
         fromBank: this.isFromBank,
         idSrc: '',
-        spinnerSet: {
-          type: 'fading-circle',
-          size: 100,
-          show: false
-        },
+//        spinnerSet: {
+//          type: 'fading-circle',
+//          size: 100,
+//          show: false
+//        },
         fileId: []
       }
     },
@@ -115,7 +116,7 @@
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
       },
       cameraSuccess (imageData) {
-        this.spinnerSet.show = true
+//        this.spinnerSet.show = true
 //        this.imgSrc = 'data:image/jpeg;base64,' + imageData
 //        this.show = false
         this.$emit('hidePopup', this.show)
@@ -146,7 +147,7 @@
         if (this.fromBank === 0) {
           updateFrontPic(this.cerId, formData).then(res => {
             if (res.status === 200) {
-              this.spinnerSet.show = false
+//              this.spinnerSet.show = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
             }
           }).catch(err => {
@@ -156,7 +157,7 @@
         } else if (this.fromBank === 1) {
           updateId(formData).then(res => {
             if (res.status === 200) {
-              this.spinnerSet.show = false
+//              this.spinnerSet.show = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
               this.idSrc = res.data.file_url
               this.$emit('imgHandler', this.idSrc)
@@ -168,9 +169,8 @@
         } else if (this.fromBank === 2) {
           addMateials(this.cerId, formData).then(res => {
             if (res.status === 200) {
-//                console.log(res)
               this.fileId.push(res.data.client_cert_file_id)
-              this.spinnerSet.show = false
+//              this.spinnerSet.show = false
               this.fileArr.push('data:image/jpeg;base64,' + imageData)
             }
           }).catch(err => {
@@ -180,12 +180,9 @@
         }
       },
       delImage (index) {
-        console.log('index: ' + index)
-        console.log(this.fileId[index])
         deleteDetail(this.cerId, this.fileId[index]).then(res => {
           if (res.status === 200) {
             this.fileId.splice(index, 1)
-            console.log(this.fileId)
           }
         })
         this.fileArr.splice(index, 1)
@@ -204,7 +201,11 @@
       border-bottom: 1px solid #ccc;
     }
   }
-
+  .fail_msg {
+    line-height: 36px;
+    position: absolute;
+    left:66px;
+  }
   .upload_cont {
     text-align: center;
     width: 270px;
@@ -214,13 +215,13 @@
     border-radius: 8px;
     position: relative;
     margin: 0 auto;
-    .spinner {
-      position: absolute;
-      left: 50%;
-      margin-left: -50px;
-      top: 50%;
-      margin-top: -50px;
-    }
+    /*.spinner {*/
+      /*position: absolute;*/
+      /*left: 50%;*/
+      /*margin-left: -50px;*/
+      /*top: 50%;*/
+      /*margin-top: -50px;*/
+    /*}*/
     .icon_bg {
       font-size: 115px;
       color: #fff;

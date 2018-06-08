@@ -4,12 +4,13 @@
     <div class="potential wrapper">
       <div class="info">
         <group>
-          <cell-box>
-            <i class="iconfont">&#xe62c;</i><span style="color:#2672ba">潜客信息</span>
+          <cell-box style="color: #2672ba;">
+            <i class="iconfont">&#xe62c;</i>潜客信息
             <span class="fr"
                   @click="toLink"
+                  style="color:#666;"
                   v-if="data.realname_status === '0'">完善信息</span>
-            <span class="fr" v-else>已完善</span>
+            <span class="fr" v-else style="color:#666;">已完善</span>
           </cell-box>
         </group>
         <div class="space"></div>
@@ -40,10 +41,18 @@
             <label style="color:#333">邮箱：</label>
             <span class="fr">{{data.email}}</span>
           </cell-box>
-          <cell-box>
-            <label style="color:#333">手机号：</label>
-            <span class="fr">{{data.mobile}}</span>
-          </cell-box>
+          <!--<cell-box>-->
+            <!--<label style="color:#333">手机号：</label>-->
+            <!--<span class="fr">{{data.mobile}}</span>-->
+          <!--</cell-box>-->
+          <div class="ver_box">
+            <!--<cell title="手机号码：" :value="mobile" class="cell_mobile"></cell>-->
+            <div class="mobile_box" :class="{'limit_width': verificate.verStatus === '1'}">
+              <span class="mobile_title">手机号码：</span>
+              <span class="mobile_number" :class="{'limit_width': verificate.verStatus === '1'}">{{mobile}}</span>
+            </div>
+            <span class="verificate" v-show="verificate.verStatus === '1'">发送验证码</span>
+          </div>
         </group>
       </div>
       <div class="space"></div>
@@ -96,6 +105,11 @@
         <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
       </x-dialog>
+      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog" hide-on-blur>
+        <div class="msg_title">请输入验证码：</div>
+        <input type="text" class="msg_ipt" v-model="verificate.code">
+        <x-button type="primary" @click.native="hideVerBox">确 定</x-button>
+      </x-dialog>
     </div>
   </div>
 </template>
@@ -109,13 +123,16 @@
     Flexbox,
     FlexboxItem,
     XDialog,
+    XButton,
     TransferDomDirective as TransferDom,
     CellFormPreview
   } from 'vux'
   import {
     checkCusomersDetail,
     addCustomerRemarks,
-    checkCustomerRemarks
+    checkCustomerRemarks,
+    confirmVercode,
+    sendVerCode
   } from '@/service/api/customers'
 
   import {setStore, getStore, removeStore} from '@/config/mUtils'
@@ -133,10 +150,19 @@
       Flexbox,
       FlexboxItem,
       XDialog,
+      XButton,
       CellFormPreview
     },
     data () {
       return {
+        verificate: {
+          isShow: false,
+          timer: null,
+          num: 60,
+          isTimeout: false,
+          code: '',
+          verStatus: null
+        },
         data: {},
         client_id: 0,
         client_name: '',
@@ -157,9 +183,15 @@
         modifiedVal: ''
       }
     },
+//    beforeRouteLeave (to, from, next) {
+//      if (to.name === 'PerfectInfos') {
+//        to.meta.keepAlive = false
+//      }
+//      next()
+//    },
     mounted () {
       this.client_id = this.$route.params.id
-      console.log(this.client_id)
+//      console.log(this.client_id)
       checkCustomerRemarks(this.client_id).then(res => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -197,9 +229,51 @@
             this.stat = '已驳回'
             this.modifiedVal = '修改'
         }
+//        perfectInfos({client_id: this.client_id}).then(res => {
+//          if (res.status === 200) {
+//            this.verificate.verStatus = res.data.mobile_validated
+//            let info = JSON.parse(getStore('selfInfos'))
+//            info.client_certification_id = res.data.client_certification_id
+//            setStore('selfInfos', info)
+//          }
+//        })
       })
     },
     methods: {
+      hideVerBox () {
+        this.verificate.isShow = this.verificate.isTimeout = false
+        clearInterval(this.verificate.timer)
+        this.verificate.num = 60
+        let params = {
+          code: this.verificate.code,
+          mobile: this.mobile
+        }
+        confirmVercode(params).then(res => {
+          if (res.status === 200) {}
+        })
+      },
+      sendVerCode () {
+        this.verificate.isShow = this.verificate.isTimeout = true
+        let params = {
+          mobile: this.mobile
+        }
+        sendVerCode(params).then(res => {
+          if (res.status === 200) {
+            console.log(res)
+            this.verificate.isTimeout = false
+            this.verificate.num = 60
+            clearInterval(this.verificate.timer)
+          }
+        })
+        this.verificate.timer = setInterval(() => {
+          --this.verificate.num
+          if (this.verificate.num === 0) {
+            this.verificate.isTimeout = false
+            this.verificate.num = 60
+            clearInterval(this.verificate.timer)
+          }
+        }, 1000)
+      },
       convert (state, disabled) {
         switch (state) {
           case '0':
@@ -286,7 +360,47 @@
   }
 
   .potential {
-    /*padding-top: 108px;*/
+    .verificate {
+      display: inline-block;
+      height: 40px;
+      line-height: 40px;
+      background-color: #2672ba;
+      color: #f0f0f0;
+      width: 140px;
+      font-size: 22px;
+      text-align: center;
+      border-radius: 10px;
+      vertical-align: middle;
+    }
+    .msg_dialog {
+      .weui-dialog {
+        width: 580px;
+        height: 330px;
+        background: #FFFFFF;
+        border-radius: 10px;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+        padding: 0;
+        text-align: center;
+        .msg_title {
+          color: #333;
+          font-size: 30px;
+          margin: 30px auto;
+        }
+        .msg_ipt {
+          font-size: 30px;
+          color: #333;
+          text-align: center;
+          border-color: #999;
+          display: block;
+          margin: 0 auto;
+          width: 300px;
+          height: 60px;
+          margin-bottom: 30px;
+        }
+      }
+    }
     .no_bbottom .weui-cells::after {
       content: none;
     }
@@ -423,6 +537,40 @@
           padding: 10px;
           box-sizing: border-box;
         }
+      }
+    }
+
+    .ver_box {
+      height: 82px;
+      line-height: 82px;
+      border-top: 1px solid #D9D9D9;
+      padding: 0 20px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      position: relative;
+      .mobile_box {
+        span {
+          display: inline-block;
+          position: static;
+          right: 0;
+          top: 0;
+          -webkit-transform: translateY(0);
+          transform: translateY(0);
+        }
+        span.mobile_title {
+          width: 170px;
+          color: #333;
+        }
+        span.mobile_number {
+          width: calc(100% - 180px);
+          text-align: right;
+          color: #666;
+        }
+      }
+      .mobile_box.limit_width {
+        display: inline-block;
+        width: 555px;
       }
     }
   }
