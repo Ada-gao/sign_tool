@@ -177,7 +177,8 @@ export default {
       let obj = {
         username: this.username,
         platform: this.platform,
-        app_version: 'v1.0'
+        app_version: 'v1.0',
+        code_flag: 0
 //        registration_id: this.device.uuid
       }
       getVerificationCode(obj).then(res => {

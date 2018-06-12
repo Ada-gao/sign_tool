@@ -6,7 +6,6 @@
 			<!-- <textarea class="inputing" v-focus v-model="msg" name="" rows="" cols=""></textarea> -->
 			<div class="content">
 				 {{remark}}
-				<i class="iconfont">&#xe60f;</i>
 			</div>
 		</div>
 	</div>
@@ -42,16 +41,20 @@ export default {
 			margin: 44px;
 			box-shadow: -1px 1px 34px 3px rgba(0,0,0,0.20);
     	border-radius: 8px;
-			border: 1px solid #ccc;
+			// border: 1px solid #ccc;
 			position: relative;
 			background: #fff;
-			.iconfont{
-				position: absolute;
-				bottom: -69px;
-				font-size: 90px;
-				left: 100px;
-				color: #fff;
-			}
+		}
+		.content::after {
+			content: '';
+			display: inline-block;
+			width: 0;
+			height: 0;
+			border: 20px solid;
+			border-color: transparent transparent #fff transparent;
+			position: absolute;
+			bottom: -40px;
+			transform: rotateZ(180deg);
 		}
 		.inputing {
 			border: none;
@@ -69,7 +72,6 @@ export default {
 .wrapper {
 	// padding: 20px;
 	// height: 1000px;
-
 	.inputing {
 		border: none;
 		width: 100%;

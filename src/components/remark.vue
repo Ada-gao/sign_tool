@@ -82,7 +82,7 @@ export default {
       keyValue: '',
       stopDialog: false,
       errTip: '',
-      show: null
+      show: true
   	}
 	},
 	filters: {
@@ -140,7 +140,7 @@ export default {
   mounted () {
     checkAllCustomerRemarks().then(res => {
       this.remarkList = res.data
-      if (res.data.length === 0) {
+      if (this.remarkList.length === 0) {
         this.show = false
       } else {
         this.show = true
