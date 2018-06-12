@@ -27,46 +27,53 @@
           <i class="sepa"></i>
           <span class="tabitem" :class="{'active': idx === 1}" @click="changeActiveIndex">潜客列表</span>
         </div>
-        <ul v-show="idx === 0" :data="customers">
-          <li v-for="(item, index) in customers" :key="index">
-            <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
-              <div class="customer_list">
-                <div class="customer_left">
-                  <span>{{item.name}}</span>
-                  <span v-show="item.client_no">（{{item.client_no}}）</span>
-                  <span style="display: block;">{{item.mobile}}</span>
-                </div>
-                <div class="customer_right">
+        <div class="list_box">
+          <mt-spinner :type="3"
+                      color="#999"
+                      :size="100"
+                      class="spinner_box"
+                      v-show="isShowSpinner"></mt-spinner>
+          <ul v-show="idx === 0" :data="customers">
+            <li v-for="(item, index) in customers" :key="index">
+              <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
+                <div class="customer_list">
+                  <div class="customer_left">
+                    <span>{{item.name}}</span>
+                    <span v-show="item.client_no">（{{item.client_no}}）</span>
+                    <span style="display: block;">{{item.mobile}}</span>
+                  </div>
+                  <div class="customer_right">
                   <span :class="[{'red_color': item.client_type === '1'}]">
                     {{item.client_type === "1" ? "专业投资者" : "普通投资者"}}
                   </span>
-                  <i class="iconfont icon-right"></i>
+                    <i class="iconfont icon-right"></i>
+                  </div>
                 </div>
-              </div>
-              <i class="iconfont icon-right"></i>
-            </router-link>
-          </li>
-        </ul>
-        <ul v-show="idx === 1" :data="customers1">
-          <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
-            <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
-              <div class="customer_list">
-                <div class="customer_left">
-                  <span>{{item.name}}</span>
-                  <span v-show="item.client_no">（{{item.client_no}}）</span>
-                  <span style="display: block;">{{item.mobile}}</span>
+                <i class="iconfont icon-right"></i>
+              </router-link>
+            </li>
+          </ul>
+          <ul v-show="idx === 1" :data="customers1">
+            <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
+              <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
+                <div class="customer_list">
+                  <div class="customer_left">
+                    <span>{{item.name}}</span>
+                    <span v-show="item.client_no">（{{item.client_no}}）</span>
+                    <span style="display: block;">{{item.mobile}}</span>
+                  </div>
+                  <div class="customer_right">
+                    <span class="gray_item" v-show="item.certification_status === '0'">未认证</span>
+                    <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
+                    <span class="gray_item" v-show="item.certification_status === '2'">已认证</span>
+                    <span class="gray_item" v-show="item.certification_status === '3'">已驳回</span>
+                    <i class="iconfont icon-right"></i>
+                  </div>
                 </div>
-                <div class="customer_right">
-                  <span class="gray_item" v-show="item.certification_status === '0'">未认证</span>
-                  <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
-                  <span class="gray_item" v-show="item.certification_status === '2'">已认证</span>
-                  <span class="gray_item" v-show="item.certification_status === '3'">已驳回</span>
-                  <i class="iconfont icon-right"></i>
-                </div>
-              </div>
-            </router-link>
-          </li>
-        </ul>
+              </router-link>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -77,6 +84,7 @@
   import SearchTool from 'base/searchToolBar/searchToolBar'
   import ShowSearch from 'base/searchToolBar/showSearchList'
   import {checkCusomersList} from '@/service/api/customers'
+  import {Spinner} from 'mint-ui'
   //  import {customerData} from '@/service/api/customerData'
 
   export default {
@@ -88,11 +96,13 @@
       Tab,
       TabItem,
       SearchTool,
-      ShowSearch
+      ShowSearch,
+      'mt-spinner': Spinner
     },
     data () {
       return {
         searchVal: '',
+        isShowSpinner: true,
         customers: [],
         customers1: [],
         searchCustomers: [],
@@ -112,6 +122,7 @@
     },
     mounted () {
       checkCusomersList().then(res => {
+          this.isShowSpinner = false
         let data = res.data
         data.forEach(item => {
           if (item.client_class) {
@@ -160,12 +171,12 @@
         })
       },
       toLink (id, clientClass) {
-          console.log(clientClass)
-          if (clientClass === 0) {
-            this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
-          } else {
-            this.$router.push({name: 'CustomerManagement', params: {id: id}})
-          }
+        console.log(clientClass)
+        if (clientClass === 0) {
+          this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
+        } else {
+          this.$router.push({name: 'CustomerManagement', params: {id: id}})
+        }
       }
     }
   }
@@ -174,6 +185,7 @@
 <style scoped lang="less">
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/center.less';
+
   .tabbar {
     /*height: 80px;*/
     /*line-height: 80px;*/
@@ -211,54 +223,65 @@
     }
   }
 
-  .customer-list ul {
-    padding: 20px 25px;
-    background-color: #F5F5F5;
-    padding-bottom: 96px;
-    li {
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      background-color: #fff;
-      font-size: 30px; /*px*/
-      margin-bottom: 20px;
-      a {
-        width: 100%;
-        display: block;
-        height: 155px;
-        text-decoration: none;
-        position: relative;
-        .customer_left,
-        .customer_right {
-          position: absolute;
-          font-family: PingFangSC-Regular;
-          font-size: 28px;
-          color: #2672BA;
-          height: 155px;
-        }
-        .customer_left {
-          left: 34px;
-          margin-top: 38px;
-          height: auto;
-          line-height: 40px;
-        }
-        .customer_right {
-          line-height: 155px;
-          right: 47px;
-          .red_color {
-            color: #A10C0C;
-          }
-          /*top: 54px;*/
-          span {
-            vertical-align: middle;
-          }
-          .gray_item {
-            color: #999;
-          }
-          .icon-right {
-            font-size: 40px;
-            color: #999;
-            vertical-align: middle;
+  .customer-list {
+    .list_box {
+      position: relative;
+      .spinner_box {
+        position: absolute;
+        left: 50%;
+        margin-left: -50px;
+        top: 50%;
+      }
+      ul {
+        padding: 20px 25px;
+        background-color: #F5F5F5;
+        padding-bottom: 96px;
+        li {
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          background-color: #fff;
+          font-size: 30px; /*px*/
+          margin-bottom: 20px;
+          a {
+            width: 100%;
+            display: block;
+            height: 155px;
+            text-decoration: none;
+            position: relative;
+            .customer_left,
+            .customer_right {
+              position: absolute;
+              font-family: PingFangSC-Regular;
+              font-size: 28px;
+              color: #2672BA;
+              height: 155px;
+            }
+            .customer_left {
+              left: 34px;
+              margin-top: 38px;
+              height: auto;
+              line-height: 40px;
+            }
+            .customer_right {
+              line-height: 155px;
+              right: 47px;
+              .red_color {
+                color: #A10C0C;
+              }
+              /*top: 54px;*/
+              span {
+                vertical-align: middle;
+              }
+              .gray_item {
+                color: #999;
+              }
+              .icon-right {
+                font-size: 40px;
+                color: #999;
+                vertical-align: middle;
+              }
+            }
           }
         }
       }

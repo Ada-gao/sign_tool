@@ -51,7 +51,9 @@
               <span class="mobile_title">手机号码：</span>
               <span class="mobile_number" :class="{'limit_width': verificate.verStatus === '1'}">{{mobile}}</span>
             </div>
-            <span class="verificate" v-show="verificate.verStatus === '1'">发送验证码</span>
+            <span class="verificate"
+                  @click="sendVerCode"
+                  v-show="verificate.verStatus === '1'">发送验证码</span>
           </div>
         </group>
       </div>
@@ -105,7 +107,7 @@
         <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
       </x-dialog>
-      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog" hide-on-blur>
+      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog">
         <div class="msg_title">请输入验证码：</div>
         <input type="text" class="msg_ipt" v-model="verificate.code">
         <x-button type="primary" @click.native="hideVerBox">确 定</x-button>
@@ -213,6 +215,9 @@
         this.city = res.data.city
         this.clientClass = res.data.client_class
         this.clientType = res.data.client_type
+        if (res.data.mobile_validated === '1') {
+            this.verificate.verStatus = '1'
+        }
         switch (res.data.certification_status) {
           case '0':
             this.stat = '未认证'
@@ -229,19 +234,12 @@
             this.stat = '已驳回'
             this.modifiedVal = '修改'
         }
-//        perfectInfos({client_id: this.client_id}).then(res => {
-//          if (res.status === 200) {
-//            this.verificate.verStatus = res.data.mobile_validated
-//            let info = JSON.parse(getStore('selfInfos'))
-//            info.client_certification_id = res.data.client_certification_id
-//            setStore('selfInfos', info)
-//          }
-//        })
       })
     },
     methods: {
       hideVerBox () {
         this.verificate.isShow = this.verificate.isTimeout = false
+//        this.verificate.verStatus = null
         clearInterval(this.verificate.timer)
         this.verificate.num = 60
         let params = {
@@ -260,9 +258,9 @@
         sendVerCode(params).then(res => {
           if (res.status === 200) {
             console.log(res)
-            this.verificate.isTimeout = false
-            this.verificate.num = 60
-            clearInterval(this.verificate.timer)
+//            this.verificate.isTimeout = false
+//            this.verificate.num = 60
+//            clearInterval(this.verificate.timer)
           }
         })
         this.verificate.timer = setInterval(() => {
@@ -360,47 +358,58 @@
   }
 
   .potential {
-    .verificate {
-      display: inline-block;
-      height: 40px;
-      line-height: 40px;
-      background-color: #2672ba;
-      color: #f0f0f0;
-      width: 140px;
-      font-size: 22px;
-      text-align: center;
-      border-radius: 10px;
-      vertical-align: middle;
-    }
-    .msg_dialog {
-      .weui-dialog {
-        width: 580px;
-        height: 330px;
-        background: #FFFFFF;
-        border-radius: 10px;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%);
-        padding: 0;
-        text-align: center;
-        .msg_title {
-          color: #333;
-          font-size: 30px;
-          margin: 30px auto;
-        }
-        .msg_ipt {
-          font-size: 30px;
-          color: #333;
-          text-align: center;
-          border-color: #999;
-          display: block;
-          margin: 0 auto;
-          width: 300px;
-          height: 60px;
-          margin-bottom: 30px;
-        }
-      }
-    }
+    /*.verificate {*/
+      /*display: inline-block;*/
+      /*height: 40px;*/
+      /*line-height: 40px;*/
+      /*background-color: #2672ba;*/
+      /*color: #f0f0f0;*/
+      /*width: 140px;*/
+      /*font-size: 22px;*/
+      /*text-align: center;*/
+      /*border-radius: 10px;*/
+      /*vertical-align: middle;*/
+    /*}*/
+    /*.msg_dialog {*/
+      /*.weui-dialog {*/
+        /*width: 580px;*/
+        /*height: 330px;*/
+        /*background: #FFFFFF;*/
+        /*border-radius: 10px;*/
+        /*top: 50% !important;*/
+        /*left: 50% !important;*/
+        /*transform: translate(-50%, -50%);*/
+        /*padding: 0;*/
+        /*text-align: center;*/
+        /*.weui-btn.weui-btn_primary {*/
+          /*display: inline-block;*/
+          /*background: #2A7DC1;*/
+          /*border-radius: 10px;*/
+          /*width: 190px;*/
+          /*height: 80px;*/
+          /*font-family: PingFangSC-Medium;*/
+          /*font-size: 36px;*/
+          /*color: #F0F0F0;*/
+        /*}*/
+        /*.msg_title {*/
+          /*color: #333;*/
+          /*font-size: 30px;*/
+          /*margin: 30px auto;*/
+        /*}*/
+        /*.msg_ipt {*/
+          /*font-size: 30px;*/
+          /*color: #333;*/
+          /*text-align: center;*/
+          /*border-color: #999;*/
+          /*border-radius: 10px;*/
+          /*display: block;*/
+          /*margin: 0 auto;*/
+          /*width: 300px;*/
+          /*height: 60px;*/
+          /*margin-bottom: 30px;*/
+        /*}*/
+      /*}*/
+    /*}*/
     .no_bbottom .weui-cells::after {
       content: none;
     }

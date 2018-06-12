@@ -119,10 +119,6 @@
         fromBank: 0
       }
     },
-//    beforeRouteLeave (to, from, next) {
-//      to.meta.keepAlive = true
-//      next()
-//    },
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
       this.client_certification_id = info.client_certification_id
