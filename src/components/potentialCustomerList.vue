@@ -255,7 +255,7 @@
       sendVerCode () {
         this.verificate.isShow = this.verificate.isTimeout = true
         let params = {
-          mobile: this.mobile,
+          username: this.mobile,
           code_flag: 1
         }
         sendVerCode(params).then(res => {})
