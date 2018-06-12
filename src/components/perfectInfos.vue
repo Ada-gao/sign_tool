@@ -15,7 +15,6 @@
                v-model="address"
                ref="address"
                :show-clear="false"
-               is-type="china-name"
                class="address"
       ></x-input>
       <div class="space"></div>
@@ -35,6 +34,7 @@
                v-model="certificateNumber"
                ref="certificateCode"
                :show-clear="false"
+               :max="50"
       ></x-input>
       <datetime
         v-model="starttime"

@@ -73,6 +73,14 @@
               </router-link>
             </li>
           </ul>
+          <div v-show="idx === 0 && customers.length === 0" class="no_data">
+            <img src="static/img/customerIcon.png">
+            <span>亲，暂时没有客户哦</span>
+          </div>
+          <div v-show="idx === 1 && customers1.length === 0"  class="no_data">
+            <img src="static/img/customerIcon.png">
+            <span>亲，暂时没有潜客哦</span>
+          </div>
         </div>
       </div>
     </div>
@@ -283,6 +291,24 @@
               }
             }
           }
+        }
+      }
+      .no_data {
+        img,
+        span {
+          display: block;
+          text-align: center;
+          margin: 0 auto;
+        }
+        img {
+          width: 556px;
+          height: 379px;
+        }
+        span {
+          margin-top: 88px;
+          font-family: PingFangSC-Regular;
+          font-size: 32px;
+          color: #888888;
         }
       }
     }

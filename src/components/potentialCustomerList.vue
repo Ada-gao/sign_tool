@@ -247,22 +247,18 @@
           mobile: this.mobile
         }
         confirmVercode(params).then(res => {
-          if (res.status === 200) {}
+          if (res.status === 200) {
+            this.verificate.code = ''
+          }
         })
       },
       sendVerCode () {
         this.verificate.isShow = this.verificate.isTimeout = true
         let params = {
-          mobile: this.mobile
+          mobile: this.mobile,
+          code_flag: 1
         }
-        sendVerCode(params).then(res => {
-          if (res.status === 200) {
-            console.log(res)
-//            this.verificate.isTimeout = false
-//            this.verificate.num = 60
-//            clearInterval(this.verificate.timer)
-          }
-        })
+        sendVerCode(params).then(res => {})
         this.verificate.timer = setInterval(() => {
           --this.verificate.num
           if (this.verificate.num === 0) {

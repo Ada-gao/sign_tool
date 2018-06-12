@@ -126,15 +126,16 @@
         clearInterval(this.verificate.timer)
         this.verificate.num = 60
         let params = {
-            code: this.verificate.code,
+          code: this.verificate.code,
           mobile: this.mobile
         }
         confirmVercode(params).then(res => {
-            if (res.status === 200) {
+          if (res.status === 200) {
 //                this.validated_timestamp = res.data.validated_timestamp
-              this.mobile_validated = res.data.mobile_validated
-              this.validated_by = res.data.validated_by
-            }
+            this.mobile_validated = res.data.mobile_validated
+            this.validated_by = res.data.validated_by
+            this.verificate.code = ''
+          }
         })
       },
       sendVerCode () {
@@ -145,19 +146,14 @@
             duration: 1500,
             className: 'toast_class'
           })
-            return false
+          return false
         }
         this.verificate.isShow = this.verificate.isTimeout = true
         let params = {
-          mobile: this.mobile
+          mobile: this.mobile,
+          code_flag: 1
         }
         sendVerCode(params).then(res => {
-            if (res.status === 200) {
-                console.log(res)
-//              this.verificate.isTimeout = false
-//              this.verificate.num = 60
-//              clearInterval(this.verificate.timer)
-            }
         })
         this.verificate.timer = setInterval(() => {
           --this.verificate.num
@@ -201,15 +197,12 @@
           this.alertMsg = true
           return false
         }
-//        if (this.name &&
-//          this.mobile) {
-          addCusomer(params).then(res => {
-            console.log(res)
-            if (res.status === 200) {
-              this.$router.push({name: 'CustomerList'})
-            }
-          })
-//        }
+        addCusomer(params).then(res => {
+          console.log(res)
+          if (res.status === 200) {
+            this.$router.push({name: 'CustomerList'})
+          }
+        })
       }
     }
   }
@@ -224,69 +217,69 @@
 
   .wrapper {
     /*.verificate {*/
-      /*display: inline-block;*/
-      /*height: 40px;*/
-      /*line-height: 40px;*/
-      /*background-color: #2672ba;*/
-      /*color: #f0f0f0;*/
-      /*width: 140px;*/
-      /*font-size: 22px;*/
-      /*text-align: center;*/
-      /*border-radius: 10px;*/
-      /*margin-left: 10px;*/
-      /*vertical-align: middle;*/
+    /*display: inline-block;*/
+    /*height: 40px;*/
+    /*line-height: 40px;*/
+    /*background-color: #2672ba;*/
+    /*color: #f0f0f0;*/
+    /*width: 140px;*/
+    /*font-size: 22px;*/
+    /*text-align: center;*/
+    /*border-radius: 10px;*/
+    /*margin-left: 10px;*/
+    /*vertical-align: middle;*/
     /*}*/
     /*.quitDialog,*/
     /*.msg_dialog {*/
-      /*.weui-dialog {*/
-        /*width: 580px;*/
-        /*height: 345px;*/
-        /*background: #FFFFFF;*/
-        /*border-radius: 10px;*/
-        /*top: 50% !important;*/
-        /*left: 50% !important;*/
-        /*transform: translate(-50%, -50%);*/
-        /*padding: 0;*/
-        /*text-align: center;*/
-        /*.quit {*/
-          /*margin-top: 85px;*/
-          /*margin-bottom: 75px;*/
-          /*font-family: PingFangSC-Regular;*/
-          /*font-size: 36px;*/
-          /*color: #333333;*/
-        /*}*/
-        /*.weui-btn.weui-btn_primary {*/
-          /*display: inline-block;*/
-          /*background: #2A7DC1;*/
-          /*border-radius: 10px;*/
-          /*width: 190px;*/
-          /*height: 80px;*/
-          /*font-family: PingFangSC-Medium;*/
-          /*font-size: 36px;*/
-          /*color: #F0F0F0;*/
-        /*}*/
-      /*}*/
+    /*.weui-dialog {*/
+    /*width: 580px;*/
+    /*height: 345px;*/
+    /*background: #FFFFFF;*/
+    /*border-radius: 10px;*/
+    /*top: 50% !important;*/
+    /*left: 50% !important;*/
+    /*transform: translate(-50%, -50%);*/
+    /*padding: 0;*/
+    /*text-align: center;*/
+    /*.quit {*/
+    /*margin-top: 85px;*/
+    /*margin-bottom: 75px;*/
+    /*font-family: PingFangSC-Regular;*/
+    /*font-size: 36px;*/
+    /*color: #333333;*/
+    /*}*/
+    /*.weui-btn.weui-btn_primary {*/
+    /*display: inline-block;*/
+    /*background: #2A7DC1;*/
+    /*border-radius: 10px;*/
+    /*width: 190px;*/
+    /*height: 80px;*/
+    /*font-family: PingFangSC-Medium;*/
+    /*font-size: 36px;*/
+    /*color: #F0F0F0;*/
+    /*}*/
+    /*}*/
     /*}*/
     /*.msg_dialog {*/
-      /*.weui-dialog {*/
-        /*height: 330px;*/
-      /*}*/
-      /*.msg_title {*/
-        /*color: #333;*/
-        /*font-size: 30px;*/
-        /*margin: 30px auto;*/
-      /*}*/
-      /*.msg_ipt {*/
-        /*font-size: 30px;*/
-        /*color: #333;*/
-        /*text-align: center;*/
-        /*border-color: #999;*/
-        /*display: block;*/
-        /*margin: 0 auto;*/
-        /*width: 300px;*/
-        /*height: 60px;*/
-        /*margin-bottom: 30px;*/
-      /*}*/
+    /*.weui-dialog {*/
+    /*height: 330px;*/
+    /*}*/
+    /*.msg_title {*/
+    /*color: #333;*/
+    /*font-size: 30px;*/
+    /*margin: 30px auto;*/
+    /*}*/
+    /*.msg_ipt {*/
+    /*font-size: 30px;*/
+    /*color: #333;*/
+    /*text-align: center;*/
+    /*border-color: #999;*/
+    /*display: block;*/
+    /*margin: 0 auto;*/
+    /*width: 300px;*/
+    /*height: 60px;*/
+    /*margin-bottom: 30px;*/
+    /*}*/
     /*}*/
     height: auto;
     .weui-label {

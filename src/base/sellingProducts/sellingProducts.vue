@@ -59,7 +59,7 @@ export default {
 		    if (item.minimal_amount === undefined) {
 		        return false
 		}
-		console.log(item)
+//		console.log(item)
 		window.localStorage.setItem('productDetail', JSON.stringify(item))
 			// this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
 			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
