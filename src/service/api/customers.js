@@ -270,7 +270,7 @@ export function deleteDetail (cerId, fileId) {
  */
 export function sendVerCode (phoneNumber) {
   return axios({
-    url: '/v1/client/customers/verification_code/',
+    url: '/v1/auth/verification_code/',
     method: 'post',
     data: phoneNumber
   })
