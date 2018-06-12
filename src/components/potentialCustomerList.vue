@@ -51,7 +51,9 @@
               <span class="mobile_title">手机号码：</span>
               <span class="mobile_number" :class="{'limit_width': verificate.verStatus === '1'}">{{mobile}}</span>
             </div>
-            <span class="verificate" v-show="verificate.verStatus === '1'">发送验证码</span>
+            <span class="verificate"
+                  @click="sendVerCode"
+                  v-show="verificate.verStatus === '1'">发送验证码</span>
           </div>
         </group>
       </div>
@@ -237,6 +239,7 @@
     methods: {
       hideVerBox () {
         this.verificate.isShow = this.verificate.isTimeout = false
+//        this.verificate.verStatus = null
         clearInterval(this.verificate.timer)
         this.verificate.num = 60
         let params = {

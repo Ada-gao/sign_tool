@@ -104,8 +104,8 @@
         mobile: '',
         email: '',
         city: '',
-        mobile_validated: '0',
-        validated_timestamp: '',
+        mobile_validated: '1',
+//        validated_timestamp: '',
         validated_by: '',
         popupVisible: false,
         title: '常住中国城市',
@@ -131,7 +131,7 @@
         }
         confirmVercode(params).then(res => {
             if (res.status === 200) {
-                this.validated_timestamp = res.data.validated_timestamp
+//                this.validated_timestamp = res.data.validated_timestamp
               this.mobile_validated = res.data.mobile_validated
               this.validated_by = res.data.validated_by
             }
@@ -142,7 +142,7 @@
           Toast({
             message: '请输入有效的手机号',
             position: 'top',
-            duration: 10000,
+            duration: 1500,
             className: 'toast_class'
           })
             return false
@@ -193,22 +193,23 @@
           email: this.email,
           city: this.city,
           mobile_validated: this.mobile_validated,
-          validated_timestamp: this.validated_timestamp,
+//          validated_timestamp: this.validated_timestamp,
           validated_by: this.validated_by
         }
-        if (!params.name || !params.mobile) {
+        console.log(params)
+        if (!params.name || !params.mobile || params.mobile.length !== 11) {
           this.alertMsg = true
           return false
         }
-        if (this.name &&
-          this.mobile) {
+//        if (this.name &&
+//          this.mobile) {
           addCusomer(params).then(res => {
             console.log(res)
             if (res.status === 200) {
               this.$router.push({name: 'CustomerList'})
             }
           })
-        }
+//        }
       }
     }
   }

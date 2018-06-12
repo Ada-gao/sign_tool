@@ -112,7 +112,7 @@ export default {
     },
     cancle () {
       console.log('fhjkr')
-      this.pdfDialog = false      
+      this.pdfDialog = false
     },
     checkAll () {
 			this.flag = !this.flag
@@ -368,7 +368,7 @@ export default {
       left: 50%;
       transform: translate(-50%, 0);
       background: #fff;
-      padding: 20px; 
+      padding: 20px;
       .weui-btn.weui-btn_primary{
         background: #2A7DC1;
         border-radius: 10px;
@@ -377,10 +377,10 @@ export default {
         font-family: PingFangSC-Medium;
         font-size: 36px;
         color: #F0F0F0;
-        
+
       }
     }
-    
+
     }
   }
 }

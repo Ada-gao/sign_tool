@@ -312,6 +312,13 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
     // console.log(store)
     if (store.state.token) {
+      if (from.name === 'PerfectInfos' && to.name === 'PotentialCustomerList') {
+        // console.log('从b到a')
+        from.meta.keepAlive = false
+      } else if (from.name === 'PerfectInfos' && to.name === 'Bankcard') {
+        // console.log('从b到c')
+        from.meta.keepAlive = true
+      }
       next()
     } else {
       next({
