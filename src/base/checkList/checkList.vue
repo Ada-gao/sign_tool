@@ -70,7 +70,6 @@ export default {
   },
   mounted () {
     this.check_list = [...this.options]
-    console.log(this.options)
     this.check_list.forEach(item => {
       item.checked = false
     })
@@ -92,7 +91,7 @@ export default {
         width: 25px;
         height: 25px;
         border-radius: 20%;
-        border: 1px solid #666;
+        border: 1px solid #666666;
         position: relative;
         top: 50%;
         transform: translate(0, -50%);
@@ -101,6 +100,7 @@ export default {
           border: 1px solid #2672BA;
           &::before{
              transform: rotate(0deg) scale(1);
+            font-size: 6px;
           }
         }
         &::before{

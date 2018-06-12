@@ -1,20 +1,16 @@
 <template>
   <div class="pptPage">
-    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">产品说明材料</x-header>
+    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
     <div class="wrapper">
       <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true">
         <template slot-scope="props">
             <div @click="get(props.item)">
-            <!-- <mt-button type="default">default</mt-button> -->
 						<i class="eye iconfont">&#xe6ce;</i>
             </div>
         </template>
         </check-list>
     </div>
     <div class="select">
-     <!-- <mt-checklist
-        v-model="checkAll" :options="option" :label="newList" @change="handleCheckAllChange">
-      </mt-checklist> -->
     <div :class="'my_checkbox' + (this.flag ? ' checked' : '' )">
       <div :class="'box mint-toast-icon mintui mintui-success' + (this.flag ? ' checked' : '' )" @click="checkAll"></div>
       <div class="name">全选</div>
@@ -40,12 +36,6 @@
           <x-button @click.native="noSelectSure" type="primary">确 定</x-button>
       </x-dialog>
     </div>
-    <x-dialog v-model="pdfDialog" class="dialog-demo pdfDialog" hide-on-blur>
-      <pdf :pdf-url="pdfUrl"></pdf>
-      <div class="cancleBtn">
-        <x-button @click.native="cancle" type="primary">取 消</x-button>
-      </div>
-    </x-dialog>
   </div>
 </template>
 <script type="text/ecmascript-6">
@@ -54,10 +44,7 @@ import CheckList from '@/base/checkList/checkList'
 import { XHeader, XDialog, XInput, XButton } from 'vux'
 import { getProductFiles, sendTrade } from '@/service/api/products'
 import pdf from '@/base/report/pdf'
-// import Pdf from '@/base/pdf'
-// Vue.use(Pdf)
 let Base64 = require('js-base64').Base64
-console.log(require('js-base64'))
 export default {
   components: {
     CheckList,
@@ -87,9 +74,10 @@ export default {
         option: ['全选'],
         clear: false,
         noSelectDialog: false,
-        pdfDialog: false,
+        // pptMaterial: false,
         showIframe: false,
-        pdfUrl: ''
+        pdfUrl: '',
+        title: '产品说明材料'
     }
 	},
 	watch: {
@@ -102,24 +90,13 @@ export default {
   },
   methods: {
     get (test) {
-      console.log(test)
-      this.pdfDialog = true
-      this.showIframe = true
-      // this.$showPDF(test.file_path)
-      console.log(test.file_path)
-      this.pdfUrl = Base64.encode('http://10.9.60.142:8888/group1/M00/00/0B/Cgk8jlsZBYCAfs7yAALbLyFKB34936.pdf')
-      // this.$router.push({ name: 'Report', query: { url: Base64.encode('/api/group1/M00/00/0B/Cgk8jlsZBYCAfs7yAALbLyFKB34936.pdf') } })
-    },
-    cancle () {
-      console.log('fhjkr')
-      this.pdfDialog = false      
+			this.$router.push({name: 'Report', params: {url: Base64.encode(test.file_path), tip: this.title}})
     },
     checkAll () {
 			this.flag = !this.flag
       this.$refs.checkList.checkAll(this.flag)
     },
     back (id) {
-      // this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newEmail, userId: newUserId}})
 			this.$router.push({name: 'ProductDetail', params: {id: id}})
     },
       sendEmail () {
@@ -152,12 +129,6 @@ export default {
 		this.$nextTick(function () {
 		getProductFiles(this.id).then(res => {
 			this.documentList = res.data
-	// 		this.documentList.push({
-  //   "file_path": "fjhkherf",
-  //   "name": "交易文件4",
-  //   "product_id": 3,
-  //   "transaction_file_id": 4
-  // })
       const list = []
       const nameList = []
       const urlList = []
@@ -174,8 +145,6 @@ export default {
 	},
   mounted () {
     this.item = this.$route.params.item
-    // this.newEmail = this.$route.params.email
-    // this.newUserId = this.$route.params.userId
     this.newEmail = JSON.parse(window.localStorage.getItem('data')).email
     this.newUserId = JSON.parse(window.localStorage.getItem('data')).userId
 	}
@@ -352,36 +321,6 @@ export default {
       }
     }
   }
-  }
-  .pdfDialog{
-    .weui-dialog{
-    margin: 60px 40px;
-    overflow: scroll;
-    width: calc(100% - 80px);
-    height: calc(100% - 120px);
-    transform: none;
-    .cancleBtn{
-      width: 100%;
-      height: 80px;
-      position: fixed;
-      bottom: 60px;
-      left: 50%;
-      transform: translate(-50%, 0);
-      background: #fff;
-      padding: 20px; 
-      .weui-btn.weui-btn_primary{
-        background: #2A7DC1;
-        border-radius: 10px;
-        width: 280px;
-        height: 80px;
-        font-family: PingFangSC-Medium;
-        font-size: 36px;
-        color: #F0F0F0;
-        
-      }
-    }
-    
-    }
   }
 }
 </style>

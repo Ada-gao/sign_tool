@@ -1,23 +1,32 @@
 <template>
-  <div class="pdf">
-    <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page"></canvas>
-  </div>
+    <div class="material">
+        <x-header :left-options="{backText: ''}" >{{title}}</x-header>
+        <div class="wrapper">
+            <div class="pdf">
+                <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page"></canvas>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+import { XHeader } from 'vux'
 import PDFJS from 'pdfjs-dist'
 let Base64 = require('js-base64').Base64
 
 export default {
+  components: {
+    XHeader
+  },
   data () {
     return {
       title: '',
       pdfDoc: null,
       loadding: false,
-      pages: 0
+      pages: 0,
+			url: ''
     }
   },
-  props: ['pdfUrl'],
   methods: {
     renderPage (num) {
       let _this = this
@@ -59,8 +68,8 @@ export default {
     }
   },
   mounted () {
-      console.log(this.pdfUrl)
-    let url = Base64.decode(Base64.encode('http://10.9.60.142:8888/group1/M00/00/0B/Cgk8jlsZBYCAfs7yAALbLyFKB34936.pdf'))
+		this.title = this.$route.params.tip
+    let url = Base64.decode(this.$route.params.url)
     this.loadFile(url)
   }
 }
@@ -68,7 +77,10 @@ export default {
 
 <style scoped>
 .pdf{
-    margin-bottom: 120px;
+    /* margin-bottom: 120px; */
+    /* overflow: scroll;
+    width: 100%;
+    height: 100%; */
 }
 canvas {
   display: block;
