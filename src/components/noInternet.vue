@@ -36,10 +36,14 @@
 		height: 100%;
 		text-align: center;
 		.content{
+			width: 100%;
 			position: absolute;
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%,-50%);
+			img{
+				width: 100%;
+			}
 			.info{
 				margin-top: 92px;
 				font-family: PingFangSC-Regular;

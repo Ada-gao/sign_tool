@@ -1,20 +1,16 @@
 <template>
   <div class="pdfPage">
-    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">交易所需材料</x-header>
+    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
     <div class="wrapper">
       <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true">
         <template slot-scope="props">
             <div @click="get(props.item)">
-            <!-- <mt-button type="default">default</mt-button> -->
 						<i class="eye iconfont">&#xe6ce;</i>
             </div>
         </template>
         </check-list>
     </div>
     <div class="select">
-     <!-- <mt-checklist
-        v-model="checkAll" :options="option" :label="newList" @change="handleCheckAllChange">
-      </mt-checklist> -->
     <div :class="'my_checkbox' + (this.flag ? ' checked' : '' )">
       <div :class="'box mint-toast-icon mintui mintui-success' + (this.flag ? ' checked' : '' )" @click="checkAll"></div>
       <div class="name">全选</div>
@@ -46,14 +42,16 @@
 import CheckList from '@/base/checkList/checkList'
 import { XHeader, XDialog, XInput, XButton } from 'vux'
 import { getTransaction, sendTrade } from '@/service/api/products'
-
+import pdf from '@/base/report/pdf'
+let Base64 = require('js-base64').Base64
 export default {
   components: {
     CheckList,
     XHeader,
     XDialog,
     XInput,
-    XButton
+    XButton,
+    pdf
   },
   data () {
     return {
@@ -74,7 +72,10 @@ export default {
         newUrlList: [],
         option: ['全选'],
         clear: false,
-        noSelectDialog: false
+        noSelectDialog: false,
+        // pdfMaterial: false,
+        pdfUrl: '',
+        title: '交易所需材料'
     }
 	},
 	watch: {
@@ -87,14 +88,13 @@ export default {
   },
   methods: {
     get (test) {
-      console.log(test)
+			this.$router.push({name: 'Report', params: {url: Base64.encode(test.file_path), tip: this.title}})
     },
     checkAll () {
 			this.flag = !this.flag
       this.$refs.checkList.checkAll(this.flag)
     },
     back (id) {
-      // this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newEmail, userId: newUserId}})
 			this.$router.push({name: 'ProductDetail', params: {id: id}})
     },
       sendEmail () {
@@ -127,12 +127,6 @@ export default {
 		this.$nextTick(function () {
 		getTransaction(this.id).then(res => {
 			this.documentList = res.data
-	// 		this.documentList.push({
-  //   "file_path": "fjhkherf",
-  //   "name": "交易文件4",
-  //   "product_id": 3,
-  //   "transaction_file_id": 4
-  // })
       const list = []
       const nameList = []
       const urlList = []
@@ -149,8 +143,6 @@ export default {
 	},
   mounted () {
     this.item = this.$route.params.item
-    // this.newEmail = this.$route.params.email
-    // this.newUserId = this.$route.params.userId
     this.newEmail = JSON.parse(window.localStorage.getItem('data')).email
     this.newUserId = JSON.parse(window.localStorage.getItem('data')).userId
 	}
@@ -327,6 +319,35 @@ export default {
       }
     }
   }
-	}
+  }
+  .pdfDialog{
+    .weui-dialog{
+    margin: 60px 40px;
+    overflow: scroll;
+    width: calc(100% - 80px);
+    height: calc(100% - 120px);
+    transform: none;
+    padding: 0;
+    .cancleBtn{
+      width: 100%;
+      height: 80px;
+      position: fixed;
+      bottom: 60px;
+      left: 50%;
+      transform: translate(-50%, 0);
+      background: #fff;
+      padding: 20px;
+      .weui-btn.weui-btn_primary{
+        background: #2A7DC1;
+        border-radius: 10px;
+        width: 280px;
+        height: 80px;
+        font-family: PingFangSC-Medium;
+        font-size: 36px;
+        color: #F0F0F0;
+      }
+    }
+    }
+  }
 }
 </style>

@@ -18,10 +18,16 @@ axios.interceptors.request.use(
         if (XToken) {
             config.headers['X-Token'] = XToken
         }
+        if (navigator.onLine) {
+            console.log('正常')
+        } else {
+            console.log('断网')
+            router.replace({name: 'NoInternet'})
+        }
         return config
     },
     err => {
-        console.log('dfghjdk')
+        console.log('dfghjdk', err)
         return Promise.reject(err)
     })
 
@@ -41,6 +47,7 @@ axios.interceptors.response.use(
     ,
     error => {
         if (error && error.response) {
+            console.log('网。。。。', error, error.response)
             switch (error.response.status) {
                 case 400:
                 error.message = '请求错误'
