@@ -60,7 +60,7 @@ export function checkCustomerRemarks (id) {
 
 export function checkAllCustomerRemarks (info) {
   return axios({
-    url: `/v1/client/customers/remarks/`,
+    url: '/v1/client/customers/remarks/',
     method: 'get',
     params: info
   })

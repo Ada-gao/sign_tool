@@ -81,7 +81,11 @@ export default {
 	watch: {
     value: {
       handler: function (newVal, oldVal) {
-        this.flag = !this.documentList.some(item => newVal.indexOf(item) === -1)
+        // console.log(newVal, oldVal)
+        if (newVal.length === 0 && oldVal.length === 0) {
+        } else {
+          this.flag = !this.documentList.some(item => newVal.indexOf(item) === -1)
+        }
       },
       deep: true
     }

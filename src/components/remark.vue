@@ -240,6 +240,28 @@ export default {
           // 		height: 60px;
           // 	}
           // }
+          .mint-popup.mint-datetime.mint-popup-bottom{
+            .picker.mint-datetime-picker{
+              .picker-toolbar{
+                height: 44px;
+                .mint-datetime-action.mint-datetime-cancel,.mint-datetime-action.mint-datetime-confirm{
+                  line-height: 44px;
+                  font-size: 28px;
+                  color: #2672BA;
+                }
+              }
+              // .picker-items{
+              //   .picker-item{
+              //     height: 44px !important;
+              //     line-height: 44px !important;
+              //   }
+              //   .picker-center-highlight{
+              //     height: 44px !important;
+              //     margin-top: -16px !important;
+              //   }
+              // }
+            }
+          }
         }
       }
       // .vux-no-group-title {
