@@ -41,12 +41,7 @@
             <label style="color:#333">邮箱：</label>
             <span class="fr">{{data.email}}</span>
           </cell-box>
-          <!--<cell-box>-->
-            <!--<label style="color:#333">手机号：</label>-->
-            <!--<span class="fr">{{data.mobile}}</span>-->
-          <!--</cell-box>-->
           <div class="ver_box">
-            <!--<cell title="手机号码：" :value="mobile" class="cell_mobile"></cell>-->
             <div class="mobile_box" :class="{'limit_width': verificate.verStatus === '1'}">
               <span class="mobile_title">手机号码：</span>
               <span class="mobile_number" :class="{'limit_width': verificate.verStatus === '1'}">{{mobile}}</span>
@@ -87,22 +82,8 @@
         </ul>
       </div>
       <div class="bottom-remark">
-        <!--<div class="add clearfix">-->
-        <!--<input type="text" @click="addNew" class="addInput" v-model="remarkInput" placeholder="新增备注"/>-->
-        <!--</div>-->
         <div class="add clearfix" @click="addNew">新增备注</div>
       </div>
-      <!--<div v-transfer-dom>-->
-        <!--<x-dialog v-model="showHideOnBlur" class="dialog-demo" hide-on-blur>-->
-          <!--<div class="img-box">-->
-            <!--<textarea v-focus id="inputing" v-model="remarkInfo"></textarea>-->
-          <!--</div>-->
-          <!--<div style="text-align: right;">-->
-            <!--<button @click="submitAddNew" class="btn btn-primary vux-emit">新增备注</button>-->
-          <!--</div>-->
-        <!--</x-dialog>-->
-      <!--</div>-->
-
       <x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>
         <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
@@ -185,12 +166,6 @@
         modifiedVal: ''
       }
     },
-//    beforeRouteLeave (to, from, next) {
-//      if (to.name === 'PerfectInfos') {
-//        to.meta.keepAlive = false
-//      }
-//      next()
-//    },
     mounted () {
       this.client_id = this.$route.params.id
 //      console.log(this.client_id)
@@ -354,58 +329,6 @@
   }
 
   .potential {
-    /*.verificate {*/
-      /*display: inline-block;*/
-      /*height: 40px;*/
-      /*line-height: 40px;*/
-      /*background-color: #2672ba;*/
-      /*color: #f0f0f0;*/
-      /*width: 140px;*/
-      /*font-size: 22px;*/
-      /*text-align: center;*/
-      /*border-radius: 10px;*/
-      /*vertical-align: middle;*/
-    /*}*/
-    /*.msg_dialog {*/
-      /*.weui-dialog {*/
-        /*width: 580px;*/
-        /*height: 330px;*/
-        /*background: #FFFFFF;*/
-        /*border-radius: 10px;*/
-        /*top: 50% !important;*/
-        /*left: 50% !important;*/
-        /*transform: translate(-50%, -50%);*/
-        /*padding: 0;*/
-        /*text-align: center;*/
-        /*.weui-btn.weui-btn_primary {*/
-          /*display: inline-block;*/
-          /*background: #2A7DC1;*/
-          /*border-radius: 10px;*/
-          /*width: 190px;*/
-          /*height: 80px;*/
-          /*font-family: PingFangSC-Medium;*/
-          /*font-size: 36px;*/
-          /*color: #F0F0F0;*/
-        /*}*/
-        /*.msg_title {*/
-          /*color: #333;*/
-          /*font-size: 30px;*/
-          /*margin: 30px auto;*/
-        /*}*/
-        /*.msg_ipt {*/
-          /*font-size: 30px;*/
-          /*color: #333;*/
-          /*text-align: center;*/
-          /*border-color: #999;*/
-          /*border-radius: 10px;*/
-          /*display: block;*/
-          /*margin: 0 auto;*/
-          /*width: 300px;*/
-          /*height: 60px;*/
-          /*margin-bottom: 30px;*/
-        /*}*/
-      /*}*/
-    /*}*/
     .no_bbottom .weui-cells::after {
       content: none;
     }

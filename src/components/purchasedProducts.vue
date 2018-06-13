@@ -83,6 +83,7 @@
       background-color: #f5f5f5;
     }
     .content {
+      background-color: #fff;
       /*padding-top: 108px;*/
     }
     ul.tabbar {

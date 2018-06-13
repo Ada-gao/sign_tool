@@ -288,3 +288,14 @@ export function confirmVercode (obj) {
     data: obj
   })
 }
+
+/**
+ * 获取银行列表信息
+ * @returns {AxiosPromise}
+ */
+export function getBankInfos () {
+  return axios({
+    url: '/v1/client/customers/banks/',
+    method: 'get'
+  })
+}

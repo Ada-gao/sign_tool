@@ -64,7 +64,7 @@
 <script>
   import {XHeader} from 'vux'
   import {Popup, Radio} from 'mint-ui'
-  import {sendEmail, sendFiles, perfectInfos} from '@/service/api/customers'
+  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import camera from '@/base/camera/camera'
   export default {
@@ -101,32 +101,60 @@
           id: '',
           emailAddress: '',
           type: ''
-        }
+        },
+        beforeRouteName: ''
       }
     },
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
-      console.log('client_id：' + info.client_id)
-      perfectInfos({client_id: info.client_id}).then(res => {
+      let id = null
+      if (info && info.client_id) {
+        id = info.client_id
+        console.log('有storage')
+        this.userInfos.name = info.client_name
+        this.userInfos.id = info.client_id
+        this.userInfos.type = info.client_type
+        if (this.userInfos.type === '0') {
+          this.radio = '普通投资者'
+        } else if (this.userInfos.type === '1') {
+          this.radio = '专业投资者'
+        }
+      } else {
+        console.log('没有storage')
+        id = this.$route.params.id
+        checkCusomersDetail(id).then(res => {
+          this.userInfos.name = res.data.client_name
+          this.userInfos.id = res.data.client_id
+          this.userInfos.type = res.data.client_type
+          if (this.userInfos.type === '0') {
+            this.radio = '普通投资者'
+          } else if (this.userInfos.type === '1') {
+            this.radio = '专业投资者'
+          }
+        })
+      }
+      perfectInfos({client_id: id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
           console.log('certified：' + this.uploadData.clientCertificationId)
         }
       })
       this.userInfos.emailAddress = JSON.parse(getStore('data')).email
-      this.userInfos.name = info.client_name
-      this.userInfos.id = info.client_id
-      this.userInfos.type = info.client_type
-      if (this.userInfos.type === '0') {
-        this.radio = '普通投资者'
-      } else if (this.userInfos.type === '1') {
-        this.radio = '专业投资者'
-      }
+//      console.log('client_id：' + info.client_id)
     },
     beforeRouteEnter (to, from, next) {
-      next(vm => {
-        vm.id = from.params.id
-      })
+      if (from.name === 'CustomerManagement') {
+        next(vm => {
+          next(vm => {
+            vm.id = from.params.id
+            vm.beforeRouteName = 'CustomerManagement'
+          })
+        })
+      } else {
+        next(vm => {
+          vm.id = from.params.id
+        })
+      }
     },
     methods: {
       showCamera (data) {
@@ -178,8 +206,8 @@
           client_id: this.userInfos.id,
           user_id: data.userId
         }
-        console.log(params)
-        console.log(this.convert(this.radio))
+//        console.log(params)
+//        console.log(this.convert(this.radio))
         sendEmail(this.convert(this.radio), params).then(res => {
           if (res.status === 200) {
             this.showEmailBox = false
@@ -193,7 +221,11 @@
       },
       toRoute (status) {
         if (status === 1) {
-          this.$router.replace({name: 'PotentialCustomerList', params: {id: this.userInfos.id}})
+            if (this.beforeRouteName === 'CustomerManagement') {
+              this.$router.replace({name: 'CustomerManagement', params: {id: this.userInfos.id}})
+            } else {
+              this.$router.replace({name: 'PotentialCustomerList', params: {id: this.userInfos.id}})
+            }
         }
         this.showSubmit.isShow = false
       },
@@ -230,7 +262,7 @@
       }
       .icon_fail {
         font-size: 70px;
-        color:#C61D1A;
+        color: #C61D1A;
       }
       .confirm_cont {
         font-family: PingFangSC-Regular;

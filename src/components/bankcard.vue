@@ -47,7 +47,7 @@
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker, XDialog, XButton} from 'vux'
   import camera from '@/base/camera/camera'
-  import {uploadBankCard} from '@/service/api/customers'
+  import {uploadBankCard, getBankInfos} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
 
   export default {
@@ -66,43 +66,7 @@
       return {
         alertMsg: false,
         alertCont: '还有信息没填哦～',
-        bankList: [[
-          {
-            name: '中国银行',
-            value: '中国银行',
-            index: '1'
-          },
-          {
-            name: '招商银行',
-            value: '招商银行',
-            index: '2'
-          },
-          {
-            name: '建设银行',
-            value: '建设银行',
-            index: '3'
-          },
-          {
-            name: '汇丰银行',
-            value: '汇丰银行',
-            index: '4'
-          },
-          {
-            name: '渣打银行',
-            value: '渣打银行',
-            index: '5'
-          },
-          {
-            name: '花旗银行',
-            value: '花旗银行',
-            index: '6'
-          },
-          {
-            name: '农业银行',
-            value: '农业银行',
-            index: '7'
-          }
-        ]],
+        bankList: [],
         popupVisible: false,
         personInfo: {
           cardOwner: '',
@@ -122,6 +86,21 @@
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
       this.client_certification_id = info.client_certification_id
+      getBankInfos().then(res => {
+        if (res.status === 200) {
+          let resFilter = []
+          res.data.forEach((value, index) => {
+              resFilter.push(
+                  {
+                    name: value.bank_name,
+                    value: value.bank_name,
+                    index: value.bank_id
+                  }
+              )
+          })
+          this.bankList.push(resFilter)
+        }
+      })
 //      console.log('bankcard:' + this.client_certification_id)
     },
     methods: {

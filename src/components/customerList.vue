@@ -73,11 +73,11 @@
               </router-link>
             </li>
           </ul>
-          <div v-show="idx === 0 && customers.length === 0" class="no_data">
+          <div v-show="idx === 0 && customers.length === 0 && !this.isShowSpinner" class="no_data">
             <img src="static/img/customerIcon.png">
             <span>亲，暂时没有客户哦</span>
           </div>
-          <div v-show="idx === 1 && customers1.length === 0"  class="no_data">
+          <div v-show="idx === 1 && customers1.length === 0 && !this.isShowSpinner"  class="no_data">
             <img src="static/img/customerIcon.png">
             <span>亲，暂时没有潜客哦</span>
           </div>

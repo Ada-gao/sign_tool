@@ -64,12 +64,12 @@ export default {
 			// this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
 			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
 		}
-	}
-	// mounted () {
-	// 	// this.newemail = this.email
-	// 	// this.newuserId = this.userId
-	// 	console.log(this.childData)
-	// }
+	},
+	 mounted () {
+	 	// this.newemail = this.email
+	 	// this.newuserId = this.userId
+	 	console.log(this.childData)
+	 }
 }
 </script>
 
