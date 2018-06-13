@@ -44,6 +44,7 @@ export default {
 			// border: 1px solid #ccc;
 			position: relative;
 			background: #fff;
+			word-break: break-all;
 		}
 		.content::after {
 			content: '';
@@ -53,7 +54,8 @@ export default {
 			border: 20px solid;
 			border-color: transparent transparent #fff transparent;
 			position: absolute;
-			bottom: -40px;
+			bottom: -39px;
+			left: 130px;
 			transform: rotateZ(180deg);
 		}
 		.inputing {

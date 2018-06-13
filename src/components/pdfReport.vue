@@ -186,7 +186,7 @@ export default {
         transform: translate(0, -50%);
         &::before{
           color: #2672BA;
-          font-size: 6px;
+          font-size: 16px;
           width: 25px;
           height: 25px;
           position: absolute;

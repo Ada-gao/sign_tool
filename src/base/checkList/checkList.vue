@@ -100,12 +100,11 @@ export default {
           border: 1px solid #2672BA;
           &::before{
              transform: rotate(0deg) scale(1);
-            font-size: 6px;
           }
         }
         &::before{
           color: #2672BA;
-          font-size: 6px;
+          font-size: 16px;
           width: 25px;
           height: 25px;
         //   position: absolute;
