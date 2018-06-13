@@ -105,11 +105,9 @@
       }
     },
     mounted () {
-//      let obj = {}
       let info = JSON.parse(getStore('selfInfos'))
-//      obj.client_id = info.client_id
-//      obj.client_name = info.client_name
-      perfectInfos({client_id: this.client_id}).then(res => {
+      console.log('client_id：' + info.client_id)
+      perfectInfos({client_id: info.client_id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
           console.log('certified：' + this.uploadData.clientCertificationId)
@@ -180,6 +178,8 @@
           client_id: this.userInfos.id,
           user_id: data.userId
         }
+        console.log(params)
+        console.log(this.convert(this.radio))
         sendEmail(this.convert(this.radio), params).then(res => {
           if (res.status === 200) {
             this.showEmailBox = false
@@ -345,6 +345,9 @@
         }
         .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
           right: 135px;
+        }
+        .radio_item.mint-radiolist .mint-cell:last-child {
+          background-image: none;
         }
         .radio_item {
           .mint-radiolist-title {
