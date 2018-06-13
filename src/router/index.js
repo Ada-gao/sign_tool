@@ -318,6 +318,8 @@ router.beforeEach((to, from, next) => {
       } else if (from.name === 'PerfectInfos' && to.name === 'Bankcard') {
         // console.log('从b到c')
         from.meta.keepAlive = true
+      } else if (from.name === 'Bankcard' && to.name === 'PerfectInfos') {
+        to.meta.keepAlive = true
       }
       next()
     } else {

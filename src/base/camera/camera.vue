@@ -87,7 +87,7 @@
       selectcamera () {
         this.show = true
         this.$emit('showPopup', this.show)
-        console.log(this.cerId)
+//        console.log(this.cerId)
       },
       cancel () {
         this.show = false

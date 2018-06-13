@@ -118,7 +118,8 @@
     sendVerCode
   } from '@/service/api/customers'
 
-  import {setStore, getStore, removeStore} from '@/config/mUtils'
+//  import {setStore, getStore, removeStore} from '@/config/mUtils'
+  import {setStore, removeStore} from '@/config/mUtils'
 
   export default {
     name: 'PotentialCustomerList',
@@ -177,10 +178,11 @@
         }
       })
       checkCusomersDetail(this.client_id).then(res => {
-        if (!JSON.parse(getStore('selfInfos'))) {
+//        if (!JSON.parse(getStore('selfInfos'))) {
+            console.log(111111111111)
           let selfInfos = Object.assign({}, res.data)
           setStore('selfInfos', selfInfos)
-        }
+//        }
         this.data = res.data
         this.client_name = res.data.name
         this.mobile = res.data.mobile

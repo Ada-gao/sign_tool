@@ -166,7 +166,7 @@
             this.cancel = c
           })
         }).then(res => {
-          console.log(res)
+//          console.log(res)
           if (res.status === 200) {
             if (res.data.length === 0) {
               this.loadedData = false
@@ -179,7 +179,7 @@
         })
       },
       toLink (id, clientClass) {
-        console.log(clientClass)
+//        console.log(clientClass)
         if (clientClass === 0) {
           this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
         } else {
