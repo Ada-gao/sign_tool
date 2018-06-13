@@ -83,7 +83,10 @@ export default {
 	watch: {
     value: {
       handler: function (newVal, oldVal) {
-        this.flag = !this.documentList.some(item => newVal.indexOf(item) === -1)
+        if (newVal.length === 0 && oldVal.length === 0) {
+        } else {
+          this.flag = !this.documentList.some(item => newVal.indexOf(item) === -1)
+        }
       },
       deep: true
     }
@@ -188,7 +191,7 @@ export default {
         transform: translate(0, -50%);
         &::before{
           color: #2672BA;
-          font-size: 6px;
+          font-size: 16px;
           width: 25px;
           height: 25px;
           position: absolute;
