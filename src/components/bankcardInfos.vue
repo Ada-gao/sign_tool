@@ -77,6 +77,7 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    border: 1px solid #ddd;
     label {
       color: #333;
     }
