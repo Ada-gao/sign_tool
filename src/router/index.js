@@ -33,6 +33,8 @@ const Bankcard = r => require.ensure([], () => r(require('@/components/bankcard'
 const BankcardInfos = r => require.ensure([], () => r(require('@/components/bankcardInfos')), 'bankcardInfos')
 const NoInternet = r => require.ensure([], () => r(require('@/components/noInternet')), 'noInternet')
 const Report = r => require.ensure([], () => r(require('@/base/report/pdf')), 'report')
+const ReservationList = r => require.ensure([], () => r(require('@/components/reservationList')), 'reservationList')
+const ProductAppointment = r => require.ensure([], () => r(require('@/components/productAppointment')), 'productAppointment')
 
 // // import A from '@/components/a'
 
@@ -55,6 +57,13 @@ const router = new Router({
           path: '/HomePage',
           name: 'HomePage',
           component: HomePage,
+          meta: {
+            auth: true
+          }
+        }, {
+          path: '/reservationList',
+          name: 'ReservationList',
+          component: ReservationList,
           meta: {
             auth: true
           }
@@ -296,10 +305,17 @@ const router = new Router({
       meta: {
         auth: true
       }
+    },
+    {
+      path: '/productAppointment',
+      name: 'ProductAppointment',
+      component: ProductAppointment,
+      meta: {
+        auth: true
+      }
     }
   ]
 })
-
 // 页面刷新时，重新赋值 token
 if (window.localStorage.getItem('token')) {
   store.commit(types.LOGIN, window.localStorage.getItem('token'))
