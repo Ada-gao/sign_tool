@@ -34,10 +34,6 @@
                           @confirm="dateConfirm"
                           :value="datetime"></mt-datetime-picker>
       <div class="space"></div>
-      <!--<popup-picker title="证件类型："-->
-      <!--class="cell_certificate"-->
-      <!--:data="certificationList"-->
-      <!--v-model="certificationValue"></popup-picker>-->
       <div class="time_box" @click="showCode">
         <span class="date_tit">证件类型：</span>
         <span class="date_time">{{certificationValue}}</span>
@@ -101,6 +97,7 @@
     <div class="upload_box">
       <camera class="upload_cont1"
               :popupVisible="popupVisible1"
+              :imageSrc="idImages.front"
               :isFromBank="fromBank"
               :cerId="cerId"
               @showPopup="showPopup1"
@@ -108,6 +105,7 @@
               @hidePopup="hidePopup1"></camera>
       <camera class="upload_cont2"
               :popupVisible="popupVisible2"
+              :imageSrc="idImages.back"
               :isFromBank="fromBank"
               :cerId="cerId"
               @imgHandler="imageHandler2"
@@ -139,7 +137,7 @@
   import {uploadId, perfectInfos} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
-  import {getStore, setStore} from '@/config/mUtils'
+  import {getStore, setStore, removeStore} from '@/config/mUtils'
 
   export default {
     name: 'PerfectInfos',
@@ -177,7 +175,8 @@
         endDate: new Date(2100, 0, 1),
         startDate: new Date(1960, 0, 1),
         client_certification_id: 0,
-        certificationValue: [],
+//        certificationValue: [],
+        certificationValue: '',
         certificateNumber: '',
         idImages: {
           front: '',
@@ -202,6 +201,7 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
+          removeStore('perInfos')
 //        console.log(vm.name)
         let info = JSON.parse(getStore('selfInfos'))
         vm.client_certification_id = info.client_certification_id
@@ -219,21 +219,24 @@
       if (to.name === 'PotentialCustomerList') {
         info.client_certification_id = 0
         setStore('selfInfos', info)
+        removeStore('perInfos')
+      } else if (to.name === 'Bankcard') {
+        let idType = ''
+        idType = this.slots[0].values.indexOf(this.certificationValue) - 1
+        let perInfos = {
+          birthday: this.datetime,
+          address: this.address,
+          id_no: this.certificateNumber,
+          id_start_date: this.starttime,
+          id_expiration: this.endtime,
+          id_front_url: this.idImages.front,
+          id_back_url: this.idImages.back,
+          id_type: idType
+        }
+        setStore('perInfos', perInfos)
       }
       next()
     },
-//    activated () {
-//        console.log('activated...')
-//      let info = JSON.parse(getStore('selfInfos'))
-//      this.isSubmit = this.$route.params.isSubmit
-//      this.name = info.name
-//      this.nationality = info.nationality === '0' ? '中国' : '其他'
-//      this.city = info.city
-//      this.mobile = info.mobile
-//      this.client_id = info.client_id
-//      this.client_class = info.client_class
-//      this.client_type = info.client_type
-//    },
     mounted () {
         console.log('mounted...')
       let info = JSON.parse(getStore('selfInfos'))
@@ -245,6 +248,17 @@
       this.client_id = info.client_id
       this.client_class = info.client_class
       this.client_type = info.client_type
+      let perInfos = JSON.parse(getStore('perInfos'))
+      if (perInfos) {
+        this.datetime = perInfos.birthday
+        this.certificateNumber = perInfos.id_no
+        this.starttime = perInfos.id_start_date
+        this.endtime = perInfos.id_expiration
+        this.address = perInfos.address
+        this.idImages.front = perInfos.id_front_url
+        this.idImages.back = perInfos.id_back_url
+        this.certificationValue = this.slots[0].values[perInfos.id_type + 1]
+      }
     },
     methods: {
       onValuesChange (picker, values) {
@@ -316,27 +330,7 @@
       },
       submitInfos () {
         let idType = ''
-        switch (this.certificationValue) {
-//          ['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']
-          case '身份证':
-            idType = '0'
-            break
-          case '护照':
-            idType = '1'
-            break
-          case '军官证':
-            idType = '2'
-            break
-          case '台胞证':
-            idType = '3'
-            break
-          case '港澳通行证':
-            idType = '4'
-            break
-          case '其他':
-            idType = '5'
-            break
-        }
+        idType = this.slots[0].values.indexOf(this.certificationValue) - 1
         let params = {
           client_id: this.client_id,
           client_class: this.client_class,
@@ -350,8 +344,6 @@
           id_front_url: this.idImages.front,
           id_back_url: this.idImages.back
         }
-//        console.log(params)
-//        console.log('cerId' + this.client_certification_id)
         if (!params.birthday ||
           !params.address ||
           !params.id_no ||
@@ -391,6 +383,10 @@
   .perfect_infos {
     .cercode_box {
       width: 100%;
+      height: 300px;
+      .picker-items {
+        /*height: 244px;*/
+      }
       .picker-toolbar {
         height: 56px;
         line-height: 56px;

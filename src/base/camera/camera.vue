@@ -14,10 +14,10 @@
         <div class="addsmall_box" @click="selectcamera()">
           <span class="iconfont icon_bg">+</span>
           <!--<mt-spinner class="spinner"-->
-                      <!--:size="spinnerSet.size"-->
-                      <!--color="#aaa"-->
-                      <!--v-show="spinnerSet.show"-->
-                      <!--:type="spinnerSet.type"></mt-spinner>-->
+          <!--:size="spinnerSet.size"-->
+          <!--color="#aaa"-->
+          <!--v-show="spinnerSet.show"-->
+          <!--:type="spinnerSet.type"></mt-spinner>-->
         </div>
       </div>
 
@@ -27,10 +27,10 @@
              class="show"
              v-show="imgSrc">
         <!--<mt-spinner class="spinner"-->
-                    <!--:size="spinnerSet.size"-->
-                    <!--color="#aaa"-->
-                    <!--v-show="spinnerSet.show"-->
-                    <!--:type="spinnerSet.type"></mt-spinner>-->
+        <!--:size="spinnerSet.size"-->
+        <!--color="#aaa"-->
+        <!--v-show="spinnerSet.show"-->
+        <!--:type="spinnerSet.type"></mt-spinner>-->
       </div>
 
     </div>
@@ -53,7 +53,7 @@
     addMateials,
     deleteDetail
   } from '@/service/api/customers'
-//  import {Popup, Spinner} from 'mint-ui'
+  //  import {Popup, Spinner} from 'mint-ui'
   import {Popup} from 'mint-ui'
   //  import {getStore} from '@/config/mUtils'
   export default {
@@ -62,7 +62,7 @@
       'mt-popup': Popup
 //      'mt-spinner': Spinner
     },
-    props: ['popupVisible', 'isFromBank', 'cerId'],
+    props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc'],
     data () {
       return {
         imgSrc: '',
@@ -81,13 +81,19 @@
       }
     },
     mounted () {
-//      console.log('cerId:' + this.cerId)
+    },
+    watch: {
+      'imageSrc': function (n, o) {
+        this.setImgSrc()
+      }
     },
     methods: {
+      setImgSrc () {
+        this.imgSrc = this.imageSrc
+      },
       selectcamera () {
         this.show = true
         this.$emit('showPopup', this.show)
-//        console.log(this.cerId)
       },
       cancel () {
         this.show = false
@@ -201,11 +207,13 @@
       border-bottom: 1px solid #ccc;
     }
   }
+
   .fail_msg {
     line-height: 36px;
     position: absolute;
-    left:66px;
+    left: 66px;
   }
+
   .upload_cont {
     text-align: center;
     width: 270px;
@@ -216,11 +224,11 @@
     position: relative;
     margin: 0 auto;
     /*.spinner {*/
-      /*position: absolute;*/
-      /*left: 50%;*/
-      /*margin-left: -50px;*/
-      /*top: 50%;*/
-      /*margin-top: -50px;*/
+    /*position: absolute;*/
+    /*left: 50%;*/
+    /*margin-left: -50px;*/
+    /*top: 50%;*/
+    /*margin-top: -50px;*/
     /*}*/
     .icon_bg {
       font-size: 115px;

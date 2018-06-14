@@ -56,11 +56,11 @@
       <div class="product">
         <group>
           <cell style="color:#333"
-            :is-link="!convert(data.realname_status, disabled)"
-            :link="{name: 'Certified',params: {id: client_id}}"
-            :title="'投资者类型：'+stat"
-            :value="modifiedVal"
-            :disabled="convert(data.realname_status, disabled)"
+                :is-link="!convert(data.realname_status, disabled)"
+                :link="{name: 'Certified',params: {id: client_id}}"
+                :title="'投资者类型：'+stat"
+                :value="modifiedVal"
+                :disabled="convert(data.realname_status, disabled)"
           >
           </cell>
         </group>
@@ -118,7 +118,7 @@
     sendVerCode
   } from '@/service/api/customers'
 
-//  import {setStore, getStore, removeStore} from '@/config/mUtils'
+  //  import {setStore, getStore, removeStore} from '@/config/mUtils'
   import {setStore, removeStore} from '@/config/mUtils'
 
   export default {
@@ -179,9 +179,8 @@
       })
       checkCusomersDetail(this.client_id).then(res => {
 //        if (!JSON.parse(getStore('selfInfos'))) {
-            console.log(111111111111)
-          let selfInfos = Object.assign({}, res.data)
-          setStore('selfInfos', selfInfos)
+        let selfInfos = Object.assign({}, res.data)
+        setStore('selfInfos', selfInfos)
 //        }
         this.data = res.data
         this.client_name = res.data.name
@@ -193,7 +192,7 @@
         this.clientClass = res.data.client_class
         this.clientType = res.data.client_type
         if (res.data.mobile_validated === '1') {
-            this.verificate.verStatus = '1'
+          this.verificate.verStatus = '1'
         }
         switch (res.data.certification_status) {
           case '0':
@@ -235,7 +234,8 @@
           username: this.mobile,
           code_flag: 1
         }
-        sendVerCode(params).then(res => {})
+        sendVerCode(params).then(res => {
+        })
         this.verificate.timer = setInterval(() => {
           --this.verificate.num
           if (this.verificate.num === 0) {

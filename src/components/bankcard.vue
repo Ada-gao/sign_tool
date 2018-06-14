@@ -119,22 +119,11 @@
       this.client_certification_id = info.client_certification_id
       getBankInfos().then(res => {
         if (res.status === 200) {
-//          let resFilter = []
           res.data.forEach((value, index) => {
             this.slots[0].values.push(value.bank_name)
-//              resFilter.push(
-//                  {
-//                    name: value.bank_name,
-//                    value: value.bank_name,
-//                    index: value.bank_id
-//                  }
-//              )
           })
-//          this.bankList.push(resFilter)
-//          this.slots[0].values.push(resFilter)
         }
       })
-//      console.log('bankcard:' + this.client_certification_id)
     },
     methods: {
       onValuesChange (picker, values) {
@@ -169,36 +158,13 @@
       },
       submitBankInfos () {
         let bankId = ''
-        switch (this.personInfo.bankName) {
-          case '中国银行':
-            bankId = '1'
-            break
-          case '招商银行':
-            bankId = '2'
-            break
-          case '建设银行':
-            bankId = '3'
-            break
-          case '汇丰银行':
-            bankId = '4'
-            break
-          case '渣打银行':
-            bankId = '5'
-            break
-          case '花旗银行':
-            bankId = '6'
-            break
-          case '农业银行':
-            bankId = '7'
-            break
-        }
+        bankId = this.slots[0].values.indexOf(this.personInfo.bankName)
         let params = {
           card_no: this.personInfo.bankCardNumber,
           sub_branch_name: this.personInfo.branchBank,
           name: this.personInfo.cardOwner,
           bank_id: bankId
         }
-//        console.log(params)
         if (!params.card_no ||
             !params.sub_branch_name ||
             !params.name ||

@@ -263,8 +263,8 @@ const router = new Router({
       name: 'PerfectInfos',
       component: PerfectInfos,
       meta: {
-        auth: true,
-        keepAlive: true
+        auth: true
+        // keepAlive: true
       }
     }, {
       path: '/bankcard',
@@ -312,15 +312,13 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
     // console.log(store)
     if (store.state.token) {
-      if (from.name === 'PerfectInfos' && to.name === 'PotentialCustomerList') {
-        // console.log('从b到a')
-        from.meta.keepAlive = false
-      } else if (from.name === 'PerfectInfos' && to.name === 'Bankcard') {
-        // console.log('从b到c')
-        from.meta.keepAlive = true
-      } else if (from.name === 'Bankcard' && to.name === 'PerfectInfos') {
-        to.meta.keepAlive = true
-      }
+      // if (from.name === 'PerfectInfos' && to.name === 'PotentialCustomerList') {
+      //   from.meta.keepAlive = false
+      // } else if (from.name === 'PerfectInfos' && to.name === 'Bankcard') {
+      //   from.meta.keepAlive = true
+      // } else if (from.name === 'Bankcard' && to.name === 'PerfectInfos') {
+      //   to.meta.keepAlive = true
+      // }
       next()
     } else {
       next({
