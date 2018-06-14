@@ -10,23 +10,21 @@ import 'common/style/index.less'
 import 'lib-flexible'
 import * as filters from 'common/js/filter.js'
 import { LoadingPlugin } from 'vux'
-import {
-  DatetimePicker,
-  Checklist,
-  Spinner,
-  Search,
-  Button,
-  Field,
-  Picker,
-  Popup
-} from 'mint-ui'
+import { DatetimePicker,
+         Checklist,
+         Spinner,
+         Search,
+         Button,
+         Navbar,
+         TabItem,
+         TabContainer,
+         TabContainerItem,
+         Cell
+       } from 'mint-ui'
 import 'mint-ui/lib/style.css'
-// import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(LoadingPlugin)
 
-// Vue.use(ElementUI)
 Vue.config.productionTip = false
 
 Vue.use(VueCordova)
@@ -68,10 +66,11 @@ Vue.component(Checklist.name, Checklist)
 Vue.component(Spinner.name, Spinner)
 Vue.component(Search.name, Search)
 Vue.component(Button.name, Button)
-Vue.component(Field.name, Field)
-Vue.component(Picker.name, Picker)
-Vue.component(Popup.name, Popup)
-
+Vue.component(Navbar.name, Navbar)
+Vue.component(TabItem.name, TabItem)
+Vue.component(TabContainer.name, TabContainer)
+Vue.component(TabContainerItem.name, TabContainerItem)
+Vue.component(Cell.name, Cell)
 // 将 axios 挂载到 prototype 上，在组件中可以直接使用 this.$axios 访问
 Vue.prototype.$axios = axios
 
