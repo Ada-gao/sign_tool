@@ -18,17 +18,40 @@
                class="address"
       ></x-input>
       <div class="space"></div>
-      <datetime
-        v-model="datetime"
-        class="celll_datetime"
-        :min-year="minYear"
-        :max-year="maxYear"
-        title="出生日期："></datetime>
+      <div class="time_box" @click="open('pickerDate')">
+        <span class="date_tit">出生日期：</span>
+        <span class="date_time">{{datetime}}</span>
+        <i class="iconfont">&#xe731;</i>
+      </div>
+      <mt-datetime-picker ref="pickerDate"
+                          type="date"
+                          :endDate="endDate"
+                          :startDate="startDate"
+                          class="datetime_picker"
+                          year-format="{value} 年"
+                          month-format="{value} 月"
+                          date-format="{value} 日"
+                          @confirm="dateConfirm"
+                          :value="datetime"></mt-datetime-picker>
       <div class="space"></div>
-      <popup-picker title="证件类型："
-                    class="cell_certificate"
-                    :data="certificationList"
-                    v-model="certificationValue"></popup-picker>
+      <div class="time_box" @click="showCode">
+        <span class="date_tit">证件类型：</span>
+        <span class="date_time">{{certificationValue}}</span>
+        <i class="iconfont">&#xe731;</i>
+      </div>
+      <mt-popup v-model="showCerCode"
+                position="bottom"
+                class="cercode_box"
+                popup-transition="popup-fade">
+        <mt-picker :slots="slots"
+                   :showToolbar="true"
+                   @change="onValuesChange">
+          <div class="toolbar">
+            <span class="cancel" @click="cancelCerCode">取消</span>
+            <span class="ensure" @click="ensureCerCode">确定</span>
+          </div>
+        </mt-picker>
+      </mt-popup>
       <x-input title="证件号码："
                class="cell_id"
                v-model="certificateNumber"
@@ -36,25 +59,45 @@
                :show-clear="false"
                :max="50"
       ></x-input>
-      <datetime
-        v-model="starttime"
-        class="cell_starttime"
-        title="证件有效期起始时间："></datetime>
-      <datetime
-        v-model="endtime"
-        :min-year="minYear"
-        :max-year="maxYear"
-        class="cell_endtime"
-        title="证件有效期结束时间："></datetime>
+      <div class="time_box" @click="open('pickerStart')">
+        <span class="date_tit">证件有效期起始时间：</span>
+        <span class="date_time">{{starttime}}</span>
+        <i class="iconfont">&#xe731;</i>
+      </div>
+      <mt-datetime-picker ref="pickerStart"
+                          type="date"
+                          :endDate="endDate"
+                          :startDate="startDate"
+                          class="datetime_picker"
+                          year-format="{value} 年"
+                          month-format="{value} 月"
+                          date-format="{value} 日"
+                          @confirm="dateConfirm1"
+                          :value="starttime"></mt-datetime-picker>
+      <div class="time_box" @click="open('pickerEnd')">
+        <span class="date_tit">证件有效期结束时间：</span>
+        <span class="date_time">{{endtime}}</span>
+        <i class="iconfont">&#xe731;</i>
+      </div>
+      <mt-datetime-picker ref="pickerEnd"
+                          type="date"
+                          :endDate="endDate"
+                          :startDate="startDate"
+                          class="datetime_picker"
+                          year-format="{value} 年"
+                          month-format="{value} 月"
+                          date-format="{value} 日"
+                          @confirm="dateConfirm2"
+                          :value="endtime"></mt-datetime-picker>
       <div class="space"></div>
       <div class="upload">
         <div>证件信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
       </div>
     </group>
-
     <div class="upload_box">
       <camera class="upload_cont1"
               :popupVisible="popupVisible1"
+              :imageSrc="idImages.front"
               :isFromBank="fromBank"
               :cerId="cerId"
               @showPopup="showPopup1"
@@ -62,6 +105,7 @@
               @hidePopup="hidePopup1"></camera>
       <camera class="upload_cont2"
               :popupVisible="popupVisible2"
+              :imageSrc="idImages.back"
               :isFromBank="fromBank"
               :cerId="cerId"
               @imgHandler="imageHandler2"
@@ -92,7 +136,8 @@
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
   import {uploadId, perfectInfos} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
-  import {getStore, setStore} from '@/config/mUtils'
+  import {formatDate} from '@/common/js/date'
+  import {getStore, setStore, removeStore} from '@/config/mUtils'
 
   export default {
     name: 'PerfectInfos',
@@ -125,24 +170,39 @@
         endtime: '',
         minYear: 1900,
         maxYear: 3000,
+        timer: null,
+        showCerCode: false,
+        endDate: new Date(2100, 0, 1),
+        startDate: new Date(1960, 0, 1),
         client_certification_id: 0,
-        certificationValue: [],
+//        certificationValue: [],
+        certificationValue: '',
         certificateNumber: '',
         idImages: {
           front: '',
           back: ''
         },
-        certificationList: [['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']],
+//        certificationList: [['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']],
         alertMsg: false,
         alertCont: '还有信息没填哦～',
         isSubmit: null,
         popupVisible1: false,
         popupVisible2: false,
-        fromBank: 1
+        fromBank: 1,
+        slots: [
+          {
+            flex: 1,
+            values: ['', '身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他'],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ]
       }
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
+          removeStore('perInfos')
+//        console.log(vm.name)
         let info = JSON.parse(getStore('selfInfos'))
         vm.client_certification_id = info.client_certification_id
         if (!info.client_certification_id) {
@@ -150,21 +210,35 @@
             info.client_certification_id = res.data.client_certification_id
             vm.client_certification_id = res.data.client_certification_id
             setStore('selfInfos', info)
-//            console.log('perfectInfos: ' + vm.client_certification_id)
           })
         }
       })
     },
     beforeRouteLeave (to, from, next) {
       let info = JSON.parse(getStore('selfInfos'))
-//      console.log(info)
       if (to.name === 'PotentialCustomerList') {
         info.client_certification_id = 0
         setStore('selfInfos', info)
+        removeStore('perInfos')
+      } else if (to.name === 'Bankcard') {
+        let idType = ''
+        idType = this.slots[0].values.indexOf(this.certificationValue) - 1
+        let perInfos = {
+          birthday: this.datetime,
+          address: this.address,
+          id_no: this.certificateNumber,
+          id_start_date: this.starttime,
+          id_expiration: this.endtime,
+          id_front_url: this.idImages.front,
+          id_back_url: this.idImages.back,
+          id_type: idType
+        }
+        setStore('perInfos', perInfos)
       }
       next()
     },
     mounted () {
+        console.log('mounted...')
       let info = JSON.parse(getStore('selfInfos'))
       this.isSubmit = this.$route.params.isSubmit
       this.name = info.name
@@ -174,8 +248,62 @@
       this.client_id = info.client_id
       this.client_class = info.client_class
       this.client_type = info.client_type
+      let perInfos = JSON.parse(getStore('perInfos'))
+      if (perInfos) {
+        this.datetime = perInfos.birthday
+        this.certificateNumber = perInfos.id_no
+        this.starttime = perInfos.id_start_date
+        this.endtime = perInfos.id_expiration
+        this.address = perInfos.address
+        this.idImages.front = perInfos.id_front_url
+        this.idImages.back = perInfos.id_back_url
+        this.certificationValue = this.slots[0].values[perInfos.id_type + 1]
+      }
     },
     methods: {
+      onValuesChange (picker, values) {
+        this.certificationValue = values[0]
+      },
+      showCode () {
+        this.$refs.address.blur()
+        this.$refs.certificateCode.blur()
+        this.timer = null
+        this.timer = setTimeout(() => {
+          this.showCerCode = true
+        }, 600)
+      },
+      cancelCerCode () {
+        this.showCerCode = false
+        clearTimeout(this.timer)
+      },
+      ensureCerCode (val) {
+        clearTimeout(this.timer)
+        this.showCerCode = false
+      },
+      formatDate (time) {
+        let date = new Date(time)
+        return formatDate(date)
+      },
+      open (picker) {
+        this.$refs.address.blur()
+        this.$refs.certificateCode.blur()
+        this.timer = null
+        this.timer = setTimeout(() => {
+          this.$refs[picker].open()
+        }, 600)
+      },
+      dateConfirm (val) {
+        clearTimeout(this.timer)
+        this.datetime = this.formatDate(val)
+      },
+      dateConfirm1 (val) {
+        clearTimeout(this.timer)
+        this.starttime = this.formatDate(val)
+      },
+      dateConfirm2 (val) {
+        clearTimeout(this.timer)
+        this.endtime = this.formatDate(val)
+      },
       hideAlert () {
         this.alertMsg = false
       },
@@ -202,27 +330,7 @@
       },
       submitInfos () {
         let idType = ''
-        switch (this.certificationValue[0]) {
-//          ['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']
-          case '身份证':
-            idType = '0'
-            break
-          case '护照':
-            idType = '1'
-            break
-          case '军官证':
-            idType = '2'
-            break
-          case '台胞证':
-            idType = '3'
-            break
-          case '港澳通行证':
-            idType = '4'
-            break
-          case '其他':
-            idType = '5'
-            break
-        }
+        idType = this.slots[0].values.indexOf(this.certificationValue) - 1
         let params = {
           client_id: this.client_id,
           client_class: this.client_class,
@@ -236,8 +344,6 @@
           id_front_url: this.idImages.front,
           id_back_url: this.idImages.back
         }
-        console.log(params)
-//        console.log('cerId' + this.client_certification_id)
         if (!params.birthday ||
           !params.address ||
           !params.id_no ||
@@ -275,6 +381,82 @@
   }
 
   .perfect_infos {
+    .cercode_box {
+      width: 100%;
+      height: 300px;
+      .picker-items {
+        /*height: 244px;*/
+      }
+      .picker-toolbar {
+        height: 56px;
+        line-height: 56px;
+        .toolbar {
+          width: 100%;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          height: 56px;
+          line-height: 56px;
+          padding: 0 30px;
+          color: #2672ba;
+          font-size: 34px;
+          position: absolute;
+          border-bottom: 1px solid #ddd;
+          span {
+            position: absolute;
+            display: inline-block;
+          }
+          span.cancel {
+            left: 30px;
+          }
+          span.ensure {
+            right: 30px;
+          }
+        }
+      }
+    }
+    .time_box {
+      position: relative;
+      height: 82px;
+      line-height: 82px;
+      padding: 0 20px;
+      border-bottom: 1px solid #ddd;
+      span {
+        font-size: 32px;
+      }
+      span.date_tit {
+        color: #333;
+      }
+      span.date_time {
+        color: #999;
+        right: 56px;
+        position: absolute;
+      }
+      i {
+        position: absolute;
+        right: 0;
+        margin-right: 0;
+        font-size: 55px !important;
+        color: #C8C8CD;
+      }
+    }
+    .datetime_picker {
+      .picker-toolbar {
+        padding: 0 30px;
+        height: 66px;
+        .mint-datetime-action {
+          height: 66px;
+          line-height: 66px;
+          font-size: 34px;
+        }
+        .mint-datetime-cancel {
+          text-align: left;
+        }
+        .mint-datetime-confirm {
+          text-align: right;
+        }
+      }
+    }
     .verificate {
       display: inline-block;
       height: 40px;
@@ -374,6 +556,7 @@
       line-height: 82px;
       height: 82px;
       color: #333;
+      border-bottom: 1px solid #ddd;
     }
     .weui-cells .weui-cell.address {
       height: 130px;

@@ -32,6 +32,11 @@
 			</li>
 		</ul>
 
+    <div class="no_product" v-show="childData.length === 0">
+      <img src="static/img/purchasedIcon.png">
+      <span>亲，请您购买产品哦</span>
+    </div>
+
 	</div>
 </template>
 
@@ -64,12 +69,12 @@ export default {
 			// this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
 			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
 		}
-	}
-	// mounted () {
-	// 	// this.newemail = this.email
-	// 	// this.newuserId = this.userId
-	// 	console.log(this.childData)
-	// }
+	},
+	 mounted () {
+	 	// this.newemail = this.email
+	 	// this.newuserId = this.userId
+	 	console.log(this.childData)
+	 }
 }
 </script>
 
@@ -118,5 +123,25 @@ export default {
 }
 .flexbox-wrapper .vux-flexbox .item-right span.gray{
 	background-color: #666666;
+}
+.no_product {
+  background-color: #f5f5f5;
+  padding-top: 150px;
+  img,
+  span {
+    display: block;
+    text-align: center;
+    margin: 0 auto;
+  }
+  img {
+    width: 556px;
+    height: 379px;
+  }
+  span {
+    margin-top: 88px;
+    font-family: PingFangSC-Regular;
+    font-size: 32px;
+    color: #888888;
+  }
 }
 </style>

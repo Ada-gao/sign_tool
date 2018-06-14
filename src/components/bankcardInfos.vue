@@ -77,11 +77,13 @@
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+    border: 1px solid #ddd;
     label {
       color: #333;
     }
   }
   .img_box {
+    background-color: #fff;
     .title {
       height: 82px;
       line-height: 82px;
@@ -96,6 +98,7 @@
         display: inline-block;
         width: 270px;
         height: 180px;
+        margin: 49px 0;
       }
     }
   }

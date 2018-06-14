@@ -9,21 +9,42 @@
 
       <group class="bankcard_cont">
         <x-input title="持卡人："
+                 ref="cardOwner"
                  v-model="personInfo.cardOwner"
                  :show-clear="false"
                  class="x_iptname"
         ></x-input>
-        <popup-picker title="开户银行："
-                      :data="bankList"
-                      class="x_bank"
-                      v-model="personInfo.bankName"
-        ></popup-picker>
+        <!--<popup-picker title="开户银行："-->
+                      <!--:data="bankList"-->
+                      <!--class="x_bank"-->
+                      <!--v-model="personInfo.bankName"-->
+        <!--&gt;</popup-picker>-->
+        <div class="time_box" @click="showCode">
+          <span class="date_tit">开户银行：</span>
+          <span class="date_time">{{personInfo.bankName}}</span>
+          <i class="iconfont">&#xe731;</i>
+        </div>
+        <mt-popup v-model="showCerCode"
+                  position="bottom"
+                  class="cercode_box"
+                  popup-transition="popup-fade">
+          <mt-picker :slots="slots"
+                     :showToolbar="true"
+                     @change="onValuesChange">
+            <div class="toolbar">
+              <span class="cancel" @click="cancelCerCode">取消</span>
+              <span class="ensure" @click="ensureCerCode">确定</span>
+            </div>
+          </mt-picker>
+        </mt-popup>
         <x-input title="支行："
                  class="x_branch"
+                 ref="bankBranch"
                  v-model="personInfo.branchBank"
                  :show-clear="false"
         ></x-input>
         <x-input title="银行卡号："
+                 ref="cardNum"
                  class="x_cardnumber"
                  v-model="personInfo.bankCardNumber"
                  :show-clear="false"
@@ -47,7 +68,7 @@
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker, XDialog, XButton} from 'vux'
   import camera from '@/base/camera/camera'
-  import {uploadBankCard} from '@/service/api/customers'
+  import {uploadBankCard, getBankInfos} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
 
   export default {
@@ -66,43 +87,7 @@
       return {
         alertMsg: false,
         alertCont: '还有信息没填哦～',
-        bankList: [[
-          {
-            name: '中国银行',
-            value: '中国银行',
-            index: '1'
-          },
-          {
-            name: '招商银行',
-            value: '招商银行',
-            index: '2'
-          },
-          {
-            name: '建设银行',
-            value: '建设银行',
-            index: '3'
-          },
-          {
-            name: '汇丰银行',
-            value: '汇丰银行',
-            index: '4'
-          },
-          {
-            name: '渣打银行',
-            value: '渣打银行',
-            index: '5'
-          },
-          {
-            name: '花旗银行',
-            value: '花旗银行',
-            index: '6'
-          },
-          {
-            name: '农业银行',
-            value: '农业银行',
-            index: '7'
-          }
-        ]],
+        bankList: [],
         popupVisible: false,
         personInfo: {
           cardOwner: '',
@@ -116,50 +101,64 @@
         mobile: '',
         city: '',
         client_id: '',
-        fromBank: 0
+        fromBank: 0,
+        slots: [
+          {
+            flex: 1,
+            values: [''],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ],
+        showCerCode: false,
+        timer: null
       }
     },
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
       this.client_certification_id = info.client_certification_id
-//      console.log('bankcard:' + this.client_certification_id)
+      getBankInfos().then(res => {
+        if (res.status === 200) {
+          res.data.forEach((value, index) => {
+            this.slots[0].values.push(value.bank_name)
+          })
+        }
+      })
     },
     methods: {
+      onValuesChange (picker, values) {
+        this.personInfo.bankName = values[0]
+      },
+      showCode () {
+        this.$refs.cardOwner.blur()
+        this.$refs.bankBranch.blur()
+        this.$refs.cardNum.blur()
+        this.timer = null
+        this.timer = setTimeout(() => {
+          this.showCerCode = true
+        }, 600)
+      },
+      cancelCerCode () {
+        this.showCerCode = false
+        clearTimeout(this.timer)
+      },
+      ensureCerCode (val) {
+        clearTimeout(this.timer)
+        this.showCerCode = false
+      },
       hideAlert () {
         this.alertMsg = false
       },
       showPopup (data) {
         this.popupVisible = data
-        console.log(this.client_certification_id)
+//        console.log(this.client_certification_id)
       },
       hidePopup (data) {
         this.popupVisible = data
       },
       submitBankInfos () {
         let bankId = ''
-        switch (this.personInfo.bankName[0]) {
-          case '中国银行':
-            bankId = '1'
-            break
-          case '招商银行':
-            bankId = '2'
-            break
-          case '建设银行':
-            bankId = '3'
-            break
-          case '汇丰银行':
-            bankId = '4'
-            break
-          case '渣打银行':
-            bankId = '5'
-            break
-          case '花旗银行':
-            bankId = '6'
-            break
-          case '农业银行':
-            bankId = '7'
-            break
-        }
+        bankId = this.slots[0].values.indexOf(this.personInfo.bankName)
         let params = {
           card_no: this.personInfo.bankCardNumber,
           sub_branch_name: this.personInfo.branchBank,
@@ -177,7 +176,7 @@
           if (res.status === 200) {
             let info = JSON.parse(getStore('selfInfos'))
             let params = Object.assign({isSubmit: true}, info)
-            this.$router.push({name: 'PerfectInfos', params: params})
+            this.$router.replace({name: 'PerfectInfos', params: params})
           }
         })
       }
@@ -197,6 +196,61 @@
   }
 
   .bankcard {
+    .cercode_box {
+      width: 100%;
+      .picker-toolbar {
+        height: 56px;
+        line-height: 56px;
+        .toolbar {
+          width: 100%;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          height: 56px;
+          line-height: 56px;
+          padding: 0 30px;
+          color: #2672ba;
+          font-size: 34px;
+          position: absolute;
+          border-bottom: 1px solid #ddd;
+          span {
+            position: absolute;
+            display: inline-block;
+          }
+          span.cancel {
+            left: 30px;
+          }
+          span.ensure {
+            right: 30px;
+          }
+        }
+      }
+    }
+    .time_box {
+      position: relative;
+      height: 82px;
+      line-height: 82px;
+      padding: 0 20px;
+      border-bottom: 1px solid #ddd;
+      span {
+        font-size: 32px;
+      }
+      span.date_tit {
+        color: #333;
+      }
+      span.date_time {
+        color: #999;
+        right: 56px;
+        position: absolute;
+      }
+      i {
+        position: absolute;
+        right: 0;
+        margin-right: 0;
+        font-size: 55px !important;
+        color: #C8C8CD;
+      }
+    }
     .quitDialog {
       .weui-dialog {
         width: 580px;
@@ -229,6 +283,7 @@
         color: #333;
         height: 82px;
         padding: 0 20px;
+        border-bottom: 1px solid #ddd;
       }
       .x_iptname,
       .x_branch,
