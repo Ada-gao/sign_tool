@@ -32,23 +32,55 @@
 					<div class="submitBtn">
           	<mt-button type="primary">提交预约</mt-button>
 					</div>
+					<div class="uploadCustomer">
+						<mt-cell title="上传客户材料" class="tit">
+							<i slot="icon" class="iconfont">&#xe632;</i>
+						</mt-cell>
+						<div class="cont">
+							<mt-cell title="打款凭证"><span class="cardSelected">选择已绑定银行卡</span></mt-cell>
+							<div class="warn">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
+							<div class="card">
+								<mt-field label="银行卡号:" v-model="cardnum"></mt-field>
+								<mt-field label="银行名称:" v-model="bankname"></mt-field>
+								<mt-field label="支行名称:" v-model="bankname1"></mt-field>
+							</div>
+							<camera :popupVisible="popupVisible"
+                @showPopup="showPopup"
+                @hidePopup="hidePopup"
+								></camera>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
 </template>
 <script type="text/ecmascript-6">
 import { XHeader, Flow, FlowState, FlowLine } from 'vux'
+import camera from '@/base/camera/camera'
 export default {
 	data () {
 		return {
-			step1: 1
+			step1: 1,
+			popupVisible: false,
+			cardnum: '',
+			bankname: '',
+			bankname1: ''
 		}
 	},
 	components: {
 		XHeader,
 		Flow,
     FlowState,
-    FlowLine
+		FlowLine,
+    camera
+	},
+	methods: {
+		showPopup (data) {
+        this.popupVisible = data
+      },
+      hidePopup (data) {
+        this.popupVisible = data
+      }
 	}
 }
 </script>
@@ -193,7 +225,7 @@ export default {
 				.mint-button.mint-button--primary.mint-button--normal{
 					width: 710px;
 					height: 72px;
-					margin-top: 33px;
+					margin-top: 20px;
 					margin-bottom: 40px;
 					padding: 0;
 					background: #2672BA;
@@ -202,6 +234,55 @@ export default {
 						font-family: PingFangSC-Regular;
 						font-size: 28px;
 						color: #FFFFFF;
+					}
+				}
+			}
+			.uploadCustomer{
+				.cardSelected{
+					background: #2672BA;
+					border: 1px solid #2672BA;
+					border-radius: 8px;
+					font-size: 24px;
+					color: #FFFFFF;
+					height: 50px;
+					line-height: 50px;
+					padding: 0 15px;
+				}
+				.warn{
+					padding: 20px;
+					background: #fff;
+					border-bottom: 1px solid #ccc;
+					color: #2672BA;
+					font-size: 24px;			
+				}
+				.card{
+					background: #fff;
+					padding: 30px 20px;
+					.mint-field{
+						height: 40px;
+						line-height: 40px;
+						border: none;
+						margin-bottom: 20px;
+						.mint-cell-wrapper{
+							line-height: 100%;
+							padding: 0;
+							.mint-cell-title{
+								width: 130px;
+								.mint-cell-text{
+									font-size: 26px;
+									font-weight: normal;
+								}
+							}
+							.mint-cell-value{
+								.mint-field-core{
+									width: 580px;
+									height: 40px;
+									border: 1px solid rgba(151,151,151,0.76);
+									border-radius: 5px;
+									box-sizing: border-box;
+								}
+							}
+						}
 					}
 				}
 			}

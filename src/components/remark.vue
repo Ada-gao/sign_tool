@@ -79,6 +79,7 @@ export default {
 			pickerValue1: new Date(),
       pickerValue2: new Date(),
       remarkList: [],
+      startList: [],
       keyValue: '',
       stopDialog: false,
       errTip: '',
@@ -93,7 +94,8 @@ export default {
   },
   methods: {
   	checkIndex (num) {
-  		num === 1 ? this.isChecked = true : this.isChecked = false
+      num === 1 ? this.isChecked = true : this.isChecked = false
+      this.remarkList = this.startList
   	},
 		open (picker) {
 			this.$refs[picker].open()
@@ -128,6 +130,9 @@ export default {
         this.errTip = '结束时间不能小于开始时间'
       }
     },
+    noSelectSure () {
+      this.stopDialog = false
+    },
     search () {
       let obj = {
         q: this.keyValue
@@ -139,6 +144,7 @@ export default {
   },
   mounted () {
     checkAllCustomerRemarks().then(res => {
+      this.startList = res.data
       this.remarkList = res.data
       if (this.remarkList.length === 0) {
         this.show = false

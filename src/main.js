@@ -19,7 +19,8 @@ import { DatetimePicker,
          TabItem,
          TabContainer,
          TabContainerItem,
-         Cell
+         Cell,
+         Field
        } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
@@ -71,6 +72,7 @@ Vue.component(TabItem.name, TabItem)
 Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Cell.name, Cell)
+Vue.component(Field.name, Field)
 // 将 axios 挂载到 prototype 上，在组件中可以直接使用 this.$axios 访问
 Vue.prototype.$axios = axios
 
