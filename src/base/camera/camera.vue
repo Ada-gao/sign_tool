@@ -21,7 +21,8 @@
       </div>
 
       <div v-else class="addbig_box" @click="selectcamera()">
-        <span class='iconfont icon_bg'>&#xe600;</span>
+        <!--<span class='iconfont icon_bg'>&#xe600;</span>-->
+        <span class='iconfont icon_bg'>+</span>
         <img :src="imgSrc"
              class="show"
              v-show="imgSrc">
@@ -220,6 +221,7 @@
     .icon_bg {
       font-size: 115px;
       color: #fff;
+      line-height: 150px;
     }
     .show {
       position: absolute;
