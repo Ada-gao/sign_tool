@@ -13,11 +13,10 @@
         </ul>
         <div class="addsmall_box" @click="selectcamera()">
           <span class="iconfont icon_bg">+</span>
-          <!--<mt-spinner class="spinner"-->
-          <!--:size="spinnerSet.size"-->
-          <!--color="#aaa"-->
-          <!--v-show="spinnerSet.show"-->
-          <!--:type="spinnerSet.type"></mt-spinner>-->
+          <mt-spinner class="camera_spinner"
+          color="#aaa"
+          v-show="spinnerShow"
+          type="fading-circle"></mt-spinner>
         </div>
       </div>
 
@@ -26,11 +25,10 @@
         <img :src="imgSrc"
              class="show"
              v-show="imgSrc">
-        <!--<mt-spinner class="spinner"-->
-        <!--:size="spinnerSet.size"-->
-        <!--color="#aaa"-->
-        <!--v-show="spinnerSet.show"-->
-        <!--:type="spinnerSet.type"></mt-spinner>-->
+        <mt-spinner class="camera_spinner"
+        color="#aaa"
+        v-show="spinnerShow"
+        type="fading-circle"></mt-spinner>
       </div>
 
     </div>
@@ -53,14 +51,12 @@
     addMateials,
     deleteDetail
   } from '@/service/api/customers'
-  //  import {Popup, Spinner} from 'mint-ui'
   import {Popup} from 'mint-ui'
   //  import {getStore} from '@/config/mUtils'
   export default {
     name: 'Camera',
     components: {
       'mt-popup': Popup
-//      'mt-spinner': Spinner
     },
     props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc'],
     data () {
@@ -72,11 +68,7 @@
         alertMsg: false,
         fromBank: this.isFromBank,
         idSrc: '',
-//        spinnerSet: {
-//          type: 'fading-circle',
-//          size: 100,
-//          show: false
-//        },
+        spinnerShow: false,
         fileId: []
       }
     },
@@ -101,6 +93,7 @@
       },
       camera () {
         this.show = false
+        this.$emit('hidePopup', this.show)
         let cameraOptions = {
           quality: 50,
           sourceType: 1,
@@ -112,6 +105,7 @@
       },
       photo () {
         this.show = false
+        this.$emit('hidePopup', this.show)
         let cameraOptions = {
           quality: 50,
           sourceType: 0,
@@ -122,7 +116,7 @@
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
       },
       cameraSuccess (imageData) {
-//        this.spinnerSet.show = true
+        this.spinnerShow = true
 //        this.imgSrc = 'data:image/jpeg;base64,' + imageData
 //        this.show = false
         this.$emit('hidePopup', this.show)
@@ -153,7 +147,7 @@
         if (this.fromBank === 0) {
           updateFrontPic(this.cerId, formData).then(res => {
             if (res.status === 200) {
-//              this.spinnerSet.show = false
+              this.spinnerShow = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
             }
           }).catch(err => {
@@ -163,7 +157,7 @@
         } else if (this.fromBank === 1) {
           updateId(formData).then(res => {
             if (res.status === 200) {
-//              this.spinnerSet.show = false
+              this.spinnerShow = false
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
               this.idSrc = res.data.file_url
               this.$emit('imgHandler', this.idSrc)
@@ -176,7 +170,7 @@
           addMateials(this.cerId, formData).then(res => {
             if (res.status === 200) {
               this.fileId.push(res.data.client_cert_file_id)
-//              this.spinnerSet.show = false
+              this.spinnerShow = false
               this.fileArr.push('data:image/jpeg;base64,' + imageData)
             }
           }).catch(err => {
@@ -223,13 +217,6 @@
     border-radius: 8px;
     position: relative;
     margin: 0 auto;
-    /*.spinner {*/
-    /*position: absolute;*/
-    /*left: 50%;*/
-    /*margin-left: -50px;*/
-    /*top: 50%;*/
-    /*margin-top: -50px;*/
-    /*}*/
     .icon_bg {
       font-size: 115px;
       color: #fff;

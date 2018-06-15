@@ -53,7 +53,7 @@ axios.interceptors.response.use(
           console.log(res.data)
             switch (res.status) {
                 case 400:
-                error.message = '相关信息已存在'
+                error.message = '手机号已被注册'
                   return toast(error.message)
                     // break
                 case 401:
@@ -73,7 +73,7 @@ export function toast (text) {
   Toast({
     message: text,
     position: 'top',
-    duration: -1,
+    duration: 2000,
     className: 'global_toast'
   })
 }

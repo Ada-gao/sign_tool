@@ -28,9 +28,8 @@
           <span class="tabitem" :class="{'active': idx === 1}" @click="changeActiveIndex">潜客列表</span>
         </div>
         <div class="list_box">
-          <mt-spinner :type="3"
-                      color="#999"
-                      :size="100"
+          <mt-spinner type="fading-circle"
+                      color="#158FD2"
                       class="spinner_box"
                       v-show="isShowSpinner"></mt-spinner>
           <ul v-show="idx === 0" :data="customers">
@@ -92,8 +91,6 @@
   import SearchTool from 'base/searchToolBar/searchToolBar'
   import ShowSearch from 'base/searchToolBar/showSearchList'
   import {checkCusomersList} from '@/service/api/customers'
-  import {Spinner} from 'mint-ui'
-  //  import {customerData} from '@/service/api/customerData'
 
   export default {
     components: {
@@ -104,8 +101,7 @@
       Tab,
       TabItem,
       SearchTool,
-      ShowSearch,
-      'mt-spinner': Spinner
+      ShowSearch
     },
     data () {
       return {
@@ -166,7 +162,6 @@
             this.cancel = c
           })
         }).then(res => {
-//          console.log(res)
           if (res.status === 200) {
             if (res.data.length === 0) {
               this.loadedData = false
@@ -179,7 +174,6 @@
         })
       },
       toLink (id, clientClass) {
-//        console.log(clientClass)
         if (clientClass === 0) {
           this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
         } else {
@@ -193,147 +187,140 @@
 <style scoped lang="less">
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/center.less';
-
-  .tabbar {
-    /*height: 80px;*/
-    /*line-height: 80px;*/
-    /*padding: 16px 0;*/
-    background-color: #fff;
-    width: 100%;
-    font-size: 0;
-    .tabitem {
-      display: inline-block;
-      font-size: 30px;
-      color: #9b9b9b;
-      height: 80px;
-      line-height: 80px;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      text-align: center;
-      vertical-align: middle;
-    }
-    .tabitem:nth-of-type(1) {
-      width: 374px;
-    }
-    .tabitem:nth-of-type(2) {
-      width: 373px;
-    }
-    .active {
-      color: #2672ba;
-    }
-    .sepa {
-      vertical-align: middle;
-      display: inline-block;
-      width: 3px;
-      height: 47px;
-      background-color: #979797;
-    }
-  }
-
-  .customer-list {
-    .list_box {
-      position: relative;
-      .spinner_box {
-        position: absolute;
-        left: 50%;
-        margin-left: -50px;
-        top: 50%;
+    .tabbar {
+      /*height: 80px;*/
+      /*line-height: 80px;*/
+      /*padding: 16px 0;*/
+      background-color: #fff;
+      width: 100%;
+      font-size: 0;
+      .tabitem {
+        display: inline-block;
+        font-size: 30px;
+        color: #9b9b9b;
+        height: 80px;
+        line-height: 80px;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        text-align: center;
+        vertical-align: middle;
       }
-      ul {
-        padding: 20px 25px;
-        background-color: #F5F5F5;
-        padding-bottom: 96px;
-        li {
-          -webkit-box-sizing: border-box;
-          -moz-box-sizing: border-box;
-          box-sizing: border-box;
-          background-color: #fff;
-          font-size: 30px; /*px*/
-          margin-bottom: 20px;
-          a {
-            width: 100%;
-            display: block;
-            height: 155px;
-            text-decoration: none;
-            position: relative;
-            .customer_left,
-            .customer_right {
-              position: absolute;
-              font-family: PingFangSC-Regular;
-              font-size: 28px;
-              color: #2672BA;
+      .tabitem:nth-of-type(1) {
+        width: 374px;
+      }
+      .tabitem:nth-of-type(2) {
+        width: 373px;
+      }
+      .active {
+        color: #2672ba;
+      }
+      .sepa {
+        vertical-align: middle;
+        display: inline-block;
+        width: 3px;
+        height: 47px;
+        background-color: #979797;
+      }
+    }
+
+    .customer-list {
+      .list_box {
+        position: relative;
+        ul {
+          padding: 20px 25px;
+          background-color: #F5F5F5;
+          padding-bottom: 96px;
+          li {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            background-color: #fff;
+            font-size: 30px; /*px*/
+            margin-bottom: 20px;
+            a {
+              width: 100%;
+              display: block;
               height: 155px;
-            }
-            .customer_left {
-              left: 34px;
-              margin-top: 38px;
-              height: auto;
-              line-height: 40px;
-            }
-            .customer_right {
-              line-height: 155px;
-              right: 47px;
-              .red_color {
-                color: #A10C0C;
+              text-decoration: none;
+              position: relative;
+              .customer_left,
+              .customer_right {
+                position: absolute;
+                font-family: PingFangSC-Regular;
+                font-size: 28px;
+                color: #2672BA;
+                height: 155px;
               }
-              /*top: 54px;*/
-              span {
-                vertical-align: middle;
+              .customer_left {
+                left: 34px;
+                margin-top: 38px;
+                height: auto;
+                line-height: 40px;
               }
-              .gray_item {
-                color: #999;
-              }
-              .icon-right {
-                font-size: 40px;
-                color: #999;
-                vertical-align: middle;
+              .customer_right {
+                line-height: 155px;
+                right: 47px;
+                .red_color {
+                  color: #A10C0C;
+                }
+                /*top: 54px;*/
+                span {
+                  vertical-align: middle;
+                }
+                .gray_item {
+                  color: #999;
+                }
+                .icon-right {
+                  font-size: 40px;
+                  color: #999;
+                  vertical-align: middle;
+                }
               }
             }
           }
         }
-      }
-      .no_data {
-        img,
-        span {
-          display: block;
-          text-align: center;
-          margin: 0 auto;
-        }
-        img {
-          width: 556px;
-          height: 379px;
-        }
-        span {
-          margin-top: 88px;
-          font-family: PingFangSC-Regular;
-          font-size: 32px;
-          color: #888888;
+        .no_data {
+          img,
+          span {
+            display: block;
+            text-align: center;
+            margin: 0 auto;
+          }
+          img {
+            width: 556px;
+            height: 379px;
+          }
+          span {
+            margin-top: 88px;
+            font-family: PingFangSC-Regular;
+            font-size: 32px;
+            color: #888888;
+          }
         }
       }
     }
-  }
 
-  .search-list {
-    padding-bottom: 96px;
-    .searchTitle {
-      padding-top: 26px;
-      padding-left: 28px;
-    }
-    ul {
-      padding: 30px;
-      font-size: 30px; /*px*/
-      li {
-        border-top: 1px solid #eee;
-        padding: 20px;
-        .ml-200 {
-          margin-left: 200px;
+    .search-list {
+      padding-bottom: 96px;
+      .searchTitle {
+        padding-top: 26px;
+        padding-left: 28px;
+      }
+      ul {
+        padding: 30px;
+        font-size: 30px; /*px*/
+        li {
+          border-top: 1px solid #eee;
+          padding: 20px;
+          .ml-200 {
+            margin-left: 200px;
+          }
         }
       }
     }
-  }
 
-  a {
-    text-decoration: none;
-  }
+    a {
+      text-decoration: none;
+    }
 </style>
