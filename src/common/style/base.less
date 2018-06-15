@@ -106,3 +106,55 @@ b {
 	text-overflow:ellipsis;
 	white-space: nowrap;
 }
+
+.mint-toast.is-placemiddle {
+  top: 20%!important;
+  width: 300px;
+  height: 80px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  line-height: 80px;
+  padding: 0!important;
+  .mint-toast-text {
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    color: #fff;
+  }
+}
+.spinner_box {
+  .mint-spinner-fading-circle {
+    position: absolute;
+    z-index: 99;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+.camera_spinner {
+  .mint-spinner-fading-circle {
+    position: absolute;
+    z-index: 99;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+/*新增潜客提交时，手机号已被注册提示样式*/
+.global_toast.mint-toast.is-placetop {
+  width: 240px;
+  height: 80px;
+  box-sizing: border-box;
+  padding: 0 10px!important;
+  border-radius: 10px;
+  line-height: 80px;
+  top: 25%;
+  .mint-toast-text {
+    display: inline-block;
+    font-size: 26px;
+  }
+}

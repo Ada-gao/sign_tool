@@ -328,13 +328,6 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(m => m.meta.auth)) {
     // console.log(store)
     if (store.state.token) {
-      // if (from.name === 'PerfectInfos' && to.name === 'PotentialCustomerList') {
-      //   from.meta.keepAlive = false
-      // } else if (from.name === 'PerfectInfos' && to.name === 'Bankcard') {
-      //   from.meta.keepAlive = true
-      // } else if (from.name === 'Bankcard' && to.name === 'PerfectInfos') {
-      //   to.meta.keepAlive = true
-      // }
       next()
     } else {
       next({

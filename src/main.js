@@ -19,9 +19,12 @@ import { DatetimePicker,
          TabItem,
          TabContainer,
          TabContainerItem,
+         Popup,
+         Picker,
          Cell,
          Field
        } from 'mint-ui'
+import {LoadingPlugin} from 'vux'
 import 'mint-ui/lib/style.css'
 
 Vue.use(LoadingPlugin)
@@ -48,14 +51,14 @@ if (window.location.protocol === 'file:' || window.location.port === '8080' || w
 // }, 2000)
 
 Vue.directive('focus', {
-	inserted: function (el) {
-		el.focus()
-	}
+  inserted: function (el) {
+    el.focus()
+  }
 })
 
 // filter 挂到vue
 Object.keys(filters).forEach(key => {
-	Vue.filter(key, filters[key])
+  Vue.filter(key, filters[key])
 })
 
 // 以组件形式调用(有bug)
@@ -73,6 +76,8 @@ Vue.component(TabContainer.name, TabContainer)
 Vue.component(TabContainerItem.name, TabContainerItem)
 Vue.component(Cell.name, Cell)
 Vue.component(Field.name, Field)
+Vue.component(Picker.name, Picker)
+Vue.component(Popup.name, Popup)
 // 将 axios 挂载到 prototype 上，在组件中可以直接使用 this.$axios 访问
 Vue.prototype.$axios = axios
 
@@ -81,6 +86,6 @@ new Vue({
   el: '#app',
   router,
   store, // 使用store
-  components: { App },
+  components: {App},
   template: '<App/>'
 })

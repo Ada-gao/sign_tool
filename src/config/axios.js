@@ -4,6 +4,7 @@ import store from '@/service/store/store'
 import * as types from '@/service/store/types'
 import router from '../router'
 import { getStore } from '@/config/mUtils'
+import {Toast} from 'mint-ui'
 
 // axios 配置
 axios.defaults.timeout = 30000
@@ -47,12 +48,14 @@ axios.interceptors.response.use(
     ,
     error => {
         if (error && error.response) {
-            console.log('网。。。。', error, error.response)
-            switch (error.response.status) {
+          const res = error.response
+          // res.data.codeMsg = interceptorsMsg.errMessage(res.config.url, res.data.code)
+          console.log(res.data)
+            switch (res.status) {
                 case 400:
-                error.message = '请求错误'
-                    break
-
+                error.message = '手机号已被注册'
+                  return toast(error.message)
+                    // break
                 case 401:
                     // 401 清除token信息并跳转到登录页面
                     store.commit(types.LOGOUT)
@@ -64,8 +67,14 @@ axios.interceptors.response.use(
                     break
             }
         }
-        // console.log(JSON.stringify(error));//console : Error: Request failed with status code 402
         return Promise.reject(error)
     })
-
+export function toast (text) {
+  Toast({
+    message: text,
+    position: 'top',
+    duration: 2000,
+    className: 'global_toast'
+  })
+}
 export default axios
