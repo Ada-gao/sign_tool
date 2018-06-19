@@ -6,9 +6,9 @@
 					<div class="title">预约</div>
 					<flow>
 						<flow-state state="1" title="预约" is-done></flow-state>
-						<flow-line is-done line-span=224></flow-line>
-						<flow-state state="2" title="已发货" is-done></flow-state>
-						<flow-line process-span=50 line-span=224></flow-line>
+						<flow-line line-span=224 tip="ing"></flow-line>
+						<flow-state state="2" title="已发货"></flow-state>
+						<flow-line line-span=224></flow-line>
 						<flow-state state="3" title="合同管理"></flow-state>
 					</flow>
 				</div>
@@ -17,6 +17,7 @@
 						<i slot="icon" class="iconfont">&#xe697;</i>
 					</mt-cell>
 					<div class="cont">
+						<mt-cell title="预约编号："></mt-cell>
 						<mt-cell title="客户姓名：" is-link>小阿西</mt-cell>
 						<mt-cell title="手机号码："></mt-cell>
 						<mt-cell title="预约金额：" is-link></mt-cell>
@@ -29,26 +30,41 @@
 						<mt-cell title="产品名称："></mt-cell>
 						<mt-cell title="产品信息：" is-link></mt-cell>
 					</div>
-					<div class="submitBtn">
-          	<mt-button type="primary">提交预约</mt-button>
-					</div>
 					<div class="uploadCustomer">
 						<mt-cell title="上传客户材料" class="tit">
 							<i slot="icon" class="iconfont">&#xe632;</i>
 						</mt-cell>
 						<div class="cont">
-							<mt-cell title="打款凭证"><span class="cardSelected">选择已绑定银行卡</span></mt-cell>
-							<div class="warn">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
-							<div class="card">
-								<mt-field label="银行卡号:" v-model="cardnum"></mt-field>
-								<mt-field label="银行名称:" v-model="bankname"></mt-field>
-								<mt-field label="支行名称:" v-model="bankname1"></mt-field>
+							<div class="fightMoney">
+								<mt-cell title="打款凭证"><span class="cardSelected">选择已绑定银行卡</span></mt-cell>
+									<div class="warn">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
+									<div class="card">
+										<mt-field label="银行卡号:" v-model="cardnum"></mt-field>
+										<mt-field label="银行名称:" v-model="bankname"></mt-field>
+										<mt-field label="支行名称:" v-model="bankname1"></mt-field>
+										<camera :popupVisible="popupVisible"
+											@showPopup="showPopup"
+											@hidePopup="hidePopup">
+										</camera>
+									</div>
 							</div>
-							<camera :popupVisible="popupVisible"
-                @showPopup="showPopup"
-                @hidePopup="hidePopup"
-								></camera>
+							<div class="materialsNeeded">
+								<mt-cell title="交易所需材料"></mt-cell>
+								<div class="camera">
+									<camera :popupVisible="popupVisible"
+										@showPopup="showPopup"
+										@hidePopup="hidePopup">
+									</camera>
+								</div>
+							</div>
 						</div>
+					</div>
+					<div class="submitBtn">
+          	<mt-button type="primary">提交预约</mt-button>
+					</div>
+					<div class="successbtn">
+          	<mt-button type="primary">提交打款材料</mt-button>
+          	<mt-button type="primary">预约取消</mt-button>
 					</div>
 				</div>
 			</div>
@@ -171,6 +187,15 @@ export default {
 							background: transparent;
 						}
 					}
+					.weui-wepay-flow__line.weui-wepay-flow__line_ing{
+						.weui-wepay-flow__process{
+							background: #2672BA;
+							height: 6px;
+						}
+						.weui-wepay-flow__info-top{
+							display: none;
+						}
+					}
 				}
 			}
 		}
@@ -225,8 +250,8 @@ export default {
 				.mint-button.mint-button--primary.mint-button--normal{
 					width: 710px;
 					height: 72px;
-					margin-top: 20px;
-					margin-bottom: 40px;
+					margin-top: 10px;
+					margin-bottom: 30px;
 					padding: 0;
 					background: #2672BA;
 					border-radius: 8px;
@@ -237,7 +262,26 @@ export default {
 					}
 				}
 			}
+			.successbtn{
+				text-align: center;
+				padding: 10px 0 30px 0;
+				.mint-button.mint-button--primary.mint-button--normal{
+					width: 300px;
+					height: 72px;
+					background: #2672BA;
+					border-radius: 8px;
+					label{
+						font-family: PingFangSC-Regular;
+						font-size: 28px;
+						color: #FFFFFF;
+					}
+				}
+			}
 			.uploadCustomer{
+				background-color: #f5f5f5;
+				.fightMoney{
+					margin-bottom: 20px;
+				}
 				.cardSelected{
 					background: #2672BA;
 					border: 1px solid #2672BA;
@@ -253,7 +297,7 @@ export default {
 					background: #fff;
 					border-bottom: 1px solid #ccc;
 					color: #2672BA;
-					font-size: 24px;			
+					font-size: 24px;
 				}
 				.card{
 					background: #fff;
@@ -282,6 +326,24 @@ export default {
 									box-sizing: border-box;
 								}
 							}
+						}
+					}
+				}
+				.materialsNeeded{
+					background-color: #fff;
+					.camera{
+						padding: 20px;
+					}
+				}
+				.upload_cont{
+					margin: 0;
+					width: 132px;
+					height: 120px;
+					line-height: 120px;
+					.addbig_box{
+						height: 100%;
+						.iconfont.icon_bg{
+							line-height: 100px;
 						}
 					}
 				}

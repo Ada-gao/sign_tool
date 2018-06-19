@@ -24,7 +24,6 @@ import { DatetimePicker,
          Cell,
          Field
        } from 'mint-ui'
-import {LoadingPlugin} from 'vux'
 import 'mint-ui/lib/style.css'
 
 Vue.use(LoadingPlugin)
