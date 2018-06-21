@@ -222,11 +222,13 @@
           code: this.verificate.code,
           mobile: this.mobile
         }
-        confirmVercode(params).then(res => {
-          if (res.status === 200) {
-            this.verificate.code = ''
-          }
-        })
+        if (params.code) {
+          confirmVercode(params).then(res => {
+            if (res.status === 200) {
+              this.verificate.code = ''
+            }
+          })
+        }
       },
       sendVerCode () {
         this.verificate.isShow = this.verificate.isTimeout = true

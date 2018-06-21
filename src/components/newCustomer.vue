@@ -47,7 +47,7 @@
                 class="new_field">
         <span class="verificate"
               v-if="!verificate.isTimeout"
-              @click="sendVerCode">发送验证码</span>
+              @click="sendVer">发送验证码</span>
         <span class="verificate"
               v-else>{{verificate.num}}s</span>
       </mt-field>
@@ -129,16 +129,18 @@
           code: this.verificate.code,
           mobile: this.mobile
         }
-        confirmVercode(params).then(res => {
-          if (res.status === 200) {
+        if (params.code) {
+          confirmVercode(params).then(res => {
+            if (res.status === 200) {
 //                this.validated_timestamp = res.data.validated_timestamp
-            this.mobile_validated = res.data.mobile_validated
-            this.validated_by = res.data.validated_by
-            this.verificate.code = ''
-          }
-        })
+              this.mobile_validated = res.data.mobile_validated
+              this.validated_by = res.data.validated_by
+              this.verificate.code = ''
+            }
+          })
+        }
       },
-      sendVerCode () {
+      sendVer () {
         if (!this.mobile || this.mobile.length !== 11) {
           Toast({
             message: '请输入有效的手机号',
@@ -148,12 +150,22 @@
           })
           return false
         }
-        this.verificate.isShow = this.verificate.isTimeout = true
+//        this.verificate.isShow = this.verificate.isTimeout = true
         let params = {
           username: this.mobile,
           code_flag: 1
         }
         sendVerCode(params).then(res => {
+          this.verificate.isShow = this.verificate.isTimeout = true
+        }).catch(err => {
+          if (err.message === '请求错误') {
+            Toast({
+              message: '该手机号已被验证',
+              position: 'top',
+              duration: 1500,
+              className: 'toast_class'
+            })
+          }
         })
         this.verificate.timer = setInterval(() => {
           --this.verificate.num
