@@ -28,6 +28,7 @@ import 'mint-ui/lib/style.css'
 
 Vue.use(LoadingPlugin)
 
+Vue.config.debug = true
 Vue.config.productionTip = false
 
 Vue.use(VueCordova)

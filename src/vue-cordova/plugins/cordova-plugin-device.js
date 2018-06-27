@@ -2,7 +2,8 @@ export const install = function (Vue, options, cb) {
   document.addEventListener('deviceready', () => {
     /* global device */
     if (typeof device === 'undefined' || typeof device.cordova === 'undefined') {
-      return cb(new Error('error to init device.'))
+      // eslint-disable-next-line
+      return cb(false)
     }
 
     // default values
@@ -23,11 +24,13 @@ export const install = function (Vue, options, cb) {
       }
     })
 
-    // var event = new Event('appReady')
+    console.log('app is ready..')
+    var event = new Event('appReady')
 
     // Dispatch the event.
-    // document.dispatchEvent(event)
+    document.dispatchEvent(event)
 
-    return cb()
+    // eslint-disable-next-line
+    return cb(true)
   }, false)
 }
