@@ -61,7 +61,8 @@ export default {
   data () {
     return {
       item: [],
-      id: ''
+      id: '',
+      prePath: ''
       // ,
       // email: '',
       // userId: ''
@@ -72,9 +73,20 @@ export default {
     Group,
     CellBox
   },
+  beforeRouteEnter (to, from, next) {
+		next(vm => {
+			vm.prePath = from.path
+		})
+  },
   methods: {
     back () {
-			this.$router.push({name: 'HomePage'})
+      if (this.$route.params.flag) {
+        this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag}})
+      } else if (this.$route.params.return) {
+        this.$router.push({name: 'HomePage'})
+      } else {
+        this.$router.push({name: 'HomePage'})
+      }
     },
     toPdfReport (id) {
 			this.$router.push({name: 'PdfReport', params: {id: id}})
@@ -86,12 +98,16 @@ export default {
 			this.$router.push({name: 'ProductReport', params: {id: id}})
     },
     toAppointment () {
-      this.$router.push({name: 'ProductAppointment'})
+      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail'}})
     }
   },
   mounted () {
     this.id = this.$route.params.id
-    this.item = JSON.parse(window.localStorage.getItem('productDetail'))
+    if (this.$route.params.flag === 'appointment') {
+      this.item = this.$route.params.item
+    } else {
+      this.item = JSON.parse(window.localStorage.getItem('productDetail'))
+    }
     window.scroll(0, 0)
   }
 }

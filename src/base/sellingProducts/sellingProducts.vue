@@ -73,7 +73,7 @@ export default {
 	 mounted () {
 	 	// this.newemail = this.email
 	 	// this.newuserId = this.userId
-	 	console.log(this.childData)
+	 	// console.log(this.childData)
 	 }
 }
 </script>

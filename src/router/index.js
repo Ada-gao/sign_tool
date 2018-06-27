@@ -35,6 +35,7 @@ const NoInternet = r => require.ensure([], () => r(require('@/components/noInter
 const Report = r => require.ensure([], () => r(require('@/base/report/pdf')), 'report')
 const ReservationList = r => require.ensure([], () => r(require('@/components/reservationList')), 'reservationList')
 const ProductAppointment = r => require.ensure([], () => r(require('@/components/productAppointment')), 'productAppointment')
+const BankList = r => require.ensure([], () => r(require('@/components/bankList')), 'bankList')
 
 // // import A from '@/components/a'
 
@@ -310,6 +311,15 @@ const router = new Router({
       path: '/productAppointment',
       name: 'ProductAppointment',
       component: ProductAppointment,
+      meta: {
+        auth: true,
+        keepAlive: true
+      }
+    },
+    {
+      path: '/bankList',
+      name: 'BankList',
+      component: BankList,
       meta: {
         auth: true
       }

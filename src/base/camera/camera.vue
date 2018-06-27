@@ -59,7 +59,7 @@
     components: {
       'mt-popup': Popup
     },
-    props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc'],
+    props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc', 'isFromAppointment'],
     data () {
       return {
         imgSrc: '',
@@ -69,6 +69,7 @@
         alertMsg: false,
         fromBank: this.isFromBank,
         idSrc: '',
+        appointmentSrc: [],
         spinnerShow: false,
         fileId: []
       }
@@ -168,24 +169,45 @@
             this.alertMsg = true
           })
         } else if (this.fromBank === 2) {
-          addMateials(this.cerId, formData).then(res => {
-            if (res.status === 200) {
-              this.fileId.push(res.data.client_cert_file_id)
-              this.spinnerShow = false
-              this.fileArr.push('data:image/jpeg;base64,' + imageData)
+          if (this.isFromAppointment === 1) {
+            updateId(formData).then(res => {
+              if (res.status === 200) {
+                  this.fileId.push(res.data.client_cert_file_id)
+                  this.appointmentSrc.push(res.data.file_url)
+                  this.spinnerShow = false
+                  this.fileArr.push('data:image/jpeg;base64,' + imageData)
+                  this.$emit('imgHandler', this.appointmentSrc)
+              }
+            }).catch(err => {
+              console.log('error: ' + err)
+              this.alertMsg = true
+            })
+          } else {
+              addMateials(this.cerId, formData).then(res => {
+                if (res.status === 200) {
+                  this.fileId.push(res.data.client_cert_file_id)
+                  this.spinnerShow = false
+                  this.fileArr.push('data:image/jpeg;base64,' + imageData)
+                  this.$emit('imgHandler', this.fileId)
+                }
+              }).catch(err => {
+                console.log('error: ' + err)
+                this.alertMsg = true
+              })
             }
-          }).catch(err => {
-            console.log('error: ' + err)
-            this.alertMsg = true
-          })
         }
       },
       delImage (index) {
-        deleteDetail(this.cerId, this.fileId[index]).then(res => {
-          if (res.status === 200) {
-            this.fileId.splice(index, 1)
-          }
-        })
+        if (this.isFromAppointment === 1) {
+          console.log('camera', this.appointmentSrc)
+          this.appointmentSrc.splice(index, 1)
+        } else {
+          deleteDetail(this.cerId, this.fileId[index]).then(res => {
+            if (res.status === 200) {
+              this.fileId.splice(index, 1)
+            }
+          })
+        }
         this.fileArr.splice(index, 1)
       }
     }

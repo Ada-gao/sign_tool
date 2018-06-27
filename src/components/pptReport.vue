@@ -299,12 +299,14 @@ export default {
         font-size: 100px;
         color: #74BA3B;
         margin: 40px 0;
+				line-height: 100px;
       }
       .noS{
         display: inline-block;
         font-size: 100px;
         color: #C61D1A;
         margin: 40px 0;
+				line-height: 100px;
       }
       .success{
         // margin-top: 30px;
@@ -312,6 +314,7 @@ export default {
         font-family: PingFangSC-Regular;
         font-size: 30px;
         color: #333333;
+        line-height: 1;
       }
       .weui-btn.weui-btn_primary{
         background: #2A7DC1;

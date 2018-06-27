@@ -9,33 +9,62 @@
 			</mt-navbar>
 			<mt-tab-container v-model="selected">
 				<mt-tab-container-item id="1">
-					<div class="item1">
-						<span class="tit">客户名称：<span class="cont">王二</span></span>
-						<span class="tit">预约金额：<span class="cont">1000万</span></span>
-						<span class="tit">产品名称：<span class="cont">正收益</span></span>
-						<span class="tit">预约时间：<span class="cont">2018.02.23 12:45</span></span>
-						<span class="tit">预约状态：<span class="cont">已预约（申请中)</span></span>
-						<i class="iconfont right">&#xe731;</i>
+					<div :data="appoinmentList" v-for="item in appoinmentList" :key="item.appointment_id">
+						<div class="item1">
+							<span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
+							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
+							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
+							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
+							<span class="tit bot">预约状态：
+								<span class="cont" v-if='item.status === "1001"'>已预约（申请中)</span>
+								<span class="cont" v-if='item.status === "1002"'>预约失败</span>
+								<span class="cont" v-if='item.status === "1003"'>预约成功</span>
+								<span class="cont" v-if='item.status === "1004"'>预约取消</span>
+								<span class="cont" v-if='item.status === "1005"'>预约失效</span>
+							</span>
+							<i class="iconfont right" @click="toDetail(item.appointment_id)">&#xe731;</i>
+						</div>
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="2">
-					<div class="item1">
-						<span class="tit">客户名称：<span class="cont">王二</span></span>
-						<span class="tit">预约金额：<span class="cont">1000万</span></span>
-						<span class="tit">产品名称：<span class="cont">正收益</span></span>
-						<span class="tit">预约时间：<span class="cont">2018.02.23 12:45</span></span>
-						<span class="tit">打款状态：<span class="cont">已预约（申请中)</span></span>
-						<i class="iconfont right">&#xe731;</i>
+					<div :data="remittanceList" v-for="item in remittanceList" :key="item.appointment_id">
+						<div class="item1">
+							<span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
+							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
+							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
+							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
+							<span class="tit">预约状态：
+								<span class="cont" v-if='item.status === "2001"'>打款审核中</span>
+								<!-- <span class="cont" v-if='item.status === "2002"'>待补全材料</span> -->
+								<span class="cont" v-if='item.status === "2003"'>订单关闭</span>
+								<span class="cont" v-if='item.status === "2004"'>打款审核通过</span>
+							</span>
+							<span class="tit" v-if='item.status === "2003"'>退款状态：
+								<span class="cont" v-if='item.refund_status === "0"'>无须退款</span>
+								<span class="cont" v-if='item.refund_status === "1"'>未退款</span>
+								<span class="cont" v-if='item.refund_status === "2"'>退款申请中</span>
+								<span class="cont" v-if='item.refund_status === "3"'>退款驳回</span>
+								<span class="cont" v-if='item.refund_status === "4"'>已退款</span>
+							</span>
+							<i class="iconfont right" @click="toDetail(item.appointment_id)">&#xe731;</i>
+						</div>
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="3">
-					<div class="item1">
-						<span class="tit">客户名称：<span class="cont">王二</span></span>
-						<span class="tit">预约金额：<span class="cont">1000万</span></span>
-						<span class="tit">产品名称：<span class="cont">正收益</span></span>
-						<span class="tit">预约时间：<span class="cont">2018.02.23 12:45</span></span>
-						<span class="tit">合同状态：<span class="cont">已预约（申请中)</span></span>
-						<i class="iconfont right">&#xe731;</i>
+					<div :data="contractList" v-for="item in contractList" :key="item.appointment_id">
+						<div class="item1">
+							<span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
+							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
+							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
+							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
+							<span class="tit">预约状态：
+								<span class="cont" v-if='item.status === "3001"'>待收到合同</span>
+								<span class="cont" v-if='item.status === "3002"'>合同审核中</span>
+								<span class="cont" v-if='item.status === "3003"'>合同审核不通过</span>
+								<span class="cont" v-if='item.status === "3004"'>合同审核通过</span>
+							</span>
+							<i class="iconfont right" @click="toDetail(item.appointment_id)">&#xe731;</i>
+						</div>
 					</div>
 				</mt-tab-container-item>
 			</mt-tab-container>
@@ -45,22 +74,48 @@
 
 <script type="text/ecmascript-6">
 import { XHeader } from 'vux'
+import { getList } from '@/service/api/appointment'
 export default {
 	data () {
 		return {
-			selected: '1'
+			selectedTip: '',
+			selected: '1',
+			appoinmentList: [],
+			remittanceList: [],
+			contractList: []
 		}
 	},
   components: {
     XHeader
+	},
+	methods: {
+		toDetail (id) {
+			console.log('jjj')
+			this.$router.push({name: 'ProductAppointment', params: {appointmentId: id, fromUrl: 'reservationList'}})
+		}
+	},
+	// beforeRouteLeave (to, from, next) {
+	// 		to.meta.keepAlive = true
+	// 		console.log(to, to.meta)
+	// 		next()
+	// },
+	created () {
+		console.log('lll')
+		getList().then(res => {
+			this.appoinmentList = res.data.filter(item => item.status.slice(0, 1) === '1')
+			this.remittanceList = res.data.filter(item => item.status.slice(0, 1) === '2')
+			this.contractList = res.data.filter(item => item.status.slice(0, 1) === '3')
+		})
 	}
 }
 </script>
 
 <style lang="less">
 .reservation{
+	height: 100%;
 	font-family: PingFangSC-Regular;
 	.wrapper{
+		margin-bottom: 96px;
 		.mint-navbar{
 			height: 80px;
 			.mint-tab-item{
@@ -122,12 +177,19 @@ export default {
 							display: inline-block;
 							line-height: 51px;
 							width: 300px;
+							overflow: hidden;
+							text-overflow:ellipsis;
+							white-space: nowrap;
 							span.cont{
 								color: #666;
 							}
 						}
 						span.tit:nth-child(4){
 							width: 320px;
+						}
+						span.bot{
+							min-width: 300px;
+							overflow: inherit;
 						}
 						.right{
 							font-size: 70px;
