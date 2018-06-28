@@ -26,22 +26,8 @@
 					<div class="cont">
 						<mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell>
 						<mt-cell title="客户姓名：" is-link @click.native="chooseName" v-if="showNameClick">{{name}}</mt-cell>
-						<mt-cell title="客户姓名：" v-if="!showNameClick">{{name}}</mt-cell>
-						<mt-popup v-model="showCerName"
-                position="bottom"
-                class="cercode_box"
-                popup-transition="popup-fade">
-							<mt-picker :slots="slotsN"
-												:showToolbar="true"
-												value-key="name"
-												@change="onValuesChange">
-								<div class="toolbar">
-									<span class="cancel" @click="cancelCerName">取消</span>
-									<span class="ensure" @click="ensureCerName">确定</span>
-								</div>
-							</mt-picker>
-						</mt-popup>
-						<mt-cell title="手机号码：">{{mobile}}</mt-cell>
+						<mt-cell title="客户姓名：" v-if="!showNameClick" :value="name"></mt-cell>
+						<mt-cell title="手机号码：" :value="cMob"></mt-cell>
 						<mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell>
 						<mt-cell title="预约金额：" v-if="!showMoneyClick">{{money}}</mt-cell>
 						<mt-popup v-model="showMoney"
@@ -74,17 +60,33 @@
 						</mt-cell>
 						<div class="cont">
 							<div class="fightMoney">
-								<mt-cell title="打款凭证"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
+								<mt-cell title="银行卡信息"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
 									<div class="warn" v-if="chooseSelectedBank">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
 									<div class="card" v-if="uploadCard">
 										<mt-field label="银行卡号:" v-model="cardnum"></mt-field>
-										<mt-field label="银行名称:" v-model="bankname"></mt-field>
+										<mt-field label="银行名称:" disabled v-model="bankname">
+											<i class="iconfont" @click="chooseBankName">&#xe731;</i>
+										</mt-field>
+										<mt-popup v-model="showBankCardName"
+												position="bottom"
+												class="cercode_box"
+												popup-transition="popup-fade">
+											<mt-picker :slots="slotsN"
+																:showToolbar="true"
+																value-key="bankName"
+																@change="onValuesChange">
+												<div class="toolbar">
+													<span class="cancel" @click="cancelCerName">取消</span>
+													<span class="ensure" @click="ensureCerName">确定</span>
+												</div>
+											</mt-picker>
+										</mt-popup>
 										<mt-field label="支行名称:" v-model="bankname1"></mt-field>
 										<camera :popupVisible="popupVisible"
               				@imgHandler="imageHandler1"
               				:imageSrc="cardUrl"
 											:isFromAppointment="fromAppointment"
-              				:isFromBank="fromBank"
+              				:isFromBank="fromBankCard"
 											@showPopup="showPopup"
 											@hidePopup="hidePopup"
 											v-if="cameraShow">
@@ -94,17 +96,36 @@
 										<mt-cell title="银行卡号:">{{cardNum}}</mt-cell>
 										<mt-cell title="银行名称:">{{cardName}}</mt-cell>
 										<mt-cell title="支行名称:">{{cardName1}}</mt-cell>
-										<img class="camera" :src="cardUrl[index]" v-for="(item, index) in cardUrl" :key="index">
+										<img class="camera" :src="cardUrl">
 											<!-- <img :src="item.index" alt="">
 										</div> -->
 									</div>
+							</div>
+							<div class="evidence" v-if="evidenceShow">
+								<mt-cell title="打款凭证"></mt-cell>
+								<div class="camera">
+									<camera :popupVisible="popupVisible"
+										@imgHandler="imageHandler4"
+										:imageArr='selectedUrls'
+										:isFromAppointment="fromAppointment"
+										:isFromBank="fromBank"
+										@showPopup="showPopup"
+										@hidePopup="hidePopup">
+									</camera>
+								</div>
+							</div>
+							<div class="evidence" v-if="!evidenceShow">
+								<mt-cell title="打款凭证"></mt-cell>
+								<div class="camera">
+									<img :src="evidenceUrl[index]" v-for="(item, index) in evidenceUrl" :key="index">
+								</div>
 							</div>
 							<div class="materialsNeeded" v-if="uploadCardMaterials">
 								<mt-cell title="交易所需材料"></mt-cell>
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
-              			:imageSrc="materialSrc"
+              			:imageArr="selectedUrls"
 										:isFromAppointment="fromAppointment"
               			:isFromBank="fromBank"
 										@showPopup="showPopup"
@@ -126,7 +147,7 @@
 							<div class="camera">
 								<camera :popupVisible="popupVisible"
 									@imgHandler="imageHandler3"
-									:imageSrc="refundSrc"
+									:imageArr="selectedUrls"
 									:isFromAppointment="fromAppointment"
 									:isFromBank="fromBank"
 									@showPopup="showPopup"
@@ -176,6 +197,9 @@
           	<mt-button type="primary" @click.native="submitPayMaterials">提交打款材料</mt-button>
           	<mt-button type="primary" @click.native="cancleAppointment">预约取消</mt-button>
 					</div>
+					<div class="submitBtn" v-if="repeatPayMaterials">
+          	<mt-button type="primary" @click.native="repeatSubmitPayMaterials">重新提交打款材料</mt-button>
+					</div>
 					<div class="submitBtn" v-if="uploadContract">
           	<mt-button type="primary" @click.native="emailContract">重新提交</mt-button>
 					</div>
@@ -224,8 +248,8 @@
 import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput } from 'vux'
 import camera from '@/base/camera/camera'
 import { appointmentList, submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
-import { checkCustomerBankDetail } from '@/service/api/customers'
 import { getProducts } from '@/service/api/products'
+import { checkBankDetail } from '@/service/api/customers'
 import { formatDate } from '@/common/js/date'
 
 export default {
@@ -247,15 +271,16 @@ export default {
 			product_id: '',
 			prePath: '',
 			appointmentList: [],
-			showCerName: false,
+			showBankCardName: false,
 			showMoney: false,
 			nowTime: '',
 			money: '',
 			selectMoney: '',
 			name: '',
-			selectName: '',
-			mobile: '',
-			selectMobile: '',
+			// selectName: '',
+			ableBank: '',
+			cMob: '',
+			// selectMobile: '',
 			nameValues: [],
 			appointmentId: '',
 			showMoneyClick: true,
@@ -275,16 +300,19 @@ export default {
 			uploadCard: true,
 			uploadCardS: false,
 			uploadCardMaterials: true,
+			evidenceShow: true,
 			// bankSrc: [],
 			materialSrc: [],
 			refundSrc: [],
 			fromBank: 2,
+			fromBankCard: 0,
 			fromAppointment: 1,
 			cardNum: '',
 			cardName: '',
 			cardName1: '',
-			cardUrl: [],
+			cardUrl: '',
 			tradeUrl: [],
+			evidenceUrl: [],
 			cantractNum: '',
 			expressCompany: '',
 			expressNum: '',
@@ -310,6 +338,8 @@ export default {
 			emailClose: '',
 			selected: '',
 			firstFromUrl: '',
+			repeatPayMaterials: false,
+			selectedUrls: '',
 			slotsM: [
 				{
           flex: 1,
@@ -375,27 +405,14 @@ export default {
 				}
 			},
 			chooseName () {
-        this.showCerName = true
+				console.log(this.$route.params.productRiskLevel)
+				this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag}})
 			},
 			chooseMoney () {
         this.showMoney = true
 			},
-			onValuesChange (picker, values) {
-				if (values[0] !== undefined) {
-				this.selectName = values[0].name
-				this.selectMobile = values[0].mobile
-				}
-			},
 			onValuesChangeMoney (picker, values) {
 				this.selectMoney = parseInt(values[0]) + parseInt(values[1]) + parseInt(values[2]) + parseInt(values[3])
-			},
-			cancelCerName () {
-        this.showCerName = false
-      },
-      ensureCerName (val) {
-				this.name = this.selectName
-				this.mobile = this.selectMobile
-        this.showCerName = false
 			},
 			cancelMoney () {
         this.showMoney = false
@@ -410,15 +427,31 @@ export default {
       hidePopup (data) {
         this.popupVisible = data
 			},
+			chooseBankName () {
+				this.showBankCardName = true
+			},
+			onValuesChange (picker, values) {
+				if (values[0] !== undefined) {
+					this.ableBank = values[0]
+				}
+			},
+			cancelCerName () {
+        this.showBankCardName = false
+      },
+      ensureCerName (val) {
+				this.bankname = this.ableBank.bankName
+				this.bankId = this.ableBank.bankId
+        this.showBankCardName = false
+			},
 			submitAppointmentBtn () {
 				if (this.name === '' || this.money === '') {
 					this.alertMsg = true
 					return
 				}
-				let selectObj = this.appointmentList.find(item => item.mobile === this.mobile)
+				let selectObj = this.appointmentList.find(item => item.mobile === this.cMob)
 				let obj = {
 					'client_id': selectObj.client_id,
-					'client_mobile': this.mobile,
+					'client_mobile': this.cMob,
 					'client_no': selectObj.client_no,
 					'client_name': this.name,
 					'client_type': selectObj.client_type,
@@ -437,7 +470,7 @@ export default {
 			repeatAppointmentBtn () {
 				let obj = {
 					'client_id': this.appointmentList.client_id,
-					'client_mobile': this.mobile,
+					'client_mobile': this.cMob,
 					'client_no': this.appointmentList.client_no,
 					'client_name': this.name,
 					'client_type': this.appointmentList.client_type,
@@ -470,27 +503,34 @@ export default {
 				this.submitDialog = false
 			},
 			chooseBankCard () {
-				this.cameraShow = false
-				this.uploadCard = false
-				this.uploadCardS = true
-				this.chooseSelectedBank = false
-				// this.$router.push({})
-				// checkCustomerBankDetail(this.appointmentList.client_id).then(res => {
-				// 	this.cardNum = res.data[0].card_no
-				// 	this.cardName = res.data[0].bank_name
-				// 	this.cardName1 = res.data[0].sub_branch_name
-				// 	this.bankId = res.data[0].bank_id
-				// 	this.cardUrl = [res.data[0].card_front_url]
-				// })
+				this.$router.push({name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}})
 			},
 			submitPayMaterials () {
 				let obj = {
-					'file_urls_payments': this.cardUrl,
+					'file_urls_payments': this.evidenceUrl,
 					'file_urls_trades': this.materialSrc,
+					'bankcard_front_url': this.cardUrl,
 					'bank_name': this.bankname || this.cardName,
 					'bank_subname': this.bankname1 || this.cardName1,
-					'bank_card_id': '' || this.bankId,
+					'bank_id': this.bankId,
 					'card_no': this.cardnum || this.cardNum
+				}
+				submitMaterials(this.appointmentId, obj).then(res => {
+					if (res.status === 200) {
+						this.submitDialog = true
+					}
+				})
+			},
+			repeatSubmitPayMaterials () {
+				let obj = {
+					'file_urls_payments': this.evidenceUrl,
+					'file_urls_trades': this.materialSrc,
+					'bankcard_front_url': this.cardUrl,
+					'bank_name': this.bankname || this.cardName,
+					'bank_subname': this.bankname1 || this.cardName1,
+					'bank_id': this.bankId,
+					'card_no': this.cardnum || this.cardNum,
+					'flag': 0
 				}
 				submitMaterials(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
@@ -506,6 +546,10 @@ export default {
 			},
 			imageHandler3 (data) {
 				this.refundSrc = data
+			},
+			imageHandler4 (data) {
+				console.log(data)
+				this.evidenceUrl = data
 			},
 			refund () {
 				let obj = {
@@ -561,7 +605,7 @@ export default {
 						})
 					})
 					let item = arr.find(item => item.product_id === this.product_id)
-					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, flag: this.$route.params.fromUrl}})
+					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, flag: this.$route.params.fromUrl || this.$route.params.flag}})
 				})
 			},
 			writeAppointment () {
@@ -571,7 +615,7 @@ export default {
 					this.product_id = this.$route.params.productId
 					this.topTitle = '预约'
 					this.name = ''
-					this.mobile = ''
+					this.cMob = ''
 					this.money = ''
 					this.closeOrderReason = false
 					this.showNameClick = true
@@ -589,210 +633,455 @@ export default {
 					this.giveMoneySuc = false
 					this.alreadyPass = false
 					this.appointmentCode = false
-					appointmentList().then(res => {
-						this.appointmentList = res.data
-						this.appointmentList.map((item, index) => {
-							this.nameValues.push({'name': item.name, 'mobile': item.mobile})
-						})
-					})
+					this.repeatPayMaterials = false
+					// appointmentList().then(res => {
+					// 	this.appointmentList = res.data
+					// 	this.appointmentList.map((item, index) => {
+					// 		console.log(item)
+					// 		this.nameValues.push({'name': item.name, 'mobile': item.mobile})
+					// 	})
+					// })
 				// }
 			},
 			getList () {
-				// if (this.$route.params.fromUrl === 'reservationList') {
-					this.appointmentId = this.$route.params.appointmentId
-					statusDetail(this.appointmentId).then(res => {
-						this.appointmentList = res.data
-						console.log(this.appointmentList)
-						if (this.appointmentList.status === '1001') {
-							this.topTitle = '预约(申请中)'
-							this.submitAppointmentBtnShow = false
-							this.repeatAppointmentBtnShow = false
-							// this.selected = '1'
-						} else if (this.appointmentList.status === '1002') {
-							this.topTitle = '预约失败'
-							this.submitAppointmentBtnShow = false
-							this.repeatAppointmentBtnShow = true
-							// this.selected = '1'
-						} else if (this.appointmentList.status === '1003') {
-							this.topTitle = '预约成功'
-							this.submitAppointmentBtnShow = false
-							this.sucBtn = true
-							this.uploadShow = true
-							this.appointmentDone = true
-							// this.selected = '1'
-						} else if (this.appointmentList.status === '1004') {
-							this.topTitle = '预约取消'
-							this.submitAppointmentBtnShow = false
-							this.repeatAppointmentBtnShow = false
-							// this.selected = '1'
-						} else if (this.appointmentList.status === '1005') {
-							this.topTitle = '预约失效'
-							this.submitAppointmentBtnShow = false
-							this.repeatAppointmentBtnShow = false
-							// this.selected = '1'
-						} else if (this.appointmentList.status === '2001') {
-							this.topTitle = '打款审核中'
-							this.submitAppointmentBtnShow = false
-							this.sucBtn = false
-							this.uploadShow = true
-							this.chooseSelectedBank = false
-							this.giveMoneyDone = true
-							this.appointmentDone = true
-							this.uploadCard = false
-							this.uploadCardS = true
-							this.uploadCardMaterials = false
-							// this.selected = '2'
-						} else if (this.appointmentList.status === '2003') {
-							this.topTitle = '订单关闭'
-							this.appointmentDone = true
-							this.giveMoneyDone = true
-							this.submitAppointmentBtnShow = false
-							this.repeatAppointmentBtnShow = false
-							this.uploadShow = true
-							this.uploadCard = false
-							this.uploadCardS = true
-							this.uploadCardMaterials = false
-							this.chooseSelectedBank = false
-							this.closeOrderReason = true
-							// this.selected = '2'
-							if (this.appointmentList.refund_status === '0') {
-								this.topTitle = '订单关闭 无需退款'
-							} else if (this.appointmentList.refund_status === '1') {
-								this.topTitle = '需要退款'
-								this.uploadRefund = true
-								this.initiateRefund = true
-							} else if (this.appointmentList.refund_status === '2') {
-								this.topTitle = '退款申请中'
-								this.repeatUploadRefund = true
-							} else if (this.appointmentList.refund_status === '3') {
-								this.topTitle = '退款驳回'
-								this.uploadRefund = true
-								this.initiateRefund = true
-								this.refundLan = '重新发起退款'
-							} else if (this.appointmentList.refund_status === '4') {
-								this.topTitle = '已退款'
-								this.repeatUploadRefund = true
-							}
-						} else if (this.appointmentList.status === '2004') {
-							this.topTitle = '打款审核通过'
-							this.submitAppointmentBtnShow = false
-							this.uploadShow = true
-							this.chooseSelectedBank = false
-							this.uploadCard = false
-							this.uploadCardS = true
-							this.uploadCardMaterials = false
-							this.giveMoneySuc = true
-							this.sendEmailW = true
-							this.giveMoneyDone = true
-							this.appointmentDone = true
-							// this.selected = '2'
-						} else if (this.appointmentList.status === '3001') {
-							this.topTitle = '待收到合同'
-							this.submitAppointmentBtnShow = false
-							this.uploadShow = true
-							this.chooseSelectedBank = false
-							this.uploadCard = false
-							this.uploadCardS = true
-							this.uploadCardMaterials = false
-							this.giveMoneySuc = true
-							this.sendEmail = true
-							this.giveMoneyDone = true
-							this.appointmentDone = true
-							this.giveMoneyIng = true
-							this.contractManage = true
-							this.giveMoneySuc = false
-							this.alreadyPass = true
-							// this.selected = '3'
-						} else if (this.appointmentList.status === '3002') {
-							this.topTitle = '合同审核中'
-							this.submitAppointmentBtnShow = false
-							this.uploadShow = true
-							this.chooseSelectedBank = false
-							this.uploadCard = false
-							this.uploadCardS = true
-							this.uploadCardMaterials = false
-							this.giveMoneySuc = true
-							this.sendEmail = true
-							this.giveMoneyDone = true
-							this.appointmentDone = true
-							this.giveMoneyIng = true
-							this.contractManage = true
-							this.giveMoneySuc = false
-							this.alreadyPass = true
-							// this.selected = '3'
-						} else if (this.appointmentList.status === '3003') {
-							this.topTitle = '合同审核不通过'
-							this.submitAppointmentBtnShow = false
-							this.uploadShow = true
-							this.chooseSelectedBank = false
-							this.uploadCard = false
-							this.uploadCardS = true
-							this.uploadCardMaterials = false
-							this.giveMoneySuc = true
-							this.sendEmailW = true
-							this.giveMoneyDone = true
-							this.appointmentDone = true
-							this.alreadyPass = true
-							this.giveMoneySuc = false
-							this.uploadContract = true
-							this.giveMoneyIng = true
-							this.contractManage = true
-							// this.selected = '3'
-						} else if (this.appointmentList.status === '3004') {
-							this.topTitle = '合同审核通过'
-							this.submitAppointmentBtnShow = false
-							this.uploadShow = true
-							this.chooseSelectedBank = false
-							this.uploadCard = false
-							this.uploadCardS = true
-							this.uploadCardMaterials = false
-							this.giveMoneySuc = false
-							this.sendEmail = true
-							this.giveMoneyDone = true
-							this.appointmentDone = true
-							this.alreadyPass = true
-							this.giveMoneyIng = true
-							this.contractManage = true
-							// this.selected = '3'
-						}
-						// else if (this.appointmentList.status === '2002') {
-						// 	this.topTitle = '待补全材料'
-						// 	this.giveMoneyDone = true
-						// 	this.submitAppointmentBtnShow = false
-						// 	this.repeatAppointmentBtnShow = false
-						// 	this.uploadShow = true
-						// 	this.repeatGiveMoneyBtnShow = true
-						// }
-						this.product_id = this.appointmentList.product_id
-						this.showMoneyClick = false
+				this.appointmentId = this.$route.params.appointmentId
+				statusDetail(this.appointmentId).then(res => {
+					this.appointmentList = res.data
+					console.log(this.appointmentList)
+					if (this.appointmentList.status === '1001') {
+						this.topTitle = '预约(申请中)'
+						this.repeatAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadShow = false
+						this.appointmentDone = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadCardS = false
+						this.submitAppointmentBtnShow = false
+						this.uploadContract = false
+						this.closeOrderReason = false
 						this.showNameClick = false
-						this.appointmentCode = true
-						this.codeA = this.appointmentList.appointment_code
-						this.name = this.appointmentList.client_name
-						this.mobile = this.appointmentList.client_mobile
-						this.money = this.appointmentList.appointment_amount + '万'
-						this.nowTime = this.appointmentList.appointment_date
-						this.product_name = this.appointmentList.product_name
-						this.cardNum = this.appointmentList.cardno
-						this.cardName = this.appointmentList.bank_name
-						this.cardName1 = this.appointmentList.bank_subname
-						this.cardUrl = this.appointmentList.file_urls_payments
-						this.tradeUrl = this.appointmentList.file_urls_trades
-						this.refundUrl = this.appointmentList.file_urls_refunds
-						this.alreadyPassTime = this.appointmentList.remit_audit_date
-						this.contractNumW = this.appointmentList.contract_no
-						this.expresszCom = this.appointmentList.express_company
-						this.expressNums = this.appointmentList.express_no
-						this.closeReason = this.appointmentList.order_closure_remark
-						this.emailClose = this.appointmentList.contract_no_pass_remark
-						if (this.appointmentList.express_type === '0') {
-							this.emailType = '自取'
-						} else if (this.appointmentList.express_type === '1') {
-							this.emailType = '快递寄出'
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.repeatAppointmentBtnShow = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.giveMoneyDone = false
+						this.giveMoneyIng = false
+						this.contractManage = false
+						this.repeatPayMaterials = false
+						// this.selected = '1'
+					} else if (this.appointmentList.status === '1002') {
+						this.topTitle = '预约失败'
+						this.submitAppointmentBtnShow = false
+						this.repeatAppointmentBtnShow = true
+						this.sucBtn = false
+						this.uploadShow = false
+						this.appointmentDone = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadCardS = false
+						this.uploadContract = false
+						this.closeOrderReason = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.giveMoneyDone = false
+						this.giveMoneyIng = false
+						this.contractManage = false
+						this.repeatPayMaterials = false
+						// this.selected = '1'
+					} else if (this.appointmentList.status === '1003') {
+						console.log('预约成功')
+						this.topTitle = '预约成功'
+						this.sucBtn = true
+						this.uploadShow = true
+						this.appointmentDone = true
+						this.uploadCard = true
+						this.uploadCardMaterials = true
+						this.evidenceShow = true
+						this.chooseSelectedBank = true
+						this.cameraShow = true
+						this.uploadCardS = false
+						this.submitAppointmentBtnShow = false
+						this.uploadContract = false
+						this.closeOrderReason = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.repeatAppointmentBtnShow = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.giveMoneyDone = false
+						this.giveMoneyIng = false
+						this.contractManage = false
+						this.repeatPayMaterials = false
+						this.cardnum = ''
+						this.bankname = ''
+						this.bankname1 = ''
+						// this.selected = '1'
+					} else if (this.appointmentList.status === '1004') {
+						this.topTitle = '预约取消'
+						this.submitAppointmentBtnShow = false
+						this.repeatAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadShow = false
+						this.appointmentDone = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadCardS = false
+						this.uploadContract = false
+						this.closeOrderReason = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.giveMoneyDone = false
+						this.giveMoneyIng = false
+						this.contractManage = false
+						this.repeatPayMaterials = false
+						// this.selected = '1'
+					} else if (this.appointmentList.status === '1005') {
+						this.topTitle = '预约失效'
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadShow = false
+						this.appointmentDone = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadCardS = false
+						this.uploadContract = false
+						this.closeOrderReason = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.giveMoneyDone = false
+						this.giveMoneyIng = false
+						this.contractManage = false
+						this.repeatPayMaterials = false
+						// this.selected = '1'
+					} else if (this.appointmentList.status === '2001') {
+						this.topTitle = '打款审核中'
+						this.uploadShow = true
+						this.giveMoneyDone = true
+						this.giveMoneyDone = true
+						this.appointmentDone = true
+						this.uploadCardS = true
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.evidenceShow = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadContract = false
+						this.closeOrderReason = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.contractManage = false
+						this.giveMoneyIng = false
+						this.repeatPayMaterials = false
+						// this.selected = '2'
+					} else if (this.appointmentList.status === '2002') {
+						this.topTitle = '待补全材料'
+						this.uploadShow = true
+						this.appointmentDone = true
+						this.uploadCard = true
+						this.uploadCardMaterials = true
+						this.evidenceShow = true
+						this.chooseSelectedBank = true
+						this.cameraShow = true
+						this.giveMoneyDone = true
+						this.repeatPayMaterials = true
+						this.sucBtn = false
+						this.uploadCardS = false
+						this.submitAppointmentBtnShow = false
+						this.uploadContract = false
+						this.closeOrderReason = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.repeatAppointmentBtnShow = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.giveMoneyIng = false
+						this.contractManage = false
+						this.cardnum = ''
+						this.bankname = ''
+						this.bankname1 = ''
+					} else if (this.appointmentList.status === '2003') {
+						this.topTitle = '订单关闭'
+						this.appointmentDone = true
+						this.giveMoneyDone = true
+						this.closeOrderReason = true
+						this.uploadShow = true
+						this.uploadCardS = true
+						this.emailReason = false
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.evidenceShow = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadContract = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.alreadyPass = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.sendEmailW = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.contractManage = false
+						this.giveMoneyIng = false
+						this.repeatPayMaterials = false
+						// this.selected = '2'
+						if (this.appointmentList.refund_status === '0') {
+							this.topTitle = '订单关闭 无需退款'
+						} else if (this.appointmentList.refund_status === '1') {
+							this.topTitle = '需要退款'
+							this.uploadRefund = true
+							this.initiateRefund = true
+						} else if (this.appointmentList.refund_status === '2') {
+							this.topTitle = '退款申请中'
+							this.repeatUploadRefund = true
+						} else if (this.appointmentList.refund_status === '3') {
+							this.topTitle = '退款驳回'
+							this.uploadRefund = true
+							this.initiateRefund = true
+							this.refundLan = '重新发起退款'
+						} else if (this.appointmentList.refund_status === '4') {
+							this.topTitle = '已退款'
+							this.repeatUploadRefund = true
 						}
+					} else if (this.appointmentList.status === '2004') {
+						this.topTitle = '打款审核通过'
+						this.uploadShow = true
+						this.uploadCardS = true
+						this.giveMoneySuc = true
+						this.sendEmailW = true
+						this.giveMoneyDone = true
+						this.appointmentDone = true
+						this.alreadyPass = true
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.evidenceShow = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadContract = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.sendEmail = false
+						this.initiateRefund = false
+						this.contractManage = false
+						this.giveMoneyIng = false
+						this.repeatPayMaterials = false
+						// this.selected = '2'
+					} else if (this.appointmentList.status === '3001') {
+						this.topTitle = '待收到合同'
+						this.uploadShow = true
+						this.uploadCardS = true
+						this.sendEmail = true
+						this.giveMoneyDone = true
+						this.appointmentDone = true
+						this.giveMoneyIng = true
+						this.alreadyPass = true
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.evidenceShow = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadContract = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.contractManage = false
+						this.closeOrderReason	= false
+						this.repeatPayMaterials = false
+						// this.selected = '3'
+					} else if (this.appointmentList.status === '3002') {
+						this.topTitle = '合同审核中'
+						this.uploadShow = true
+						this.uploadCardS = true
+						this.sendEmail = true
+						this.giveMoneyDone = true
+						this.appointmentDone = true
+						this.giveMoneyIng = true
+						this.alreadyPass = true
+						this.contractManage = false
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.evidenceShow = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadContract = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.closeOrderReason	= false
+						this.repeatPayMaterials = false
+						// this.selected = '3'
+					} else if (this.appointmentList.status === '3003') {
+						this.topTitle = '合同审核不通过'
+						this.uploadContract = true
+						this.uploadShow = true
+						this.uploadCardS = true
+						this.sendEmailW = true
+						this.giveMoneyDone = true
+						this.appointmentDone = true
+						this.giveMoneyIng = true
+						this.alreadyPass = true
+						this.contractManage = false
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.evidenceShow = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.closeOrderReason	= false
+						this.sendEmail = false
+						this.repeatPayMaterials = false
+						// this.selected = '3'
+					} else if (this.appointmentList.status === '3004') {
+						this.topTitle = '合同审核通过'
+						this.contractManage = true
+						this.uploadShow = true
+						this.uploadCardS = true
+						this.sendEmail = true
+						this.giveMoneyDone = true
+						this.appointmentDone = true
+						this.giveMoneyIng = true
+						this.alreadyPass = true
+						this.repeatAppointmentBtnShow = false
+						this.submitAppointmentBtnShow = false
+						this.sucBtn = false
+						this.uploadCard = false
+						this.uploadCardMaterials = false
+						this.evidenceShow = false
+						this.chooseSelectedBank = false
+						this.cameraShow = false
+						this.uploadContract = false
+						this.showNameClick = false
+						this.showMoneyClick = false
+						this.uploadRefund = false
+						this.repeatUploadRefund = false
+						this.initiateRefund = false
+						this.giveMoneySuc = false
+						this.closeOrderReason	= false
+						this.repeatPayMaterials = false
+						// this.selected = '3'
+					}
+					this.product_id = this.appointmentList.product_id
+					this.showMoneyClick = false
+					this.showNameClick = false
+					this.appointmentCode = true
+					this.codeA = this.appointmentList.appointment_code
+					this.name = this.appointmentList.client_name
+					this.cMob = this.appointmentList.client_mobile
+					this.money = this.appointmentList.appointment_amount + '万'
+					this.nowTime = this.appointmentList.appointment_date
+					this.product_name = this.appointmentList.product_name
+					this.cardNum = this.appointmentList.cardno
+					this.cardName = this.appointmentList.bank_name
+					this.cardName1 = this.appointmentList.bank_subname
+					this.cardUrl = this.appointmentList.card_front_url
+					this.evidenceUrl = this.appointmentList.file_urls_payments
+					this.tradeUrl = this.appointmentList.file_urls_trades
+					this.refundUrl = this.appointmentList.file_urls_refunds
+					this.alreadyPassTime = this.appointmentList.remit_audit_date
+					this.contractNumW = this.appointmentList.contract_no
+					this.expresszCom = this.appointmentList.express_company
+					this.expressNums = this.appointmentList.express_no
+					this.closeReason = this.appointmentList.order_closure_remark
+					this.emailClose = this.appointmentList.contract_no_pass_remark
+					if (this.appointmentList.express_type === '0') {
+						this.emailType = '自取'
+					} else if (this.appointmentList.express_type === '1') {
+						this.emailType = '快递寄出'
+					}
+				})
+			},
+			getBankList () {
+				checkBankDetail().then(res => {
+					res.data.map((item, index) => {
+						this.nameValues.push({'bankName': item.bank_name, 'bankId': item.bank_id})
 					})
-				}
-			// }
+				})
+			}
 	},
 	beforeRouteEnter (to, from, next) {
 		next(vm => {
@@ -816,13 +1105,30 @@ export default {
 	// 		next()
 	// },
 	activated () {
-		console.log('actived')
 		if (this.$route.params.fromUrl === 'productDetail') {
-			console.log('detail')
 			this.writeAppointment()
 		} else if (this.$route.params.fromUrl === 'reservationList') {
-			console.log('reser')
+			this.selectedUrls = []
+			this.cardUrl = ''
+			this.evidenceUrl = []
+			this.materialSrc = []
+			this.refundSrc = []
 			this.getList()
+			this.getBankList()
+		} else if (this.$route.params.mark === 'selected') {
+			this.cameraShow = false
+			this.uploadCard = false
+			this.uploadCardS = true
+			this.chooseSelectedBank = false
+			let obj = this.$route.params.item
+			this.cardNum = obj.card_no
+			this.cardName = obj.bank_name
+			this.cardName1 = obj.sub_branch_name
+			this.cardUrl = obj.card_front_url
+			this.bankId = obj.bankId
+		} else if (this.$route.params.selectFlag === 'selectFlag') {
+			this.name = this.$route.params.nameItem.name
+			this.cMob = this.$route.params.nameItem.mobile
 		}
 	},
 	// deactivated () {
@@ -1139,6 +1445,7 @@ export default {
 								}
 							}
 							.mint-cell-value{
+								line-height: 40px;
 								.mint-field-core{
 									width: 580px;
 									height: 40px;
@@ -1148,6 +1455,35 @@ export default {
 									box-sizing: border-box;
 									text-indent: 20px;
 								}
+								.mint-field-other{
+									top: 0;
+									right: 0;
+									position: absolute;
+									transform: rotateZ(90deg);
+									.iconfont{
+										font-size: 40px;
+    								color: #333;
+									}
+								}
+							}
+						}
+					}
+					.mint-field:nth-child(2){
+						.mint-field-core{
+							background: #f5f5f5;
+						}
+					}
+					.upload_cont{
+						width: 132px;
+						height: 120px;
+						line-height: 120px;
+						margin: 0 0;
+						.addbig_box{
+							height: 120px;
+							line-height: 130px;
+							.iconfont.icon_bg{
+								font-size: 60px;
+								line-height: 0;
 							}
 						}
 					}
@@ -1191,7 +1527,7 @@ export default {
 						margin-right: 20px;
 					}
 				}
-				.materialsNeeded{
+				.materialsNeeded, .evidence{
 					background-color: #fff;
 					.camera{
 						padding: 20px;
@@ -1201,6 +1537,9 @@ export default {
 							margin-right: 20px;
 						}
 					}
+				}
+				.evidence{
+					margin-bottom: 20px;
 				}
 			}
 			.refund{
@@ -1222,13 +1561,15 @@ export default {
 				}
 			}
 			.upload_cont{
+				height: 100%;
+    		line-height: 100%;
 				margin: 0;
 				// max-width: 132px;
-				height: 120px;
-				line-height: 120px;
+				min-height: 120px;
+				// line-height: 120px;
 				padding: 0;
 				.addbig_box{
-					height: 100%;
+					// height: 100%;
 					.iconfont.icon_bg{
 						line-height: 100px;
 					}

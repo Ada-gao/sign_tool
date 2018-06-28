@@ -1,21 +1,119 @@
 <template>
 	<div class="bankList">
-		<x-header :left-options="{showBack: false}">银行卡</x-header>
+		<x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡</x-header>
 		<div class="wrapper">
-			
+			<div class="top">
+				<mt-cell title="银行卡信息">
+					<span slot="icon" class="iconfont">&#xe621;</span>
+				</mt-cell>
+			</div>
+			<div class="list">
+				<div class="item" :data="bankList" v-for="item in bankList" :key="item.bank_id" @click="selected(item)">
+					<div class="tip">
+						<span class="tit">银行卡号：</span>
+						<span class="detail">{{item.card_no}}</span>
+					</div>
+					<div class="tip">
+						<span class="tit">银行名称：</span>
+						<span class="detail">{{item.bank_name}}</span>
+					</div>
+					<div class="tip">
+						<span class="tit">支行名称：</span>
+						<span class="detail col">{{item.sub_branch_name}}</span>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
-<script  type="text/ecmascript-6">
+<script type="text/ecmascript-6">
 import { XHeader } from 'vux'
+import { checkCustomerBankDetail } from '@/service/api/customers'
 export default{
 	components: {
     XHeader
+	},
+	data () {
+		return {
+			clientId: '',
+			bankList: [],
+			mark: '',
+			selectedItem: []
+		}
+	},
+	methods: {
+		back () {
+			if (this.$route.params.flag) {
+        this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, mark: this.mark}})
+      }
+		},
+		selected (item) {
+			this.mark = 'selected'
+			this.selectedItem = item
+			console.log(this.mark, item)
+      this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, mark: this.mark, item: this.selectedItem}})
+		},
+		getList () {
+			checkCustomerBankDetail(this.clientId).then(res => {
+				this.bankList = res.data
+			})
+		}
+	},
+	mounted () {
+		this.clientId = this.$route.params.id
+		this.getList()
 	}
 }
 </script>
 <style lang="less">
-	.bankList{
-
+.bankList{
+	font-family: PingFangSC-Regular;
+	.wrapper{
+		.top{
+			height: 80px;
+			.mint-cell{
+				height: 100%;
+				.mint-cell-wrapper{
+					height: 100%;
+					line-height: 100%;
+					padding-left: 35px;
+					.mint-cell-title{
+						font-family: PingFangSC-Medium;
+						font-size: 30px;
+						color: #2672BA;
+						.iconfont{
+							font-size: 40px;
+							vertical-align: middle;
+						}
+					}
+				}
+			}
+		}
+		.list{
+			padding: 20px;
+			.item{
+				width: 710px;
+				padding: 20px;
+				height: 210px;
+				background: #fff;
+				margin-bottom: 20px;
+				box-sizing: border-box;
+				.tip{
+					line-height: 56px;
+					.tit{
+						font-size: 30px;
+						color: #333333;
+					}
+					.detail{
+						font-size: 28px;
+						color: #151515;
+					}
+					.col{
+						color: #666;
+					}
+				}
+			}
+		}
 	}
+}
 </style>

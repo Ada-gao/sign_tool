@@ -46,7 +46,7 @@
           <div class="doc" @click="toProductReport(id)">产品公告<span class="iconfont right">&#xe731;</span></div>
           <div class="doc" @click="toProductReport(id)">上传客户材料<span class="iconfont right">&#xe731;</span></div>
         </div>
-        <div class="reservation" v-show="item.product_status === 2">
+        <div class="reservation" v-if="showBtn">
           <mt-button type="primary" @click="toAppointment">预约</mt-button>
         </div>
       </div>
@@ -62,7 +62,8 @@ export default {
     return {
       item: [],
       id: '',
-      prePath: ''
+      prePath: '',
+      showBtn: true
       // ,
       // email: '',
       // userId: ''
@@ -103,10 +104,13 @@ export default {
   },
   mounted () {
     this.id = this.$route.params.id
-    if (this.$route.params.flag === 'appointment') {
+    if (this.$route.params.flag === 'productDetail' || this.$route.params.flag === 'reservationList') {
       this.item = this.$route.params.item
     } else {
       this.item = JSON.parse(window.localStorage.getItem('productDetail'))
+    }
+    if (this.$route.params.flag === 'productDetail' || this.$route.params.flag === 'reservationList' || this.item.product_status !== 2) {
+      this.showBtn = false
     }
     window.scroll(0, 0)
   }

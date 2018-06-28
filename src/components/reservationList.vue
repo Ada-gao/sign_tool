@@ -35,7 +35,7 @@
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
 							<span class="tit">预约状态：
 								<span class="cont" v-if='item.status === "2001"'>打款审核中</span>
-								<!-- <span class="cont" v-if='item.status === "2002"'>待补全材料</span> -->
+								<span class="cont" v-if='item.status === "2002"'>待补全材料</span>
 								<span class="cont" v-if='item.status === "2003"'>订单关闭</span>
 								<span class="cont" v-if='item.status === "2004"'>打款审核通过</span>
 							</span>
@@ -90,7 +90,6 @@ export default {
 	},
 	methods: {
 		toDetail (id) {
-			console.log('jjj')
 			this.$router.push({name: 'ProductAppointment', params: {appointmentId: id, fromUrl: 'reservationList'}})
 		}
 	},
@@ -100,7 +99,6 @@ export default {
 	// 		next()
 	// },
 	created () {
-		console.log('lll')
 		getList().then(res => {
 			this.appoinmentList = res.data.filter(item => item.status.slice(0, 1) === '1')
 			this.remittanceList = res.data.filter(item => item.status.slice(0, 1) === '2')

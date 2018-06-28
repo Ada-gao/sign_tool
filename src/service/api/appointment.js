@@ -1,10 +1,11 @@
 import axios from '../../config/axios'
 
 // 获取可预约列表
-export function appointmentList () {
+export function appointmentList (q, productRiskLevel) {
     return axios({
-        url: '/v1/appointment/clients/',
-        method: 'get'
+        url: `/v1/appointment/clients/${productRiskLevel}/`,
+        method: 'get',
+        params: q
     })
 }
 
@@ -23,7 +24,7 @@ export function submitAppointment (obj) {
  */
 export function cancelAppointment (appointmentId) {
     return axios({
-        url: `/v1/appointment/cancel/${appointmentId}`,
+        url: `/v1/appointment/cancel/${appointmentId}/`,
         method: 'post'
     })
 }
@@ -34,7 +35,7 @@ export function cancelAppointment (appointmentId) {
  */
 export function submitMaterials (appointmentId, obj) {
     return axios({
-        url: `/v1/appointment/picture/submit/${appointmentId}`,
+        url: `/v1/appointment/picture/submit/${appointmentId}/`,
         method: 'post',
         data: obj
     })

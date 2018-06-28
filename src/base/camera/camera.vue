@@ -3,14 +3,15 @@
     <div class="upload_cont" :class="{'upload_small': fromBank === 2}">
 
       <div v-if="fromBank === 2" style="display: inline-block;height: 120px">
-        <ul class="ul">
-          <li v-for="(item, index) in fileArr"
+        <!-- <ul class="ul"> -->
+          <div v-for="(item, index) in fileArr"
               :key="index"
-              v-show="item">
+              v-show="item"
+              class="img">
             <img :src="item" v-show="item">
             <span class="delete_img" @click='delImage(index)'>x</span>
-          </li>
-        </ul>
+          </div>
+        <!-- </ul> -->
         <div class="addsmall_box" @click="selectcamera()">
           <span class="iconfont icon_bg">+</span>
           <mt-spinner class="camera_spinner"
@@ -59,7 +60,7 @@
     components: {
       'mt-popup': Popup
     },
-    props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc', 'isFromAppointment'],
+    props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc', 'imageArr', 'isFromAppointment'],
     data () {
       return {
         imgSrc: '',
@@ -74,16 +75,26 @@
         fileId: []
       }
     },
-    mounted () {
-    },
     watch: {
       'imageSrc': function (n, o) {
+        console.log('lai', this.imageSrc)
         this.setImgSrc()
+      },
+      'imageArr': {
+        handler (n, o) {
+          console.log('lai', this.imageArr)
+          this.setImgSrcArr()
+        },
+        deep: true
       }
     },
     methods: {
       setImgSrc () {
         this.imgSrc = this.imageSrc
+      },
+      setImgSrcArr () {
+        this.fileArr = this.imageArr
+        // this.imageArr = this.fileArr
       },
       selectcamera () {
         this.show = true
@@ -147,15 +158,30 @@
         let formData = new FormData()
         formData.append('file', file)
         if (this.fromBank === 0) {
-          updateFrontPic(this.cerId, formData).then(res => {
-            if (res.status === 200) {
-              this.spinnerShow = false
-              this.imgSrc = 'data:image/jpeg;base64,' + imageData
-            }
-          }).catch(err => {
-            console.log('error: ' + err)
-            this.alertMsg = true
-          })
+          if (this.isFromAppointment === 1) {
+            updateId(formData).then(res => {
+              if (res.status === 200) {
+                  this.fileId.push(res.data.client_cert_file_id)
+                  this.idSrc = res.data.file_url
+                  this.spinnerShow = false
+                  this.imgSrc = 'data:image/jpeg;base64,' + imageData
+                  this.$emit('imgHandler', this.idSrc)
+              }
+            }).catch(err => {
+              console.log('error: ' + err)
+              this.alertMsg = true
+            })
+          } else {
+            updateFrontPic(this.cerId, formData).then(res => {
+              if (res.status === 200) {
+                this.spinnerShow = false
+                this.imgSrc = 'data:image/jpeg;base64,' + imageData
+              }
+            }).catch(err => {
+              console.log('error: ' + err)
+              this.alertMsg = true
+            })
+          }
         } else if (this.fromBank === 1) {
           updateId(formData).then(res => {
             if (res.status === 200) {
@@ -176,6 +202,7 @@
                   this.appointmentSrc.push(res.data.file_url)
                   this.spinnerShow = false
                   this.fileArr.push('data:image/jpeg;base64,' + imageData)
+                  console.log(this.fileArr)
                   this.$emit('imgHandler', this.appointmentSrc)
               }
             }).catch(err => {
@@ -261,14 +288,16 @@
     height: 120px;
     text-align: left;
     padding-left: 20px;
-    .ul {
-      display: inline-block;
-      height: 120px;
-      li {
+    // .ul {
+    //   display: inline-block;
+    //   height: 120px;
+      .img {
         width: 132px;
         height: 120px;
         position: relative;
         display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
         img {
           display: inline-block;
           width: 100%;
@@ -289,7 +318,7 @@
       li:not(:last-child) {
         margin-right: 10px;
       }
-    }
+    // }
     .addsmall_box {
       display: inline-block;
       position: relative;

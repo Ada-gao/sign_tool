@@ -36,6 +36,7 @@ const Report = r => require.ensure([], () => r(require('@/base/report/pdf')), 'r
 const ReservationList = r => require.ensure([], () => r(require('@/components/reservationList')), 'reservationList')
 const ProductAppointment = r => require.ensure([], () => r(require('@/components/productAppointment')), 'productAppointment')
 const BankList = r => require.ensure([], () => r(require('@/components/bankList')), 'bankList')
+const CustomerNameList = r => require.ensure([], () => r(require('@/components/customerNameList')), 'customerNameList')
 
 // // import A from '@/components/a'
 
@@ -320,6 +321,14 @@ const router = new Router({
       path: '/bankList',
       name: 'BankList',
       component: BankList,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/customerNameList',
+      name: 'CustomerNameList',
+      component: CustomerNameList,
       meta: {
         auth: true
       }
