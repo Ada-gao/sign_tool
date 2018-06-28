@@ -5,8 +5,8 @@ const pluginsList = [
   'cordova-plugin-device'
 ]
 
-const install = function (Vue, config = {}) {
-  console.log('install cordova plugin.')
+exports.install = (Vue, options) => {
+  // declare global Vue.cordova object
   Vue.cordova = Vue.cordova || {
     deviceready: false,
     plugins: []
@@ -26,7 +26,7 @@ const install = function (Vue, config = {}) {
   // load supported plugins
   pluginsList.forEach(pluginName => {
     let plugin = require('./plugins/' + pluginName)
-    plugin.install(Vue, config, pluginLoaded => {
+    plugin.install(Vue, options, pluginLoaded => {
       if (pluginLoaded) {
         Vue.cordova.plugins.push(pluginName)
       }
@@ -35,8 +35,4 @@ const install = function (Vue, config = {}) {
       }
     })
   })
-}
-
-module.exports = {
-  install
 }
