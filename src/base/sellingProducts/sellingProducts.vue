@@ -59,8 +59,6 @@ export default {
 	},
 	methods: {
 		toProductDetail (id, item) {
-			console.log(item.important_end, item.important_start)
-			return
 		  if (item.minimal_amount === undefined) {
 		  	return false
 			}
