@@ -9,7 +9,7 @@
 			</mt-navbar>
 			<mt-tab-container v-model="selected">
 				<mt-tab-container-item id="1">
-					<div :data="appoinmentList" v-for="item in appoinmentList" :key="item.appointment_id">
+					<div :data="appoinmentList" v-for="item in appoinmentList" :key="item.appointment_id" @click="toDetail(item.appointment_id)">
 						<div class="item1">
 							<span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
@@ -22,12 +22,12 @@
 								<span class="cont" v-if='item.status === "1004"'>预约取消</span>
 								<span class="cont" v-if='item.status === "1005"'>预约失效</span>
 							</span>
-							<i class="iconfont right" @click="toDetail(item.appointment_id)">&#xe731;</i>
+							<i class="iconfont right">&#xe731;</i>
 						</div>
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="2">
-					<div :data="remittanceList" v-for="item in remittanceList" :key="item.appointment_id">
+					<div :data="remittanceList" v-for="item in remittanceList" :key="item.appointment_id" @click="toDetail(item.appointment_id)">
 						<div class="item1">
 							<span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
@@ -46,12 +46,12 @@
 								<span class="cont" v-if='item.refund_status === "3"'>退款驳回</span>
 								<span class="cont" v-if='item.refund_status === "4"'>已退款</span>
 							</span>
-							<i class="iconfont right" @click="toDetail(item.appointment_id)">&#xe731;</i>
+							<i class="iconfont right">&#xe731;</i>
 						</div>
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="3">
-					<div :data="contractList" v-for="item in contractList" :key="item.appointment_id">
+					<div :data="contractList" v-for="item in contractList" :key="item.appointment_id" @click="toDetail(item.appointment_id)">
 						<div class="item1">
 							<span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
@@ -63,7 +63,7 @@
 								<span class="cont" v-if='item.status === "3003"'>合同审核不通过</span>
 								<span class="cont" v-if='item.status === "3004"'>合同审核通过</span>
 							</span>
-							<i class="iconfont right" @click="toDetail(item.appointment_id)">&#xe731;</i>
+							<i class="iconfont right">&#xe731;</i>
 						</div>
 					</div>
 				</mt-tab-container-item>

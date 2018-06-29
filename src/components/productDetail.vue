@@ -99,7 +99,7 @@ export default {
 			this.$router.push({name: 'ProductReport', params: {id: id}})
     },
     toAppointment () {
-      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail'}})
+      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail', minimalAmount: this.item.minimal_amount}})
     }
   },
   mounted () {

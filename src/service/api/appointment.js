@@ -1,9 +1,9 @@
 import axios from '../../config/axios'
 
 // 获取可预约列表
-export function appointmentList (q, productRiskLevel) {
+export function appointmentList (q) {
     return axios({
-        url: `/v1/appointment/clients/${productRiskLevel}/`,
+        url: `/v1/appointment/clients/`,
         method: 'get',
         params: q
     })
@@ -24,7 +24,7 @@ export function submitAppointment (obj) {
  */
 export function cancelAppointment (appointmentId) {
     return axios({
-        url: `/v1/appointment/cancel/${appointmentId}/`,
+        url: `/v1/appointment/cancel/${appointmentId}`,
         method: 'post'
     })
 }

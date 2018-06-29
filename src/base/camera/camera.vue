@@ -77,12 +77,10 @@
     },
     watch: {
       'imageSrc': function (n, o) {
-        console.log('lai', this.imageSrc)
         this.setImgSrc()
       },
       'imageArr': {
         handler (n, o) {
-          console.log('lai', this.imageArr)
           this.setImgSrcArr()
         },
         deep: true
@@ -202,7 +200,6 @@
                   this.appointmentSrc.push(res.data.file_url)
                   this.spinnerShow = false
                   this.fileArr.push('data:image/jpeg;base64,' + imageData)
-                  console.log(this.fileArr)
                   this.$emit('imgHandler', this.appointmentSrc)
               }
             }).catch(err => {
@@ -226,7 +223,6 @@
       },
       delImage (index) {
         if (this.isFromAppointment === 1) {
-          console.log('camera', this.appointmentSrc)
           this.appointmentSrc.splice(index, 1)
         } else {
           deleteDetail(this.cerId, this.fileId[index]).then(res => {

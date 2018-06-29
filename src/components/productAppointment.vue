@@ -106,7 +106,7 @@
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler4"
-										:imageArr='selectedUrls'
+										:imageArr='evidenceUrls'
 										:isFromAppointment="fromAppointment"
 										:isFromBank="fromBank"
 										@showPopup="showPopup"
@@ -125,7 +125,7 @@
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
-              			:imageArr="selectedUrls"
+              			:imageArr="materialsUrls"
 										:isFromAppointment="fromAppointment"
               			:isFromBank="fromBank"
 										@showPopup="showPopup"
@@ -147,7 +147,7 @@
 							<div class="camera">
 								<camera :popupVisible="popupVisible"
 									@imgHandler="imageHandler3"
-									:imageArr="selectedUrls"
+									:imageArr="refundUrls"
 									:isFromAppointment="fromAppointment"
 									:isFromBank="fromBank"
 									@showPopup="showPopup"
@@ -218,7 +218,7 @@
 						<x-button @click.native="returnDetail" type="primary">返回产品详情</x-button>
 					</x-dialog>
 					<x-dialog v-model="alertMsg" class="dialog-demo submitDialog" hide-on-blur>
-						<div class="quit">还有信息没填写哦～</div>
+						<div class="quit">{{msgDetail}}</div>
 						<x-button type="primary" @click.native="hideAlert">确 定</x-button>
 					</x-dialog>
 					<x-dialog v-model="closeOrderR" class="dialog-demo submitDialog">
@@ -339,7 +339,11 @@ export default {
 			selected: '',
 			firstFromUrl: '',
 			repeatPayMaterials: false,
-			selectedUrls: '',
+			msgDetail: '',
+			minimalAmount: '',
+			refundUrls: '',
+			materialsUrls: '',
+			evidenceUrls: '',
 			slotsM: [
 				{
           flex: 1,
@@ -405,7 +409,6 @@ export default {
 				}
 			},
 			chooseName () {
-				console.log(this.$route.params.productRiskLevel)
 				this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag}})
 			},
 			chooseMoney () {
@@ -446,6 +449,12 @@ export default {
 			submitAppointmentBtn () {
 				if (this.name === '' || this.money === '') {
 					this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					return
+				}
+				if (this.selectMoney < this.minimalAmount) {
+					this.msgDetail = '预约金额小于起投金额，不可预约'
+					this.alertMsg = true
 					return
 				}
 				let selectObj = this.appointmentList.find(item => item.mobile === this.cMob)
@@ -468,6 +477,16 @@ export default {
 				})
 			},
 			repeatAppointmentBtn () {
+				if (this.name === '' || this.money === '') {
+					this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					return
+				}
+				if (this.selectMoney < this.minimalAmount) {
+					this.msgDetail = '预约金额小于起投金额，不可预约'
+					this.alertMsg = true
+					return
+				}
 				let obj = {
 					'client_id': this.appointmentList.client_id,
 					'client_mobile': this.cMob,
@@ -477,7 +496,7 @@ export default {
 					'risk_level': this.appointmentList.risk_level,
 					'product_id': this.product_id,
 					'product_name': this.appointmentList.product_name,
-					'appointment_amount': this.money.slice(0, -1),
+					'appointment_amount': parseInt(this.money.slice(0, -1)),
 					'appointment_date': this.nowTime
 				}
 				submitAppointment(obj).then(res => {
@@ -506,10 +525,15 @@ export default {
 				this.$router.push({name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}})
 			},
 			submitPayMaterials () {
+				if (this.evidenceUrl === [] || this.materialSrc === [] || this.cardUrl === '' || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+					this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					return
+				}
 				let obj = {
 					'file_urls_payments': this.evidenceUrl,
 					'file_urls_trades': this.materialSrc,
-					'bankcard_front_url': this.cardUrl,
+					'bank_card_front_url': this.cardUrl,
 					'bank_name': this.bankname || this.cardName,
 					'bank_subname': this.bankname1 || this.cardName1,
 					'bank_id': this.bankId,
@@ -525,7 +549,7 @@ export default {
 				let obj = {
 					'file_urls_payments': this.evidenceUrl,
 					'file_urls_trades': this.materialSrc,
-					'bankcard_front_url': this.cardUrl,
+					'bank_card_front_url': this.cardUrl,
 					'bank_name': this.bankname || this.cardName,
 					'bank_subname': this.bankname1 || this.cardName1,
 					'bank_id': this.bankId,
@@ -548,7 +572,6 @@ export default {
 				this.refundSrc = data
 			},
 			imageHandler4 (data) {
-				console.log(data)
 				this.evidenceUrl = data
 			},
 			refund () {
@@ -610,6 +633,7 @@ export default {
 			},
 			writeAppointment () {
 				// if (this.$route.params.fromUrl === 'productDetail') {
+					this.minimalAmount = this.$route.params.minimalAmount
 					this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 					this.product_name = this.$route.params.productInfo
 					this.product_id = this.$route.params.productId
@@ -634,20 +658,43 @@ export default {
 					this.alreadyPass = false
 					this.appointmentCode = false
 					this.repeatPayMaterials = false
-					// appointmentList().then(res => {
-					// 	this.appointmentList = res.data
-					// 	this.appointmentList.map((item, index) => {
-					// 		console.log(item)
-					// 		this.nameValues.push({'name': item.name, 'mobile': item.mobile})
-					// 	})
-					// })
+					appointmentList().then(res => {
+						this.appointmentList = res.data
+					})
 				// }
 			},
 			getList () {
 				this.appointmentId = this.$route.params.appointmentId
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
-					console.log(this.appointmentList)
+					this.product_id = this.appointmentList.product_id
+					this.showMoneyClick = false
+					this.showNameClick = false
+					this.appointmentCode = true
+					this.codeA = this.appointmentList.appointment_code
+					this.name = this.appointmentList.client_name
+					this.cMob = this.appointmentList.client_mobile
+					this.money = this.appointmentList.appointment_amount + '万'
+					this.nowTime = this.appointmentList.appointment_date
+					this.product_name = this.appointmentList.product_name
+					this.cardNum = this.appointmentList.cardno
+					this.cardName = this.appointmentList.bank_name
+					this.cardName1 = this.appointmentList.bank_subname
+					this.cardUrl = this.appointmentList.bankcard_front_url
+					this.evidenceUrl = this.appointmentList.file_urls_payments
+					this.tradeUrl = this.appointmentList.file_urls_trades
+					this.refundUrl = this.appointmentList.file_urls_refunds
+					this.alreadyPassTime = this.appointmentList.remit_audit_date
+					this.contractNumW = this.appointmentList.contract_no
+					this.expresszCom = this.appointmentList.express_company
+					this.expressNums = this.appointmentList.express_no
+					this.closeReason = this.appointmentList.order_closure_remark
+					this.emailClose = this.appointmentList.contract_no_pass_remark
+					if (this.appointmentList.express_type === '0') {
+						this.emailType = '自取'
+					} else if (this.appointmentList.express_type === '1') {
+						this.emailType = '快递寄出'
+					}
 					if (this.appointmentList.status === '1001') {
 						this.topTitle = '预约(申请中)'
 						this.repeatAppointmentBtnShow = false
@@ -679,8 +726,24 @@ export default {
 						// this.selected = '1'
 					} else if (this.appointmentList.status === '1002') {
 						this.topTitle = '预约失败'
+						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
+						let arr = []
+						getProducts().then(res => {
+							res.data.map((item, index) => {
+								item.products.map((info, index) => {
+									arr.push(info)
+								})
+							})
+							let item = arr.find(item => item.product_id === this.product_id)
+							this.minimalAmount = item.minimal_amount
+						})
+						this.name = ''
+						this.cMob = ''
+						this.money = ''
 						this.submitAppointmentBtnShow = false
 						this.repeatAppointmentBtnShow = true
+						this.showNameClick = true
+						this.showMoneyClick = true
 						this.sucBtn = false
 						this.uploadShow = false
 						this.appointmentDone = false
@@ -691,8 +754,6 @@ export default {
 						this.uploadCardS = false
 						this.uploadContract = false
 						this.closeOrderReason = false
-						this.showNameClick = false
-						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
@@ -706,7 +767,6 @@ export default {
 						this.repeatPayMaterials = false
 						// this.selected = '1'
 					} else if (this.appointmentList.status === '1003') {
-						console.log('预约成功')
 						this.topTitle = '预约成功'
 						this.sucBtn = true
 						this.uploadShow = true
@@ -768,6 +828,8 @@ export default {
 						// this.selected = '1'
 					} else if (this.appointmentList.status === '1005') {
 						this.topTitle = '预约失效'
+						this.showNameClick = false
+						this.showMoneyClick = false
 						this.repeatAppointmentBtnShow = false
 						this.submitAppointmentBtnShow = false
 						this.sucBtn = false
@@ -780,8 +842,6 @@ export default {
 						this.uploadCardS = false
 						this.uploadContract = false
 						this.closeOrderReason = false
-						this.showNameClick = false
-						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
@@ -1045,34 +1105,6 @@ export default {
 						this.repeatPayMaterials = false
 						// this.selected = '3'
 					}
-					this.product_id = this.appointmentList.product_id
-					this.showMoneyClick = false
-					this.showNameClick = false
-					this.appointmentCode = true
-					this.codeA = this.appointmentList.appointment_code
-					this.name = this.appointmentList.client_name
-					this.cMob = this.appointmentList.client_mobile
-					this.money = this.appointmentList.appointment_amount + '万'
-					this.nowTime = this.appointmentList.appointment_date
-					this.product_name = this.appointmentList.product_name
-					this.cardNum = this.appointmentList.cardno
-					this.cardName = this.appointmentList.bank_name
-					this.cardName1 = this.appointmentList.bank_subname
-					this.cardUrl = this.appointmentList.card_front_url
-					this.evidenceUrl = this.appointmentList.file_urls_payments
-					this.tradeUrl = this.appointmentList.file_urls_trades
-					this.refundUrl = this.appointmentList.file_urls_refunds
-					this.alreadyPassTime = this.appointmentList.remit_audit_date
-					this.contractNumW = this.appointmentList.contract_no
-					this.expresszCom = this.appointmentList.express_company
-					this.expressNums = this.appointmentList.express_no
-					this.closeReason = this.appointmentList.order_closure_remark
-					this.emailClose = this.appointmentList.contract_no_pass_remark
-					if (this.appointmentList.express_type === '0') {
-						this.emailType = '自取'
-					} else if (this.appointmentList.express_type === '1') {
-						this.emailType = '快递寄出'
-					}
 				})
 			},
 			getBankList () {
@@ -1108,7 +1140,9 @@ export default {
 		if (this.$route.params.fromUrl === 'productDetail') {
 			this.writeAppointment()
 		} else if (this.$route.params.fromUrl === 'reservationList') {
-			this.selectedUrls = []
+			this.refundUrls = []
+			this.materialsUrls = []
+			this.evidenceUrls = []
 			this.cardUrl = ''
 			this.evidenceUrl = []
 			this.materialSrc = []
@@ -1125,7 +1159,7 @@ export default {
 			this.cardName = obj.bank_name
 			this.cardName1 = obj.sub_branch_name
 			this.cardUrl = obj.card_front_url
-			this.bankId = obj.bankId
+			this.bankId = obj.bank_id
 		} else if (this.$route.params.selectFlag === 'selectFlag') {
 			this.name = this.$route.params.nameItem.name
 			this.cMob = this.$route.params.nameItem.mobile

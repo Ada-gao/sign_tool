@@ -15,16 +15,16 @@
 					<flexbox-item class="item-right">
 						<div class="flex-product">
 							<div class="flex-right">
-								<p>{{item.product_name}}</p>
+								<p>{{item.product_name}}<span class="important" v-if="showImportant">重点产品</span></p>
 								<p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
-                				<p v-else>购买金额：{{item.amount}}万</p>
+                <p v-else>购买金额：{{item.amount}}万</p>
 								<p>投资期限：{{item.investment_horizon}}年</p>
-								<span v-if="item.product_status === 0" class="box red">在建</span>
-								<span v-else-if="item.product_status === 1" class="box blue">预热中</span>
-								<span v-else-if="item.product_status === 2" class="box red">募集中</span>
+								<!-- <span v-if="item.product_status === 0" class="box red">在建</span> -->
+								<span v-if="item.product_status === 1" class="box blue">预热中</span>
+								<span v-else-if="item.product_status === 2" class="box green">募集中</span>
 								<!-- <span v-else-if="item.product_status === 3" class="free"></span> -->
-								<span v-else-if="item.product_status === 4" class="box red">存续期</span>
-								<span v-else-if="item.product_status === 5" class="box gary">已下架</span>
+								<!-- <span v-else-if="item.product_status === 4" class="box red">存续期</span>
+								<span v-else-if="item.product_status === 5" class="box gary">已下架</span> -->
 							</div>
 						</div>
 					</flexbox-item>
@@ -51,29 +51,25 @@ export default {
 		Flexbox,
 		FlexboxItem
 	  },
-	  //, 'email', 'userId'
 	props: ['childData'],
-	// data () {
-	//  	return {
-	// 		 newemail: '',
-	// 		 newuserId: ''
-	// 	 }
-	// },
+	data () {
+	 	return {
+			showImportant: false
+		 }
+	},
 	methods: {
 		toProductDetail (id, item) {
-		    if (item.minimal_amount === undefined) {
-		        return false
-		}
-//		console.log(item)
-		window.localStorage.setItem('productDetail', JSON.stringify(item))
-			// this.$router.push({name: 'ProductDetail', params: {id: id, item: item, email: newemail, userId: newuserId}})
+			console.log(item.important_end, item.important_start)
+			return
+		  if (item.minimal_amount === undefined) {
+		  	return false
+			}
+			window.localStorage.setItem('productDetail', JSON.stringify(item))
 			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
 		}
 	},
 	 mounted () {
-	 	// this.newemail = this.email
-	 	// this.newuserId = this.userId
-	 	// console.log(this.childData)
+		 console.log(new Date().getTime())
 	 }
 }
 </script>
@@ -99,6 +95,16 @@ export default {
 	color: #464646;
 		p{
 			font-size: 30px !important;
+			line-height: 42px;
+		}
+		span.important{
+			padding: 1px 8px;
+			background: #AC1E1C;
+			border-radius: 5px;
+			font-family: PingFangSC-Medium;
+			font-size: 18px;
+			vertical-align: top;
+    	margin-left: 10px;
 		}
 }
 .flexbox-wrapper .vux-flexbox .item-right span.box{
@@ -117,6 +123,9 @@ export default {
 }
 .flexbox-wrapper .vux-flexbox .item-right span.red {
 	background-color: #C61D1A;
+}
+.flexbox-wrapper .vux-flexbox .item-right span.green {
+	background-color: #28BCAC;
 }
 .flexbox-wrapper .vux-flexbox .item-right span.blue {
 	background-color: #158FD2;
