@@ -401,9 +401,9 @@ export default {
 				if (this.$route.params.flag === 'productDetail') {
 					this.returnDetail()
 				} else if (this.$route.params.flag === 'reservationList') {
-					this.$router.push({name: 'ReservationList'})
+					this.$router.push({name: 'ReservationList', params: {mark: this.selected}})
 				} else if (this.prePath === '/reservationList') {
-					this.$router.push({name: 'ReservationList'})
+					this.$router.push({name: 'ReservationList', params: {mark: this.selected}})
 				} else {
 					this.returnDetail()
 				}
@@ -517,7 +517,7 @@ export default {
 						})
 					})
 					let item = arr.find(item => item.product_id === this.product_id)
-					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, return: 'none'}})
+					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, return: 'none', flag: this.$route.params.fromUrl || this.$route.params.flag}})
 				})
 				this.submitDialog = false
 			},
@@ -554,7 +554,7 @@ export default {
 					'bank_subname': this.bankname1 || this.cardName1,
 					'bank_id': this.bankId,
 					'card_no': this.cardnum || this.cardNum,
-					'flag': 0
+					'flag': '0'
 				}
 				submitMaterials(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
@@ -594,6 +594,11 @@ export default {
 				})
 			},
 			emailContract () {
+				if (this.cantractNum === '' || this.expressCompany === '' || this.expressNum === '') {
+					this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					return
+				}
 				let obj = {
 					'contract_no': this.cantractNum,
 					'express_company': this.expressCompany,
@@ -632,7 +637,6 @@ export default {
 				})
 			},
 			writeAppointment () {
-				// if (this.$route.params.fromUrl === 'productDetail') {
 					this.minimalAmount = this.$route.params.minimalAmount
 					this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 					this.product_name = this.$route.params.productInfo
@@ -661,7 +665,6 @@ export default {
 					appointmentList().then(res => {
 						this.appointmentList = res.data
 					})
-				// }
 			},
 			getList () {
 				this.appointmentId = this.$route.params.appointmentId
@@ -723,7 +726,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
-						// this.selected = '1'
+						this.selected = '1'
 					} else if (this.appointmentList.status === '1002') {
 						this.topTitle = '预约失败'
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
@@ -765,7 +768,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
-						// this.selected = '1'
+						this.selected = '1'
 					} else if (this.appointmentList.status === '1003') {
 						this.topTitle = '预约成功'
 						this.sucBtn = true
@@ -797,7 +800,7 @@ export default {
 						this.cardnum = ''
 						this.bankname = ''
 						this.bankname1 = ''
-						// this.selected = '1'
+						this.selected = '1'
 					} else if (this.appointmentList.status === '1004') {
 						this.topTitle = '预约取消'
 						this.submitAppointmentBtnShow = false
@@ -825,7 +828,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
-						// this.selected = '1'
+						this.selected = '1'
 					} else if (this.appointmentList.status === '1005') {
 						this.topTitle = '预约失效'
 						this.showNameClick = false
@@ -853,7 +856,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
-						// this.selected = '1'
+						this.selected = '1'
 					} else if (this.appointmentList.status === '2001') {
 						this.topTitle = '打款审核中'
 						this.uploadShow = true
@@ -883,7 +886,7 @@ export default {
 						this.contractManage = false
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
-						// this.selected = '2'
+						this.selected = '2'
 					} else if (this.appointmentList.status === '2002') {
 						this.topTitle = '待补全材料'
 						this.uploadShow = true
@@ -915,6 +918,7 @@ export default {
 						this.cardnum = ''
 						this.bankname = ''
 						this.bankname1 = ''
+						this.selected = '2'
 					} else if (this.appointmentList.status === '2003') {
 						this.topTitle = '订单关闭'
 						this.appointmentDone = true
@@ -944,7 +948,7 @@ export default {
 						this.contractManage = false
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
-						// this.selected = '2'
+						this.selected = '2'
 						if (this.appointmentList.refund_status === '0') {
 							this.topTitle = '订单关闭 无需退款'
 						} else if (this.appointmentList.refund_status === '1') {
@@ -990,7 +994,7 @@ export default {
 						this.contractManage = false
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
-						// this.selected = '2'
+						this.selected = '2'
 					} else if (this.appointmentList.status === '3001') {
 						this.topTitle = '待收到合同'
 						this.uploadShow = true
@@ -1018,7 +1022,8 @@ export default {
 						this.contractManage = false
 						this.closeOrderReason	= false
 						this.repeatPayMaterials = false
-						// this.selected = '3'
+						this.sendEmailW = false
+						this.selected = '3'
 					} else if (this.appointmentList.status === '3002') {
 						this.topTitle = '合同审核中'
 						this.uploadShow = true
@@ -1046,7 +1051,8 @@ export default {
 						this.giveMoneySuc = false
 						this.closeOrderReason	= false
 						this.repeatPayMaterials = false
-						// this.selected = '3'
+						this.sendEmailW = false
+						this.selected = '3'
 					} else if (this.appointmentList.status === '3003') {
 						this.topTitle = '合同审核不通过'
 						this.uploadContract = true
@@ -1075,7 +1081,7 @@ export default {
 						this.closeOrderReason	= false
 						this.sendEmail = false
 						this.repeatPayMaterials = false
-						// this.selected = '3'
+						this.selected = '3'
 					} else if (this.appointmentList.status === '3004') {
 						this.topTitle = '合同审核通过'
 						this.contractManage = true
@@ -1103,7 +1109,8 @@ export default {
 						this.giveMoneySuc = false
 						this.closeOrderReason	= false
 						this.repeatPayMaterials = false
-						// this.selected = '3'
+						this.sendEmailW = false
+						this.selected = '3'
 					}
 				})
 			},

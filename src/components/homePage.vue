@@ -68,7 +68,6 @@ export default {
 		getProducts().then(res => {
 			this.spinner = false
 			this.productsList = res.data
-			console.log(this.productsList)
 		}).catch(err => {
 			if (err) {
 				this.spinner = false

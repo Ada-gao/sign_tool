@@ -15,14 +15,14 @@
 					<flexbox-item class="item-right">
 						<div class="flex-product">
 							<div class="flex-right">
-								<p>{{item.product_name}}<span class="important" v-if="showImportant">重点产品</span></p>
+								<p class="firstp">{{item.product_name}}</p><span class="important" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
 								<p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
                 <p v-else>购买金额：{{item.amount}}万</p>
 								<p>投资期限：{{item.investment_horizon}}年</p>
 								<!-- <span v-if="item.product_status === 0" class="box red">在建</span> -->
 								<span v-if="item.product_status === 1" class="box blue">预热中</span>
 								<span v-else-if="item.product_status === 2" class="box green">募集中</span>
-								<!-- <span v-else-if="item.product_status === 3" class="free"></span> -->
+								<span v-else-if="item.product_status === 3" class="box red">已关帐</span>
 								<!-- <span v-else-if="item.product_status === 4" class="box red">存续期</span>
 								<span v-else-if="item.product_status === 5" class="box gary">已下架</span> -->
 							</div>
@@ -59,6 +59,8 @@ export default {
 	},
 	methods: {
 		toProductDetail (id, item) {
+			// console.log(Date.parse(new Date(item.important_start)), Date.parse(new Date(item.important_end)), new Date().getTime(), Date.parse(new Date(item.important_start)) < new Date().getTime(), new Date().getTime() < Date.parse(new Date(item.important_end)))
+			// console.log(Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end)))
 		  if (item.minimal_amount === undefined) {
 		  	return false
 			}
@@ -67,7 +69,7 @@ export default {
 		}
 	},
 	 mounted () {
-		 console.log(new Date().getTime())
+		//  console.log(new Date().getTime())
 	 }
 }
 </script>
@@ -95,6 +97,20 @@ export default {
 			font-size: 30px !important;
 			line-height: 42px;
 		}
+		p.firstp{
+			display: inline-block;
+		}
+		// span.productName{
+		// 	font-size: 30px;
+		// 	line-height: 42px;
+		// 	background: #fff;
+		// 	color: #464646;
+		// 	padding: 0;
+		// 	font-family: PingFangSC-Regular !important;
+		// 	width: 300px;
+		// 	overflow: hidden;
+		// 	text-overflow:ellipsis;
+		// }
 		span.important{
 			padding: 1px 8px;
 			background: #AC1E1C;
@@ -102,7 +118,8 @@ export default {
 			font-family: PingFangSC-Medium;
 			font-size: 18px;
 			vertical-align: top;
-    	margin-left: 10px;
+			margin-left: 10px;
+			line-height: 42px;
 		}
 }
 .flexbox-wrapper .vux-flexbox .item-right span.box{

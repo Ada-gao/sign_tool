@@ -99,6 +99,7 @@ export default {
 	// 		next()
 	// },
 	created () {
+		this.selected = this.$route.params.mark || '1'
 		getList().then(res => {
 			this.appoinmentList = res.data.filter(item => item.status.slice(0, 1) === '1')
 			this.remittanceList = res.data.filter(item => item.status.slice(0, 1) === '2')

@@ -20,22 +20,28 @@
           <p class="cont-text" v-else-if="item.product_type_id === 2">产品类型 ：理财</p>
           <p class="cont-text" v-else-if="item.product_type_id === 3">产品类型 ：固收</p>
           <p class="cont-text" v-else-if="item.product_type_id === 4">产品类型 ：另类</p>
-          <p class="cont-text">产品编号 ：{{item.product_code}}</p>
-          <p class="cont-text">产品LP数量 ：{{item.product_lp}}</p>
+          <p class="cont-text" v-if="item.product_status === 1">产品状态 ：预热中</p>
+          <p class="cont-text" v-else-if="item.product_status === 2">产品状态 ：募集中</p>
+          <p class="cont-text" v-else-if="item.product_status === 3">产品状态 ：已关帐</p>
+          <!-- <p class="cont-text">产品编号 ：{{item.product_code}}</p> -->
+          <!-- <p class="cont-text">募集人数 ：{{item.product_lp}}</p> -->
           <p class="cont-text">基金管理人 : {{item.manager}}</p>
         </div>
         <div class="cont">
-          <p class="cont-text">收益对标基准 ：{{item.annualized_return}}</p>
-          <!-- <p class="cont-text">发行额度 ：{{name}}</p> -->
-          <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p>
-          <p class="cont-text">追加金额 ：{{item.minimal_add_amount}}万</p>
+          <p class="cont-text">收益对标基准 ：{{item.annualized_return}}%</p>
+          <p class="cont-text">发行额度 ：{{item.collection_amount}}万</p>
+          <!-- <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p> -->
+          <p class="cont-text">最低追加金额 ：{{item.minimal_add_amount}}万</p>
           <p class="cont-text">起投金额 : {{item.minimal_amount}}万</p>
-          <!-- <p class="cont-text">投资门槛 : 方新侠</p> -->
+          <!-- <p class="cont-text">投资门槛 : </p> -->
           <p class="cont-text">募集币种 : {{item.currency_id === 1 ? '人民币' : '美元' }}</p>
-          <p class="cont-text">净值 : {{item.net_value}}</p>
+          <!-- <p class="cont-text">净值 : {{item.net_value}}</p> -->
         </div>
         <div class="cont">
           <p class="cont-text">收益分配方式 ：{{item.income_distribution}}</p>
+          <p class="cont-text">开户银行 ：{{item.bank_name}}</p>
+          <p class="cont-text">支行名称 ：{{item.sub_branch_name}}</p>
+          <p class="cont-text">打款帐号 ：{{item.card_no}}</p>
           <p class="cont-text">风险评级 ：{{item.product_risk_level}}</p>
           <p class="cont-text">产品期限 ：{{item.investment_horizon}}</p>
           <p class="cont-text">产品亮点 ：{{item.highlight}}</p>
@@ -81,7 +87,7 @@ export default {
   },
   methods: {
     back () {
-      if (this.$route.params.flag) {
+      if (this.$route.params.flag && !this.$route.params.return) {
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag}})
       } else if (this.$route.params.return) {
         this.$router.push({name: 'HomePage'})
