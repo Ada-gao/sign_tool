@@ -7,10 +7,14 @@
 				<i class="iconfont" @click="search()">&#xe64e;</i>
 			</div>
 			<div class="title">客户列表</div>
-			<div class="item" :data="list" v-for="item in list" :key="item.client_id" @click="chooseName(item)">
+			<div class="item" :data="list" v-for="item in list" :key="item.client_id" @click="chooseName(item)" v-if="show">
 				<span class="name">{{item.name}}（{{item.mobile}}）</span>
 				<span class="tip" v-if="item.client_type === '0'">普通投资者</span>
 				<span class="tip" v-if="item.client_type === '1'">专业投资者</span>
+			</div>
+			<div class="noList" v-if="!show">
+				<img src="static/img/customerIcon.png" alt="">
+        <div>暂时没有可预约客户</div>
 			</div>
 		</div>
 	</div>
@@ -26,16 +30,17 @@ export default {
 		return {
 			keyValue: '',
 			list: '',
-			selectFlag: 'selectFlag'
+			selectFlag: 'selectFlag',
+			show: false
 		}
 	},
 	methods: {
 		back () {
-			this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag}})
+			this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, riskLevel: this.$route.params.riskLevel}})
 		},
 		search () {
 			let obj = {q: this.keyValue}
-			appointmentList(obj).then(res => {
+			appointmentList(this.$route.params.riskLevel, obj).then(res => {
 				this.list = res.data
 			})
 		},
@@ -43,8 +48,11 @@ export default {
 			this.$router.push({name: 'ProductAppointment', params: {selectFlag: this.selectFlag, nameItem: item, flag: this.$route.params.flag}})
 		},
 		getList () {
-			appointmentList().then(res => {
+			appointmentList(this.$route.params.riskLevel).then(res => {
 				this.list = res.data
+				if (res.data.length === '0') {
+					this.show = true
+				}
 			})
 		}
 	},
@@ -56,6 +64,7 @@ export default {
 <style lang="less">
 .customList{
 	font-family: PingFangSC-Regular;
+	height: 100%;
 	.wrapper{
 		.search{
 			width: 100%;
@@ -107,6 +116,16 @@ export default {
 			box-sizing: border-box;
 			.tip{
 				float: right;
+			}
+		}
+		.noList{
+			width: 100%;
+			text-align: center;
+			margin-top: 250px;
+			div{
+				font-size: 32px;
+				color: #888888;
+				margin-top: 88px;
 			}
 		}
 	}

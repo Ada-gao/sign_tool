@@ -15,7 +15,9 @@
       <div class="product">
         <div class="title"><span class="line-blue"></span>产品信息</div>
         <div class="cont">
-          <p class="cont-text">产品名称 ：{{item.product_name}}</p>
+          <p class="cont-text firstName">产品名称 ：{{item.product_name}}
+            <span class="important" v-if="this.$route.params.important">重点产品</span>
+          </p>
           <p class="cont-text" v-if="item.product_type_id === 1">产品类型 ：二级市场</p>
           <p class="cont-text" v-else-if="item.product_type_id === 2">产品类型 ：理财</p>
           <p class="cont-text" v-else-if="item.product_type_id === 3">产品类型 ：固收</p>
@@ -43,17 +45,20 @@
           <p class="cont-text">支行名称 ：{{item.sub_branch_name}}</p>
           <p class="cont-text">打款帐号 ：{{item.card_no}}</p>
           <p class="cont-text">风险评级 ：{{item.product_risk_level}}</p>
-          <p class="cont-text">产品期限 ：{{item.investment_horizon}}</p>
+          <p class="cont-text">产品期限 ：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
           <p class="cont-text">产品亮点 ：{{item.highlight}}</p>
         </div>
         <div class="report-pdf">
           <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
           <div class="doc" @click="toPptReport(id)">产品说明材料<span class="iconfont right">&#xe731;</span></div>
           <div class="doc" @click="toProductReport(id)">产品公告<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toProductReport(id)">上传客户材料<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toUploadCustomer(id)">上传客户材料<span class="iconfont right">&#xe731;</span></div>
         </div>
         <div class="reservation" v-if="showBtn">
           <mt-button type="primary" @click="toAppointment">预约</mt-button>
+        </div>
+        <div class="reservation reservationDisabled" v-if="item.product_status == 2 && item.is_pause === '1'">
+          <mt-button type="primary">预约</mt-button>
         </div>
       </div>
     </div>
@@ -89,23 +94,26 @@ export default {
     back () {
       if (this.$route.params.flag && !this.$route.params.return) {
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag}})
-      } else if (this.$route.params.return) {
-        this.$router.push({name: 'HomePage'})
+      } else if (this.$route.params.flag === 'reservationList' && this.$route.params.return === 'none') {
+        this.$router.push({name: 'ReservationList'})
       } else {
         this.$router.push({name: 'HomePage'})
       }
     },
     toPdfReport (id) {
-			this.$router.push({name: 'PdfReport', params: {id: id}})
+			this.$router.push({name: 'PdfReport', params: {id: id, mark: 0}})
     },
     toPptReport (id) {
-			this.$router.push({name: 'PptReport', params: {id: id}})
+			this.$router.push({name: 'PdfReport', params: {id: id, mark: 1}})
     },
     toProductReport (id) {
-			this.$router.push({name: 'ProductReport', params: {id: id}})
+			this.$router.push({name: 'PdfReport', params: {id: id, mark: 2}})
+    },
+    toUploadCustomer (id) {
+			this.$router.push({name: 'PdfReport', params: {id: id, mark: 3}})
     },
     toAppointment () {
-      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail', minimalAmount: this.item.minimal_amount}})
+      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail', minimalAmount: this.item.minimal_amount, riskLevel: this.item.product_risk_level}})
     }
   },
   mounted () {
@@ -115,7 +123,7 @@ export default {
     } else {
       this.item = JSON.parse(window.localStorage.getItem('productDetail'))
     }
-    if (this.$route.params.flag === 'productDetail' || this.$route.params.flag === 'reservationList' || this.item.product_status !== 2) {
+    if (this.$route.params.showBtn === 'hide' || this.item.product_status !== 2 || this.item.is_pause === '1') {
       this.showBtn = false
     }
     window.scroll(0, 0)
@@ -189,7 +197,7 @@ export default {
         display: inline-block;
         border-radius: 5px;
         // background-color: #146AB2;
-        margin: 0 15px;
+        margin: 0 10px;
         vertical-align: text-bottom;
       }
     }
@@ -201,7 +209,22 @@ export default {
       color: #333333;
       .cont-text {
         font-size: 28px; /*px*/
-        padding: 32px 0 32px 29px;
+        padding: 20px 0 20px 20px;
+        .important{
+          padding: 1px 8px;
+          background: #AC1E1C;
+          border-radius: 5px;
+          font-family: PingFangSC-Medium;
+          font-size: 18px;
+          // vertical-align: middle;
+          margin-left: 20px;
+          color: #fff;
+          position: absolute;
+          top: 27px;
+        }
+      }
+      .firstName{
+        position: relative;
       }
     }
     .report-pdf {
@@ -238,6 +261,11 @@ export default {
           font-size: 28px;
           color: #FFFFFF;
         }
+      }
+    }
+    .reservationDisabled{
+      .mint-button.mint-button--primary.mint-button--normal{
+        background: #ccc;
       }
     }
     .btn-24 {

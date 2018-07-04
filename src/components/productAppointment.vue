@@ -1,6 +1,7 @@
 <template>
     <div class="productAppointment">
     	<x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">产品预约</x-header>
+			<div class="spaceBack" v-if="showSpace" @click="spaceClick" @touchmove.prevent></div>
 			<div class="wrapper">
 				<div class="topBar">
 					<div class="title">{{topTitle}}</div>
@@ -63,7 +64,7 @@
 								<mt-cell title="银行卡信息"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
 									<div class="warn" v-if="chooseSelectedBank">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
 									<div class="card" v-if="uploadCard">
-										<mt-field label="银行卡号:" v-model="cardnum"></mt-field>
+										<mt-field label="银行卡号:" v-model="cardnum" @change="cardNumChange" @focus.native.capture="cardFocus"></mt-field>
 										<mt-field label="银行名称:" disabled v-model="bankname">
 											<i class="iconfont" @click="chooseBankName">&#xe731;</i>
 										</mt-field>
@@ -81,7 +82,7 @@
 												</div>
 											</mt-picker>
 										</mt-popup>
-										<mt-field label="支行名称:" v-model="bankname1"></mt-field>
+										<mt-field label="支行名称:" v-model="bankname1" @focus.native.capture="cardFocus"></mt-field>
 										<camera :popupVisible="popupVisible"
               				@imgHandler="imageHandler1"
               				:imageSrc="cardUrl"
@@ -93,9 +94,9 @@
 										</camera>
 									</div>
 									<div class="card1" v-if="uploadCardS">
-										<mt-cell title="银行卡号:">{{cardNum}}</mt-cell>
-										<mt-cell title="银行名称:">{{cardName}}</mt-cell>
-										<mt-cell title="支行名称:">{{cardName1}}</mt-cell>
+										<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
+										<mt-cell title="银行名称:" :value="cardName"></mt-cell>
+										<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
 										<img class="camera" :src="cardUrl">
 											<!-- <img :src="item.index" alt="">
 										</div> -->
@@ -169,9 +170,9 @@
 							<i slot="icon" class="iconfont">&#xe697;</i>
 						</mt-cell>
 						<div class="cont">
-							<mt-cell title="合同编号：">{{contractNumW}}</mt-cell>
-							<mt-cell title="快递公司：">{{expresszCom}}</mt-cell>
-							<mt-cell title="快递编号：">{{expressNums}}</mt-cell>
+							<mt-cell title="合同编号：" :value="contractNumW"></mt-cell>
+							<mt-cell title="快递公司：" :value="expresszCom"></mt-cell>
+							<mt-cell title="快递编号：" :value="expressNums"></mt-cell>
 						</div>
 					</div>
 					<div class="mailingContract" v-if="sendEmailW">
@@ -344,6 +345,8 @@ export default {
 			refundUrls: '',
 			materialsUrls: '',
 			evidenceUrls: '',
+			showSpace: false,
+			// headerStyle: 'position: fixed!important',
 			slotsM: [
 				{
           flex: 1,
@@ -408,8 +411,24 @@ export default {
 					this.returnDetail()
 				}
 			},
+			spaceClick () {
+				this.showSpace = false
+			},
 			chooseName () {
-				this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag}})
+				if (this.$route.params.riskLevel) {
+					this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag, riskLevel: this.$route.params.riskLevel}})
+				} else {
+					let arr = []
+					getProducts().then(res => {
+						res.data.map((item, index) => {
+							item.products.map((info, index) => {
+								arr.push(info)
+							})
+						})
+						let item = arr.find(item => item.product_id === this.product_id)
+						this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag, riskLevel: item.product_risk_level}})
+					})
+				}
 			},
 			chooseMoney () {
         this.showMoney = true
@@ -431,7 +450,11 @@ export default {
         this.popupVisible = data
 			},
 			chooseBankName () {
-				this.showBankCardName = true
+				if (this.alertMsg === true) {
+					return
+				} else {
+					this.showBankCardName = true
+				}
 			},
 			onValuesChange (picker, values) {
 				if (values[0] !== undefined) {
@@ -517,15 +540,26 @@ export default {
 						})
 					})
 					let item = arr.find(item => item.product_id === this.product_id)
-					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, return: 'none', flag: this.$route.params.fromUrl || this.$route.params.flag}})
+					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, return: 'none', flag: this.$route.params.fromUrl || this.$route.params.flag, showBtn: 'show'}})
 				})
 				this.submitDialog = false
 			},
 			chooseBankCard () {
 				this.$router.push({name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}})
 			},
+			cardFocus () {
+				// this.showSpace = true
+				// this.headerStyle = 'position: static!important'
+				console.log(document.documentElement.clientHeight)
+			},
+			cardNumChange () {
+			},
 			submitPayMaterials () {
-				if (this.evidenceUrl === [] || this.materialSrc === [] || this.cardUrl === '' || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
+					this.alertMsg = true
+					this.msgDetail = '银行卡输入有误'
+				}
+				if (this.evidenceUrl === undefined || this.materialSrc.length === 0 || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
 					this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
 					return
@@ -546,6 +580,15 @@ export default {
 				})
 			},
 			repeatSubmitPayMaterials () {
+				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
+					this.alertMsg = true
+					this.msgDetail = '银行卡输入有误'
+				}
+				if (this.evidenceUrl === undefined || this.materialSrc.length === 0 || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+					this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					return
+				}
 				let obj = {
 					'file_urls_payments': this.evidenceUrl,
 					'file_urls_trades': this.materialSrc,
@@ -575,6 +618,11 @@ export default {
 				this.evidenceUrl = data
 			},
 			refund () {
+				if (this.refundSrc.length === 0) {
+					this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					return
+				}
 				let obj = {
 					'file_refund_urls': this.refundSrc
 				}
@@ -633,7 +681,7 @@ export default {
 						})
 					})
 					let item = arr.find(item => item.product_id === this.product_id)
-					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, flag: this.$route.params.fromUrl || this.$route.params.flag}})
+					this.$router.push({name: 'ProductDetail', params: {id: this.product_id, item: item, flag: this.$route.params.fromUrl || this.$route.params.flag, showBtn: 'hide'}})
 				})
 			},
 			writeAppointment () {
@@ -662,12 +710,14 @@ export default {
 					this.alreadyPass = false
 					this.appointmentCode = false
 					this.repeatPayMaterials = false
-					appointmentList().then(res => {
+					this.orderCloseSuc = false
+					appointmentList(this.$route.params.riskLevel).then(res => {
 						this.appointmentList = res.data
 					})
 			},
 			getList () {
 				this.appointmentId = this.$route.params.appointmentId
+				this.orderCloseSuc = false
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
 					this.product_id = this.appointmentList.product_id
@@ -726,6 +776,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1002') {
 						this.topTitle = '预约失败'
@@ -740,9 +791,9 @@ export default {
 							let item = arr.find(item => item.product_id === this.product_id)
 							this.minimalAmount = item.minimal_amount
 						})
-						this.name = ''
-						this.cMob = ''
-						this.money = ''
+						this.name = this.appointmentList.client_name
+						this.cMob = this.appointmentList.client_mobile
+						this.money = this.appointmentList.appointment_amount + '万'
 						this.submitAppointmentBtnShow = false
 						this.repeatAppointmentBtnShow = true
 						this.showNameClick = true
@@ -768,6 +819,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1003') {
 						this.topTitle = '预约成功'
@@ -797,6 +849,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.cardnum = ''
 						this.bankname = ''
 						this.bankname1 = ''
@@ -828,6 +881,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1005') {
 						this.topTitle = '预约失效'
@@ -856,6 +910,7 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '2001') {
 						this.topTitle = '打款审核中'
@@ -886,6 +941,7 @@ export default {
 						this.contractManage = false
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2002') {
 						this.topTitle = '待补全材料'
@@ -915,6 +971,7 @@ export default {
 						this.giveMoneySuc = false
 						this.giveMoneyIng = false
 						this.contractManage = false
+						this.orderCloseSuc = false
 						this.cardnum = ''
 						this.bankname = ''
 						this.bankname1 = ''
@@ -948,6 +1005,7 @@ export default {
 						this.contractManage = false
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '2'
 						if (this.appointmentList.refund_status === '0') {
 							this.topTitle = '订单关闭 无需退款'
@@ -969,6 +1027,9 @@ export default {
 						}
 					} else if (this.appointmentList.status === '2004') {
 						this.topTitle = '打款审核通过'
+						this.cantractNum = ''
+						this.expressCompany = ''
+						this.expressNum = ''
 						this.uploadShow = true
 						this.uploadCardS = true
 						this.giveMoneySuc = true
@@ -994,6 +1055,7 @@ export default {
 						this.contractManage = false
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '2'
 					} else if (this.appointmentList.status === '3001') {
 						this.topTitle = '待收到合同'
@@ -1023,6 +1085,7 @@ export default {
 						this.closeOrderReason	= false
 						this.repeatPayMaterials = false
 						this.sendEmailW = false
+						this.orderCloseSuc = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3002') {
 						this.topTitle = '合同审核中'
@@ -1052,6 +1115,7 @@ export default {
 						this.closeOrderReason	= false
 						this.repeatPayMaterials = false
 						this.sendEmailW = false
+						this.orderCloseSuc = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3003') {
 						this.topTitle = '合同审核不通过'
@@ -1081,6 +1145,7 @@ export default {
 						this.closeOrderReason	= false
 						this.sendEmail = false
 						this.repeatPayMaterials = false
+						this.orderCloseSuc = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3004') {
 						this.topTitle = '合同审核通过'
@@ -1110,6 +1175,7 @@ export default {
 						this.closeOrderReason	= false
 						this.repeatPayMaterials = false
 						this.sendEmailW = false
+						this.orderCloseSuc = false
 						this.selected = '3'
 					}
 				})
@@ -1184,6 +1250,16 @@ export default {
 <style lang="less">
 .productAppointment{
 	font-family: PingFangSC-Regular;
+		.spaceBack{
+			position: fixed;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			opacity: 0.5;
+			background: transparent;
+			z-index: 100;
+		}
 	.wrapper{
 		.topBar{
 			height: 317px;

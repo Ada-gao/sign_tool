@@ -1,5 +1,5 @@
 <template>
-  <div class="loginPage">
+  <div class="loginPage" @touchmove.prevent>
     <x-header :left-options="{showBack: false}">登录</x-header>
     <div class="wrapper">
       <group>
@@ -186,7 +186,7 @@ export default {
       })
       .catch(err => {
         if (err) {
-          this.errorMsg = '请输入手机号'
+          this.errorMsg = '验证码发送失败'
           setTimeout(() => {
             this.errorMsg = ''
           }, 5000)
@@ -202,6 +202,14 @@ export default {
   height: 100%;
   font-family: PingFangSC-Regular;
   background: #F5F5F5;
+  .spaceAll{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 101;
+  }
   .wrapper {
     .weui-cells{
       background: #F5F5F5;

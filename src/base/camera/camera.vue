@@ -302,9 +302,9 @@
         .delete_img {
           position: absolute;
           text-align: right;
-          top: -20px;
+          top: -11px;
           right: 0;
-          font-size: 50px;
+          font-size: 30px;
           line-height: 30px;
           color: #000;
           width: 50px;

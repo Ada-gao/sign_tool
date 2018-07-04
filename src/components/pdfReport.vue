@@ -2,19 +2,22 @@
   <div class="pdfPage">
     <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
     <div class="wrapper">
-      <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true">
+      <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true" v-if="this.$route.params.mark !== 3">
         <template slot-scope="props">
             <div @click="get(props.item)">
 						<i class="eye iconfont">&#xe6ce;</i>
             </div>
         </template>
-        </check-list>
+      </check-list>
+      <ul>
+        <li v-for="(item, index) in documentList" :key="index">{{item.file_name}}</li>
+      </ul>
     </div>
-    <div class="select">
-    <div :class="'my_checkbox' + (this.flag ? ' checked' : '' )">
-      <div :class="'box mint-toast-icon mintui mintui-success' + (this.flag ? ' checked' : '' )" @click="checkAll"></div>
-      <div class="name">全选</div>
-    </div>
+    <div class="select" v-if="this.$route.params.mark !== 3">
+      <div :class="'my_checkbox' + (this.flag ? ' checked' : '' )">
+        <div :class="'box mint-toast-icon mintui mintui-success' + (this.flag ? ' checked' : '' )" @click="checkAll"></div>
+        <div class="name">全选</div>
+      </div>
       <button class="button" @click="sendEmail">发送到邮箱</button>
       <x-dialog v-model="dialogTableVisible" class="dialog-demo pdfCloseDialog" hide-on-blur>
           <div class="confirm">请确认您的邮箱</div>
@@ -41,7 +44,7 @@
 <script type="text/ecmascript-6">
 import CheckList from '@/base/checkList/checkList'
 import { XHeader, XDialog, XInput, XButton } from 'vux'
-import { getTransaction, sendTrade } from '@/service/api/products'
+import { getTransaction, sendTrade, getProductFiles, getAnnoucement, getCustomerMaterials } from '@/service/api/products'
 import pdf from '@/base/report/pdf'
 let Base64 = require('js-base64').Base64
 export default {
@@ -57,31 +60,30 @@ export default {
     return {
       value: [],
       flag: false,
-    //   checkAll: [],
-        checkedList: [],
-        checkedVal: '',
-        documentList: [],
-        dialogTableVisible: false,
-        successDialog: false,
-        append: true,
-        input: '',
-        newEmail: '',
-        newUserId: '',
-        newList: [],
-        newNameList: [],
-        newUrlList: [],
-        option: ['全选'],
-        clear: false,
-        noSelectDialog: false,
-        // pdfMaterial: false,
-        pdfUrl: '',
-        title: '交易所需材料'
+      checkedList: [],
+      checkedVal: '',
+      documentList: [],
+      dialogTableVisible: false,
+      successDialog: false,
+      append: true,
+      input: '',
+      newEmail: '',
+      newUserId: '',
+      newList: [],
+      newNameList: [],
+      newUrlList: [],
+      option: ['全选'],
+      clear: false,
+      noSelectDialog: false,
+      pdfUrl: '',
+      title: '',
+      type: null,
+      customerNameList: []
     }
 	},
 	watch: {
     value: {
       handler: function (newVal, oldVal) {
-        // console.log(newVal, oldVal)
         if (newVal.length === 0 && oldVal.length === 0) {
         } else {
           this.flag = !this.documentList.some(item => newVal.indexOf(item) === -1)
@@ -92,7 +94,7 @@ export default {
   },
   methods: {
     get (test) {
-			this.$router.push({name: 'Report', params: {url: Base64.encode(test.file_path), tip: this.title}})
+			this.$router.push({name: 'Report', params: {url: Base64.encode(test.file_path), tip: this.title, mark: this.type, id: this.id}})
     },
     checkAll () {
 			this.flag = !this.flag
@@ -106,17 +108,27 @@ export default {
       },
       sendMessage () {
 				this.dialogTableVisible = false
-				this.checkedList = []
-				this.value.map((item, index) => {
-					this.checkedList.push(item.transaction_file_id)
-				})
-        let obj = {'email': this.newEmail, 'checkedList': this.checkedList, 'userId': this.newUserId, 'type': 0}
+        this.checkedList = []
+        if (this.$route.params.mark === 0) {
+            this.value.map((item, index) => {
+					  this.checkedList.push(item.transaction_file_id)
+				  })
+        } else if (this.$route.params.mark === 1) {
+            this.value.map((item, index) => {
+            this.checkedList.push(item.product_file_id)
+          })
+        } else if (this.$route.params.mark === 2) {
+            this.value.map((item, index) => {
+            this.checkedList.push(item.announcement_file_id)
+          })
+        }
+        let obj = {'email': this.newEmail, 'checkedList': this.checkedList, 'userId': this.newUserId, 'type': this.type}
         sendTrade(obj).then(res => {
-          console.log(res)
           this.successDialog = true
         }).catch(err => {
-          console.log(err)
-          this.noSelectDialog = true
+          if (err) {
+            this.noSelectDialog = true
+          }
         })
       },
       successSure () {
@@ -129,24 +141,66 @@ export default {
 	created () {
 		this.id = this.$route.params.id
 		this.$nextTick(function () {
-		getTransaction(this.id).then(res => {
-			this.documentList = res.data
-      const list = []
-      const nameList = []
-      const urlList = []
-      this.documentList.map((item, index) => {
-        list.push(item.file_path + ';' + item.name)
-        nameList.push({label: item.name, value: item.transaction_file_id})
-        urlList.push(item.transaction_file_id)
-      })
-      this.newList = list
-      this.value = nameList
-			this.newUrlList = urlList
-			})
+      if (this.$route.params.mark === 0) {
+        this.type = 0
+        this.title = '交易所需材料'
+        getTransaction(this.id).then(res => {
+          this.documentList = res.data
+          const list = []
+          const nameList = []
+          const urlList = []
+          this.documentList.map((item, index) => {
+            list.push(item.file_path + ';' + item.name)
+            nameList.push({label: item.name, value: item.transaction_file_id})
+            urlList.push(item.transaction_file_id)
+          })
+          this.newList = list
+          this.value = nameList
+          this.newUrlList = urlList
+        })
+      } else if (this.$route.params.mark === 1) {
+        this.type = 1
+        this.title = '产品说明材料'
+        getProductFiles(this.id).then(res => {
+          this.documentList = res.data
+          const list = []
+          const nameList = []
+          const urlList = []
+          this.documentList.map((item, index) => {
+            list.push(item.file_path + ';' + item.name)
+            nameList.push({label: item.name, value: item.transaction_file_id})
+            urlList.push(item.transaction_file_id)
+          })
+          this.newList = list
+          this.value = nameList
+          this.newUrlList = urlList
+        })
+      } else if (this.$route.params.mark === 2) {
+        this.type = 2
+        this.title = '产品公告'
+        getAnnoucement(this.id).then(res => {
+          this.documentList = res.data
+          const list = []
+          const nameList = []
+          const urlList = []
+          this.documentList.map((item, index) => {
+            list.push(item.file_path + ';' + item.name)
+            nameList.push({label: item.name, value: item.transaction_file_id})
+            urlList.push(item.transaction_file_id)
+          })
+          this.newList = list
+          this.value = nameList
+          this.newUrlList = urlList
+        })
+      } else if (this.$route.params.mark === 3) {
+        this.title = '上传客户材料'
+        getCustomerMaterials(this.id).then(res => {
+          this.documentList = res.data.data
+        })
+      }
 		})
 	},
   mounted () {
-    this.item = this.$route.params.item
     this.newEmail = JSON.parse(window.localStorage.getItem('data')).email
     this.newUserId = JSON.parse(window.localStorage.getItem('data')).userId
 	}
@@ -163,7 +217,17 @@ export default {
 		.eye{
 			font-size: 40px;
 			color: #2A7DC1;
-		}
+    }
+    li{
+      height: 82px;
+      line-height: 82px;
+      background: #fff;
+      font-family: PingFangSC-Regular;
+      font-size: 28px;
+      color: #333333;
+      margin-bottom: 8px;
+      padding-left: 20px;
+    }
 	}
 	.select{
 		width: 100%;

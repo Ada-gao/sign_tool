@@ -44,6 +44,17 @@ export function getAnnoucement (productId) {
 }
 
 /**
+ * 上传客户材料接口
+ * @param productId
+ */
+export function getCustomerMaterials (productId) {
+  return axios({
+    url: `/v1/product/client/files/${productId}/`,
+    method: 'get'
+  })
+}
+
+/**
  * 向客户邮箱发送产品文件
  * @param obj
  */

@@ -1,6 +1,6 @@
 <template>
     <div class="material">
-        <x-header :left-options="{backText: ''}" >{{title}}</x-header>
+        <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
         <div class="wrapper">
             <div class="pdf">
                 <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page"></canvas>
@@ -28,6 +28,10 @@ export default {
     }
   },
   methods: {
+    back () {
+      console.log(this.$route.params.mask)
+      this.$router.push({name: 'PdfReport', params: {id: this.$route.params.id, mark: this.$route.params.mark}})
+    },
     renderPage (num) {
       let _this = this
       this.pdfDoc.getPage(num).then(function (page) {

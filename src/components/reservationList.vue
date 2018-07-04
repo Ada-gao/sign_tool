@@ -33,7 +33,7 @@
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
 							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
-							<span class="tit">预约状态：
+							<span class="tit">打款状态：
 								<span class="cont" v-if='item.status === "2001"'>打款审核中</span>
 								<span class="cont" v-if='item.status === "2002"'>待补全材料</span>
 								<span class="cont" v-if='item.status === "2003"'>订单关闭</span>
@@ -57,7 +57,7 @@
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
 							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
-							<span class="tit">预约状态：
+							<span class="tit">合同状态：
 								<span class="cont" v-if='item.status === "3001"'>待收到合同</span>
 								<span class="cont" v-if='item.status === "3002"'>合同审核中</span>
 								<span class="cont" v-if='item.status === "3003"'>合同审核不通过</span>

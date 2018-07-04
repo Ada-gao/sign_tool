@@ -26,6 +26,8 @@
           <span class="tabitem" :class="{'active': idx === 0}" @click="changeActiveIndex">客户列表</span>
           <i class="sepa"></i>
           <span class="tabitem" :class="{'active': idx === 1}" @click="changeActiveIndex">潜客列表</span>
+          <i class="sepa"></i>
+          <span class="tabitem" :class="{'active': idx === 2}" @click="changeActiveIndex">手机未验证客户</span>
         </div>
         <div class="list_box">
           <mt-spinner type="fading-circle"
@@ -72,11 +74,35 @@
               </router-link>
             </li>
           </ul>
+          <ul v-show="idx === 2" :data="customers1">
+            <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
+              <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
+                <div class="customer_list">
+                  <div class="customer_left">
+                    <span>{{item.name}}</span>
+                    <span v-show="item.client_no">（{{item.client_no}}）</span>
+                    <span style="display: block;">{{item.mobile}}</span>
+                  </div>
+                  <div class="customer_right">
+                    <span class="gray_item" v-show="item.certification_status === '0'">未认证</span>
+                    <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
+                    <span class="gray_item" v-show="item.certification_status === '2'">已认证</span>
+                    <span class="gray_item" v-show="item.certification_status === '3'">已驳回</span>
+                    <i class="iconfont icon-right"></i>
+                  </div>
+                </div>
+              </router-link>
+            </li>
+          </ul>
           <div v-show="idx === 0 && customers.length === 0 && !this.isShowSpinner" class="no_data">
             <img src="static/img/customerIcon.png">
             <span>亲，暂时没有客户哦</span>
           </div>
           <div v-show="idx === 1 && customers1.length === 0 && !this.isShowSpinner"  class="no_data">
+            <img src="static/img/customerIcon.png">
+            <span>亲，暂时没有潜客哦</span>
+          </div>
+          <div v-show="idx === 2 && customers1.length === 0 && !this.isShowSpinner"  class="no_data">
             <img src="static/img/customerIcon.png">
             <span>亲，暂时没有潜客哦</span>
           </div>
@@ -207,10 +233,13 @@
         vertical-align: middle;
       }
       .tabitem:nth-of-type(1) {
-        width: 374px;
+        width: 246px;
       }
       .tabitem:nth-of-type(2) {
-        width: 373px;
+        width: 246px;
+      }
+      .tabitem:nth-of-type(3) {
+        width: 246px;
       }
       .active {
         color: #2672ba;

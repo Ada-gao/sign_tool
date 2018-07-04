@@ -53,7 +53,7 @@ export default {
 <style scoped lang="less">
 .weui-tabbar {
 	.weui-tabbar__item {
-		height: 96px;
+		height: 90px;
 		font-size: 26px; /*px*/
     box-sizing: border-box;
     text-decoration: none;

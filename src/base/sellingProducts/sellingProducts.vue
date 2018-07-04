@@ -65,7 +65,7 @@ export default {
 		  	return false
 			}
 			window.localStorage.setItem('productDetail', JSON.stringify(item))
-			this.$router.push({name: 'ProductDetail', params: {id: id, item: item}})
+			this.$router.push({name: 'ProductDetail', params: {id: id, item: item, important: Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))}})
 		}
 	},
 	 mounted () {
@@ -96,21 +96,15 @@ export default {
 		p{
 			font-size: 30px !important;
 			line-height: 42px;
+			height: 42px;
+			max-width: 300px;
+			overflow: hidden;
+			text-overflow:ellipsis;
+			white-space: nowrap;
 		}
 		p.firstp{
 			display: inline-block;
 		}
-		// span.productName{
-		// 	font-size: 30px;
-		// 	line-height: 42px;
-		// 	background: #fff;
-		// 	color: #464646;
-		// 	padding: 0;
-		// 	font-family: PingFangSC-Regular !important;
-		// 	width: 300px;
-		// 	overflow: hidden;
-		// 	text-overflow:ellipsis;
-		// }
 		span.important{
 			padding: 1px 8px;
 			background: #AC1E1C;

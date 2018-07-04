@@ -16,6 +16,17 @@
             <span class="fr">{{data.name}}</span>
           </cell-box>
           <cell-box>
+            <label for="name">客户姓别：</label>
+            <span class="fr">{{data.name}}</span>
+          </cell-box>
+          <cell-box>
+            <label for="name">客户编号：</label>
+            <span class="fr">{{data.name}}</span>
+          </cell-box>
+        </group>
+        <div class="space"></div>
+        <group class="no_bbottom">
+          <cell-box>
             <label for="phone">国籍：</label>
             <span
               class="fr"
@@ -30,10 +41,48 @@
             <label for="email">常住中国城市：</label>
             <span class="fr">{{data.city}}</span>
           </cell-box>
-        </group>
-        <div class="space"></div>
-        <group class="no_bbottom">
           <cell-box>
+            <label for="name">常住城市：</label>
+            <span class="fr">{{data.name}}</span>
+          </cell-box>
+          <cell-box>
+            <label for="name">微信：</label>
+            <span class="fr">{{data.name}}</span>
+          </cell-box>
+          <cell-box>
+            <label for="name">邮箱：</label>
+            <span class="fr">{{data.name}}</span>
+          </cell-box>
+          <cell-box>
+            <label for="name">客户电话：</label>
+            <span class="fr">{{data.name}}</span>
+          </cell-box>
+          <div class="space"></div>
+          <cell-box>
+            <label>身份证号：</label>
+            <span class="fr">{{data.id_no}}</span>
+          </cell-box>
+          <cell-box>
+            <label>证件有效期：</label>
+            <span class="fr">{{data.id_no}}</span>
+          </cell-box>
+          <cell-box>
+            <label>出生日期：</label>
+            <span class="fr">{{data.id_no}}</span>
+          </cell-box>
+          <cell-box>
+            <label>地址：</label>
+            <span class="fr">{{data.city}}</span>
+          </cell-box>
+          <cell-box>
+            <label>录入时间：</label>
+            <span class="fr">{{data.city}}</span>
+          </cell-box>
+          <cell-box>
+            <label>资产管理规模：</label>
+            <span class="fr">{{data.city}}</span>
+          </cell-box>
+          <!-- <cell-box>
             <label>证件类型：</label>
             <span
               class="fr"
@@ -59,28 +108,19 @@
               class="fr"
               v-if="data.id_type ==='5'"
             >其他</span>
-          </cell-box>
-          <cell-box>
-            <label>证件号码：</label>
-            <span class="fr">{{data.id_no}}</span>
-          </cell-box>
-          <cell-box>
-            <label>地址：</label>
-            <span class="fr">{{data.city}}</span>
-          </cell-box>
+          </cell-box> -->
         </group>
-        <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
+        <div class="call-btn">
+          <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
+        </div>
       </div>
-      <div class="space1"></div>
+      <div class="space"></div>
       <div class="product">
         <group>
-          <cell
-            is-lilnk
-            :link="'/purchasedProducts/'+clientId"
-            value-align="left"
-            title="已购买产品"
-          >
-          </cell>
+          <cell-box>
+            <label>实名认证：</label>
+            <span class="fr">{{data.city}}</span>
+          </cell-box>
           <div class="space1"></div>
           <cell
             is-link
@@ -95,6 +135,14 @@
                 title="银行卡信息"
           ></cell>
           <div class="space1"></div>
+          <cell
+            is-lilnk
+            :link="'/purchasedProducts/'+clientId"
+            value-align="left"
+            title="已购买产品"
+          >
+          </cell>
+          <div class="space1"></div>
         </group>
       </div>
       <div class="remark">
@@ -106,14 +154,14 @@
             <div class="iText text-overflow-one">{{item.remark}}</div>
             <span class="iTime">{{item.create_time}}</span>
             <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i
-              class="iconfont icon-view"></i>&nbsp;查看
+              class="iconfont">&#xe624;</i>&nbsp;查看
             </router-link>
           </li>
         </ul>
         <div class="space"></div>
       </div>
       <div class="bottom-remark">
-        <div class="add clearfix" @click="addNew">新增备注</div>
+        <div class="add clearfix" @click="addNew">填写备注</div>
       </div>
       <x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>
         <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
@@ -264,24 +312,28 @@
         transform: translateY(0);
       }
     }
-    .callout {
-      display: block;
-      margin: 70px auto 12px;
-      width: 710px;
-      height: 72px;
+    .call-btn{
+      height: 132px;
+      background: #fff;
       text-align: center;
-      line-height: 72px;
-      background: #2672BA;
-      border-radius: 10px;
-      font-size: 28px;
-      color: #FFFFFF;
-      &:link,
-      &:visited,
-      &:hover,
-      &:active {
-        text-decoration: none;
+      line-height: 132px;
+      .callout {
+        display: inline-block;
+        width: 710px;
+        height: 72px;
+        text-align: center;
+        line-height: 72px;
+        background: #2672BA;
+        border-radius: 10px;
+        font-size: 28px;
+        color: #FFFFFF;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          text-decoration: none;
+        }
       }
-
     }
     .report {
       .vux-tap-active {
