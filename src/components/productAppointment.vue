@@ -1,7 +1,7 @@
 <template>
-    <div class="productAppointment">
+    <div class="productAppointment" @touchmove="touchScreen">
     	<x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">产品预约</x-header>
-			<div class="spaceBack" v-if="showSpace" @click="spaceClick" @touchmove.prevent></div>
+			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
 			<div class="wrapper">
 				<div class="topBar">
 					<div class="title">{{topTitle}}</div>
@@ -64,7 +64,7 @@
 								<mt-cell title="银行卡信息"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
 									<div class="warn" v-if="chooseSelectedBank">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
 									<div class="card" v-if="uploadCard">
-										<mt-field label="银行卡号:" v-model="cardnum" @change="cardNumChange" @focus.native.capture="cardFocus"></mt-field>
+										<mt-field label="银行卡号:" v-model="cardnum" ref="cardInput" @change="cardNumChange" @focus.native.capture="cardFocus" @blur.native.capture="cardBlur"></mt-field>
 										<mt-field label="银行名称:" disabled v-model="bankname">
 											<i class="iconfont" @click="chooseBankName">&#xe731;</i>
 										</mt-field>
@@ -414,6 +414,11 @@ export default {
 			spaceClick () {
 				this.showSpace = false
 			},
+			touchScreen () {
+				document.getElementsByTagName('input')[0].blur()
+				document.getElementsByTagName('input')[1].blur()
+				document.getElementsByTagName('input')[2].blur()
+			},
 			chooseName () {
 				if (this.$route.params.riskLevel) {
 					this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag, riskLevel: this.$route.params.riskLevel}})
@@ -451,7 +456,7 @@ export default {
 			},
 			chooseBankName () {
 				if (this.alertMsg === true) {
-					return
+					// return
 				} else {
 					this.showBankCardName = true
 				}
@@ -548,9 +553,8 @@ export default {
 				this.$router.push({name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}})
 			},
 			cardFocus () {
-				// this.showSpace = true
-				// this.headerStyle = 'position: static!important'
-				console.log(document.documentElement.clientHeight)
+			},
+			cardBlur () {
 			},
 			cardNumChange () {
 			},
