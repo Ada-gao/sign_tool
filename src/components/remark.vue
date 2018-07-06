@@ -278,6 +278,7 @@ export default {
         text-align: center;
         padding-top: 190px;
         img{
+          width: 550px;
           margin-bottom: 90px;
         }
         div{

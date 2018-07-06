@@ -60,7 +60,8 @@ export default {
       msgTip: '',
       clear: false,
       platform: '',
-      device: ''
+      device: '',
+      disabledSend: true
       // telTip: false
       // start: false
     }
@@ -88,15 +89,19 @@ export default {
           console.log('手机号有误')
           this.telTip = true
           this.msgTip = '您输入的手机号有误'
+          this.disabledSend = false
         } else {
           this.userLog = true
+          this.disabledSend = true
         }
       } else if (!(/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(username))) {
         console.log('邮箱有误')
         this.telTip = true
         this.msgTip = '您输入的邮箱有误'
+        this.disabledSend = false
       } else {
         this.userLog = true
+        this.disabledSend = true
       }
       setTimeout(() => {
           this.msgTip = ''
@@ -158,40 +163,42 @@ export default {
       })
     },
     getIdentifyingCode () {
-      const TIME_COUNT = 60
-      if (!this.timer) {
-        this.count = TIME_COUNT
-        this.show = false
-        this.tiemr = setInterval(() => {
-          if (this.count > 0) {
-            this.count--
-          } else {
-            this.show = true
-            clearInterval(this.tiemr)
-            this.timer = null
-          }
-        }, 1000)
-      }
-      // let domain = document.domain === 'localhost' ? '10.60.2.141' : document.domain
-      this.device = Vue.cordova.device
-      let obj = {
-        username: this.username,
-        platform: this.platform,
-        app_version: 'v1.0',
-        code_flag: 0,
-        registration_id: this.device.uuid
-      }
-      getVerificationCode(obj).then(res => {
-        console.log('数据库查看验证码')
-      })
-      .catch(err => {
-        if (err) {
-          this.errorMsg = '验证码发送失败'
-          setTimeout(() => {
-            this.errorMsg = ''
-          }, 5000)
+      if (this.disabledSend === true) {
+        const TIME_COUNT = 60
+        if (!this.timer) {
+          this.count = TIME_COUNT
+          this.show = false
+          this.tiemr = setInterval(() => {
+            if (this.count > 0) {
+              this.count--
+            } else {
+              this.show = true
+              clearInterval(this.tiemr)
+              this.timer = null
+            }
+          }, 1000)
         }
-      })
+        // let domain = document.domain === 'localhost' ? '10.60.2.141' : document.domain
+        this.device = Vue.cordova.device
+        let obj = {
+          username: this.username,
+          platform: this.platform,
+          app_version: 'v1.0',
+          code_flag: 0,
+          registration_id: this.device.uuid
+        }
+        getVerificationCode(obj).then(res => {
+          console.log('数据库查看验证码')
+        })
+        .catch(err => {
+          if (err) {
+            this.errorMsg = '验证码发送失败'
+            setTimeout(() => {
+              this.errorMsg = ''
+            }, 5000)
+          }
+        })
+      }
     }
   }
 }
@@ -258,6 +265,7 @@ export default {
         text-align: center;
         right: 65px;
         box-sizing: border-box;
+        outline: none;
       }
     }
     .error,.noError{

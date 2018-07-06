@@ -31,7 +31,7 @@ export default {
 			keyValue: '',
 			list: '',
 			selectFlag: 'selectFlag',
-			show: false
+			show: true
 		}
 	},
 	methods: {
@@ -50,8 +50,8 @@ export default {
 		getList () {
 			appointmentList(this.$route.params.riskLevel).then(res => {
 				this.list = res.data
-				if (res.data.length === '0') {
-					this.show = true
+				if (res.data.length === 0) {
+					this.show = false
 				}
 			})
 		}
@@ -120,8 +120,12 @@ export default {
 		}
 		.noList{
 			width: 100%;
+			// height: calc(100% - 230px);
 			text-align: center;
-			margin-top: 250px;
+			margin-top: 200px;
+			img{
+				width: 550px;
+			}
 			div{
 				font-size: 32px;
 				color: #888888;

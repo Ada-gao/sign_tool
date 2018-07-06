@@ -1,17 +1,21 @@
 <template>
-	<div>
+	<div class="allBottom">
     <tabbar v-model="idx">
       <tabbar-item :link="{name: 'HomePage'}" @on-item-click="clickThis">
-        <span slot="label"><i class="iconfont">&#xe63f;</i>产品</span>
+        <i slot="icon" class="iconfont">&#xe63f;</i>
+        <span slot="label">产品</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'ReservationList'}" @on-item-click="clickThis">
-        <span slot="label"><i class="iconfont">&#xe653;</i>预约</span>
+        <i slot="icon" class="iconfont">&#xe653;</i>
+        <span slot="label">交易</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'CustomerList'}" @on-item-click="clickThis">
-        <span slot="label"><i class="iconfont">&#xe62c;</i>客户</span>
+        <i slot="icon" class="iconfont">&#xe62c;</i>
+        <span slot="label">客户</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'AboutMe'}" @on-item-click="clickThis">
-        <span slot="label"><i class="iconfont">&#xe639;</i>我的</span>
+        <i slot="icon" class="iconfont">&#xe639;</i>
+        <span slot="label">我的</span>
       </tabbar-item>
     </tabbar>
 	</div>
@@ -50,20 +54,45 @@ export default {
 }
 </script>
 
-<style scoped lang="less">
-.weui-tabbar {
-	.weui-tabbar__item {
-		height: 90px;
-		font-size: 26px; /*px*/
-    box-sizing: border-box;
-    text-decoration: none;
-    span{
-      font-size: 20px;
+<style lang="less">
+.allBottom {
+  .weui-tabbar {
+		height: 98px;
+    .weui-tabbar__item{
+      font-size: 26px; /*px*/
+      box-sizing: border-box;
+      text-decoration: none;
+      p.weui-tabbar__label{
+        span{
+          font-size: 20px;
+        }
+      }
+      .weui-tabbar__icon{
+        height: 48px;
+        width: 100%;
+        margin-bottom: 6px;
+        text-align: center;
+        i {
+          font-size: 48px;
+          line-height: 58px;
+          display: block;
+        }
+      }
     }
-		i {
-			font-size: 47px; /*px*/
-			display: block;
-		}
-	}
+    .weui-tabbar__item:nth-child(2){
+      .weui-tabbar__icon{
+        i{
+          font-size: 43px;
+        }
+      }
+    }
+    .weui-bar__item_on.weui-tabbar__item:nth-child(2){
+      .weui-tabbar__icon{
+        i{
+          font-size: 43px;
+        }
+      }
+    }
+  }
 }
 </style>

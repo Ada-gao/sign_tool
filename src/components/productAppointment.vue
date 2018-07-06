@@ -22,7 +22,7 @@
 				</div>
 				<div class="info">
 					<mt-cell title="预约信息" class="tit">
-						<i slot="icon" class="iconfont">&#xe697;</i>
+						<i slot="icon" class="iconfont">&#xe650;</i>
 					</mt-cell>
 					<div class="cont">
 						<mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell>
@@ -37,6 +37,8 @@
                 popup-transition="popup-fade">
 							<mt-picker :slots="slotsM"
 												:showToolbar="true"
+												:itemHeight=70
+												:visibleItemCount=3
 												value-key="name"
 												@change="onValuesChangeMoney">
 								<div class="toolbar">
@@ -75,6 +77,8 @@
 											<mt-picker :slots="slotsN"
 																:showToolbar="true"
 																value-key="bankName"
+																:itemHeight=70
+																:visibleItemCount=3
 																@change="onValuesChange">
 												<div class="toolbar">
 													<span class="cancel" @click="cancelCerName">取消</span>
@@ -167,7 +171,7 @@
 					</div>
 					<div class="mailingContract" v-if="sendEmail">
 						<mt-cell title="邮寄合同" class="tit">
-							<i slot="icon" class="iconfont">&#xe697;</i>
+							<i slot="icon" class="iconfont">&#xe6ac;</i>
 						</mt-cell>
 						<div class="cont">
 							<mt-cell title="合同编号：" :value="contractNumW"></mt-cell>
@@ -177,7 +181,7 @@
 					</div>
 					<div class="mailingContract" v-if="sendEmailW">
 						<mt-cell title="邮寄合同" class="tit">
-							<i slot="icon" class="iconfont">&#xe697;</i>
+							<i slot="icon" class="iconfont">&#xe6ac;</i>
 						</mt-cell>
 						<div class="cont">
 							<mt-field label="合同编号：" v-model="cantractNum"></mt-field>
@@ -210,25 +214,35 @@
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
 						<i class="iconfont noS">&#xe617;</i>
-						<div class="success">已提交待审核中…</div>
+						<div class="success">{{submitAppointDetail}}</div>
+						<div>{{count}}秒后将自动返回产品详情</div>
 						<x-button @click.native="returnDetail" type="primary">返回产品详情</x-button>
 					</x-dialog>
 					<x-dialog v-model="orderCloseSuc" class="dialog-demo submitDialog">
 						<i class="iconfont suc">&#xe60a;</i>
 						<div class="success">订单关闭成功</div>
-						<x-button @click.native="returnDetail" type="primary">返回产品详情</x-button>
+						<x-button @click.native="closeOrderSuc" type="primary">返回列表</x-button>
 					</x-dialog>
 					<x-dialog v-model="alertMsg" class="dialog-demo submitDialog" hide-on-blur>
 						<div class="quit">{{msgDetail}}</div>
 						<x-button type="primary" @click.native="hideAlert">确 定</x-button>
 					</x-dialog>
-					<x-dialog v-model="closeOrderR" class="dialog-demo submitDialog">
-						<div class="tit">请填写关闭订单原因</div>
+					<!-- <x-dialog v-model="closeOrderR" class="dialog-demo submitDialog" hide-on-blur>
+						<div class="tit">请填写订单关闭原因</div>
 						<x-input
 							v-model="reason"
 							:show-clear="clear">
 						</x-input>
+						<div class="inputReason">{{noReasonShow}}</div>
 						<x-button @click.native="sendMessage" type="primary">发 送</x-button>
+					</x-dialog> -->
+					<x-dialog v-model="closeOrderR" class="dialog-demo submitDialog" hide-on-blur>
+						<div class="quit">确定关闭订单吗</div>
+						<x-button @click.native="sendMessage" type="primary">确 定</x-button>
+					</x-dialog>
+					<x-dialog v-model="sureCancleA" class="dialog-demo submitDialog" hide-on-blur>
+						<div class="quit">确定取消预约吗</div>
+						<x-button @click.native="sureCancle" type="primary">确 定</x-button>
 					</x-dialog>
 					<!-- <x-dialog v-model="submitSucDialog" class="dialog-demo submitDialog" hide-on-blur>
 						<i class="iconfont suc">&#xe60a;</i>
@@ -256,6 +270,7 @@ import { formatDate } from '@/common/js/date'
 export default {
 	data () {
 		return {
+			count: '',
 			topTitle: '',
 			step1: 1,
 			popupVisible: false,
@@ -342,11 +357,14 @@ export default {
 			repeatPayMaterials: false,
 			msgDetail: '',
 			minimalAmount: '',
+			collectionAmount: '',
 			refundUrls: '',
 			materialsUrls: '',
 			evidenceUrls: '',
 			showSpace: false,
-			// headerStyle: 'position: fixed!important',
+			noReasonShow: '',
+			sureCancleA: false,
+			submitAppointDetail: '已提交待审核中…',
 			slotsM: [
 				{
           flex: 1,
@@ -415,9 +433,12 @@ export default {
 				this.showSpace = false
 			},
 			touchScreen () {
-				document.getElementsByTagName('input')[0].blur()
-				document.getElementsByTagName('input')[1].blur()
-				document.getElementsByTagName('input')[2].blur()
+				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002') {
+					document.getElementsByTagName('input')[0].blur()
+					document.getElementsByTagName('input')[1].blur()
+					document.getElementsByTagName('input')[2].blur()
+					document.getElementsByTagName('input')[3].blur()
+				}
 			},
 			chooseName () {
 				if (this.$route.params.riskLevel) {
@@ -474,6 +495,21 @@ export default {
 				this.bankId = this.ableBank.bankId
         this.showBankCardName = false
 			},
+			autoReturnDetail () {
+				const TIME_COUNT = 10
+				if (!this.timer) {
+					this.count = TIME_COUNT
+					this.tiemr = setInterval(() => {
+						if (this.count > 0) {
+							this.count--
+						} else {
+							this.returnDetail()
+							clearInterval(this.tiemr)
+							this.timer = null
+						}
+					}, 1000)
+				}
+			},
 			submitAppointmentBtn () {
 				if (this.name === '' || this.money === '') {
 					this.alertMsg = true
@@ -482,6 +518,11 @@ export default {
 				}
 				if (this.selectMoney < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
+					this.alertMsg = true
+					return
+				}
+				if (this.selectMoney > this.collectionAmount) {
+					this.msgDetail = '预约金额大于募集金额，不可预约'
 					this.alertMsg = true
 					return
 				}
@@ -501,6 +542,12 @@ export default {
 				submitAppointment(obj).then(res => {
 					if (res.status === 200) {
 						this.submitDialog = true
+						this.autoReturnDetail()
+						if (res.message === '预约成功') {
+							this.submitAppointDetail = '您的预约已提交成功'
+						} else {
+							this.submitAppointDetail = '已提交待审核中…'
+						}
 					}
 				})
 			},
@@ -512,6 +559,11 @@ export default {
 				}
 				if (this.selectMoney < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
+					this.alertMsg = true
+					return
+				}
+				if (this.selectMoney > this.collectionAmount) {
+					this.msgDetail = '预约金额大于募集金额，不可预约'
 					this.alertMsg = true
 					return
 				}
@@ -530,6 +582,12 @@ export default {
 				submitAppointment(obj).then(res => {
 					if (res.status === 200) {
 						this.submitDialog = true
+						this.autoReturnDetail()
+						if (res.message === '预约成功') {
+							this.submitAppointDetail = '您的预约已提交成功'
+						} else {
+							this.submitAppointDetail = '已提交待审核中…'
+						}
 					}
 				})
 			},
@@ -562,6 +620,7 @@ export default {
 				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
 					this.alertMsg = true
 					this.msgDetail = '银行卡输入有误'
+					return
 				}
 				if (this.evidenceUrl === undefined || this.materialSrc.length === 0 || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
 					this.alertMsg = true
@@ -580,6 +639,8 @@ export default {
 				submitMaterials(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
 						this.submitDialog = true
+						this.autoReturnDetail()
+						this.submitAppointDetail = '已提交待审核中…'
 					}
 				})
 			},
@@ -606,6 +667,8 @@ export default {
 				submitMaterials(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
 						this.submitDialog = true
+						this.autoReturnDetail()
+						this.submitAppointDetail = '已提交待审核中…'
 					}
 				})
 			},
@@ -627,21 +690,34 @@ export default {
 					this.msgDetail = '还有信息没填写哦～'
 					return
 				}
-				let obj = {
-					'file_refund_urls': this.refundSrc
+				let obj = {}
+				if (this.appointmentList.refund_status === '3') {
+					obj = {
+						'file_refund_urls': this.refundSrc,
+						'flag': '0'
+					}
+				} else {
+					obj = {
+						'file_refund_urls': this.refundSrc
+					}
 				}
 				requestRefund(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
+						this.autoReturnDetail()
 						this.submitDialog = true
 					}
 				})
 			},
 			cancleAppointment () {
+				this.sureCancleA = true
+			},
+			sureCancle () {
 				cancelAppointment(this.appointmentId).then(res => {
 					if (res.status === 200) {
 						this.topTitle = '预约取消'
 						this.sucBtn = false
 						this.uploadShow = false
+						this.sureCancleA = false
 					}
 				})
 			},
@@ -658,6 +734,7 @@ export default {
 				}
 				sendEmail(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
+						this.autoReturnDetail()
 						this.submitDialog = true
 					}
 				})
@@ -666,13 +743,11 @@ export default {
 				this.closeOrderR = true
 			},
 			sendMessage () {
-				let obj = {
-					'cancel_reason': this.reason
-				}
-				orderClose(this.appointmentId, obj).then(res => {
+				orderClose(this.appointmentId).then(res => {
 					if (res.status === 200) {
 						this.closeOrderR = false
-						this.orderCloseSuc = true
+						// this.orderCloseSuc = true
+						this.$router.push({name: 'ReservationList', params: {mark: '2'}})
 					}
 				})
 			},
@@ -690,6 +765,7 @@ export default {
 			},
 			writeAppointment () {
 					this.minimalAmount = this.$route.params.minimalAmount
+					this.collectionAmount = this.$route.params.collectionAmount
 					this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 					this.product_name = this.$route.params.productInfo
 					this.product_id = this.$route.params.productId
@@ -715,6 +791,12 @@ export default {
 					this.appointmentCode = false
 					this.repeatPayMaterials = false
 					this.orderCloseSuc = false
+					this.popupVisible = false
+					this.sureCancleA = false
+					this.appointmentDone = false
+					this.giveMoneyDone = false
+					this.giveMoneyIng = false
+					this.contractManage = false
 					appointmentList(this.$route.params.riskLevel).then(res => {
 						this.appointmentList = res.data
 					})
@@ -781,6 +863,8 @@ export default {
 						this.contractManage = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1002') {
 						this.topTitle = '预约失败'
@@ -824,6 +908,8 @@ export default {
 						this.contractManage = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1003') {
 						this.topTitle = '预约成功'
@@ -854,6 +940,8 @@ export default {
 						this.contractManage = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.cardnum = ''
 						this.bankname = ''
 						this.bankname1 = ''
@@ -886,6 +974,7 @@ export default {
 						this.contractManage = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1005') {
 						this.topTitle = '预约失效'
@@ -915,6 +1004,8 @@ export default {
 						this.contractManage = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '2001') {
 						this.topTitle = '打款审核中'
@@ -946,6 +1037,8 @@ export default {
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2002') {
 						this.topTitle = '待补全材料'
@@ -976,6 +1069,8 @@ export default {
 						this.giveMoneyIng = false
 						this.contractManage = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.cardnum = ''
 						this.bankname = ''
 						this.bankname1 = ''
@@ -1010,6 +1105,8 @@ export default {
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '2'
 						if (this.appointmentList.refund_status === '0') {
 							this.topTitle = '订单关闭 无需退款'
@@ -1060,6 +1157,8 @@ export default {
 						this.giveMoneyIng = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '2'
 					} else if (this.appointmentList.status === '3001') {
 						this.topTitle = '待收到合同'
@@ -1090,6 +1189,8 @@ export default {
 						this.repeatPayMaterials = false
 						this.sendEmailW = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3002') {
 						this.topTitle = '合同审核中'
@@ -1120,6 +1221,8 @@ export default {
 						this.repeatPayMaterials = false
 						this.sendEmailW = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3003') {
 						this.topTitle = '合同审核不通过'
@@ -1150,6 +1253,8 @@ export default {
 						this.sendEmail = false
 						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3004') {
 						this.topTitle = '合同审核通过'
@@ -1180,6 +1285,8 @@ export default {
 						this.repeatPayMaterials = false
 						this.sendEmailW = false
 						this.orderCloseSuc = false
+						this.popupVisible = false
+						this.sureCancleA = false
 						this.selected = '3'
 					}
 				})
@@ -1371,7 +1478,7 @@ export default {
 					line-height: 100%;
 					.mint-cell-title,.mint-cell-value{
 						font-family: PingFangSC-Medium;
-						font-size: 30px;
+						font-size: 28px;
 						color: #2672BA;
 					}
 					.mint-cell-value{
@@ -1678,6 +1785,9 @@ export default {
 				.mint-cell-wrapper{
 					.mint-cell-title{
 						flex: none;
+						i{
+							font-size: 47px;
+						}
 					}
 				}
 			}
@@ -1689,10 +1799,15 @@ export default {
 				min-height: 120px;
 				// line-height: 120px;
 				padding: 0;
-				.addbig_box{
-					// height: 100%;
-					.iconfont.icon_bg{
-						line-height: 100px;
+				div:first-child{
+					height: 100% !important;
+					.addsmall_box{
+						height: 120px !important;
+					}
+					.addbig_box{
+						.iconfont.icon_bg{
+							line-height: 100px;
+						}
 					}
 				}
 			}
@@ -1743,8 +1858,8 @@ export default {
 						margin-bottom: 0;
 					}
 					.tit{
-						margin-top: 48px;
-						margin-bottom: 31px;
+						margin-top: 30px;
+						margin-bottom: 30px;
 						font-family: PingFangSC-Regular;
 						font-size: 30px;
 						color: #666666;
@@ -1755,7 +1870,7 @@ export default {
 						height: 76px;
 						border: 1px solid #999999;
 						border-radius: 10px;
-						margin-bottom: 33px;
+						margin-bottom: 20px;
 						padding: 0;
 						font-family: PingFangSC-Regular;
 						font-size: 30px;
@@ -1763,6 +1878,14 @@ export default {
 						input{
 							text-align: center;
 						}
+					}
+					.inputReason{
+						height: 38px;
+						line-height: 38px;
+						margin-bottom: 10px;
+						text-align: left;
+						margin-left: 28px;
+						color: #C61D1A;
 					}
 					.weui-btn.weui-btn_primary{
 						background: #2A7DC1;

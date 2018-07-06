@@ -22,7 +22,7 @@
 								<!-- <span v-if="item.product_status === 0" class="box red">在建</span> -->
 								<span v-if="item.product_status === 1" class="box blue">预热中</span>
 								<span v-else-if="item.product_status === 2" class="box green">募集中</span>
-								<span v-else-if="item.product_status === 3" class="box red">已关帐</span>
+								<span v-else-if="item.product_status === 3" class="box gray">已关帐</span>
 								<!-- <span v-else-if="item.product_status === 4" class="box red">存续期</span>
 								<span v-else-if="item.product_status === 5" class="box gary">已下架</span> -->
 							</div>
@@ -140,7 +140,7 @@ export default {
 	background-color: #158FD2;
 }
 .flexbox-wrapper .vux-flexbox .item-right span.gray{
-	background-color: #666666;
+	background-color: #999;
 }
 .no_product {
   background-color: #f5f5f5;

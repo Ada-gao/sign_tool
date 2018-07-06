@@ -1,6 +1,6 @@
 <template>
 	<div class="reservation">
-    <x-header :left-options="{showBack: false}">预约列表</x-header>
+    <x-header :left-options="{showBack: false}">交易列表</x-header>
 		<div class="wrapper">
 			<mt-navbar v-model="selected">
 				<mt-tab-item id="1">预约</mt-tab-item>
@@ -33,13 +33,13 @@
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
 							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
-							<span class="tit">打款状态：
+							<span class="tit bot">打款状态：
 								<span class="cont" v-if='item.status === "2001"'>打款审核中</span>
 								<span class="cont" v-if='item.status === "2002"'>待补全材料</span>
 								<span class="cont" v-if='item.status === "2003"'>订单关闭</span>
 								<span class="cont" v-if='item.status === "2004"'>打款审核通过</span>
 							</span>
-							<span class="tit" v-if='item.status === "2003"'>退款状态：
+							<span class="tit bot" v-if='item.status === "2003"'>退款状态：
 								<span class="cont" v-if='item.refund_status === "0"'>无须退款</span>
 								<span class="cont" v-if='item.refund_status === "1"'>未退款</span>
 								<span class="cont" v-if='item.refund_status === "2"'>退款申请中</span>
@@ -57,7 +57,7 @@
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
 							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
-							<span class="tit">合同状态：
+							<span class="tit bot">合同状态：
 								<span class="cont" v-if='item.status === "3001"'>待收到合同</span>
 								<span class="cont" v-if='item.status === "3002"'>合同审核中</span>
 								<span class="cont" v-if='item.status === "3003"'>合同审核不通过</span>
@@ -189,6 +189,10 @@ export default {
 						span.bot{
 							min-width: 300px;
 							overflow: inherit;
+							color: #2672BA;
+							span.cont{
+								color: #2672BA;
+							}
 						}
 						.right{
 							font-size: 70px;

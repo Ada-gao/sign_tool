@@ -9,7 +9,7 @@
             </div>
         </template>
       </check-list>
-      <ul>
+      <ul v-if="this.$route.params.mark === 3">
         <li v-for="(item, index) in documentList" :key="index">{{item.file_name}}</li>
       </ul>
     </div>

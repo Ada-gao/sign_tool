@@ -57,11 +57,10 @@ export function requestRefund (appointmentId, obj) {
  * 订单关闭
  * @param appointmentId
  */
-export function orderClose (appointmentId, obj) {
+export function orderClose (appointmentId) {
     return axios({
         url: `/v1/appointment/cancel_order/${appointmentId}/`,
-        method: 'post',
-        data: obj
+        method: 'post'
     })
 }
 

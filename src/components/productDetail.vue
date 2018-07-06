@@ -113,7 +113,7 @@ export default {
 			this.$router.push({name: 'PdfReport', params: {id: id, mark: 3}})
     },
     toAppointment () {
-      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail', minimalAmount: this.item.minimal_amount, riskLevel: this.item.product_risk_level}})
+      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail', minimalAmount: this.item.minimal_amount, collectionAmount: this.item.collection_amount, riskLevel: this.item.product_risk_level}})
     }
   },
   mounted () {
@@ -208,7 +208,7 @@ export default {
       font-size: 30px;
       color: #333333;
       .cont-text {
-        font-size: 28px; /*px*/
+        // font-size: 28px; /*px*/
         padding: 20px 0 20px 20px;
         .important{
           padding: 1px 8px;
@@ -230,7 +230,7 @@ export default {
     .report-pdf {
         background-color: #F5F5F5;
         font-family: PingFangSC-Regular;
-        font-size: 28px;
+        font-size: 30px;
         color: #333333;
       .doc{
         height: 80px;
