@@ -114,6 +114,11 @@ export default {
 			color: #2672BA;
 			padding: 0 34px;
 			box-sizing: border-box;
+			.name{
+				a{
+					color: #2672BA;
+				}
+			}
 			.tip{
 				float: right;
 			}

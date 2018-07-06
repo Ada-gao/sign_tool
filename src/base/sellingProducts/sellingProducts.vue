@@ -140,7 +140,7 @@ export default {
 	background-color: #158FD2;
 }
 .flexbox-wrapper .vux-flexbox .item-right span.gray{
-	background-color: #999;
+	background-color: #ccc;
 }
 .no_product {
   background-color: #f5f5f5;

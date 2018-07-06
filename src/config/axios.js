@@ -4,7 +4,7 @@ import store from '@/service/store/store'
 import * as types from '@/service/store/types'
 import router from '../router'
 import { getStore } from '@/config/mUtils'
-// import {Toast} from 'mint-ui'
+import { MessageBox } from 'mint-ui'
 
 // axios 配置
 axios.defaults.timeout = 30000
@@ -54,7 +54,7 @@ axios.interceptors.response.use(
             switch (res.status) {
                 case 400:
                 // error.message = '手机号已被注册'
-                //   return toast(error.message)
+                  toast(res.data.message)
                   error.message = '请求错误'
                   break
                 case 401:
@@ -70,12 +70,14 @@ axios.interceptors.response.use(
         }
         return Promise.reject(error)
     })
-// export function toast (text) {
-//   Toast({
-//     message: text,
-//     position: 'top',
-//     duration: 2000,
-//     className: 'global_toast'
-//   })
-// }
+export function toast (text) {
+    MessageBox({
+        title: ' ',
+        message: text,
+        position: 'top',
+        showConfirmButton: true
+        // duration: 2000,
+        // className: 'global_toast'
+    })
+}
 export default axios

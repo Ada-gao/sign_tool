@@ -214,8 +214,8 @@
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
 						<i class="iconfont noS">&#xe617;</i>
-						<div class="success">{{submitAppointDetail}}</div>
-						<div>{{count}}秒后将自动返回产品详情</div>
+						<div class="returnDetailCss">{{submitAppointDetail}}</div>
+						<div class="returnDetailCss">{{count}}秒后将自动返回产品详情</div>
 						<x-button @click.native="returnDetail" type="primary">返回产品详情</x-button>
 					</x-dialog>
 					<x-dialog v-model="orderCloseSuc" class="dialog-demo submitDialog">
@@ -543,7 +543,7 @@ export default {
 					if (res.status === 200) {
 						this.submitDialog = true
 						this.autoReturnDetail()
-						if (res.message === '预约成功') {
+						if (res.data.message === '预约成功') {
 							this.submitAppointDetail = '您的预约已提交成功'
 						} else {
 							this.submitAppointDetail = '已提交待审核中…'
@@ -595,6 +595,8 @@ export default {
 				this.alertMsg = false
 			},
 			returnDetail () {
+				clearInterval(this.tiemr)
+				this.timer = null
 				let arr = []
 				getProducts().then(res => {
 					res.data.map((item, index) => {
@@ -878,6 +880,7 @@ export default {
 							})
 							let item = arr.find(item => item.product_id === this.product_id)
 							this.minimalAmount = item.minimal_amount
+							this.collectionAmount = item.collection_amount
 						})
 						this.name = this.appointmentList.client_name
 						this.cMob = this.appointmentList.client_mobile
@@ -1074,6 +1077,13 @@ export default {
 						this.cardnum = ''
 						this.bankname = ''
 						this.bankname1 = ''
+						this.refundUrls = []
+						this.materialsUrls = []
+						this.evidenceUrls = []
+						this.cardUrl = ''
+						this.evidenceUrl = []
+						this.materialSrc = []
+						this.refundSrc = []
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2003') {
 						this.topTitle = '订单关闭'
@@ -1476,6 +1486,7 @@ export default {
 					padding: 0 20px;
 					height: 100%;
 					line-height: 100%;
+					background-image: none;
 					.mint-cell-title,.mint-cell-value{
 						font-family: PingFangSC-Medium;
 						font-size: 28px;
@@ -1503,6 +1514,7 @@ export default {
 					color: #2672BA;
 					font-weight: bold;
 					padding: 0 20px;
+					background-image: none;
 				}
 			}
 			.cont{
@@ -1549,6 +1561,7 @@ export default {
 						height: 80px;
 						font-size: 30px;
 						padding: 0 20px;
+						background-image: none;
 						.mint-cell-title{
 							.mint-cell-text{
 								color: #333;
@@ -1573,6 +1586,7 @@ export default {
 					.mint-cell-wrapper{
 						height: 80px;
 						line-height: 80px;
+						background-image: none;
 						.mint-cell-title{
 							width: 150px;
 						}
@@ -1665,6 +1679,7 @@ export default {
 							height: 100%;
 							line-height: 100%;
 							padding: 0;
+							background-image: none;
 							.mint-cell-title{
 								width: 130px;
 								.mint-cell-text{
@@ -1783,11 +1798,17 @@ export default {
 			}
 			.mailingContract{
 				.mint-cell-wrapper{
+					background-image: none;
 					.mint-cell-title{
 						flex: none;
 						i{
 							font-size: 47px;
 						}
+					}
+				}
+				.cont{
+					.mint-cell-title{
+						width: 155px;
 					}
 				}
 			}
@@ -1848,6 +1869,13 @@ export default {
 					}
 					.success{
 						margin-bottom: 40px;
+						font-family: PingFangSC-Regular;
+						font-size: 30px;
+						color: #333333;
+						line-height: 1;
+					}
+					.returnDetailCss{
+						margin-bottom: 20px;
 						font-family: PingFangSC-Regular;
 						font-size: 30px;
 						color: #333333;
