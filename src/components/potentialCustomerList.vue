@@ -31,12 +31,13 @@
             >其他</span>
           </cell-box>
           <cell-box v-show="data.nationality === '0'">
-            <label style="color:#333">常住中国城市：</label>
+            <label style="color:#333">常住城市：</label>
             <span class="fr">{{data.city}}</span>
           </cell-box>
-        </group>
-        <div class="space"></div>
-        <group class="no_bbottom">
+          <cell-box>
+            <label style="color:#333">微信：</label>
+            <span class="fr">{{data.wechat}}</span>
+          </cell-box>
           <cell-box>
             <label style="color:#333">邮箱：</label>
             <span class="fr">{{data.email}}</span>
@@ -48,11 +49,10 @@
             </div>
             <span class="verificate"
                   @click="sendVerCode"
-                  v-show="verificate.verStatus === '1'">发送验证码</span>
+                  v-show="verificate.verStatus === '1'">去验证</span>
           </div>
         </group>
       </div>
-      <div class="space"></div>
       <div class="product">
         <group>
           <cell style="color:#333"

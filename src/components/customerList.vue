@@ -23,11 +23,11 @@
       <!-- 展示客户列表部分 -->
       <div class="customer-list" v-show="!isCancel">
         <div class="tabbar">
-          <span class="tabitem" :class="{'active': idx === 0}" @click="changeActiveIndex">客户列表</span>
+          <span class="tabitem" :class="{'active': idx === 0}" @click="onItemClick(0)">客户列表</span>
           <i class="sepa"></i>
-          <span class="tabitem" :class="{'active': idx === 1}" @click="changeActiveIndex">潜客列表</span>
+          <span class="tabitem" :class="{'active': idx === 1}" @click="onItemClick(1)">潜客列表</span>
           <i class="sepa"></i>
-          <span class="tabitem" :class="{'active': idx === 2}" @click="changeActiveIndex">手机未验证客户</span>
+          <span class="tabitem" :class="{'active': idx === 2}" @click="onItemClick(2)">手机未验证客户</span>
         </div>
         <div class="list_box">
           <mt-spinner type="fading-circle"
@@ -40,10 +40,14 @@
                 <div class="customer_list">
                   <div class="customer_left">
                     <span>{{item.name}}</span>
-                    <span v-show="item.client_no">（{{item.client_no}}）</span>
+                    <span class="gray_item" v-show="item.realname_status === '0'">（实名未认证）</span>
+                    <span class="gray_item" v-show="item.realname_status === '1'">（实名认证待审核）</span>
+                    <span v-show="item.realname_status === '2'">（实名认证）</span>
+                    <span class="red_color" v-show="item.realname_status === '4'">（实名认证过期）</span>
                     <span style="display: block;">{{item.mobile}}</span>
                   </div>
                   <div class="customer_right">
+                    <!-- <todo:>确认显示状态</todo:> -->
                   <span :class="[{'red_color': item.client_type === '1'}]">
                     {{item.client_type === "1" ? "专业投资者" : "普通投资者"}}
                   </span>
@@ -60,34 +64,33 @@
                 <div class="customer_list">
                   <div class="customer_left">
                     <span>{{item.name}}</span>
-                    <span v-show="item.client_no">（{{item.client_no}}）</span>
+                    <span class="gray_item" v-show="item.realname_status === '0'">（实名未认证）</span>
+                    <span class="gray_item" v-show="item.realname_status === '1'">（实名认证待审核）</span>
+                    <span v-show="item.realname_status === '2'">（实名认证）</span>
+                    <span class="red_color" v-show="item.realname_status === '4'">（实名认证过期）</span>
                     <span style="display: block;">{{item.mobile}}</span>
                   </div>
                   <div class="customer_right">
-                    <span class="gray_item" v-show="item.certification_status === '0'">未认证</span>
-                    <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
-                    <span class="gray_item" v-show="item.certification_status === '2'">已认证</span>
-                    <span class="gray_item" v-show="item.certification_status === '3'">已驳回</span>
+                    <span class="gray_item" v-show="item.certification_status === '0'">投资者身份未认证</span>
+                    <span class="gray_item" v-show="item.certification_status === '1'">投资者身份认证待审核</span>
+                    <span class="gray_item" v-show="item.certification_status === '2'">投资者身份已认证</span>
+                    <span class="red_color" v-show="item.certification_status === '4'">普通投资者认证已过期</span>
                     <i class="iconfont icon-right"></i>
                   </div>
                 </div>
               </router-link>
             </li>
           </ul>
-          <ul v-show="idx === 2" :data="customers1">
-            <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
+          <ul v-show="idx === 2" :data="customers2">
+            <li v-for="(item, index) in customers2" :key="index" v-if="item.name">
               <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
                 <div class="customer_list">
                   <div class="customer_left">
                     <span>{{item.name}}</span>
-                    <span v-show="item.client_no">（{{item.client_no}}）</span>
                     <span style="display: block;">{{item.mobile}}</span>
                   </div>
                   <div class="customer_right">
-                    <span class="gray_item" v-show="item.certification_status === '0'">未认证</span>
-                    <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
-                    <span class="gray_item" v-show="item.certification_status === '2'">已认证</span>
-                    <span class="gray_item" v-show="item.certification_status === '3'">已驳回</span>
+                    <span class="gray_item" v-show="item.mobile_validated === '1'">手机号未认证</span>
                     <i class="iconfont icon-right"></i>
                   </div>
                 </div>
@@ -104,7 +107,7 @@
           </div>
           <div v-show="idx === 2 && customers1.length === 0 && !this.isShowSpinner"  class="no_data">
             <img src="static/img/customerIcon.png">
-            <span>亲，暂时没有潜客哦</span>
+            <span>亲，暂时没有手机未验证客户哦</span>
           </div>
         </div>
       </div>
@@ -135,6 +138,7 @@
         isShowSpinner: true,
         customers: [],
         customers1: [],
+        customers2: [],
         searchCustomers: [],
         isCancel: false,
         idx: 0,
@@ -155,17 +159,27 @@
           this.isShowSpinner = false
         let data = res.data
         data.forEach(item => {
-          if (item.client_class) {
+          console.log('Client class is ' + item.client_class)
+          if (item.client_class === 1) {
             this.customers.push(item)
-          } else {
+          } else if (item.client_class === 0) {
             this.customers1.push(item)
+          } else if (item.mobile_validated === '1') {
+            this.customers2.push(item)
           }
         })
       })
     },
     methods: {
       changeActiveIndex () {
-        this.idx === 0 ? this.idx = 1 : this.idx = 0
+        // this.idx === 0 ? this.idx = 1 : this.idx = 0
+        if (this.idx === 0) {
+          this.idx = 1
+        } else if (this.idx === 1) {
+          this.idx = 2
+        } else if (this.idx === 2) {
+          this.idx = 0
+        }
       },
       onItemClick (index) {
         this.idx = index
@@ -277,7 +291,7 @@
               .customer_right {
                 position: absolute;
                 font-family: PingFangSC-Regular;
-                font-size: 28px;
+                font-size: 26px;
                 color: #2672BA;
                 height: 155px;
               }
@@ -286,6 +300,12 @@
                 margin-top: 38px;
                 height: auto;
                 line-height: 40px;
+                .gray_item{
+                  color: #999;
+                }
+                .red_color{
+                  color: #A10C0C;
+                }
               }
               .customer_right {
                 line-height: 155px;

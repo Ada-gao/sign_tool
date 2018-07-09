@@ -50,7 +50,7 @@ export default {
 		getList () {
 			appointmentList(this.$route.params.riskLevel).then(res => {
 				this.list = res.data
-				if (res.data.length === 0) {
+				if (res.data.length === '0') {
 					this.show = false
 				}
 			})

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="newCustomer">
     <x-header :left-options="{backText: ''}">新增潜客</x-header>
     <group class="wrapper">
       <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
@@ -22,22 +22,38 @@
                 placeholder="输入客户姓名"
                 v-model="name"
                 class="new_field"></mt-field>
-      <x-input title="国籍:"
-               v-model="nationality"
-               isASelection="true"
-               @selectOne="selectNation"
-               ref="input02"
-               :show-clear="false"
-               required></x-input>
+      <div class="radio_box new_field">
+        <mt-radio
+          class="radio_item"
+          title="国籍："
+          v-model="nationality"
+          @change="selectNation"
+          :options="[{label: '中国', value: '0'}, {label: '其他', value: '1'}]">
+        </mt-radio>
+      </div>
       <x-address id="x_address"
-                 v-show="num === 1"
+                 v-show="num === '0'"
                  :title="title"
                  v-model="value"
                  raw-value
                  :list="addressData"
                  @on-shadow-change="onShadowChange"
-                 placeholder="请选择地址"
+                 placeholder="请选择您的城市"
                  :show.sync="showAddress"></x-address>
+      <mt-field disableClear
+                type="wechat"
+                label="(选填)微信："
+                placeholder="输入客户微信"
+                v-model="wechat"
+                class="new_field"></mt-field>
+      <mt-field disableClear
+                type="email"
+                label="(选填)邮箱："
+                placeholder="输入客户邮箱"
+                v-model="email"
+                class="new_field"></mt-field>
+    </group>
+    <group class="wrapper">
       <mt-field disableClear
                 type="tel"
                 label="手机号码："
@@ -47,16 +63,17 @@
                 class="new_field">
         <span class="verificate"
               v-if="!verificate.isTimeout"
-              @click="sendVer">发送验证码</span>
+              @click="sendVer">发送邀请码</span>
         <span class="verificate"
               v-else>{{verificate.num}}s</span>
       </mt-field>
       <mt-field disableClear
-                type="email"
-                label="邮箱（非必填项）："
-                placeholder="输入客户邮箱"
-                v-model="email"
-                class="new_field"></mt-field>
+                type="tel"
+                label="客户邀请码："
+                :attr="{ maxlength: 6 }"
+                v-model="verificationCode"
+                class="new_field">
+      </mt-field>
     </group>
     <button class="next" @click="submitCustomer">确 定</button>
   </div>
@@ -72,7 +89,7 @@
     XDialog,
     ChinaAddressV4Data
   } from 'vux'
-  import {Field, Toast} from 'mint-ui'
+  import {Field, Toast, Radio} from 'mint-ui'
   import {addCusomer, sendVerCode, confirmVercode} from '@/service/api/customers'
 
   export default {
@@ -84,7 +101,8 @@
       XInput,
       XButton,
       XAddress,
-      'mt-field': Field
+      'mt-field': Field,
+      'mt-radio': Radio
     },
     data () {
       return {
@@ -97,14 +115,16 @@
         },
         alertMsg: false,
         alertCont: '还有必填项没填',
-        num: 1,
+        num: '0',
         isMod: -1,
         name: '',
-        nationality: '',
+        nationality: '0',
         mobile: '',
+        wechat: '',
         email: '',
         city: '',
         mobile_validated: '1',
+        verificationCode: '',
 //        validated_timestamp: '',
         validated_by: '',
         popupVisible: false,
@@ -189,6 +209,7 @@
         this.popupVisible = true
       },
       selectNation (num) {
+        console.log(num)
         this.num = num
         this.myAddressProvince = this.myAddressCity = this.myAddresscounty = ''
         this.city = ''
@@ -226,114 +247,179 @@
     margin-top: 10px;
     padding-left: 20px;
   }
-
-  .wrapper {
-    height: auto;
-    .weui-label {
-      color: #333;
-    }
-    .weui-cell__bd {
-      text-align: right;
-    }
-    .new_field {
-      height: 82px;
-      padding: 0 20px;
-      border-top: 1px solid #d9d9d9;
-      .mint-cell-wrapper {
-        padding: 0;
-      }
-      .mint-cell-title {
+  .newCustomer {
+    .wrapper {
+      height: auto;
+      .weui-label {
+        font-size: 30px;
         color: #333;
-        font-size: 30px;
-        width: auto;
       }
-      .mint-field-core {
+      .weui-cell__bd {
         text-align: right;
-        font-size: 30px;
-        color: #999;
       }
-      .mint-field-state {
-        display: none;
-      }
-    }
-    .space {
-      height: 20px;
-      background-color: #f5f5f5;
-    }
-    .add_tit {
-      padding-left: 20px;
-      height: 80px;
-      line-height: 80px;
-      i, span {
-        vertical-align: middle;
-        display: inline-block;
-      }
-    }
-    #x_address {
-      .weui-cells {
-        .weui-cell {
-          padding: 0 20px;
+      .new_field {
+        height: 82px;
+        padding: 0 20px;
+        border-top: 1px solid #d9d9d9;
+        .mint-cell-wrapper {
+          padding: 0;
+        }
+        .mint-cell-title {
+          color: #333;
+          font-size: 30px;
+          width: auto;
+        }
+        .mint-field-core {
+          text-align: right;
+          font-size: 30px;
+          color: #999;
+        }
+        .mint-field-state {
+          display: none;
         }
       }
-    }
-    .weui-cell {
-      padding-left: 20px;
-      padding-right: 20px;
-    }
-    .popup-picker .weui-cell {
-      height: 84px;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
-      box-sizing: border-box;
-      padding: 0 20px;
-      .vux-cell-primary {
-        padding-right: 15px;
-        position: relative;
-        right: -60px;
+      .space {
+        height: 15px;
+        background-color: #f5f5f5;
+      }
+      .radio_box {
+          padding: 0 20px;
+          background-color: #fff;
+          height: 82px;
+          .mint-radiolist.radio_item{
+            height: 100%;
+            .mint-radiolist-title{
+              display: inline-block;
+            }
+            .mint-cell{
+              display: inline-block;
+              .mint-radio-label {
+                font-size: 28px;
+                color: #666;
+              }
+            }
+          }
+          // .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
+          //   left: 197px;
+          // }
+          // .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
+          //   left: 215px;
+          // }
+          .radio_item.mint-radiolist .mint-cell:last-child {
+            background-image: none;
+          }
+          .radio_item {
+            .mint-radiolist-title {
+              font-size: 30px;
+              width: 150px;
+              color: #333;
+              line-height: 42px;
+              padding: 18px 0 10px;
+              margin: 0;
+            }
+            .mint-radio-core {
+              width: 28px;
+              height: 28px;
+              border-radius: 8px;
+              border-color: #979797;
+            }
+            .mint-radio-input:checked + .mint-radio-core {
+              background-color: #fff;
+              border-color: #2672BA;
+            }
+            .mint-radio-input:checked + .mint-radio-core::after {
+              background-color: #2672BA;
+            }
+            .mint-radio-core::after {
+              width: 16px;
+              height: 16px;
+            }
+          }
+          .mint-cell-wrapper {
+            padding-top: 22px;
+            background-image: none;
+            -webkit-background-image: none;
+          }
+        }
+        .add_tit {
+          padding-left: 20px;
+          height: 80px;
+          line-height: 80px;
+          i, span {
+            vertical-align: middle;
+            display: inline-block;
+          }
+        }
+        #x_address {
+          border-top: 1px solid #d9d9d9;
+          .weui-cells {
+            .weui-cell {
+              padding: 0 20px;
+            }
+          }
+        }
+        .weui-cell {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+        .popup-picker .weui-cell {
+          height: 84px;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
+          padding: 0 20px;
+          .vux-cell-primary {
+            font-size: 28px;
+            padding-right: 15px;
+            position: relative;
+            // right: -60px;
+          }
+      }
+      // padding-top: 126px;
+      .weui-cells .vux-x-input {
+        height: 84px;
+        box-sizing: border-box;
+        padding: 0 20px;
+        button {
+          width: 138px;
+          height: 62px;
+          font-size: 28px;
+          background-color: #eee;
+          color: #666;
+          border-radius: 10px;
+        }
+      }
+      .vux-x-input.weui-cell:before {
+        border-top: 1px solid #D9D9D9; /*no*/
+      }
+      // .weui-cell:after {
+      //   border-bottom: 1px solid #D9D9D9; /*no*/
+      // }
+      .mint-popup {
+        width: 100%;
+      }
+      .confirm_picker {
+        height: 40px;
+        line-height: 40px;
+        width: 80px;
+        font-size: 24px;
+        border: none;
       }
     }
-    // padding-top: 126px;
-    .weui-cells .vux-x-input {
-      height: 84px;
-      box-sizing: border-box;
-      padding: 0 20px;
-      button {
-        width: 138px;
-        height: 62px;
-        font-size: 28px;
-        background-color: #eee;
-        color: #666;
-        border-radius: 10px;
-      }
+    .wrapper:nth-child(3) {
+      padding-top: 20px;
     }
-    .vux-x-input.weui-cell:before {
-      border-top: 1px solid #D9D9D9; /*no*/
+    .next {
+      display: block;
+      width: 710px;
+      height: 72px;
+      line-height: 72px;
+      font-size: 28px;
+      color: #fff;
+      border-radius: 10px;
+      background-color: #2672BA;
+      margin: 0 auto;
+      margin-top: 120px;
     }
-    // .weui-cell:after {
-    //   border-bottom: 1px solid #D9D9D9; /*no*/
-    // }
-    .mint-popup {
-      width: 100%;
-    }
-    .confirm_picker {
-      height: 40px;
-      line-height: 40px;
-      width: 80px;
-      font-size: 24px;
-      border: none;
-    }
-  }
-
-  .next {
-    display: block;
-    width: 710px;
-    height: 72px;
-    line-height: 72px;
-    font-size: 28px;
-    color: #fff;
-    border-radius: 10px;
-    background-color: #2672BA;
-    margin: 0 auto;
-    margin-top: 120px;
   }
 </style>
