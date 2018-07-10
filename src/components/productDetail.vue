@@ -4,13 +4,14 @@
     <div class="wrapper">
       <div class="rate-top">
         <p class="text-plus-white">
-          <i class="percent">{{item.annualized_return}}</i>%
+          <span v-if="item.is_float === 0">一</span>
+          <span v-else><i class="percent">{{item.annualized_return}}</i>%</span>
           <span class="label absolute-center-y" v-if="item.product_type_id === 1">二级市场</span>
           <span class="label absolute-center-y" v-else-if="item.product_type_id === 2">理财</span>
           <span class="label absolute-center-y" v-else-if="item.product_type_id === 3">固收</span>
           <span class="label absolute-center-y" v-else-if="item.product_type_id === 4">另类</span>
         </p>
-        <p class="year">收益对标基准</p>
+        <p class="year">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</p>
       </div>
       <div class="product">
         <div class="title"><span class="line-blue"></span>产品信息</div>
@@ -30,6 +31,7 @@
           <p class="cont-text">基金管理人 : {{item.manager}}</p>
         </div>
         <div class="cont">
+          <p class="cont-text" v-if="item.is_float === 0">浮动收益 ：一</p>
           <p class="cont-text">收益对标基准 ：{{item.annualized_return}}%</p>
           <p class="cont-text">发行额度 ：{{item.collection_amount}}万</p>
           <!-- <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p> -->

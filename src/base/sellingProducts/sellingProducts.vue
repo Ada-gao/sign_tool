@@ -6,9 +6,10 @@
 					<flexbox-item :span="4" class="item-left">
 						<div class="flex-product">
 							<div class="flex-left">
-								<p class="rate"><span class="number">{{item.annualized_return}}</span>%</p>
+								<p v-if="item.is_float === 0" class="line">一</p>
+								<p v-else class="rate"><span class="number">{{item.annualized_return}}</span>%</p>
 								<!-- <p class="rate">{{item.expected_income}}</p> -->
-								<p class="text">{{item.is_float === 0 ? '浮动收益率' : '收益对标基准'}}</p>
+								<p class="text">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</p>
 							</div>
 						</div>
 					</flexbox-item>
@@ -77,6 +78,10 @@ export default {
 <style scoped lang="less">
 .vux-flexbox-item.item-left{
 	width: 247px;
+	.line{
+		color: #C61D1A;
+		margin-left: 40px;
+	}
 	.number{
 		font-size: 60px !important;
 		color: #C61D1A;
