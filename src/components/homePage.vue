@@ -21,7 +21,7 @@
 				<i slot="icon" v-else class="iconfont yellow">&#xe633;</i>
 				</cell>
 				 <!-- :email="email" :userId="userId" -->
-				<selling-products :child-data="item.products" v-show="showContentList[index]"></selling-products>
+				<selling-products :child-data="item.products"  mark="homePage" v-show="showContentList[index]"></selling-products>
         <div class="divide-line"></div>
 			</group>
     </div>

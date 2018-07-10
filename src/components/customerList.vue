@@ -41,16 +41,21 @@
                   <div class="customer_left">
                     <span>{{item.name}}</span>
                     <span class="gray_item" v-show="item.realname_status === '0'">（实名未认证）</span>
-                    <span class="gray_item" v-show="item.realname_status === '1'">（实名认证待审核）</span>
+                    <!-- <span class="gray_item" v-show="item.realname_status === '1'">（实名认证待审核）</span> -->
                     <span v-show="item.realname_status === '2'">（实名认证）</span>
                     <span class="red_color" v-show="item.realname_status === '4'">（实名认证过期）</span>
                     <span style="display: block;">{{item.mobile}}</span>
                   </div>
                   <div class="customer_right">
                     <!-- <todo:>确认显示状态</todo:> -->
-                  <span :class="[{'red_color': item.client_type === '1'}]">
+                  <!-- <span :class="[{'red_color': item.client_type === '1'}]">
                     {{item.client_type === "1" ? "专业投资者" : "普通投资者"}}
-                  </span>
+                  </span> -->
+                    <!-- <span class="gray_item" v-show="item.certification_status === '0'">投资者身份未认证</span> -->
+                    <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
+                    <span v-show="item.certification_status === '2'">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
+                    <span class="red_color" v-show="item.certification_status === '3'">普通投资者身份验证失败</span>
+                    <span class="red_color" v-show="item.certification_status === '4'">普通投资者认证已过期</span>
                     <i class="iconfont icon-right"></i>
                   </div>
                 </div>
@@ -60,7 +65,7 @@
           </ul>
           <ul v-show="idx === 1" :data="customers1">
             <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
-              <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
+              <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id, mark: 1}}">
                 <div class="customer_list">
                   <div class="customer_left">
                     <span>{{item.name}}</span>
@@ -74,6 +79,7 @@
                     <span class="gray_item" v-show="item.certification_status === '0'">投资者身份未认证</span>
                     <span class="gray_item" v-show="item.certification_status === '1'">投资者身份认证待审核</span>
                     <span class="gray_item" v-show="item.certification_status === '2'">投资者身份已认证</span>
+                    <span class="red_color" v-show="item.certification_status === '3'">普通投资者身份验证失败</span>
                     <span class="red_color" v-show="item.certification_status === '4'">普通投资者认证已过期</span>
                     <i class="iconfont icon-right"></i>
                   </div>
@@ -83,7 +89,7 @@
           </ul>
           <ul v-show="idx === 2" :data="customers2">
             <li v-for="(item, index) in customers2" :key="index" v-if="item.name">
-              <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id}}">
+              <router-link :to="{name: 'PotentialCustomerList', params: {id: item.client_id, mark: 2}}">
                 <div class="customer_list">
                   <div class="customer_left">
                     <span>{{item.name}}</span>
@@ -105,7 +111,7 @@
             <img src="static/img/customerIcon.png">
             <span>亲，暂时没有潜客哦</span>
           </div>
-          <div v-show="idx === 2 && customers1.length === 0 && !this.isShowSpinner"  class="no_data">
+          <div v-show="idx === 2 && customers2.length === 0 && !this.isShowSpinner"  class="no_data">
             <img src="static/img/customerIcon.png">
             <span>亲，暂时没有手机未验证客户哦</span>
           </div>
@@ -149,22 +155,26 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        if (from.name === 'PotentialCustomerList' || from.name === 'NewCustomer') {
-          vm.idx = 1
+        // if (from.name === 'PotentialCustomerList' || from.name === 'NewCustomer') {
+        //   vm.idx = 1
+        // }
+        if (from.params.mark) {
+          vm.idx = from.params.mark
+        } else {
+          vm.idx = 0
         }
       })
     },
     mounted () {
       checkCusomersList().then(res => {
-          this.isShowSpinner = false
+        this.isShowSpinner = false
         let data = res.data
         data.forEach(item => {
-          console.log('Client class is ' + item.client_class)
           if (item.client_class === 1) {
             this.customers.push(item)
           } else if (item.client_class === 0) {
             this.customers1.push(item)
-          } else if (item.mobile_validated === '1') {
+          } else if (item.client_class === null && item.mobile_validated === '1') {
             this.customers2.push(item)
           }
         })
@@ -301,7 +311,7 @@
                 height: auto;
                 line-height: 40px;
                 .gray_item{
-                  color: #999;
+                  color: #666;
                 }
                 .red_color{
                   color: #A10C0C;
@@ -318,7 +328,7 @@
                   vertical-align: middle;
                 }
                 .gray_item {
-                  color: #999;
+                  color: #666;
                 }
                 .icon-right {
                   font-size: 40px;

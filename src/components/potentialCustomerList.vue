@@ -1,16 +1,16 @@
 <template>
   <div>
-    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink1">潜客详情</x-header>
+    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink1">{{topTitle}}</x-header>
     <div class="potential wrapper">
       <div class="info">
         <group>
           <cell-box style="color: #2672ba;">
-            <i class="iconfont">&#xe62c;</i>潜客信息
-            <span class="fr"
+            <i class="iconfont">&#xe62c;</i>客户信息
+            <!-- <span class="fr"
                   @click="toLink"
                   style="color:#666;"
                   v-if="data.realname_status === '0'">完善信息</span>
-            <span class="fr" v-else style="color:#666;">已完善</span>
+            <span class="fr" v-else style="color:#666;">已完善</span> -->
           </cell-box>
         </group>
         <div class="space"></div>
@@ -44,25 +44,37 @@
           </cell-box>
           <div class="ver_box">
             <div class="mobile_box" :class="{'limit_width': verificate.verStatus === '1'}">
-              <span class="mobile_title">手机号码：</span>
-              <span class="mobile_number" :class="{'limit_width': verificate.verStatus === '1'}">{{mobile}}</span>
+              <span class="mobile_title">客户电话：</span>
+              <span class="mobile_number" :class="{'limit_width': verificate.verStatus === '1'}">{{mobile}}{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}</span>
             </div>
             <span class="verificate"
                   @click="sendVerCode"
                   v-show="verificate.verStatus === '1'">去验证</span>
           </div>
+          <cell-box>
+            <label style="color:#333">录入时间：</label>
+            <span class="fr">{{data.email}}</span>
+          </cell-box>
         </group>
+        <div class="call-btn">
+          <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
+        </div>
       </div>
+      <div class="space"></div>
       <div class="product">
         <group>
-          <cell style="color:#333"
+          <!-- <cell style="color:#333"
                 :is-link="!convert(data.realname_status, disabled)"
                 :link="{name: 'Certified',params: {id: client_id}}"
                 :title="'投资者类型：'+stat"
                 :value="modifiedVal"
                 :disabled="convert(data.realname_status, disabled)"
           >
-          </cell>
+          </cell> -->
+          <cell-box>
+            <label>实名认证：</label>
+            <span class="fr">{{data.city}}</span>
+          </cell-box>
         </group>
       </div>
       <div class="space"></div>
@@ -164,11 +176,13 @@
         remarkInfo: '',
         remarkInput: null,
         disabled: true,
-        modifiedVal: ''
+        modifiedVal: '',
+        topTitle: ''
       }
     },
     mounted () {
       this.client_id = this.$route.params.id
+      this.topTitle = this.$route.params.mark === 1 ? '潜客信息' : '手机未验证'
 //      console.log(this.client_id)
       checkCustomerRemarks(this.client_id).then(res => {
         if (res.status === 200) {
@@ -262,7 +276,7 @@
       },
       toLink1 () {
         removeStore('selfInfos')
-        this.$router.replace({name: 'CustomerList'})
+        this.$router.replace({name: 'CustomerList', mark: this.topTitle === '潜客信息' ? 1 : 2})
       },
       toLink () {
         let params = {
@@ -336,6 +350,41 @@
     .no_bbottom .weui-cells::after {
       content: none;
     }
+    .weui-cells.vux-no-group-title{
+      .vux-cell-box.weui-cell{
+        border-bottom: 1px solid #ccc;
+        label{
+          font-family: PingFangSC-Medium;
+          font-size: 30px;
+          color: #333333;
+        }
+        .fr{
+          font-size: 28px;
+          color: #666;
+        }
+      }
+    }
+    .ver_box{
+      border-bottom: 1px solid #ccc;
+      .mobile_box.limit_width{
+        .mobile_title{
+          font-family: PingFangSC-Medium;
+          font-size: 30px;
+          color: #333333;
+        }
+        .mobile_number.limit_width{
+          font-size: 28px;
+          color: #666;
+        }
+      }
+      .verificate{
+        width: 91px;
+        height: 42px;
+        line-height: 42px;
+        background: #2672BA;
+        border-radius: 5px;
+      }
+    }
     .id_right {
       text-align: right;
       position: absolute;
@@ -348,24 +397,28 @@
         transform: translateY(0);
       }
     }
-    .callout {
-      display: block;
-      margin: 70px auto 12px;
-      width: 710px;
-      height: 72px;
+    .call-btn{
+      height: 132px;
+      background: #fff;
       text-align: center;
-      line-height: 72px;
-      background: #2672BA;
-      border-radius: 10px;
-      font-size: 28px;
-      color: #FFFFFF;
-      &:link,
-      &:visited,
-      &:hover,
-      &:active {
-        text-decoration: none;
+      line-height: 132px;
+      .callout {
+        display: inline-block;
+        width: 710px;
+        height: 72px;
+        text-align: center;
+        line-height: 72px;
+        background: #2672BA;
+        border-radius: 10px;
+        font-size: 28px;
+        color: #FFFFFF;
+        &:link,
+        &:visited,
+        &:hover,
+        &:active {
+          text-decoration: none;
+        }
       }
-
     }
     .report {
       .vux-tap-active {
@@ -397,6 +450,14 @@
           }
         }
       }
+      .weui-cells.vux-no-group-title{
+        .vux-cell-box.weui-cell{
+          border: none;
+        }
+      }
+      .weui-cells:before{
+        border: none;
+      }
     }
     .risk-evaluation,
     .asset-allocation {
@@ -416,6 +477,14 @@
     .remark {
       /*padding-bottom: 120px;*/
       background-color: #fff;
+      .vux-cell-box.weui-cell{
+        padding: 0;
+        padding-left: 20px;
+        font-family: PingFangSC-Medium;
+        font-size: 30px;
+        color: #333333;
+        border-bottom: 1px solid #ccc;
+      }
       .weui-cells .weui-cell {
         border-bottom: 1px solid #979797;
       }

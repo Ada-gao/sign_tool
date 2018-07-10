@@ -32,7 +32,7 @@
 			</li>
 		</ul>
 
-    <div class="no_product" v-show="childData.length === 0">
+    <div class="no_product" v-show="childData.length === 0 && !mark">
       <img src="static/img/purchasedIcon.png">
       <span>亲，请您购买产品哦</span>
     </div>
@@ -51,7 +51,7 @@ export default {
 		Flexbox,
 		FlexboxItem
 	  },
-	props: ['childData'],
+	props: ['childData', 'mark'],
 	data () {
 	 	return {
 			showImportant: false

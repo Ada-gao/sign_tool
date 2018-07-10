@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div class="customerManagement">
     <x-header :left-options="{backText: ''}">客户详情</x-header>
     <div class="wrapper">
       <div class="info">
         <group>
           <cell-box style="color: #2672ba;">
-            <i class="iconfont">&#xe62c;</i>客户信息
+            <i class="iconfont">&#xe61a;</i>客户信息
             <span class="fr" style="color:#333;">{{investorType}}</span>
           </cell-box>
         </group>
@@ -17,11 +17,11 @@
           </cell-box>
           <cell-box>
             <label for="name">客户姓别：</label>
-            <span class="fr">{{data.name}}</span>
+            <span class="fr">{{data.gender === '0' ? '男' : '女'}}</span>
           </cell-box>
           <cell-box>
             <label for="name">客户编号：</label>
-            <span class="fr">{{data.name}}</span>
+            <span class="fr">{{data.client_no}}</span>
           </cell-box>
         </group>
         <div class="space"></div>
@@ -43,19 +43,19 @@
           </cell-box>
           <cell-box>
             <label for="name">常住城市：</label>
-            <span class="fr">{{data.name}}</span>
+            <span class="fr">{{data.city}}</span>
           </cell-box>
           <cell-box>
             <label for="name">微信：</label>
-            <span class="fr">{{data.name}}</span>
+            <span class="fr">{{data.wechat}}</span>
           </cell-box>
           <cell-box>
             <label for="name">邮箱：</label>
-            <span class="fr">{{data.name}}</span>
+            <span class="fr">{{data.email}}</span>
           </cell-box>
           <cell-box>
             <label for="name">客户电话：</label>
-            <span class="fr">{{data.name}}</span>
+            <span class="fr">{{data.mobile}}</span>
           </cell-box>
           <div class="space"></div>
           <cell-box>
@@ -142,7 +142,7 @@
             title="已购买产品"
           >
           </cell>
-          <div class="space1"></div>
+          <div class="space"></div>
         </group>
       </div>
       <div class="remark">
@@ -295,10 +295,32 @@
   }
 </script>
 
-<style scoped lang="less">
+<style lang="less">
+.customerManagement{
   .wrapper {
     .no_bbottom .weui-cells::after {
       content: none;
+    }
+    .weui-cells.vux-no-group-title{
+      .vux-cell-box.weui-cell{
+        label{
+          font-family: PingFangSC-Medium;
+          font-size: 30px;
+          color: #333333;
+        }
+        .fr{
+          font-size: 28px;
+          color: #666;
+        }
+      }
+    }
+    .info{
+      .vux-cell-box.weui-cell{
+        border-bottom: 1px solid #CCCCCC;
+        padding: 0;
+        padding-left: 20px;
+        height: 83px;
+      }
     }
     .id_right {
       text-align: right;
@@ -343,6 +365,26 @@
       }
     }
     .product {
+      .vux-cell-box.weui-cell{
+        padding: 0;
+        padding-left: 20px;
+      }
+      .weui-cell.vux-tap-active.weui-cell_access{
+        padding: 0 20px;
+        .vux-cell-bd{
+          p{
+            label{
+              font-family: PingFangSC-Medium;
+              font-size: 30px;
+              color: #333333;
+            }
+          }
+        }
+        .weui-cell__ft{
+          font-size: 28px;
+          color: #666;
+        }
+      }
       .cell-form {
         padding: 40px 34px 34px 40px;
         font-size: 22px; /*px*/
@@ -384,6 +426,14 @@
     .remark {
       padding-bottom: 120px;
       background-color: #fff;
+      .vux-cell-box.weui-cell{
+        padding: 0;
+        padding-left: 20px;
+        font-family: PingFangSC-Medium;
+        font-size: 30px;
+        color: #333333;
+        border-bottom: 1px solid #ccc;
+      }
       .weui-cells .weui-cell i {
         font-size: 32px; /*px*/
       }
@@ -459,4 +509,5 @@
     height: 10px;
     background-color: #f5f5f5;
   }
+}
 </style>

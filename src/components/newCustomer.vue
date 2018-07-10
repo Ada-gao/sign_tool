@@ -220,6 +220,7 @@
           nationality: this.num === 1 ? '0' : '1',
           mobile: this.mobile,
           email: this.email,
+          wechat: this.wechat,
           city: this.city,
           mobile_validated: this.mobile_validated,
 //          validated_timestamp: this.validated_timestamp,
@@ -265,6 +266,7 @@
           padding: 0;
         }
         .mint-cell-title {
+          font-family: PingFangSC-Medium;
           color: #333;
           font-size: 30px;
           width: auto;
@@ -272,7 +274,7 @@
         .mint-field-core {
           text-align: right;
           font-size: 30px;
-          color: #999;
+          color: #666;
         }
         .mint-field-state {
           display: none;
@@ -302,14 +304,15 @@
           // .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
           //   left: 197px;
           // }
-          // .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
-          //   left: 215px;
-          // }
+          .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
+            margin-left: 172px;
+          }
           .radio_item.mint-radiolist .mint-cell:last-child {
             background-image: none;
           }
           .radio_item {
             .mint-radiolist-title {
+              font-family: PingFangSC-Medium;
               font-size: 30px;
               width: 150px;
               color: #333;
@@ -368,11 +371,20 @@
           -moz-box-sizing: border-box;
           box-sizing: border-box;
           padding: 0 20px;
+          .weui-cell__hd{
+            font-family: PingFangSC-Medium;
+          }
           .vux-cell-primary {
             font-size: 28px;
             padding-right: 15px;
             position: relative;
+            color: #999;
             // right: -60px;
+            .vux-popup-picker-select{
+              .vux-popup-picker-value.vux-cell-value, .vux-popup-picker-placeholder.vux-cell-placeholder{
+                color: #666;
+              }
+            }
           }
       }
       // padding-top: 126px;

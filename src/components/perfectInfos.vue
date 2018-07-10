@@ -1,6 +1,6 @@
 <template>
   <div class="perfect_infos">
-    <x-header :left-options="{backText: ''}">客户认证</x-header>
+    <x-header :left-options="{backText: ''}">实名认证</x-header>
     <group class="perfect_group wrapper">
       <div class="add_tit">
         <i class="iconfont">&#xe62c;</i>
@@ -8,31 +8,16 @@
       </div>
       <div class="space"></div>
       <cell title="客户姓名：" :value="name"></cell>
-      <cell title="国籍：" :value="nationality"></cell>
-      <cell title="常住中国城市：" :value="city" v-if="nationality === '中国'"></cell>
-      <cell title="手机号码：" :value="mobile" class="cell_mobile"></cell>
-      <x-input title="地址："
-               v-model="address"
-               ref="address"
-               :show-clear="false"
-               class="address"
-      ></x-input>
-      <div class="space"></div>
-      <div class="time_box" @click="open('pickerDate')">
-        <span class="date_tit">出生日期：</span>
-        <span class="date_time">{{datetime}}</span>
-        <i class="iconfont">&#xe731;</i>
+      <div class="radio_box">      
+        <mt-radio
+          class="radio_item"
+          title="客户性别："
+          v-model="radio"
+          :options="['女', '男']">
+        </mt-radio>
       </div>
-      <mt-datetime-picker ref="pickerDate"
-                          type="date"
-                          :endDate="endDate"
-                          :startDate="startDate"
-                          class="datetime_picker"
-                          year-format="{value} 年"
-                          month-format="{value} 月"
-                          date-format="{value} 日"
-                          @confirm="dateConfirm"
-                          :value="datetime"></mt-datetime-picker>
+      <cell title="客户编号：" :value="name"></cell>
+      <cell title="手机号码：" :value="mobile + '(已认证)'" class="cell_mobile"></cell>
       <div class="space"></div>
       <div class="time_box" @click="showCode">
         <span class="date_tit">证件类型：</span>
@@ -59,6 +44,32 @@
                :show-clear="false"
                :max="50"
       ></x-input>
+      <cell title="国籍：" :value="nationality"></cell>
+      <cell title="常住中国城市：" :value="city" v-if="nationality === '中国'"></cell>
+      <x-input title="地址："
+               v-model="address"
+               ref="address"
+               :show-clear="false"
+               class="address"
+      ></x-input>
+      <div class="space"></div>
+      <div class="time_box" @click="open('pickerDate')">
+        <span class="date_tit">出生日期：</span>
+        <span class="date_time">{{datetime}}</span>
+        <i class="iconfont">&#xe731;</i>
+      </div>
+      <mt-datetime-picker ref="pickerDate"
+                          type="date"
+                          :endDate="endDate"
+                          :startDate="startDate"
+                          class="datetime_picker"
+                          year-format="{value} 年"
+                          month-format="{value} 月"
+                          date-format="{value} 日"
+                          @confirm="dateConfirm"
+                          :value="datetime"></mt-datetime-picker>
+      <div class="space"></div>
+      
       <div class="time_box" @click="open('pickerStart')">
         <span class="date_tit">证件有效期起始时间：</span>
         <span class="date_time">{{starttime}}</span>
@@ -134,6 +145,7 @@
 
 <script>
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
+  import {Radio} from 'mint-ui'
   import {uploadId, perfectInfos} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
@@ -150,7 +162,8 @@
       PopupPicker,
       XDialog,
       XButton,
-      camera
+      camera,
+      'mt-radio': Radio
     },
     data () {
       return {
@@ -178,6 +191,7 @@
 //        certificationValue: [],
         certificationValue: '',
         certificateNumber: '',
+        radio: '',
         idImages: {
           front: '',
           back: ''
@@ -379,7 +393,68 @@
       border-bottom: 1px solid #ccc;
     }
   }
-
+  .radio_box {
+    padding: 0 20px;
+    background-color: #fff;
+    height: 83px;
+    line-height: 83px;
+    border-bottom: 1px solid #ccc;
+    .radio_item.mint-radiolist .mint-cell {
+      display: inline-block;
+      position: absolute;
+      height: 83px;
+      // padding: 20px 0;
+      .mint-cell-wrapper{
+        height: 100%;
+        line-height: 100%;
+      }
+      .mint-radio-label {
+        font-size: 28px;
+        color: #666;
+      }
+    }
+    // .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
+    //   left: 80px;
+    // }
+    .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
+      // right: 135px;
+      margin-left: 200px;
+    }
+    .radio_item.mint-radiolist .mint-cell:last-child {
+      background-image: none;
+    }
+    .radio_item {
+      .mint-radiolist-title {
+        font-size: 30px;
+        color: #333;
+        line-height: 42px;
+        // padding: 20px 0 20px;
+        margin: 0;
+        display: inline-block;
+      }
+      .mint-radio-core {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+        border-color: #979797;
+      }
+      .mint-radio-input:checked + .mint-radio-core {
+        background-color: #fff;
+        border-color: #2672BA;
+      }
+      .mint-radio-input:checked + .mint-radio-core::after {
+        background-color: #2672BA;
+      }
+      .mint-radio-core::after {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    .mint-cell-wrapper {
+      background-image: none;
+      -webkit-background-image: none;
+    }
+  }
   .perfect_infos {
     .cercode_box {
       width: 100%;

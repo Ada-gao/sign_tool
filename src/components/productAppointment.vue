@@ -1,6 +1,6 @@
 <template>
     <div class="productAppointment" @touchmove="touchScreen">
-    	<x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">产品预约</x-header>
+    	<x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{topBar}}</x-header>
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
 			<div class="wrapper">
 				<div class="topBar">
@@ -270,6 +270,7 @@ import { formatDate } from '@/common/js/date'
 export default {
 	data () {
 		return {
+			topBar: '预约',
 			count: '',
 			topTitle: '',
 			step1: 1,
@@ -771,6 +772,7 @@ export default {
 					this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 					this.product_name = this.$route.params.productInfo
 					this.product_id = this.$route.params.productId
+					this.topBar = '预约'
 					this.topTitle = '预约'
 					this.name = ''
 					this.cMob = ''
@@ -837,6 +839,7 @@ export default {
 						this.emailType = '快递寄出'
 					}
 					if (this.appointmentList.status === '1001') {
+						this.topBar = '预约'
 						this.topTitle = '预约(申请中)'
 						this.repeatAppointmentBtnShow = false
 						this.sucBtn = false
@@ -869,6 +872,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1002') {
+						this.topBar = '预约'
 						this.topTitle = '预约失败'
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 						let arr = []
@@ -915,6 +919,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1003') {
+						this.topBar = '预约'
 						this.topTitle = '预约成功'
 						this.sucBtn = true
 						this.uploadShow = true
@@ -950,6 +955,7 @@ export default {
 						this.bankname1 = ''
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1004') {
+						this.topBar = '预约'
 						this.topTitle = '预约取消'
 						this.submitAppointmentBtnShow = false
 						this.repeatAppointmentBtnShow = false
@@ -980,6 +986,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1005') {
+						this.topBar = '预约'
 						this.topTitle = '预约失效'
 						this.showNameClick = false
 						this.showMoneyClick = false
@@ -1011,6 +1018,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '2001') {
+						this.topBar = '打款'
 						this.topTitle = '打款审核中'
 						this.uploadShow = true
 						this.giveMoneyDone = true
@@ -1044,6 +1052,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2002') {
+						this.topBar = '打款'
 						this.topTitle = '待补全材料'
 						this.uploadShow = true
 						this.appointmentDone = true
@@ -1086,6 +1095,7 @@ export default {
 						this.refundSrc = []
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2003') {
+						this.topBar = '打款'
 						this.topTitle = '订单关闭'
 						this.appointmentDone = true
 						this.giveMoneyDone = true
@@ -1137,6 +1147,7 @@ export default {
 							this.repeatUploadRefund = true
 						}
 					} else if (this.appointmentList.status === '2004') {
+						this.topBar = '打款'
 						this.topTitle = '打款审核通过'
 						this.cantractNum = ''
 						this.expressCompany = ''
@@ -1171,6 +1182,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '2'
 					} else if (this.appointmentList.status === '3001') {
+						this.topBar = '合同管理'
 						this.topTitle = '待收到合同'
 						this.uploadShow = true
 						this.uploadCardS = true
@@ -1203,6 +1215,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3002') {
+						this.topBar = '合同管理'
 						this.topTitle = '合同审核中'
 						this.uploadShow = true
 						this.uploadCardS = true
@@ -1235,6 +1248,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3003') {
+						this.topBar = '合同管理'
 						this.topTitle = '合同审核不通过'
 						this.uploadContract = true
 						this.uploadShow = true
@@ -1267,6 +1281,7 @@ export default {
 						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3004') {
+						this.topBar = '合同管理'
 						this.topTitle = '合同审核通过'
 						this.contractManage = true
 						this.uploadShow = true
@@ -1521,9 +1536,13 @@ export default {
 				margin-bottom: 20px;
 				.cercode_box {
 					width: 100%;
-					height: 300px;
+					height: 350px;
 					.picker-items {
 						/*height: 244px;*/
+						.picker-item,.picker-item.picker-selected{
+							height: 70px !important;
+    					line-height: 70px !important;
+						}
 					}
 					.picker-toolbar {
 						height: 56px;
