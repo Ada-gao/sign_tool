@@ -1614,7 +1614,7 @@ export default {
 								width: 570px;
 								height: 40px;
 								line-height: 40px;
-								border: 1px solid rgba(151,151,151,0.76);
+								border: 1px solid #ccc;
 								border-radius: 5px;
 								box-sizing: border-box;
 								text-indent: 20px;
@@ -1712,7 +1712,7 @@ export default {
 									width: 580px;
 									height: 40px;
 									line-height: 40px;
-									border: 1px solid rgba(151,151,151,0.76);
+									border: 1px solid #ccc;
 									border-radius: 5px;
 									box-sizing: border-box;
 									text-indent: 20px;
@@ -1775,7 +1775,7 @@ export default {
 								.mint-field-core{
 									width: 580px;
 									height: 40px;
-									border: 1px solid rgba(151,151,151,0.76);
+									border: 1px solid #ccc;
 									border-radius: 5px;
 									box-sizing: border-box;
 									text-indent: 20px;

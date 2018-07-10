@@ -8,7 +8,7 @@
 							<div class="flex-left">
 								<p class="rate"><span class="number">{{item.annualized_return}}</span>%</p>
 								<!-- <p class="rate">{{item.expected_income}}</p> -->
-								<p class="text">收益对标基准</p>
+								<p class="text">{{item.is_float === 0 ? '浮动收益率' : '收益对标基准'}}</p>
 							</div>
 						</div>
 					</flexbox-item>
@@ -17,7 +17,7 @@
 							<div class="flex-right">
 								<p class="firstp">{{item.product_name}}</p><span class="important" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
 								<p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
-                <p v-else>购买金额：{{item.amount}}万</p>
+                				<p v-else>购买金额：{{item.amount}}万</p>
 								<p>投资期限：{{item.investment_horizon}}年</p>
 								<!-- <span v-if="item.product_status === 0" class="box red">在建</span> -->
 								<span v-if="item.product_status === 1" class="box blue">预热中</span>
