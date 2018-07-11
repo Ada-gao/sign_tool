@@ -1843,8 +1843,15 @@ export default {
 					}
 				}
 				.cont{
-					.mint-cell-title{
-						width: 155px;
+					.mint-cell-wrapper{
+						.mint-cell-title{
+							width: 155px;
+						}
+						.mint-cell-value{
+							.mint-field-core{
+								width: 560px;
+							}
+						}
 					}
 				}
 			}

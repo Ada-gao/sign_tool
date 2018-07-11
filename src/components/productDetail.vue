@@ -32,7 +32,7 @@
         </div>
         <div class="cont">
           <p class="cont-text" v-if="item.is_float === 0">浮动收益 ：一</p>
-          <p class="cont-text">收益对标基准 ：{{item.annualized_return}}%</p>
+          <p class="cont-text" v-else>收益对标基准 ：{{item.annualized_return}}%</p>
           <p class="cont-text">发行额度 ：{{item.collection_amount}}万</p>
           <!-- <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p> -->
           <p class="cont-text">最低追加金额 ：{{item.minimal_add_amount}}万</p>

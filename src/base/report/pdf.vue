@@ -1,9 +1,12 @@
 <template>
     <div class="material">
         <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
+        <div class="spinner">
+          <mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
+        </div>
         <div class="wrapper">
             <div class="pdf">
-                <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page"></canvas>
+                <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page  "></canvas>
             </div>
         </div>
     </div>
@@ -24,12 +27,12 @@ export default {
       pdfDoc: null,
       loadding: false,
       pages: 0,
-			url: ''
+      url: '',
+      spinner: false
     }
   },
   methods: {
     back () {
-      console.log(this.$route.params.mask)
       this.$router.push({name: 'PdfReport', params: {id: this.$route.params.id, mark: this.$route.params.mark}})
     },
     renderPage (num) {
@@ -63,6 +66,7 @@ export default {
     loadFile (url) {
       let _this = this
       PDFJS.getDocument(url).then(function (pdf) {
+        _this.spinner = false
         _this.pdfDoc = pdf
         _this.pages = _this.pdfDoc.numPages
         _this.$nextTick(() => {
@@ -72,6 +76,7 @@ export default {
     }
   },
   mounted () {
+    this.spinner = true
 		this.title = this.$route.params.tip
     let url = Base64.decode(this.$route.params.url)
     this.loadFile(url)
@@ -79,16 +84,29 @@ export default {
 }
 </script>
 
-<style scoped>
-.pdf{
+<style lang="less">
+.material{
+  .spinner{
+    position: absolute;
+    z-index: 99;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    .mint-spinner-fading-circle{
+      width: 80px !important;
+      height: 80px !important;
+    }
+  }
+  .pdf{
     /* margin-bottom: 120px; */
     /* overflow: scroll;
     width: 100%;
     height: 100%; */
-}
-canvas {
-  display: block;
-  border-bottom: 1px solid black;
-  margin: 0 auto;
+  }
+  canvas {
+    display: block;
+    border-bottom: 1px solid black;
+    margin: 0 auto;
+  }
 }
 </style>
