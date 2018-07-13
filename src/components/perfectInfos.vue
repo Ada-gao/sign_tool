@@ -314,8 +314,10 @@
       submitInfos () {
         let idType = ''
         idType = this.slots[0].values.indexOf(this.id_type) - 1
+        let gender = ''
+        gender = this.form.gender === '男' ? '0' : '1'
         let params = {
-          gender: this.form.gender,
+          gender: gender,
           client_id: this.form.client_id,
           client_class: this.form.client_class,
           client_type: this.form.client_type,
@@ -328,7 +330,6 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
-        console.log(this.form)
         if (!params.birthday ||
           !params.address ||
           !params.id_no ||

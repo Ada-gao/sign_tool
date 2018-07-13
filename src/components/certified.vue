@@ -19,7 +19,27 @@
       <div class="email_box" @click="showPopup">附件发送给理财师邮箱<i class="iconfont">&#xe731;</i></div>
       <div class="space"></div>
       <div class="upload_file">
-        <div class="upload">请您上传资料</div>
+        <div class="upload">
+          <div class="upload_tit">上传认证资料</div>
+          <div class="time_box" @click="showCode">
+            <span class="date_tit">认证原因：</span>
+            <span class="date_time">{{reason}}</span>
+            <i class="iconfont">&#xe731;</i>
+          </div>
+          <mt-popup v-model="showCerCode"
+                    position="bottom"
+                    class="cercode_box"
+                    popup-transition="popup-fade">
+            <mt-picker :slots="slots"
+                       :showToolbar="true"
+                       @change="onValuesChange">
+              <div class="toolbar">
+                <span class="cancel" @click="cancelCerCode">取消</span>
+                <span class="ensure" @click="ensureCerCode">确定</span>
+              </div>
+            </mt-picker>
+          </mt-popup>
+        </div>
         <camera :popupVisible="popupVisible"
                 @showPopup="showCamera"
                 :isFromBank="fromBank"
@@ -102,7 +122,17 @@
           emailAddress: '',
           type: ''
         },
-        beforeRouteName: ''
+        beforeRouteName: '',
+        showCerCode: false,
+        reason: '',
+        slots: [
+          {
+            flex: 1,
+            values: ['请选择认证原因', '身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他'],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ]
       }
     },
     mounted () {
@@ -157,6 +187,18 @@
       }
     },
     methods: {
+      showCode () {
+        this.showCerCode = true
+      },
+      cancelCerCode () {
+        this.showCerCode = false
+      },
+      ensureCerCode (val) {
+        this.showCerCode = false
+      },
+      onValuesChange (picker, values) {
+        this.reason = values[0]
+      },
       showCamera (data) {
         this.popupVisible = data
       },
@@ -363,7 +405,7 @@
       .radio_box {
         padding: 0 20px;
         background-color: #fff;
-        height: 130px;
+        height: 165px;
         .radio_item.mint-radiolist .mint-cell {
           display: inline-block;
           position: absolute;
@@ -383,6 +425,7 @@
         }
         .radio_item {
           .mint-radiolist-title {
+            display: block;
             font-size: 30px;
             color: #333;
             line-height: 42px;
@@ -432,9 +475,76 @@
         .upload {
           font-size: 24px;
           color: #666;
-          text-align: center;
-          padding-top: 39px;
-          padding-bottom: 70px;
+          padding: 0 20px;
+          margin-bottom: 30px;
+          /*text-align: center;*/
+          /*padding-top: 39px;*/
+          /*padding-bottom: 70px;*/
+          .upload_tit {
+            height: 70px;
+            line-height: 70px;
+            border-bottom: 1px solid #e1e1e1;
+          }
+          .cercode_box {
+            width: 100%;
+            height: 300px;
+            .picker-items {
+              /*height: 244px;*/
+            }
+            .picker-toolbar {
+              height: 56px;
+              line-height: 56px;
+              .toolbar {
+                width: 100%;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+                height: 56px;
+                line-height: 56px;
+                padding: 0 30px;
+                color: #2672ba;
+                font-size: 34px;
+                position: absolute;
+                border-bottom: 1px solid #ddd;
+                span {
+                  position: absolute;
+                  display: inline-block;
+                }
+                span.cancel {
+                  left: 30px;
+                }
+                span.ensure {
+                  right: 30px;
+                }
+              }
+            }
+          }
+          .time_box {
+            position: relative;
+            height: 82px;
+            line-height: 82px;
+            padding: 0 20px;
+            padding-left: 0;
+            /*border-bottom: 1px solid #ddd;*/
+            span {
+              /*font-size: 32px;*/
+            }
+            span.date_tit {
+              /*color: #333;*/
+            }
+            span.date_time {
+              /*color: #999;*/
+              right: 56px;
+              position: absolute;
+            }
+            i {
+              position: absolute;
+              right: 0;
+              margin-right: 0;
+              font-size: 55px !important;
+              color: #C8C8CD;
+            }
+          }
         }
       }
       .submit_form {
