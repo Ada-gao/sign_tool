@@ -133,6 +133,11 @@
       <div class="quit">{{alertCont}}</div>
       <x-button type="primary" @click.native="hideAlert">确 定</x-button>
     </x-dialog>
+    <x-dialog v-model="submitDialog" class="dialog-demo quitDialog" hide-on-blur>
+      <i class="iconfont submit_i">&#xe617;</i>
+      <div class="submit_cont">{{submitCont}}</div>
+      <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button>
+    </x-dialog>
   </div>
 </template>
 
@@ -158,6 +163,8 @@
     },
     data () {
       return {
+        submitDialog: false,
+        submitCont: '认证提交待审核中…',
         form: {},
         id_start_date: '',
         id_expiration: '',
@@ -182,7 +189,7 @@
         slots: [
           {
             flex: 1,
-            values: ['', '身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他'],
+            values: ['请选择', '身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他'],
             className: 'slot1',
             textAlign: 'center'
           }
@@ -311,11 +318,16 @@
       toLink () {
         this.$router.push({name: 'Bankcard'})
       },
+      routerPush () {
+        this.$router.push({name: 'PotentialCustomerList', params: {id: this.form.client_id}})
+      },
       submitInfos () {
         let idType = ''
         idType = this.slots[0].values.indexOf(this.id_type) - 1
+        let gender = ''
+        gender = this.form.gender === '男' ? '0' : '1'
         let params = {
-          gender: this.form.gender,
+          gender: gender,
           client_id: this.form.client_id,
           client_class: this.form.client_class,
           client_type: this.form.client_type,
@@ -328,7 +340,6 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
-        console.log(this.form)
         if (!params.birthday ||
           !params.address ||
           !params.id_no ||
@@ -341,7 +352,7 @@
         }
         uploadId(this.client_certification_id, params).then(res => {
           if (res.status === 200) {
-            this.$router.push({name: 'PotentialCustomerList', params: {id: this.form.client_id}})
+            this.submitDialog = true
           }
         })
       }
@@ -527,10 +538,10 @@
         transform: translate(-50%, -50%);
         padding: 0;
         text-align: center;
+        font-family: PingFangSC-Regular;
         .quit {
           margin-top: 85px;
           margin-bottom: 75px;
-          font-family: PingFangSC-Regular;
           font-size: 36px;
           color: #333333;
         }
@@ -540,9 +551,31 @@
           border-radius: 10px;
           width: 190px;
           height: 80px;
-          font-family: PingFangSC-Medium;
+          line-height: 80px;
           font-size: 36px;
           color: #F0F0F0;
+        }
+        .submit_i,
+        .submit_cont,
+        .weui-btn.weui-btn_primary.submit_btn {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+        .submit_i {
+          font-size: 63px;
+          top: 40px;
+
+        }
+        .submit_cont {
+          font-size: 30px;
+          color: #333333;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .weui-btn.weui-btn_primary.submit_btn {
+          width: 280px;
+          bottom: 32px;
         }
       }
     }
