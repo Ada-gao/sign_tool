@@ -29,9 +29,10 @@
 						<mt-cell title="客户姓名：" is-link @click.native="chooseName" v-if="showNameClick">{{name}}</mt-cell>
 						<mt-cell title="客户姓名：" v-if="!showNameClick" :value="name"></mt-cell>
 						<mt-cell title="手机号码：" :value="cMob"></mt-cell>
-						<mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell>
-						<mt-cell title="预约金额：" v-if="!showMoneyClick">{{money}}</mt-cell>
-						<mt-popup v-model="showMoney"
+						<mt-field label="预约金额：" class="inputMoney" placeholder="" v-model="money" v-if="showMoneyClick">万</mt-field>
+						<!-- <mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell> -->
+						<mt-cell title="预约金额：" v-if="!showMoneyClick">{{money}}万</mt-cell>
+						<!-- <mt-popup v-model="showMoney"
                 position="bottom"
                 class="cercode_box"
                 popup-transition="popup-fade">
@@ -46,7 +47,7 @@
 									<span class="ensure" @click="ensureMoney">确定</span>
 								</div>
 							</mt-picker>
-						</mt-popup>
+						</mt-popup> -->
 						<mt-cell title="预约时间：">{{nowTime}}</mt-cell>
 						<mt-cell title="已打款审核通过时间：" v-if="alreadyPass">{{alreadyPassTime}}</mt-cell>
 					</div>
@@ -457,19 +458,19 @@ export default {
 					})
 				}
 			},
-			chooseMoney () {
-        this.showMoney = true
-			},
-			onValuesChangeMoney (picker, values) {
-				this.selectMoney = parseInt(values[0]) + parseInt(values[1]) + parseInt(values[2]) + parseInt(values[3])
-			},
-			cancelMoney () {
-        this.showMoney = false
-			},
-			ensureMoney () {
-				this.money = this.selectMoney + '万'
-        this.showMoney = false
-			},
+			// chooseMoney () {
+      //   this.showMoney = true
+			// },
+			// onValuesChangeMoney (picker, values) {
+			// 	this.selectMoney = parseInt(values[0]) + parseInt(values[1]) + parseInt(values[2]) + parseInt(values[3])
+			// },
+			// cancelMoney () {
+      //   this.showMoney = false
+			// },
+			// ensureMoney () {
+			// 	this.money = this.selectMoney + '万'
+      //   this.showMoney = false
+			// },
 			showPopup (data) {
         this.popupVisible = data
       },
@@ -517,12 +518,12 @@ export default {
 					this.msgDetail = '还有信息没填写哦～'
 					return
 				}
-				if (this.selectMoney < this.minimalAmount) {
+				if (this.money < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
 					this.alertMsg = true
 					return
 				}
-				if (this.selectMoney > this.collectionAmount) {
+				if (this.money > this.collectionAmount) {
 					this.msgDetail = '预约金额大于募集金额，不可预约'
 					this.alertMsg = true
 					return
@@ -537,7 +538,7 @@ export default {
 					'risk_level': selectObj.risk_level,
 					'product_id': this.product_id,
 					'product_name': this.product_name,
-					'appointment_amount': this.selectMoney,
+					'appointment_amount': parseInt(this.money),
 					'appointment_date': this.nowTime
 				}
 				submitAppointment(obj).then(res => {
@@ -558,12 +559,12 @@ export default {
 					this.msgDetail = '还有信息没填写哦～'
 					return
 				}
-				if (this.selectMoney < this.minimalAmount) {
+				if (this.money < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
 					this.alertMsg = true
 					return
 				}
-				if (this.selectMoney > this.collectionAmount) {
+				if (this.money > this.collectionAmount) {
 					this.msgDetail = '预约金额大于募集金额，不可预约'
 					this.alertMsg = true
 					return
@@ -577,7 +578,8 @@ export default {
 					'risk_level': this.appointmentList.risk_level,
 					'product_id': this.product_id,
 					'product_name': this.appointmentList.product_name,
-					'appointment_amount': parseInt(this.money.slice(0, -1)),
+					// 'appointment_amount': parseInt(this.money.slice(0, -1)),
+					'appointment_amount': parseInt(this.money),
 					'appointment_date': this.nowTime
 				}
 				submitAppointment(obj).then(res => {
@@ -665,7 +667,7 @@ export default {
 					'bank_subname': this.bankname1 || this.cardName1,
 					'bank_id': this.bankId,
 					'card_no': this.cardnum || this.cardNum,
-					'flag': '0'
+					'flag': '1'
 				}
 				submitMaterials(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
@@ -817,7 +819,7 @@ export default {
 					this.codeA = this.appointmentList.appointment_code
 					this.name = this.appointmentList.client_name
 					this.cMob = this.appointmentList.client_mobile
-					this.money = this.appointmentList.appointment_amount + '万'
+					this.money = this.appointmentList.appointment_amount
 					this.nowTime = this.appointmentList.appointment_date
 					this.product_name = this.appointmentList.product_name
 					this.cardNum = this.appointmentList.cardno
@@ -888,7 +890,7 @@ export default {
 						})
 						this.name = this.appointmentList.client_name
 						this.cMob = this.appointmentList.client_mobile
-						this.money = this.appointmentList.appointment_amount + '万'
+						this.money = this.appointmentList.appointment_amount
 						this.submitAppointmentBtnShow = false
 						this.repeatAppointmentBtnShow = true
 						this.showNameClick = true
@@ -1318,6 +1320,7 @@ export default {
 			},
 			getBankList () {
 				checkBankDetail().then(res => {
+					this.nameValues = []
 					res.data.map((item, index) => {
 						this.nameValues.push({'bankName': item.bank_name, 'bankId': item.bank_id})
 					})
@@ -1539,10 +1542,10 @@ export default {
 					height: 350px;
 					.picker-items {
 						/*height: 244px;*/
-						.picker-item,.picker-item.picker-selected{
-							height: 70px !important;
-    					line-height: 70px !important;
-						}
+						// .picker-item,.picker-item.picker-selected{
+						// 	height: 70px !important;
+    				// 	line-height: 70px !important;
+						// }
 					}
 					.picker-toolbar {
 						height: 56px;
@@ -1621,6 +1624,20 @@ export default {
 							}
 						  .mint-field-clear{
 								display: none;
+							}
+						}
+					}
+				}
+				.inputMoney{
+					.mint-cell-wrapper{
+						.mint-cell-value{
+							padding-right: 20px;
+							width: 580px;
+							box-sizing: border-box;
+							.mint-field-core{
+								border: none;
+								text-align: right;
+								color: #666;
 							}
 						}
 					}
@@ -1826,8 +1843,15 @@ export default {
 					}
 				}
 				.cont{
-					.mint-cell-title{
-						width: 155px;
+					.mint-cell-wrapper{
+						.mint-cell-title{
+							width: 155px;
+						}
+						.mint-cell-value{
+							.mint-field-core{
+								width: 560px;
+							}
+						}
 					}
 				}
 			}
