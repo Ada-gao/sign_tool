@@ -68,7 +68,7 @@
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker, XDialog, XButton} from 'vux'
   import camera from '@/base/camera/camera'
-  import {uploadBankCard, getBankInfos} from '@/service/api/customers'
+  import {uploadBankCard, getBankInfos, perfectInfos} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
 
   export default {
@@ -105,7 +105,7 @@
         slots: [
           {
             flex: 1,
-            values: [''],
+            values: ['请选择银行'],
             className: 'slot1',
             textAlign: 'center'
           }
@@ -117,6 +117,11 @@
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
       this.client_certification_id = info.client_certification_id
+      if (this.client_certification_id === undefined) {
+        perfectInfos({client_id: info.client_id}).then(res => {
+          this.client_certification_id = res.data.client_certification_id
+        })
+      }
       getBankInfos().then(res => {
         if (res.status === 200) {
           res.data.forEach((value, index) => {

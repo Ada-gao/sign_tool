@@ -21,7 +21,7 @@
       <div class="upload_file">
         <div class="upload">
           <div class="upload_tit">上传认证资料</div>
-          <div class="time_box" @click="showCode">
+          <div class="time_box" @click="showCode" style="display:none;">
             <span class="date_tit">认证原因：</span>
             <span class="date_time">{{reason}}</span>
             <i class="iconfont">&#xe731;</i>

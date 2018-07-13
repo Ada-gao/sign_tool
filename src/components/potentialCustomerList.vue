@@ -99,7 +99,7 @@
             </cell>
             <div class="space1"></div>
             <cell is-link
-                  :link="{name: 'BankList', params: {addCard: true}}"
+                  :link="{name: 'BankList', params: {addCard: '0'}}"
                   title="银行卡信息："
             ></cell>
           </group>

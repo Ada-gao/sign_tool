@@ -6,6 +6,12 @@
 				<mt-cell title="银行卡信息">
 					<span slot="icon" class="iconfont">&#xe621;</span>
 				</mt-cell>
+        <div class="add_card_btn"
+             v-if="addCard !== '2'"
+             @click="routerPush">
+          <i class="iconfont">&#xe640;</i>
+          <span>银行卡</span>
+        </div>
 			</div>
 			<div class="list">
 				<div class="item" :data="bankList" v-for="item in bankList" :key="item.bank_id" @click="selected(item)">
@@ -29,6 +35,7 @@
 <script type="text/ecmascript-6">
 import { XHeader } from 'vux'
 import { checkCustomerBankDetail } from '@/service/api/customers'
+import {getStore} from '@/config/mUtils'
 export default{
 	components: {
     XHeader
@@ -38,16 +45,33 @@ export default{
 			clientId: '',
 			bankList: [],
 			mark: '',
-			selectedItem: []
+			selectedItem: [],
+      addCard: null
 		}
 	},
+  beforeRouteEnter (to, from, next) {
+    next(vm => {
+      if (from.name === 'Bankcard' || 'PotentialCustomerList') {
+        vm.addCard = '0'
+      } else if (from.name === 'CustomerManagement') {
+        vm.addCard = '1'
+      } else {
+        vm.addCard = '2'
+      }
+    })
+  },
 	methods: {
+    routerPush () {
+      this.$router.push({name: 'Bankcard'})
+    },
 		back () {
 			if (this.$route.params.flag) {
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, mark: this.mark}})
-      } else if (this.$route.params.addCard === true) {
-				this.$router.push({name: 'CustomerManagement', params: {id: this.$route.params.id}})
-			}
+      } else if (this.addCard === '0') {
+				this.$router.push({name: 'PotentialCustomerList', params: {id: this.clientId}})
+			} else if (this.addCard === '1') {
+        this.$router.push({name: 'CustomerManagement', params: {id: this.clientId}})
+      }
 		},
 		selected (item) {
 			this.mark = 'selected'
@@ -62,7 +86,9 @@ export default{
 		}
 	},
 	mounted () {
-		this.clientId = this.$route.params.id
+//	  this.addCard = this.$route.params.addCard
+	  let selfInfos = JSON.parse(getStore('selfInfos'))
+		this.clientId = this.$route.params.id || selfInfos.client_id
 		this.getList()
 	}
 }
@@ -72,6 +98,7 @@ export default{
 	font-family: PingFangSC-Regular;
 	.wrapper{
 		.top{
+      position: relative;
 			height: 80px;
 			.mint-cell{
 				height: 100%;
@@ -90,6 +117,23 @@ export default{
 					}
 				}
 			}
+      .add_card_btn {
+        display: inline-block;
+        position: absolute;
+        right: 42px;
+        top: 19px;
+        background: #2672BA;
+        border-radius: 5px;
+        width: 122px;
+        height: 42px;
+        line-height: 42px;
+        color: #fff;
+        i {
+          vertical-align: bottom;
+          font-size: 25px;
+          margin-left: 5px;
+        }
+      }
 		}
 		.list{
 			padding: 20px;
