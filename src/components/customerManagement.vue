@@ -6,7 +6,7 @@
         <group>
           <cell-box style="color: #2672ba;">
             <i class="iconfont">&#xe61a;</i>客户信息
-            <span class="fr" style="color:#333;">{{investorType}}</span>
+            <!-- <span class="fr" style="color:#333;">{{investorType}}</span> -->
           </cell-box>
         </group>
         <div class="space"></div>
@@ -37,10 +37,10 @@
               v-else
             >其他</span>
           </cell-box>
-          <cell-box v-show="data.nationality === '中国'">
+          <!-- <cell-box v-show="data.nationality === '中国'">
             <label for="email">常住中国城市：</label>
             <span class="fr">{{data.city}}</span>
-          </cell-box>
+          </cell-box> -->
           <cell-box>
             <label for="name">常住城市：</label>
             <span class="fr">{{data.city}}</span>
@@ -64,15 +64,15 @@
           </cell-box>
           <cell-box>
             <label>证件有效期：</label>
-            <span class="fr">{{data.id_no}}</span>
+            <span class="fr">{{data.id_start_date}} 至 {{data.id_expiration}}</span>
           </cell-box>
           <cell-box>
             <label>出生日期：</label>
-            <span class="fr">{{data.id_no}}</span>
+            <span class="fr">{{data.birthday}}</span>
           </cell-box>
           <cell-box>
             <label>地址：</label>
-            <span class="fr">{{data.city}}</span>
+            <span class="fr">{{data.address}}</span>
           </cell-box>
           <cell-box>
             <label>录入时间：</label>
@@ -80,7 +80,7 @@
           </cell-box>
           <cell-box>
             <label>资产管理规模：</label>
-            <span class="fr">{{data.city}}</span>
+            <span class="fr">{{data.asset_amount}}万</span>
           </cell-box>
           <!-- <cell-box>
             <label>证件类型：</label>
@@ -117,12 +117,13 @@
       <div class="space"></div>
       <div class="product">
         <group>
-          <cell-box>
-            <label>实名认证：</label>
-            <span class="fr">{{data.city}}</span>
-          </cell-box>
+          <mt-cell title="实名认证："
+                   to="/perfectInfos"
+                   :value="clickArrowObj.realnameObj.stat"
+                   :is-link="!clickArrowObj.realnameObj.disabled">
+          </mt-cell>
           <div class="space1"></div>
-          <cell
+          <!-- <cell
             is-link
             :link="{name: 'Certified',params: {type: clientType}}"
             :title="'投资者类型：'+stat"
@@ -133,13 +134,28 @@
           <cell is-link
                 :link="{name: 'BankcardInfos', params: {id: clientId}}"
                 title="银行卡信息"
-          ></cell>
+          ></cell> -->
+          <group v-if="data.realname_status === '2'">
+            <cell style="color:#333"
+                  :is-link="!clickArrowObj.cerObj.disabled"
+                  :link="{name: 'Certified',params: {id: data.client_id}}"
+                  :title="'投资者类型：' + clickArrowObj.cerObj.type"
+                  :value="clickArrowObj.cerObj.stat"
+                  :disabled="clickArrowObj.cerObj.disabled"
+            >
+            </cell>
+            <div class="space1"></div>
+            <cell is-link
+                  :link="{name: 'BankList', params: {addCard: true, id: data.client_id}}"
+                  title="银行卡信息："
+            ></cell>
+          </group>
           <div class="space1"></div>
           <cell
             is-lilnk
             :link="'/purchasedProducts/'+clientId"
             value-align="left"
-            title="已购买产品"
+            title="客户已购买产品"
           >
           </cell>
           <div class="space"></div>
@@ -168,6 +184,12 @@
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
       </x-dialog>
     </div>
+    <x-dialog v-model="transformDialog" class="submitDialog">
+      <div class="tip">客户当前资产规模已到达500万<br/>
+            是否自动转变为专业投资者？</div>
+			<x-button type="primary" @click.native="transform">转 变</x-button>
+			<x-button type="primary" @click.native="cancel">取 消</x-button>
+    </x-dialog>
   </div>
 </template>
 
@@ -181,6 +203,7 @@
     FlexboxItem,
     XDialog,
     XTextarea,
+    XButton,
     TransferDomDirective as TransferDom,
     CellFormPreview
   } from 'vux'
@@ -189,6 +212,7 @@
     checkCustomerRemarks,
     addCustomerRemarks
   } from '@/service/api/customers'
+  import {tfCtypeToText} from '@/common/js/filter'
 
   export default {
     name: 'CustomerManagement',
@@ -204,6 +228,7 @@
       FlexboxItem,
       XDialog,
       XTextarea,
+      XButton,
       CellFormPreview
     },
     data () {
@@ -216,8 +241,20 @@
         stat: '',
         remarkList: [],
         showHideOnBlur: false,
+        transformDialog: false,
         remarkInfo: null,
-        remarkInput: null
+        remarkInput: null,
+        clickArrowObj: {
+          realnameObj: {
+            stat: '',
+            disabled: null
+          },
+          cerObj: {
+            stat: '',
+            disabled: null,
+            type: ''
+          }
+        }
       }
     },
     mounted () {
@@ -233,6 +270,18 @@
         this.clientId = res.data.client_id
         this.clientName = res.data.name
         this.clientType = res.data.client_type
+        if (this.data.asset_amount > 500) {
+          this.transformDialog = true
+        }
+        this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
+        this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
+        if (this.data.client_type === '0') {
+          this.clickArrowObj.cerObj.type = '普通投资者'
+        } else if (this.data.client_type === '1') {
+          this.clickArrowObj.cerObj.type = '专业投资者'
+        }
+        this.clickArrowObj.realnameObj.stat = tfCtypeToText(this.data.realname_status).flag
+        this.clickArrowObj.realnameObj.disabled = tfCtypeToText(this.data.realname_status).disabled
         switch (res.data.client_type) {
           case '0':
             this.stat = '普通投资者'
@@ -290,6 +339,12 @@
       },
       toLink1 () {
         this.$router.push({name: 'ProductDetail', params: {id: 1}})
+      },
+      transform () {
+
+      },
+      cancel () {
+        this.transformDialog = false
       }
     }
   }
@@ -365,6 +420,14 @@
       }
     }
     .product {
+      .mint-cell{
+        .mint-cell-wrapper{
+          padding-left: 20px;
+          .mint-cell-text{
+            position: static;
+          }
+        }
+      }
       .vux-cell-box.weui-cell{
         padding: 0;
         padding-left: 20px;
@@ -478,7 +541,30 @@
       content: none;
     }
   }
-
+  .submitDialog {
+    .tip{
+      font-family: PingFangSC-Regular;
+      font-size: 36px;
+      color: #333333;
+      margin-top: 50px;
+      margin-bottom: 35px;
+    }
+    .weui-btn.weui-btn_primary{
+      display: inline-block;
+      width: 190px;
+      height: 80px;
+      background: #2A7DC1;
+      border-radius: 10px;
+      font-family: PingFangSC-Medium;
+      font-size: 36px;
+      color: #F0F0F0;
+      margin-right: 43px;
+    }
+    .weui-btn.weui-btn_primary:last-child{
+      margin-left: 43px;
+      margin-right: 0px;
+    }
+  }
   .weui-cells {
     .weui-cell {
       height: 80px;

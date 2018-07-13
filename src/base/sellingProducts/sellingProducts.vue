@@ -19,7 +19,7 @@
 								<p class="firstp">{{item.product_name}}</p><span class="important" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
 								<p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
                 				<p v-else>购买金额：{{item.amount}}万</p>
-								<p>投资期限：{{item.investment_horizon}}年</p>
+								<p>产品期限：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
 								<!-- <span v-if="item.product_status === 0" class="box red">在建</span> -->
 								<span v-if="item.product_status === 1" class="box blue">预热中</span>
 								<span v-else-if="item.product_status === 2" class="box green">募集中</span>

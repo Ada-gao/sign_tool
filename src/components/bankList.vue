@@ -45,7 +45,9 @@ export default{
 		back () {
 			if (this.$route.params.flag) {
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, mark: this.mark}})
-      }
+      } else if (this.$route.params.addCard === true) {
+				this.$router.push({name: 'CustomerManagement', params: {id: this.$route.params.id}})
+			}
 		},
 		selected (item) {
 			this.mark = 'selected'

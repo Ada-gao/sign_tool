@@ -214,7 +214,7 @@
           	<mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button>
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
-						<i class="iconfont noS">&#xe617;</i>
+						<i class="iconfont noS returnIcon">&#xe617;</i>
 						<div class="returnDetailCss">{{submitAppointDetail}}</div>
 						<div class="returnDetailCss">{{count}}秒后将自动返回产品详情</div>
 						<x-button @click.native="returnDetail" type="primary">返回产品详情</x-button>
@@ -435,6 +435,9 @@ export default {
 				this.showSpace = false
 			},
 			touchScreen () {
+				if (this.$route.params.fromUrl === 'productDetail') {
+					document.getElementsByTagName('input')[0].blur()
+				}
 				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002') {
 					document.getElementsByTagName('input')[0].blur()
 					document.getElementsByTagName('input')[1].blur()
@@ -1055,7 +1058,7 @@ export default {
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2002') {
 						this.topBar = '打款'
-						this.topTitle = '待补全材料'
+						this.topTitle = '已到账待补全材料'
 						this.uploadShow = true
 						this.appointmentDone = true
 						this.uploadCard = true
@@ -1630,6 +1633,10 @@ export default {
 				}
 				.inputMoney{
 					.mint-cell-wrapper{
+						border-bottom: 0.013333rem solid #ccc;
+						.mint-cell-title{
+							width: 155px;
+						}
 						.mint-cell-value{
 							padding-right: 20px;
 							width: 580px;
@@ -1892,6 +1899,10 @@ export default {
 						color: #8B8B8B;
 						margin: 30px 0;
 						line-height: 100px;
+					}
+					.returnIcon{
+						font-size: 70px;
+						margin: 20px 0;
 					}
 					.suc{
 						display: inline-block;

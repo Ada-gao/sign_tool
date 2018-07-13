@@ -6,7 +6,7 @@
         </div>
         <div class="wrapper">
             <div class="pdf">
-                <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page  "></canvas>
+                <canvas v-for="page in pages" :id="'the-canvas'+page" :key="page"></canvas>
             </div>
         </div>
     </div>
@@ -28,13 +28,114 @@ export default {
       loadding: false,
       pages: 0,
       url: '',
-      spinner: false
+      spinner: false,
+      isCanScale: false,
+      scale: 1,
+      distance: {},
+      vendors: null,
+      origin: null,
+      wrapper: null,
+      element: null
     }
   },
   methods: {
     back () {
       this.$router.push({name: 'PdfReport', params: {id: this.$route.params.id, mark: this.$route.params.mark}})
     },
+    handleTouch (e) {
+      // e.preventDefault()
+			switch (e.type) {
+				case 'touchstart':
+					if (e.touches.length > 1) {
+	 					this.distance.start = this.getDistance({
+	 						x: e.touches[0].screenX,
+	 						y: e.touches[0].screenY
+						}, {
+	 						x: e.touches[1].screenX,
+	 						y: e.touches[1].screenY
+	 					})
+	 				}
+					break
+				case 'touchmove':
+					if (e.touches.length === 2) {
+	 					this.origin = this.getOrigin({
+							x: event.touches[0].pageX,
+							y: event.touches[0].pageY
+						}, {
+							x: event.touches[1].pageX,
+							y: event.touches[1].pageY
+						})
+						this.distance.stop = this.getDistance({
+	 						x: e.touches[0].screenX,
+	 						y: e.touches[0].screenY
+						}, {
+	 						x: e.touches[1].screenX,
+	 						y: e.touches[1].screenY
+	 					})
+	 					this.scale = this.distance.stop / this.distance.start
+	 					this.isCanScale = true
+	 					this.setScaleAnimation(this.scale, true)
+	 				}
+					break
+				case 'touchend':
+					this.scale = 1
+					this.setScaleAnimation(this.scale)
+					break
+				case 'touchcancel':
+					this.scale = 1
+					this.setScaleAnimation(this.scale)
+					break
+				default:;
+			}
+    },
+    vendor () {
+			var TRANSITION = 'transition'
+			var TRANSITION_END = 'transitionend'
+			var TRANSFORM = 'transform'
+			var TRANSFORM_PROPERTY = 'transform'
+			var TRANSITION_PROPERTY = 'transition'
+			if (typeof document.body.style.webkitTransform !== 'undefined') {
+				TRANSFORM = 'webkitTransform'
+				TRANSITION = 'webkitTransition'
+				TRANSITION_END = 'webkitTransitionEnd'
+				TRANSFORM_PROPERTY = '-webkit-transform'
+				TRANSITION_PROPERTY = '-webkit-transition'
+			}
+			return {
+				TRANSFORM: TRANSFORM,
+				TRANSITION: TRANSITION,
+				TRANSITION_END: TRANSITION_END,
+				TRANSFORM_PROPERTY: TRANSFORM_PROPERTY,
+				TRANSITION_PROPERTY: TRANSITION_PROPERTY
+			}
+    },
+    getOrigin (first, second) {
+			return {
+				x: (first.x + second.x) / 2,
+				y: (first.y + second.y) / 2
+			}
+    },
+    getDistance (start, stop) {
+			return Math.sqrt(Math.pow((stop.x - start.x), 2) + Math.pow((stop.y - start.y), 2))
+    },
+    setScaleAnimation (scale, animation) {
+			var transitionAnimation = ''
+      var x, y
+      var element = document.querySelector('.wrapper')
+			if (!this.isCanScale) {
+				return
+			}
+			this.isCanScale = false
+			if (animation) {
+				transitionAnimation = 'none'
+			} else {
+				transitionAnimation = this.vendors.TRANSFORM_PROPERTY + ' 0.3s ease-out'
+      }
+			element.style[this.vendors.TRANSITION] = transitionAnimation
+			x = this.origin.x + (-this.origin.x) * this.scale
+			y = this.origin.y + (-this.origin.y) * this.scale
+			element.style[this.vendors.TRANSFORM] = 'matrix(' + this.scale + ', 0, 0, ' + this.scale + ', ' + x + ', ' + y + ')'
+		},
     renderPage (num) {
       let _this = this
       this.pdfDoc.getPage(num).then(function (page) {
@@ -77,7 +178,13 @@ export default {
   },
   mounted () {
     this.spinner = true
-		this.title = this.$route.params.tip
+    this.title = this.$route.params.tip
+    this.wrapper = document.querySelector('.wrapper')
+    this.wrapper.addEventListener('touchstart', this.handleTouch)
+		this.wrapper.addEventListener('touchmove', this.handleTouch)
+		this.wrapper.addEventListener('touchend', this.handleTouch)
+		this.wrapper.addEventListener('touchcancel', this.handleTouch)
+    this.vendors = this.vendor()
     let url = Base64.decode(this.$route.params.url)
     this.loadFile(url)
   }
@@ -97,6 +204,10 @@ export default {
       height: 80px !important;
     }
   }
+  .wrapper{
+    transform-origin: 0 0;
+		-webkit-transform-origin: 0 0;
+  }
   .pdf{
     /* margin-bottom: 120px; */
     /* overflow: scroll;
@@ -107,6 +218,7 @@ export default {
     display: block;
     border-bottom: 1px solid black;
     margin: 0 auto;
+    width: 100%;
   }
 }
 </style>
