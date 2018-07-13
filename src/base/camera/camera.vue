@@ -88,6 +88,7 @@
     },
     methods: {
       setImgSrc () {
+        console.log(this.imageSrc)
         this.imgSrc = this.imageSrc
       },
       setImgSrcArr () {

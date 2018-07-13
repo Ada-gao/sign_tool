@@ -142,7 +142,9 @@ export default {
 //          console.log(queryUrl)
           let data = {
             'email': res.data.email,
-            'userId': res.data.user_id
+            'userId': res.data.user_id,
+            'mobile': res.data.mobile,
+            'name': res.data.name
           }
           window.localStorage.setItem('data', JSON.stringify(data))
 //          this.$router.push({path: decodeURIComponent(url)})
