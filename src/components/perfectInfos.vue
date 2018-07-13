@@ -7,21 +7,21 @@
         <span style="color: #2672ba">客户信息</span>
       </div>
       <div class="space"></div>
-      <cell title="客户姓名：" :value="name"></cell>
+      <cell title="客户姓名：" :value="form.name"></cell>
       <div class="radio_box">
         <mt-radio
           class="radio_item"
           title="客户性别："
-          v-model="radio"
+          v-model="form.gender"
           :options="['女', '男']">
         </mt-radio>
       </div>
-      <cell title="客户编号：" :value="name"></cell>
-      <cell title="手机号码：" :value="mobile + '(已认证)'" class="cell_mobile"></cell>
+      <cell title="客户编号：" :value="form.client_no"></cell>
+      <cell title="手机号码：" :value="form.mobile + '(已认证)'" class="cell_mobile"></cell>
       <div class="space"></div>
       <div class="time_box" @click="showCode">
         <span class="date_tit">证件类型：</span>
-        <span class="date_time">{{certificationValue}}</span>
+        <span class="date_time">{{form.id_type}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
       <mt-popup v-model="showCerCode"
@@ -39,14 +39,14 @@
       </mt-popup>
       <x-input title="证件号码："
                class="cell_id"
-               v-model="certificateNumber"
+               v-model="form.id_no"
                ref="certificateCode"
                :show-clear="false"
                :max="50"
       ></x-input>
       <div class="time_box" @click="open('pickerStart')">
         <span class="date_tit">证件有效期起始时间：</span>
-        <span class="date_time">{{starttime}}</span>
+        <span class="date_time">{{id_start_date}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
       <mt-datetime-picker ref="pickerStart"
@@ -58,10 +58,10 @@
                           month-format="{value} 月"
                           date-format="{value} 日"
                           @confirm="dateConfirm1"
-                          :value="starttime"></mt-datetime-picker>
+                          :value="id_start_date"></mt-datetime-picker>
       <div class="time_box" @click="open('pickerEnd')">
         <span class="date_tit">证件有效期结束时间：</span>
-        <span class="date_time">{{endtime}}</span>
+        <span class="date_time">{{id_expiration}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
       <mt-datetime-picker ref="pickerEnd"
@@ -73,10 +73,10 @@
                           month-format="{value} 月"
                           date-format="{value} 日"
                           @confirm="dateConfirm2"
-                          :value="endtime"></mt-datetime-picker>
-                          <div class="time_box" @click="open('pickerDate')">
+                          :value="id_expiration"></mt-datetime-picker>
+      <div class="time_box" @click="open('pickerDate')">
         <span class="date_tit">出生日期：</span>
-        <span class="date_time">{{datetime}}</span>
+        <span class="date_time">{{birthday}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
       <mt-datetime-picker ref="pickerDate"
@@ -88,11 +88,9 @@
                           month-format="{value} 月"
                           date-format="{value} 日"
                           @confirm="dateConfirm"
-                          :value="datetime"></mt-datetime-picker>
-      <!-- <cell title="国籍：" :value="nationality"></cell> -->
-      <cell title="常住中国城市：" :value="city" v-if="nationality === '中国'"></cell>
+                          :value="birthday"></mt-datetime-picker>
       <x-input title="地址："
-               v-model="address"
+               v-model="form.address"
                ref="address"
                :show-clear="false"
                class="address"
@@ -105,7 +103,7 @@
     <div class="upload_box">
       <camera class="upload_cont1"
               :popupVisible="popupVisible1"
-              :imageSrc="idImages.front"
+              :imageSrc="form.id_front_url"
               :isFromBank="fromBank"
               :cerId="cerId"
               @showPopup="showPopup1"
@@ -113,7 +111,7 @@
               @hidePopup="hidePopup1"></camera>
       <camera class="upload_cont2"
               :popupVisible="popupVisible2"
-              :imageSrc="idImages.back"
+              :imageSrc="form.id_back_url"
               :isFromBank="fromBank"
               :cerId="cerId"
               @imgHandler="imageHandler2"
@@ -140,7 +138,6 @@
 
 <script>
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
-  import {Radio} from 'mint-ui'
   import {uploadId, perfectInfos} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
@@ -157,25 +154,17 @@
       PopupPicker,
       XDialog,
       XButton,
-      camera,
-      'mt-radio': Radio
+      camera
     },
     data () {
       return {
+        form: {},
+        id_start_date: '',
+        id_expiration: '',
+        birthday: '',
         cerId: null,
         num: 1,
         isMod: -1,
-        address: '',
-        client_id: '',
-        client_class: '',
-        client_type: '',
-        name: '',
-        nationality: '',
-        mobile: '',
-        city: '',
-        datetime: '',
-        starttime: '',
-        endtime: '',
         minYear: 1900,
         maxYear: 3000,
         timer: null,
@@ -183,15 +172,7 @@
         endDate: new Date(2100, 0, 1),
         startDate: new Date(1960, 0, 1),
         client_certification_id: 0,
-//        certificationValue: [],
-        certificationValue: '',
-        certificateNumber: '',
-        radio: '',
-        idImages: {
-          front: '',
-          back: ''
-        },
-//        certificationList: [['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']],
+        cationList: [['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']],
         alertMsg: false,
         alertCont: '还有信息没填哦～',
         isSubmit: null,
@@ -210,8 +191,7 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-          removeStore('perInfos')
-//        console.log(vm.name)
+        removeStore('perInfos')
         let info = JSON.parse(getStore('selfInfos'))
         vm.client_certification_id = info.client_certification_id
         if (!info.client_certification_id) {
@@ -231,15 +211,16 @@
         removeStore('perInfos')
       } else if (to.name === 'Bankcard') {
         let idType = ''
-        idType = this.slots[0].values.indexOf(this.certificationValue) - 1
+        idType = this.slots[0].values.indexOf(this.form.id_type) - 1
         let perInfos = {
-          birthday: this.datetime,
-          address: this.address,
-          id_no: this.certificateNumber,
-          id_start_date: this.starttime,
-          id_expiration: this.endtime,
-          id_front_url: this.idImages.front,
-          id_back_url: this.idImages.back,
+          birthday: this.birthday,
+          address: this.form.address,
+          gender: this.form.gender,
+          id_no: this.form.id_no,
+          id_start_date: this.id_start_date,
+          id_expiration: this.id_expiration,
+          id_front_url: this.form.id_front_url,
+          id_back_url: this.form.id_back_url,
           id_type: idType
         }
         setStore('perInfos', perInfos)
@@ -247,31 +228,24 @@
       next()
     },
     mounted () {
-        console.log('mounted...')
-      let info = JSON.parse(getStore('selfInfos'))
+      this.form = JSON.parse(getStore('selfInfos'))
       this.isSubmit = this.$route.params.isSubmit
-      this.name = info.name
-      this.nationality = info.nationality === '0' ? '中国' : '其他'
-      this.city = info.city
-      this.mobile = info.mobile
-      this.client_id = info.client_id
-      this.client_class = info.client_class
-      this.client_type = info.client_type
       let perInfos = JSON.parse(getStore('perInfos'))
       if (perInfos) {
-        this.datetime = perInfos.birthday
-        this.certificateNumber = perInfos.id_no
-        this.starttime = perInfos.id_start_date
-        this.endtime = perInfos.id_expiration
-        this.address = perInfos.address
-        this.idImages.front = perInfos.id_front_url
-        this.idImages.back = perInfos.id_back_url
-        this.certificationValue = this.slots[0].values[perInfos.id_type + 1]
+        this.form.gender = perInfos.gender
+        this.birthday = perInfos.birthday
+        this.id_start_date = perInfos.id_start_date
+        this.id_expiration = perInfos.id_expiration
+        this.form.id_no = perInfos.id_no
+        this.form.address = perInfos.address
+        this.form.id_front_url = perInfos.id_front_url
+        this.form.id_back_url = perInfos.id_back_url
+        this.form.id_type = this.slots[0].values[perInfos.id_type + 1]
       }
     },
     methods: {
       onValuesChange (picker, values) {
-        this.certificationValue = values[0]
+        this.form.id_type = values[0]
       },
       showCode () {
         this.$refs.address.blur()
@@ -303,24 +277,24 @@
       },
       dateConfirm (val) {
         clearTimeout(this.timer)
-        this.datetime = this.formatDate(val)
+        this.birthday = this.formatDate(val)
       },
       dateConfirm1 (val) {
         clearTimeout(this.timer)
-        this.starttime = this.formatDate(val)
+        this.id_start_date = this.formatDate(val)
       },
       dateConfirm2 (val) {
         clearTimeout(this.timer)
-        this.endtime = this.formatDate(val)
+        this.id_expiration = this.formatDate(val)
       },
       hideAlert () {
         this.alertMsg = false
       },
       imageHandler1 (data) {
-        this.idImages.front = data
+        this.form.id_front_url = data
       },
       imageHandler2 (data) {
-        this.idImages.back = data
+        this.form.id_back_url = data
       },
       showPopup1 (data) {
         this.popupVisible1 = data
@@ -339,20 +313,22 @@
       },
       submitInfos () {
         let idType = ''
-        idType = this.slots[0].values.indexOf(this.certificationValue) - 1
+        idType = this.slots[0].values.indexOf(this.id_type) - 1
         let params = {
-          client_id: this.client_id,
-          client_class: this.client_class,
-          client_type: this.client_type,
-          birthday: this.datetime,
-          address: this.address,
+          gender: this.form.gender,
+          client_id: this.form.client_id,
+          client_class: this.form.client_class,
+          client_type: this.form.client_type,
+          birthday: this.birthday,
+          address: this.form.address,
           id_type: idType,
-          id_no: this.certificateNumber,
-          id_start_date: this.starttime,
-          id_expiration: this.endtime,
-          id_front_url: this.idImages.front,
-          id_back_url: this.idImages.back
+          id_no: this.form.id_no,
+          id_start_date: this.id_start_date,
+          id_expiration: this.id_expiration,
+          id_front_url: this.form.id_front_url,
+          id_back_url: this.form.id_back_url
         }
+        console.log(this.form)
         if (!params.birthday ||
           !params.address ||
           !params.id_no ||
@@ -365,7 +341,7 @@
         }
         uploadId(this.client_certification_id, params).then(res => {
           if (res.status === 200) {
-            this.$router.push({name: 'PotentialCustomerList', params: {id: this.client_id}})
+            this.$router.push({name: 'PotentialCustomerList', params: {id: this.form.client_id}})
           }
         })
       }

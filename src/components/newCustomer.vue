@@ -2,15 +2,6 @@
   <div class="newCustomer">
     <x-header :left-options="{backText: ''}">新增潜客</x-header>
     <group class="wrapper">
-      <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
-        <div class="quit">{{alertCont}}</div>
-        <x-button type="primary" @click.native="hideAlert">确 定</x-button>
-      </x-dialog>
-      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog">
-        <div class="msg_title">请输入验证码：</div>
-        <input type="text" class="msg_ipt" v-model="verificate.code">
-        <x-button type="primary" @click.native="hideVerBox">确 定</x-button>
-      </x-dialog>
 
       <div class="add_tit">
         <i class="iconfont">&#xe61a;</i>
@@ -71,7 +62,7 @@
                 type="tel"
                 label="客户邀请码："
                 :attr="{ maxlength: 6 }"
-                v-model="verificationCode"
+                v-model="verificate.code"
                 class="new_field">
       </mt-field>
     </group>
@@ -89,8 +80,9 @@
     XDialog,
     ChinaAddressV4Data
   } from 'vux'
-  import {Field, Toast, Radio} from 'mint-ui'
+  import {Field, Radio} from 'mint-ui'
   import {addCusomer, sendVerCode, confirmVercode} from '@/service/api/customers'
+  import {mobileValidate, toast} from '@/common/js/filter'
 
   export default {
     name: 'NewCustomer',
@@ -107,14 +99,12 @@
     data () {
       return {
         verificate: {
-          isShow: false,
           timer: null,
           num: 60,
           isTimeout: false,
           code: ''
         },
-        alertMsg: false,
-        alertCont: '还有必填项没填',
+        alertCont: '',
         num: '0',
         isMod: -1,
         name: '',
@@ -124,10 +114,7 @@
         email: '',
         city: '',
         mobile_validated: '1',
-        verificationCode: '',
-//        validated_timestamp: '',
         validated_by: '',
-        popupVisible: false,
         title: '常住中国城市',
         value: [],
         addressData: ChinaAddressV4Data,
@@ -141,51 +128,18 @@
       }
     },
     methods: {
-      hideVerBox () {
-        this.verificate.isShow = this.verificate.isTimeout = false
-        clearInterval(this.verificate.timer)
-        this.verificate.num = 60
-        let params = {
-          code: this.verificate.code,
-          mobile: this.mobile
-        }
-        if (params.code) {
-          confirmVercode(params).then(res => {
-            if (res.status === 200) {
-//                this.validated_timestamp = res.data.validated_timestamp
-              this.mobile_validated = res.data.mobile_validated
-              this.validated_by = res.data.validated_by
-              this.verificate.code = ''
-            }
-          })
-        }
-      },
       sendVer () {
-        if (!this.mobile || this.mobile.length !== 11) {
-          Toast({
-            message: '请输入有效的手机号',
-            position: 'top',
-            duration: 1500,
-            className: 'toast_class'
-          })
+        if (!this.mobile || !mobileValidate(this.mobile).stat) {
+          this.alertCont = '请输入有效的手机号码'
+          toast(this.alertCont)
           return false
         }
-//        this.verificate.isShow = this.verificate.isTimeout = true
         let params = {
           username: this.mobile,
           code_flag: 1
         }
         sendVerCode(params).then(res => {
-          this.verificate.isShow = this.verificate.isTimeout = true
-        }).catch(err => {
-          if (err.message === '请求错误') {
-            Toast({
-              message: '该手机号已被验证',
-              position: 'top',
-              duration: 1500,
-              className: 'toast_class'
-            })
-          }
+          this.verificate.isTimeout = true
         })
         this.verificate.timer = setInterval(() => {
           --this.verificate.num
@@ -196,20 +150,13 @@
           }
         }, 1000)
       },
-      hideAlert () {
-        this.alertMsg = false
-      },
       onShadowChange (ids, names) {
 //        this.names = names.join()
 //        this.myAddressProvince = names[0]
 //        this.myAddressCity = names[1]
         this.city = names[1]
       },
-      showPopup () {
-        this.popupVisible = true
-      },
       selectNation (num) {
-        console.log(num)
         this.num = num
         this.myAddressProvince = this.myAddressCity = this.myAddresscounty = ''
         this.city = ''
@@ -217,26 +164,64 @@
       submitCustomer () {
         let params = {
           name: this.name,
-          nationality: this.num === 1 ? '0' : '1',
+          nationality: this.num === 1 ? '1' : '0',
           mobile: this.mobile,
           email: this.email,
           wechat: this.wechat,
           city: this.city,
           mobile_validated: this.mobile_validated,
-//          validated_timestamp: this.validated_timestamp,
-          validated_by: this.validated_by
+          //          validated_timestamp: this.validated_timestamp,
+          validated_by: this.validated_by,
+          client_class: null
         }
-//        console.log(params)
-        if (!params.name || !params.mobile || params.mobile.length !== 11) {
-          this.alertMsg = true
+        if (!params.name) {
+          this.alertCont = '请输入客户姓名'
+          if (!params.mobile) {
+            this.alertCont = '请输入客户姓名，手机号码'
+          } else if (!mobileValidate(params.mobile).stat) {
+            this.alertCont = '请输入客户姓名，有效的手机号码'
+          }
+        } else {
+          if (!params.mobile) {
+            this.alertCont = '请输入手机号码'
+          } else if (!mobileValidate(params.mobile).stat) {
+            this.alertCont = '请输入有效的手机号码'
+          }
+        }
+        if (!params.name ||
+            !params.mobile ||
+            !mobileValidate(params.mobile).stat) {
+          toast(this.alertCont)
           return false
         }
-        addCusomer(params).then(res => {
-//          console.log(res)
-          if (res.status === 200) {
-            this.$router.push({name: 'CustomerList'})
-          }
-        })
+        let params1 = {
+          code: this.verificate.code,
+          mobile: this.mobile
+        }
+        if (params1.code) {
+          confirmVercode(params1).then(res => {
+            if (res.status === 200) {
+              params.mobile_validated = this.mobile_validated = res.data.mobile_validated
+              params.validated_by = this.validated_by = res.data.validated_by
+              params.client_class = res.data.client_class
+              this.verificate.code = ''
+              addCusomer(params).then(res => {
+                if (res.status === 200) {
+                  this.$router.push({name: 'CustomerList'})
+                }
+              })
+            }
+          })
+        } else {
+          delete params.mobile_validated
+          delete params.validated_by
+          delete params.client_class
+          addCusomer(params).then(res => {
+            if (res.status === 200) {
+              this.$router.push({name: 'CustomerList'})
+            }
+          })
+        }
       }
     }
   }
@@ -292,6 +277,9 @@
             height: 100%;
             .mint-radiolist-title{
               display: inline-block;
+              line-height: 81px;
+              vertical-align: top;
+              padding: 0;
             }
             .mint-cell{
               display: inline-block;
@@ -339,7 +327,7 @@
             }
           }
           .mint-cell-wrapper {
-            padding-top: 22px;
+            /*padding-top: 22px;*/
             background-image: none;
             -webkit-background-image: none;
           }
