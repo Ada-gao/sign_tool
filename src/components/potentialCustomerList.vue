@@ -1,6 +1,6 @@
 <template>
   <div>
-    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink1">{{topTitle}}</x-header>
+    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink">{{topTitle}}</x-header>
     <div class="potential wrapper">
       <div class="info">
         <group>
@@ -43,66 +43,111 @@
             <span class="fr">{{data.email}}</span>
           </cell-box>
           <div class="ver_box">
-            <div class="mobile_box" :class="{'limit_width': verificate.verStatus === '1'}">
+            <div class="mobile_box" :class="{'limit_width': data.mobile_validated === '1'}">
               <span class="mobile_title">客户电话：</span>
-              <span class="mobile_number" :class="{'limit_width': verificate.verStatus === '1'}">{{mobile}}{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}</span>
+              <span class="mobile_number" :class="{'limit_width': data.mobile_validated === '1'}">{{data.mobile}}{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}</span>
             </div>
             <span class="verificate"
-                  @click="sendVerCode"
-                  v-show="verificate.verStatus === '1'">去验证</span>
+                  @click="showValPop"
+                  v-show="data.mobile_validated === '1'">去验证</span>
           </div>
+          <div class="space" v-if="data.realname_status === '2'"></div>
+          <group v-if="data.realname_status === '2'">
+            <cell-box>
+              <label style="color:#333">身份证号：</label>
+              <span class="fr">{{data.id_no}}</span>
+            </cell-box>
+            <cell-box>
+              <label style="color:#333">证件有效期：</label>
+              <span class="fr">{{data.email}}</span>
+            </cell-box>
+            <cell-box>
+              <label style="color:#333">出生日期：</label>
+              <span class="fr">{{data.birthday}}</span>
+            </cell-box>
+            <cell-box>
+              <label style="color:#333">地址：</label>
+              <span class="fr">{{data.address}}</span>
+            </cell-box>
+          </group>
           <cell-box>
             <label style="color:#333">录入时间：</label>
             <span class="fr">{{data.email}}</span>
           </cell-box>
         </group>
         <div class="call-btn">
-          <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
+          <a :href="'tel:'+data.mobile" class="callout">拨打客户电话</a>
         </div>
       </div>
-      <div class="space"></div>
-      <div class="product">
-        <group>
-          <!-- <cell style="color:#333"
-                :is-link="!convert(data.realname_status, disabled)"
-                :link="{name: 'Certified',params: {id: client_id}}"
-                :title="'投资者类型：'+stat"
-                :value="modifiedVal"
-                :disabled="convert(data.realname_status, disabled)"
-          >
-          </cell> -->
-          <cell-box>
-            <label>实名认证：</label>
-            <span class="fr">{{data.city}}</span>
-          </cell-box>
-        </group>
-      </div>
-      <div class="space"></div>
-      <div class="remark">
-        <group>
-          <cell-box>备注</cell-box>
-        </group>
-        <ul :class="{'no_padding' : remarkList.length === 0}">
-          <li v-for="(item, index) in remarkList" :key="index">
-            <div class="iText text-overflow-one">{{item.remark}}</div>
-            <span class="iTime">{{item.create_time}}</span>
-            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}">
-              <i class="iconfont" style="font-size:36px;vertical-align: middle;">&#xe624;</i>
-              <span class="font-size:26px;color:#2672ba;vertical-align: middle;">查看</span>
-            </router-link>
-          </li>
-        </ul>
-      </div>
-      <div class="bottom-remark">
-        <div class="add clearfix" @click="addNew">新增备注</div>
+      <div v-if="data.mobile_validated === '0'">
+        <div class="space"></div>
+        <div class="product">
+          <mt-cell title="实名认证："
+                   to="/perfectInfos"
+                   :value="clickArrowObj.realnameObj.stat"
+                   :is-link="!clickArrowObj.realnameObj.disabled">
+          </mt-cell>
+          <div class="space1"></div>
+          <group v-if="data.realname_status === '2'">
+            <cell style="color:#333"
+                  :is-link="!clickArrowObj.cerObj.disabled"
+                  :link="{name: 'Certified',params: {id: client_id}}"
+                  :title="'投资者类型：' + clickArrowObj.cerObj.type"
+                  :value="clickArrowObj.cerObj.stat"
+                  :disabled="clickArrowObj.cerObj.disabled"
+            >
+            </cell>
+            <div class="space1"></div>
+            <cell is-link
+                  :link="{name: 'bankList', params: {addCard: true}}"
+                  title="银行卡信息："
+            ></cell>
+          </group>
+        </div>
+        <div class="space"></div>
+        <div class="remark">
+          <group>
+            <cell-box>备注</cell-box>
+          </group>
+          <ul :class="{'no_padding' : remarkList.length === 0}">
+            <li v-for="(item, index) in remarkList" :key="index">
+              <div class="iText text-overflow-one">{{item.remark}}</div>
+              <span class="iTime">{{item.create_time}}</span>
+              <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}">
+                <i class="iconfont" style="font-size:36px;vertical-align: middle;">&#xe624;</i>
+                <span class="font-size:26px;color:#2672ba;vertical-align: middle;">查看</span>
+              </router-link>
+            </li>
+          </ul>
+        </div>
+        <div class="bottom-remark">
+          <div class="add clearfix" @click="addNew">新增备注</div>
+        </div>
       </div>
       <x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>
         <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
       </x-dialog>
+      <x-dialog v-model="validatePop" class="dialog-demo msg_dialog">
+        <div class="msg_title" style="text-align:center">提示</div>
+        <span class="msg_ipt" style="width:100%;display: block;text-align:center">{{validateCont}}</span>
+        <x-button type="primary" @click.native="hideValPop">确 定</x-button>
+      </x-dialog>
       <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog">
-        <div class="msg_title">请输入验证码：</div>
-        <input type="text" class="msg_ipt" v-model="verificate.code">
+        <div class="msg_title">
+          <span>手机号：</span>
+          <span>{{data.mobile}}</span>
+        </div>
+        <div class="msg_cont">
+          <span>邀请码：</span>
+          <input type="text" class="msg_ipt" v-model="verificate.code">
+          <span class="verificate_code"
+                v-if="!verificate.isTimeout"
+                @click="sendVerCode">发送邀请码</span>
+          <span class="verificate_code"
+                v-else>{{verificate.num}}s</span>
+        </div>
+        <div class="alert_msg" v-if="alertCont">{{alertCont}}</div>
         <x-button type="primary" @click.native="hideVerBox">确 定</x-button>
       </x-dialog>
     </div>
@@ -132,6 +177,7 @@
 
   //  import {setStore, getStore, removeStore} from '@/config/mUtils'
   import {setStore, removeStore} from '@/config/mUtils'
+  import {tfCtypeToText} from '@/common/js/filter'
 
   export default {
     name: 'PotentialCustomerList',
@@ -156,34 +202,37 @@
           timer: null,
           num: 60,
           isTimeout: false,
-          code: '',
-          verStatus: null
+          code: ''
+//          verStatus: null
         },
         data: {},
         client_id: 0,
-        client_name: '',
-        clientClass: '',
-        clientType: '',
-        nationality: '',
-        city: '',
-        mobile: '',
-        email: '',
-        clientCertificationId: 0,
-        clientCertificationType: '',
-        stat: '',
         remarkList: [],
         showHideOnBlur: false,
+        validatePop: false,
+        validateCont: '',
+//        disabled: true,
+//        stat: '',
+        alertCont: '',
         remarkInfo: '',
         remarkInput: null,
-        disabled: true,
         modifiedVal: '',
-        topTitle: ''
+        topTitle: '',
+        clickArrowObj: {
+          realnameObj: {
+            stat: '',
+            disabled: null
+          },
+          cerObj: {
+            stat: '',
+            disabled: null,
+            type: ''
+          }
+        }
       }
     },
     mounted () {
       this.client_id = this.$route.params.id
-      this.topTitle = this.$route.params.mark === 1 ? '潜客信息' : '手机未验证'
-//      console.log(this.client_id)
       checkCustomerRemarks(this.client_id).then(res => {
         if (res.status === 200) {
           if (res.data.length > 0) {
@@ -192,62 +241,65 @@
         }
       })
       checkCusomersDetail(this.client_id).then(res => {
-//        if (!JSON.parse(getStore('selfInfos'))) {
         let selfInfos = Object.assign({}, res.data)
         setStore('selfInfos', selfInfos)
-//        }
         this.data = res.data
-        this.client_name = res.data.name
-        this.mobile = res.data.mobile
-        this.email = res.data.email
-        this.nationality = res.data.nationality
-        this.clientCertificationType = res.data.certification_type
-        this.city = res.data.city
-        this.clientClass = res.data.client_class
-        this.clientType = res.data.client_type
-        if (res.data.mobile_validated === '1') {
-          this.verificate.verStatus = '1'
+        this.topTitle = this.data.mobile_validated === '0' ? '潜客信息' : '手机未验证'
+        this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
+        this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
+        if (this.data.client_type === '0') {
+          this.clickArrowObj.cerObj.type = '普通投资者'
+        } else if (this.data.client_type === '1') {
+          this.clickArrowObj.cerObj.type = '专业投资者'
         }
-        switch (res.data.certification_status) {
-          case '0':
-            this.stat = '未认证'
-            break
-          case '1':
-            this.stat = '待审核'
-//            this.modifiedVal = '修改'
-            break
-          case '2':
-            this.stat = '已认证'
-            this.modifiedVal = '修改'
-            break
-          case '3':
-            this.stat = '已驳回'
-            this.modifiedVal = '修改'
-        }
+        this.clickArrowObj.realnameObj.stat = tfCtypeToText(this.data.realname_status).flag
+        this.clickArrowObj.realnameObj.disabled = tfCtypeToText(this.data.realname_status).disabled
       })
     },
     methods: {
       hideVerBox () {
-        this.verificate.isShow = this.verificate.isTimeout = false
-//        this.verificate.verStatus = null
-        clearInterval(this.verificate.timer)
-        this.verificate.num = 60
+        if (!this.verificate.code) {
+          this.verificate.isTimeout = false
+          this.verificate.num = 60
+          clearInterval(this.verificate.timer)
+          this.alertCont = '邀请码不能为空'
+          return false
+        }
         let params = {
           code: this.verificate.code,
-          mobile: this.mobile
+          mobile: this.data.mobile
         }
         if (params.code) {
           confirmVercode(params).then(res => {
+            this.verificate.code = ''
             if (res.status === 200) {
-              this.verificate.code = ''
+              this.data.mobile_validated = res.data.mobile_validated
+              if (res.data.mobile_validated === '0') {
+                this.validateCont = '邀请通过'
+//                this.topTitle = '潜客信息'
+              } else {
+                this.validateCont = '邀请失败'
+              }
+            } else {
+              this.data.mobile_validated = '1'
+              this.validateCont = '邀请失败'
             }
+            this.verificate.isShow = false
+            this.validatePop = true
           })
         }
       },
+      hideValPop () {
+        this.validatePop = false
+      },
+      showValPop () {
+        this.verificate.isShow = true
+      },
       sendVerCode () {
-        this.verificate.isShow = this.verificate.isTimeout = true
+          this.verificate.isTimeout = true
+//        this.verificate.isShow = true
         let params = {
-          username: this.mobile,
+          username: this.data.mobile,
           code_flag: 1
         }
         sendVerCode(params).then(res => {
@@ -274,22 +326,9 @@
         }
         return disabled
       },
-      toLink1 () {
+      toLink () {
         removeStore('selfInfos')
         this.$router.replace({name: 'CustomerList', mark: this.topTitle === '潜客信息' ? 1 : 2})
-      },
-      toLink () {
-        let params = {
-          id: this.client_id,
-          name: this.client_name,
-          nationality: this.nationality,
-          mobile: this.mobile,
-          city: this.city,
-          clientClass: this.clientClass,
-          clientType: this.clientType
-        }
-//        console.log(params)
-        this.$router.push({name: 'PerfectInfos', params: params})
       },
       addNew () {
         this.showHideOnBlur = true
@@ -325,7 +364,7 @@
 
         let params = {
           remark: this.remarkInfo,
-          client_name: this.client_name
+          client_name: this.data.client_name
         }
         addCustomerRemarks(this.client_id, params).then(res => {
           if (res.status === 200) {
@@ -378,11 +417,14 @@
         }
       }
       .verificate{
-        width: 91px;
         height: 42px;
         line-height: 42px;
         background: #2672BA;
-        border-radius: 5px;
+        color: #fff;
+        font-size: 22px;
+        width: 100px;
+        text-align: center;
+        border-radius: 10px;
       }
     }
     .id_right {
@@ -475,7 +517,7 @@
       margin-left: -8px;
     }
     .remark {
-      /*padding-bottom: 120px;*/
+      padding-bottom: 120px;
       background-color: #fff;
       .vux-cell-box.weui-cell{
         padding: 0;
@@ -607,10 +649,16 @@
       }
     }
   }
-
-  .space {
-    width: 100%;
-    height: 20px;
-    background-color: #eee;
+  .verificate_code {
+    display: inline-block;
+    width: 140px;
+    height: 40px;
+    background: #2672ba;
+    color: #fff;
+    font-size: 22px;
+    text-align: center;
+    border-radius: 10px;
+    vertical-align: text-top;
+    margin-left: 10px;
   }
 </style>

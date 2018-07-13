@@ -22,7 +22,9 @@ import { DatetimePicker,
          Popup,
          Picker,
          Cell,
-         Field
+         Field,
+         Header,
+         Radio
        } from 'mint-ui'
 import 'mint-ui/lib/style.css'
 
@@ -78,6 +80,8 @@ Vue.component(Cell.name, Cell)
 Vue.component(Field.name, Field)
 Vue.component(Picker.name, Picker)
 Vue.component(Popup.name, Popup)
+Vue.component(Header.name, Header)
+Vue.component(Radio.name, Radio)
 // 将 axios 挂载到 prototype 上，在组件中可以直接使用 this.$axios 访问
 Vue.prototype.$axios = axios
 

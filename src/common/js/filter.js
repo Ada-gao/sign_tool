@@ -1,7 +1,8 @@
+import { MessageBox } from 'mint-ui'
 /**
  * 保留两位小数
  */
-let twoDecimals = value => {
+export function twoDecimals (value) {
 	value = parseInt(value)
 	return value.toFixed(2)
 }
@@ -9,7 +10,7 @@ let twoDecimals = value => {
 /**
  * 将小数转化为百分比
  */
-let percent = value => {
+export function percent (value) {
 	value = Number(value) * 100
 	return value + '%'
 }
@@ -17,7 +18,7 @@ let percent = value => {
 /**
  * 数字转化为字符串
  */
-let formatNum = value => {
+export function formatNum (value) {
 	value = Number(value).toFixed(0)
 	return value.toString()
 }
@@ -25,7 +26,7 @@ let formatNum = value => {
 /**
  * 阿拉伯数字转化为大写
  */
-let upperNum = value => {
+export function upperNum (value) {
 	value = parseInt(value).toString()
 	let uppercase = '千百亿千百十万千百十个'
   let nLength = value.length
@@ -41,4 +42,61 @@ let upperNum = value => {
 	return newStr
 }
 
-export { twoDecimals, percent, formatNum, upperNum }
+/**
+ * mobile validate
+ * @param value
+ * @param cb
+ */
+export function mobileValidate (value) {
+  const reg = /^((1[3-8][0-9])+\d{8})$/
+  let flag = reg.test(value)
+  return {
+    stat: flag
+  }
+}
+
+/**
+ * 弹窗提示
+ * @param text
+ */
+export function toast (text) {
+  MessageBox({
+    title: ' ',
+    message: text,
+    position: 'top',
+    showConfirmButton: true
+  })
+}
+
+/**
+ * 转换认证状态为文字
+ * certification_status:
+ * 0 未认证；1 待审核； 2 已认证；3 已驳回
+ * @param status
+ */
+export function tfCtypeToText (status) {
+  let params = {
+    flag: '',
+    disabled: null
+  }
+  switch (status) {
+    case '1':
+      params.flag = '认证待审核'
+      params.disabled = false
+      break
+    case '2':
+      params.flag = '已认证'
+      params.disabled = true
+      break
+    case '3':
+      params.flag = '认证失败！请您重新认证'
+      params.disabled = false
+      break
+    default:
+      params.flag = '未认证'
+      params.disabled = false
+      break
+  }
+  return params
+}
+// export { twoDecimals, percent, formatNum, upperNum }
