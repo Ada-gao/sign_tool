@@ -35,7 +35,7 @@
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
 							<span class="tit bot">打款状态：
 								<span class="cont" v-if='item.status === "2001"'>打款审核中</span>
-								<span class="cont" v-if='item.status === "2002"'>待补全材料</span>
+								<span class="cont" v-if='item.status === "2002"'>已到账待补全材料</span>
 								<span class="cont" v-if='item.status === "2003"'>订单关闭</span>
 								<span class="cont" v-if='item.status === "2004"'>打款审核通过</span>
 							</span>

@@ -1058,7 +1058,7 @@ export default {
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2002') {
 						this.topBar = '打款'
-						this.topTitle = '待补全材料'
+						this.topTitle = '已到账待补全材料'
 						this.uploadShow = true
 						this.appointmentDone = true
 						this.uploadCard = true

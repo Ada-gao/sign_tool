@@ -40,7 +40,7 @@ export default {
 			padding: 70px 35px;
 			margin: 44px;
 			box-shadow: -1px 1px 34px 3px rgba(0,0,0,0.20);
-    	border-radius: 8px;
+    		border-radius: 8px;
 			// border: 1px solid #ccc;
 			position: relative;
 			background: #fff;
