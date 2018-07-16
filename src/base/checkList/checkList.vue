@@ -124,6 +124,9 @@ export default {
         font-family: PingFangSC-Regular;
         font-size: 28px;
         color: #333333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
       .checked + .content{
         color: #2672BA;

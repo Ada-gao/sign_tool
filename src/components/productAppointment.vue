@@ -1088,13 +1088,15 @@ export default {
 						this.orderCloseSuc = false
 						this.popupVisible = false
 						this.sureCancleA = false
-						this.cardnum = ''
-						this.bankname = ''
-						this.bankname1 = ''
+						this.cardnum = this.appointmentList.cardno
+						this.bankname = this.appointmentList.bank_name
+						this.bankname1 = this.appointmentList.bank_subname
+						this.cardUrl = this.appointmentList.bankcard_front_url
+						console.log(this.cardUrl)
 						this.refundUrls = []
 						this.materialsUrls = []
 						this.evidenceUrls = []
-						this.cardUrl = ''
+						// this.cardUrl = ''
 						this.evidenceUrl = []
 						this.materialSrc = []
 						this.refundSrc = []
