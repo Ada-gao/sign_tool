@@ -154,7 +154,7 @@
 //        this.names = names.join()
 //        this.myAddressProvince = names[0]
 //        this.myAddressCity = names[1]
-        this.city = names[1]
+        this.city = names[1] === '市辖区' ? names[0] : names[1]
       },
       selectNation (num) {
         this.num = num

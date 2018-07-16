@@ -76,7 +76,7 @@
           </cell-box>
           <cell-box>
             <label>录入时间：</label>
-            <span class="fr">{{data.city}}</span>
+            <span class="fr">{{data.create_time}}</span>
           </cell-box>
           <cell-box>
             <label>资产管理规模：</label>
@@ -267,11 +267,13 @@
       clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
       checkCusomersDetail(clientId).then(res => {
         this.data = res.data
+        this.data.asset_amount = this.data.asset_amount || 0
+        this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
         this.clientId = res.data.client_id
         this.clientName = res.data.name
         this.clientType = res.data.client_type
         if (this.data.asset_amount > 500) {
-          this.transformDialog = true
+//          this.transformDialog = true
         }
         this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
         this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
@@ -341,7 +343,7 @@
         this.$router.push({name: 'ProductDetail', params: {id: 1}})
       },
       transform () {
-
+        this.$router.push({name: 'Certified', params: {id: this.clientId}})
       },
       cancel () {
         this.transformDialog = false

@@ -21,7 +21,9 @@
       <div class="upload_file">
         <div class="upload">
           <div class="upload_tit">上传认证资料</div>
-          <div class="time_box" @click="showCode" style="display:none;">
+          <div class="time_box"
+               v-if="showSelect"
+               @click="showCode">
             <span class="date_tit">认证原因：</span>
             <span class="date_time">{{reason}}</span>
             <i class="iconfont">&#xe731;</i>
@@ -31,6 +33,7 @@
                     class="cercode_box"
                     popup-transition="popup-fade">
             <mt-picker :slots="slots"
+                       value-key="apply_reason"
                        :showToolbar="true"
                        @change="onValuesChange">
               <div class="toolbar">
@@ -84,7 +87,7 @@
 <script>
   import {XHeader} from 'vux'
   import {Popup, Radio} from 'mint-ui'
-  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail} from '@/service/api/customers'
+  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail, getProReasons} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import camera from '@/base/camera/camera'
   export default {
@@ -125,10 +128,13 @@
         beforeRouteName: '',
         showCerCode: false,
         reason: '',
+        flag: false, // 是否已经请求过专业投资者认证原因列表
+        showSelect: false, // 是否显示'认证原因select框'
+        reasonCopy: '',
         slots: [
           {
             flex: 1,
-            values: ['请选择认证原因', '身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他'],
+            values: [],
             className: 'slot1',
             textAlign: 'center'
           }
@@ -140,7 +146,6 @@
       let id = null
       if (info && info.client_id) {
         id = info.client_id
-        console.log('有storage')
         this.userInfos.name = info.client_name
         this.userInfos.id = info.client_id
         this.userInfos.type = info.client_type
@@ -150,7 +155,6 @@
           this.radio = '专业投资者'
         }
       } else {
-        console.log('没有storage')
         id = this.$route.params.id
         checkCusomersDetail(id).then(res => {
           this.userInfos.name = res.data.client_name
@@ -194,19 +198,19 @@
         this.showCerCode = false
       },
       ensureCerCode (val) {
+        this.reason = this.reasonCopy
         this.showCerCode = false
       },
       onValuesChange (picker, values) {
-        this.reason = values[0]
+        if (values[0] !== undefined) {
+          this.reasonCopy = values[0].apply_reason
+        }
       },
       showCamera (data) {
         this.popupVisible = data
       },
       hideCamera (data) {
         this.popupVisible = data
-      },
-      getAction (id) {
-        return 'http://10.9.60.141:5000/api/v1/client/customers/certfiles/' + id
       },
       toLink (id) {
         this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
@@ -230,6 +234,20 @@
       },
       ensure () {
         this.showConvertBox = false
+        console.log(this.radio)
+        if (this.radio === '专业投资者') {
+          this.showSelect = true
+        }
+        if (this.radio === '专业投资者' && !this.flag) {
+          getProReasons().then(res => {
+            if (res.status === 200) {
+              this.flag = true
+              for (let value of res.data) {
+                this.slots[0].values.push(value)
+              }
+            }
+          })
+        }
       },
       cancel () {
         this.showConvertBox = false

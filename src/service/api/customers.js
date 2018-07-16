@@ -299,3 +299,14 @@ export function getBankInfos () {
     method: 'get'
   })
 }
+
+/**
+ * 获取专业投资者认证原因列表
+ * @returns {AxiosPromise}
+ */
+export function getProReasons () {
+  return axios({
+    url: 'v1/client/customers/cert/reasons/',
+    method: 'get'
+  })
+}
