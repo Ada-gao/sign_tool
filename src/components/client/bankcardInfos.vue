@@ -46,11 +46,11 @@
       }
     },
     mounted () {
-          this.clientId = this.$route.params.id
+      this.clientId = this.$route.params.id
       checkCustomerBankDetail(this.clientId).then(res => {
           if (res.status === 200) {
-              this.data = res.data[0]
-            console.log(this.data)
+            this.data = res.data[0]
+//            console.log(this.data)
           }
       })
     },
@@ -61,9 +61,6 @@
   .space {
     height: 20px;
     background-color: #f5f5f5;
-  }
-  .info_box {
-    /*padding-top: 108px;*/
   }
 
   .fr {

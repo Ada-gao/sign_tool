@@ -170,7 +170,6 @@
           wechat: this.wechat,
           city: this.city,
           mobile_validated: this.mobile_validated,
-          //          validated_timestamp: this.validated_timestamp,
           validated_by: this.validated_by,
           client_class: null
         }

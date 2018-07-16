@@ -1,16 +1,11 @@
 <template>
-  <div>
+  <div class="potentialPage">
     <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink">{{topTitle}}</x-header>
     <div class="potential wrapper">
       <div class="info">
         <group>
           <cell-box style="color: #2672ba;">
             <i class="iconfont">&#xe62c;</i>客户信息
-            <!-- <span class="fr"
-                  @click="toLink"
-                  style="color:#666;"
-                  v-if="data.realname_status === '0'">完善信息</span>
-            <span class="fr" v-else style="color:#666;">已完善</span> -->
           </cell-box>
         </group>
         <div class="space"></div>
@@ -43,9 +38,13 @@
             <span class="fr">{{data.email}}</span>
           </cell-box>
           <div class="ver_box">
-            <div class="mobile_box" :class="{'limit_width': data.mobile_validated === '1'}">
+            <div class="mobile_box"
+                 :class="{'limit_width': data.mobile_validated === '1'}">
               <span class="mobile_title">客户电话：</span>
-              <span class="mobile_number" :class="{'limit_width': data.mobile_validated === '1'}">{{data.mobile}}{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}</span>
+              <span class="mobile_number"
+                    :class="{'limit_width': data.mobile_validated === '1'}">
+                {{data.mobile}}{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}
+              </span>
             </div>
             <span class="verificate"
                   @click="showValPop"
@@ -175,7 +174,6 @@
     sendVerCode
   } from '@/service/api/customers'
 
-  //  import {setStore, getStore, removeStore} from '@/config/mUtils'
   import {setStore, removeStore} from '@/config/mUtils'
   import {tfCtypeToText} from '@/common/js/filter'
 
@@ -203,7 +201,6 @@
           num: 60,
           isTimeout: false,
           code: ''
-//          verStatus: null
         },
         data: {},
         client_id: 0,
@@ -211,8 +208,6 @@
         showHideOnBlur: false,
         validatePop: false,
         validateCont: '',
-//        disabled: true,
-//        stat: '',
         alertCont: '',
         remarkInfo: '',
         remarkInput: null,
@@ -276,7 +271,6 @@
               this.data.mobile_validated = res.data.mobile_validated
               if (res.data.mobile_validated === '0') {
                 this.validateCont = '邀请通过'
-//                this.topTitle = '潜客信息'
               } else {
                 this.validateCont = '邀请失败'
               }
@@ -297,7 +291,6 @@
       },
       sendVerCode () {
           this.verificate.isTimeout = true
-//        this.verificate.isShow = true
         let params = {
           username: this.data.mobile,
           code_flag: 1

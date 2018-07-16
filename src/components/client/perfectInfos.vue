@@ -179,7 +179,6 @@
         endDate: new Date(2100, 0, 1),
         startDate: new Date(1960, 0, 1),
         client_certification_id: 0,
-        cationList: [['身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他']],
         alertMsg: false,
         alertCont: '还有信息没填哦～',
         isSubmit: null,

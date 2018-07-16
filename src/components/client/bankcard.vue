@@ -111,7 +111,15 @@
           }
         ],
         showCerCode: false,
-        timer: null
+        timer: null,
+        beforeRouteName: ''
+      }
+    },
+    beforeRouteEnter (to, from, next) {
+      if (from.name === 'AutoTransfer') {
+        next(vm => {
+          vm.beforeRouteName = 'AutoTransfer'
+        })
       }
     },
     mounted () {
@@ -181,7 +189,11 @@
           if (res.status === 200) {
             let info = JSON.parse(getStore('selfInfos'))
             let params = Object.assign({isSubmit: true}, info)
-            this.$router.replace({name: 'PerfectInfos', params: params})
+            if (this.beforeRouteName === 'AutoTransfer') {
+              this.$router.replace({name: 'AutoTransfer', params: {id: info.client_id}})
+            } else {
+              this.$router.replace({name: 'PerfectInfos', params})
+            }
           }
         })
       }

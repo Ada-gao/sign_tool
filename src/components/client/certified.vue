@@ -21,27 +21,6 @@
       <div class="upload_file">
         <div class="upload">
           <div class="upload_tit">上传认证资料</div>
-          <div class="time_box"
-               v-if="showSelect"
-               @click="showCode">
-            <span class="date_tit">认证原因：</span>
-            <span class="date_time">{{reason}}</span>
-            <i class="iconfont">&#xe731;</i>
-          </div>
-          <mt-popup v-model="showCerCode"
-                    position="bottom"
-                    class="cercode_box"
-                    popup-transition="popup-fade">
-            <mt-picker :slots="slots"
-                       value-key="apply_reason"
-                       :showToolbar="true"
-                       @change="onValuesChange">
-              <div class="toolbar">
-                <span class="cancel" @click="cancelCerCode">取消</span>
-                <span class="ensure" @click="ensureCerCode">确定</span>
-              </div>
-            </mt-picker>
-          </mt-popup>
         </div>
         <camera :popupVisible="popupVisible"
                 @showPopup="showCamera"
@@ -87,7 +66,7 @@
 <script>
   import {XHeader} from 'vux'
   import {Popup, Radio} from 'mint-ui'
-  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail, getProReasons} from '@/service/api/customers'
+  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import camera from '@/base/camera/camera'
   export default {
@@ -102,7 +81,6 @@
         showSubmit: {
           isShow: false,
           cont: '您的资料已上传成功！',
-//          cont: '对不起！上传失败 请您重新上传资料',
           isSuccess: 0
         },
         popupVisible: false,
@@ -126,19 +104,7 @@
           type: ''
         },
         beforeRouteName: '',
-        showCerCode: false,
-        reason: '',
-        flag: false, // 是否已经请求过专业投资者认证原因列表
-        showSelect: false, // 是否显示'认证原因select框'
-        reasonCopy: '',
-        slots: [
-          {
-            flex: 1,
-            values: [],
-            className: 'slot1',
-            textAlign: 'center'
-          }
-        ]
+        itemHeight: 60
       }
     },
     mounted () {
@@ -170,19 +136,15 @@
       perfectInfos({client_id: id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
-          console.log('certified：' + this.uploadData.clientCertificationId)
         }
       })
       this.userInfos.emailAddress = JSON.parse(getStore('data')).email
-//      console.log('client_id：' + info.client_id)
     },
     beforeRouteEnter (to, from, next) {
       if (from.name === 'CustomerManagement') {
         next(vm => {
-          next(vm => {
-            vm.id = from.params.id
-            vm.beforeRouteName = 'CustomerManagement'
-          })
+          vm.id = from.params.id
+          vm.beforeRouteName = 'CustomerManagement'
         })
       } else {
         next(vm => {
@@ -191,21 +153,6 @@
       }
     },
     methods: {
-      showCode () {
-        this.showCerCode = true
-      },
-      cancelCerCode () {
-        this.showCerCode = false
-      },
-      ensureCerCode (val) {
-        this.reason = this.reasonCopy
-        this.showCerCode = false
-      },
-      onValuesChange (picker, values) {
-        if (values[0] !== undefined) {
-          this.reasonCopy = values[0].apply_reason
-        }
-      },
       showCamera (data) {
         this.popupVisible = data
       },
@@ -234,20 +181,6 @@
       },
       ensure () {
         this.showConvertBox = false
-        console.log(this.radio)
-        if (this.radio === '专业投资者') {
-          this.showSelect = true
-        }
-        if (this.radio === '专业投资者' && !this.flag) {
-          getProReasons().then(res => {
-            if (res.status === 200) {
-              this.flag = true
-              for (let value of res.data) {
-                this.slots[0].values.push(value)
-              }
-            }
-          })
-        }
       },
       cancel () {
         this.showConvertBox = false
@@ -266,8 +199,6 @@
           client_id: this.userInfos.id,
           user_id: data.userId
         }
-//        console.log(params)
-//        console.log(this.convert(this.radio))
         sendEmail(this.convert(this.radio), params).then(res => {
           if (res.status === 200) {
             this.showEmailBox = false
@@ -290,7 +221,10 @@
         this.showSubmit.isShow = false
       },
       submitInfos () {
-        sendFiles(this.uploadData.clientCertificationId, {certification_type: this.convert(this.radio)}).then(res => {
+        let params = {
+          certification_type: this.convert(this.radio)
+        }
+        sendFiles(this.uploadData.clientCertificationId, params).then(res => {
           if (res.status === 200) {
             this.showSubmit.isShow = true
             this.showSubmit.isSuccess = 1
@@ -505,7 +439,7 @@
           }
           .cercode_box {
             width: 100%;
-            height: 300px;
+            height: 400px;
             .picker-items {
               /*height: 244px;*/
             }

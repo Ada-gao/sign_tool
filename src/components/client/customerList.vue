@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="customerList">
     <x-header v-show="isCancel===false" :left-options="{showBack: false}">客户
       <router-link slot="right" :to="{name: 'NewCustomer', params: {isMod: 0}}" class="add_newcustomer">新增潜客
       </router-link>
@@ -30,10 +30,7 @@
           <span class="tabitem" :class="{'active': idx === 2}" @click="onItemClick(2)">手机未验证客户</span>
         </div>
         <div class="list_box">
-          <mt-spinner type="fading-circle"
-                      color="#158FD2"
-                      class="spinner_box"
-                      v-show="isShowSpinner"></mt-spinner>
+          <loading :show="isShowSpinner"></loading>
           <ul v-show="idx === 0" :data="customers">
             <li v-for="(item, index) in customers" :key="index">
               <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">
@@ -126,6 +123,7 @@
   import SearchTool from 'base/searchToolBar/searchToolBar'
   import ShowSearch from 'base/searchToolBar/showSearchList'
   import {checkCusomersList} from '@/service/api/customers'
+  import Loading from 'base/loading'
 
   export default {
     components: {
@@ -136,7 +134,8 @@
       Tab,
       TabItem,
       SearchTool,
-      ShowSearch
+      ShowSearch,
+      Loading
     },
     data () {
       return {
@@ -155,9 +154,6 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        // if (from.name === 'PotentialCustomerList' || from.name === 'NewCustomer') {
-        //   vm.idx = 1
-        // }
         if (from.params.mark) {
           vm.idx = from.params.mark
         } else {
@@ -166,6 +162,7 @@
       })
     },
     mounted () {
+      console.log(window.navigator)
       checkCusomersList().then(res => {
         this.isShowSpinner = false
         let data = res.data
@@ -181,16 +178,6 @@
       })
     },
     methods: {
-      changeActiveIndex () {
-        // this.idx === 0 ? this.idx = 1 : this.idx = 0
-        if (this.idx === 0) {
-          this.idx = 1
-        } else if (this.idx === 1) {
-          this.idx = 2
-        } else if (this.idx === 2) {
-          this.idx = 0
-        }
-      },
       onItemClick (index) {
         this.idx = index
       },
@@ -278,8 +265,10 @@
     }
 
     .customer-list {
+      height: calc(100% - 130px);
       .list_box {
         position: relative;
+        height: calc(100% - 178px);
         ul {
           padding: 20px 25px;
           background-color: #F5F5F5;

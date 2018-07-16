@@ -82,33 +82,6 @@
             <label>资产管理规模：</label>
             <span class="fr">{{data.asset_amount}}万</span>
           </cell-box>
-          <!-- <cell-box>
-            <label>证件类型：</label>
-            <span
-              class="fr"
-              v-if="data.id_type ==='0'"
-            >身份证</span>
-            <span
-              class="fr"
-              v-if="data.id_type ==='1'"
-            >护照</span>
-            <span
-              class="fr"
-              v-if="data.id_type ==='2'"
-            >军官证</span>
-            <span
-              class="fr"
-              v-if="data.id_type ==='3'"
-            >台胞证</span>
-            <span
-              class="fr"
-              v-if="data.id_type ==='4'"
-            >港澳通行证</span>
-            <span
-              class="fr"
-              v-if="data.id_type ==='5'"
-            >其他</span>
-          </cell-box> -->
         </group>
         <div class="call-btn">
           <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
@@ -123,18 +96,6 @@
                    :is-link="!clickArrowObj.realnameObj.disabled">
           </mt-cell>
           <div class="space1"></div>
-          <!-- <cell
-            is-link
-            :link="{name: 'Certified',params: {type: clientType}}"
-            :title="'投资者类型：'+stat"
-            value="修改"
-          >
-          </cell>
-          <div class="space1"></div>
-          <cell is-link
-                :link="{name: 'BankcardInfos', params: {id: clientId}}"
-                title="银行卡信息"
-          ></cell> -->
           <group v-if="data.realname_status === '2'">
             <cell style="color:#333"
                   :is-link="!clickArrowObj.cerObj.disabled"
@@ -146,7 +107,7 @@
             </cell>
             <div class="space1"></div>
             <cell is-link
-                  :link="{name: 'BankList', params: {addCard: true, id: data.client_id}}"
+                  :link="{name: 'BankList', params: {id: data.client_id}}"
                   title="银行卡信息："
             ></cell>
           </group>
@@ -273,7 +234,7 @@
         this.clientName = res.data.name
         this.clientType = res.data.client_type
         if (this.data.asset_amount > 500) {
-//          this.transformDialog = true
+          this.transformDialog = true
         }
         this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
         this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
@@ -343,7 +304,7 @@
         this.$router.push({name: 'ProductDetail', params: {id: 1}})
       },
       transform () {
-        this.$router.push({name: 'Certified', params: {id: this.clientId}})
+        this.$router.push({name: 'AutoTransfer', params: {id: this.clientId}})
       },
       cancel () {
         this.transformDialog = false
