@@ -246,9 +246,6 @@
                   this.fileArr.push('data:image/jpeg;base64,' + imageData)
                   this.$emit('imgHandler', this.fileId)
                 }
-              }).catch(err => {
-                console.log('error: ' + err)
-                this.alertMsg = true
               })
             }
         }

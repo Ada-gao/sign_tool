@@ -245,6 +245,9 @@
         console.log(this.radio)
         if (this.radio === '专业投资者') {
           this.showSelect = true
+        } else {
+          this.showSelect = false
+          this.reason = ''
         }
         if (this.radio === '专业投资者' && !this.flag) {
           getProReasons().then(res => {

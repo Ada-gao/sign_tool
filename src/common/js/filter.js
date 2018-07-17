@@ -121,8 +121,8 @@ export function tfCtypeToText (status) {
   switch (status) {
     case '1':
       params.flag = '认证待审核'
-      // params.disabled = true
-      params.disabled = false
+      params.disabled = true
+      // params.disabled = false
       break
     case '2':
       params.flag = '已认证'
