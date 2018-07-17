@@ -51,7 +51,7 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        if (from.name === 'Bankcard' || 'PotentialCustomerList') {
+        if (from.name === 'Bankcard' || from.name === 'PotentialCustomerList') {
           vm.addCard = '0'
         } else if (from.name === 'CustomerManagement') {
           vm.addCard = '1'
@@ -62,8 +62,9 @@
     },
     methods: {
       routerPush () {
-        alert(11111)
+//        alert(11111)
         this.$router.push({name: 'Bankcard'})
+//        this.$router.push({name: 'HomePage'})
       },
       back () {
         // flag: 判断是否是从预约页面进来的

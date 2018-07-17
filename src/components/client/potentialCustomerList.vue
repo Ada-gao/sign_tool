@@ -132,7 +132,9 @@
         <span class="msg_ipt" style="width:100%;display: block;text-align:center">{{validateCont}}</span>
         <x-button type="primary" @click.native="hideValPop">确 定</x-button>
       </x-dialog>
-      <x-dialog v-model="verificate.isShow" class="dialog-demo msg_dialog">
+      <x-dialog v-model="verificate.isShow"
+                :hide-on-blur="true"
+                class="dialog-demo msg_dialog">
         <div class="msg_title">
           <span>手机号：</span>
           <span>{{data.mobile}}</span>
@@ -646,6 +648,7 @@
     display: inline-block;
     width: 140px;
     height: 40px;
+    line-height: 40px;
     background: #2672ba;
     color: #fff;
     font-size: 22px;

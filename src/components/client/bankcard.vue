@@ -72,7 +72,6 @@
   import {getStore} from '@/config/mUtils'
 
   export default {
-    name: 'Bankcard',
     components: {
       XHeader,
       Group,
@@ -116,11 +115,11 @@
       }
     },
     beforeRouteEnter (to, from, next) {
-      if (from.name === 'AutoTransfer') {
-        next(vm => {
+      next(vm => {
+        if (from.name === 'AutoTransfer') {
           vm.beforeRouteName = 'AutoTransfer'
-        })
-      }
+        }
+      })
     },
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
@@ -220,8 +219,8 @@
         line-height: 56px;
         .toolbar {
           width: 100%;
-          -webkit-box-sizing: border-box;
-          -moz-box-sizing: border-box;
+           -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
           box-sizing: border-box;
           height: 56px;
           line-height: 56px;
@@ -351,8 +350,8 @@
       padding: 51px 60px;
       /*padding-bottom: 0;*/
       position: relative;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
+       -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
       box-sizing: border-box;
     }
   }

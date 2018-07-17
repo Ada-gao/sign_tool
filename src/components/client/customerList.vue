@@ -162,7 +162,6 @@
       })
     },
     mounted () {
-      console.log(window.navigator)
       checkCusomersList().then(res => {
         this.isShowSpinner = false
         let data = res.data

@@ -245,8 +245,8 @@ const router = new Router({
       }
     },
     {
-      path: '/autoTransfer/:id',
-      name: 'AutoTransfer',
+      path: '/autoTransfer',
+      name: 'Autotransfer',
       component: AutoTransfer,
       meta: {
         auth: true

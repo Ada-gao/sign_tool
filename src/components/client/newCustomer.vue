@@ -1,7 +1,8 @@
 <template>
   <div class="newCustomer">
     <x-header :left-options="{backText: ''}">新增潜客</x-header>
-    <group class="wrapper">
+    <div class="wrapper">
+      <group>
 
       <div class="add_tit">
         <i class="iconfont">&#xe61a;</i>
@@ -44,7 +45,7 @@
                 v-model="email"
                 class="new_field"></mt-field>
     </group>
-    <group class="wrapper">
+      <group>
       <mt-field disableClear
                 type="tel"
                 label="手机号码："
@@ -66,7 +67,8 @@
                 class="new_field">
       </mt-field>
     </group>
-    <button class="next" @click="submitCustomer">确 定</button>
+      <button class="next" @click="submitCustomer">确 定</button>
+    </div>
   </div>
 </template>
 

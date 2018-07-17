@@ -1,6 +1,7 @@
 <template>
   <div class="customerManagement">
-    <x-header :left-options="{backText: ''}">客户详情</x-header>
+    <x-header :left-options="{backText: '', preventGoBack:true}"
+              @on-click-back="toLink">客户详情</x-header>
     <div class="wrapper">
       <div class="info">
         <group>
@@ -174,6 +175,7 @@
     addCustomerRemarks
   } from '@/service/api/customers'
   import {tfCtypeToText} from '@/common/js/filter'
+  import {setStore, removeStore} from '@/config/mUtils'
 
   export default {
     name: 'CustomerManagement',
@@ -218,6 +220,12 @@
         }
       }
     },
+    beforeRouteLeave (to, from, next) {
+      if (to.name === 'CustomerList') {
+        removeStore('selfInfos')
+      }
+      next()
+    },
     mounted () {
       let clientId = this.$route.params.id
       checkCustomerRemarks(clientId).then(res => {
@@ -228,6 +236,7 @@
       clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
       checkCusomersDetail(clientId).then(res => {
         this.data = res.data
+        setStore('selfInfos', res.data)
         this.data.asset_amount = this.data.asset_amount || 0
         this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
         this.clientId = res.data.client_id
@@ -298,10 +307,7 @@
         })
       },
       toLink () {
-        this.$router.push({name: 'NewCustomer', params: {isMod: 1}})
-      },
-      toLink1 () {
-        this.$router.push({name: 'ProductDetail', params: {id: 1}})
+        this.$router.push({name: 'CustomerList'})
       },
       transform () {
         this.$router.push({name: 'AutoTransfer', params: {id: this.clientId}})
