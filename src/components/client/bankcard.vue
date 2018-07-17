@@ -182,7 +182,7 @@
           name: this.personInfo.cardOwner,
           bank_id: bankId
         }
-        if (!bankcrdValidate(params.card_no).stat) {
+        if (params.card_no && !bankcrdValidate(params.card_no).stat) {
           this.alertCont = '请输入正确的银行卡号'
           toast(this.alertCont)
           return false

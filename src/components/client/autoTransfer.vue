@@ -8,8 +8,12 @@
           <div class="time_box"
                @click="showCode">
             <span class="date_tit">认证原因：</span>
-            <span class="date_time">{{reason}}</span>
-            <i class="iconfont">&#xe731;</i>
+            <div class="date_box">
+              <div class="date_cont">
+                <span class="date_time">{{reason}}</span>
+                <i class="iconfont rotate_i">&#xe731;</i>
+              </div>
+            </div>
           </div>
           <mt-popup v-model="showCerCode"
                     position="bottom"
@@ -290,28 +294,37 @@
             line-height: 82px;
             padding: 0 20px;
             padding-left: 0;
-            /*border-bottom: 1px solid #ddd;*/
-            span {
-              /*font-size: 32px;*/
-            }
-            span.date_tit {
-              /*color: #333;*/
-            }
-            span.date_time {
-              /*color: #999;*/
+            .date_box {
+              width: 440px;
+              position: absolute;
               right: 56px;
-              position: absolute;
-              width: 400px;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-            }
-            i {
-              position: absolute;
-              right: 0;
-              margin-right: 0;
-              font-size: 55px !important;
-              color: #C8C8CD;
+              height: 40px;
+              top: 18px;
+              .date_cont {
+                position: relative;
+                height: 40px;
+                border: 1px solid #CCCCCC;
+                border-radius: 8px;
+                background-color: #f3f3f3;
+              }
+              span.date_time {
+                height: 40px;
+                line-height: 40px;
+                position: absolute;
+                width: 400px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+                white-space: nowrap;
+              }
+              i {
+                position: absolute;
+                right: 0;
+                top: -18px;
+                margin-right: 0;
+                font-size: 55px !important;
+                color: #C8C8CD;
+              }
             }
           }
         }

@@ -598,7 +598,8 @@
         }
         span.mobile_title {
           width: 170px;
-          color: #333;
+          color: rgb(51, 51, 51);
+          font-family: PingFangSC-Medium;
         }
         span.mobile_number {
           width: calc(100% - 180px);

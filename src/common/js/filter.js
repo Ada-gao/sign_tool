@@ -69,6 +69,19 @@ export function emailValidate (value) {
 }
 
 /**
+ * idcard validate
+ * @param value
+ * @returns {{stat: boolean}}
+ */
+export function idcardValidate (value) {
+  const reg = /^[1-9]\d{5}(18|19|20)\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+  let flag = reg.test(value)
+  return {
+    stat: flag
+  }
+}
+
+/**
  * bankcard validate
  * @param value
  * @returns {{stat: boolean}}
@@ -108,7 +121,8 @@ export function tfCtypeToText (status) {
   switch (status) {
     case '1':
       params.flag = '认证待审核'
-      params.disabled = true
+      // params.disabled = true
+      params.disabled = false
       break
     case '2':
       params.flag = '已认证'
