@@ -56,6 +56,32 @@ export function mobileValidate (value) {
 }
 
 /**
+ * email validate
+ * @param value
+ * @returns {{stat: boolean}}
+ */
+export function emailValidate (value) {
+  const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/
+  let flag = reg.test(value)
+  return {
+    stat: flag
+  }
+}
+
+/**
+ * bankcard validate
+ * @param value
+ * @returns {{stat: boolean}}
+ */
+export function bankcrdValidate (value) {
+  const reg = /^(\d{16}|\d{19})$/
+  let flag = reg.test(value)
+  return {
+    stat: flag
+  }
+}
+
+/**
  * 弹窗提示
  * @param text
  */
@@ -82,7 +108,7 @@ export function tfCtypeToText (status) {
   switch (status) {
     case '1':
       params.flag = '认证待审核'
-      params.disabled = false
+      params.disabled = true
       break
     case '2':
       params.flag = '已认证'

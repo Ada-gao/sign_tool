@@ -38,8 +38,8 @@ axios.interceptors.response.use(
     response => response,
     error => {
       const res = error.response
-      console.log(res)
       // res.data.codeMsg = interceptorsMsg.errMessage(res.config.url, res.data.code)
+      // console.log(res.data.codeMsg)
       switch (res.status) {
         case 400:
           // error.message = '手机号已被注册'
@@ -55,6 +55,11 @@ axios.interceptors.response.use(
           })
           error.message = '未授权，请登陆'
           break
+      }
+      if (res.data.body.code === 'ERROR_ARGUMENTS_INVALID') {
+        if (res.data.body.error.indexOf('银行卡') > -1) {
+          toast('请输入正确的银行卡号')
+        }
       }
       return Promise.reject(error)
     }

@@ -307,7 +307,7 @@
         })
       },
       toLink () {
-        this.$router.push({name: 'CustomerList'})
+        this.$router.push({name: 'CustomerList', params: {mark: 0}})
       },
       transform () {
         this.$router.push({name: 'AutoTransfer', params: {id: this.clientId}})
@@ -365,7 +365,7 @@
       line-height: 132px;
       .callout {
         display: inline-block;
-        width: 710px;
+        width: 94.7%;
         height: 72px;
         text-align: center;
         line-height: 72px;

@@ -99,45 +99,45 @@
       <div class="upload">
         <div>证件信息</div>
       </div>
+      <div class="upload_box">
+        <camera class="upload_cont1"
+                :popupVisible="popupVisible1"
+                :imageSrc="form.id_front_url"
+                :isFromBank="fromBank"
+                :cerId="cerId"
+                @showPopup="showPopup1"
+                @imgHandler="imageHandler1"
+                @hidePopup="hidePopup1"></camera>
+        <camera class="upload_cont2"
+                :popupVisible="popupVisible2"
+                :imageSrc="form.id_back_url"
+                :isFromBank="fromBank"
+                :cerId="cerId"
+                @imgHandler="imageHandler2"
+                @showPopup="showPopup2"
+                @hidePopup="hidePopup2"></camera>
+        <span class="front_class">正面</span>
+        <span class="back_class">反面</span>
+      </div>
+      <div class="space"></div>
+      <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
+        <span>银行卡（非必填项）</span>
+        <i class="iconfont">&#xe731;</i>
+      </div>
+      <div class="submit_form">
+        <button class="submit" @click="submitInfos">提交</button>
+      </div>
+      <!--<alert v-model="alertMsg" :content="alertCont"></alert>-->
+      <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
+        <div class="quit">{{alertCont}}</div>
+        <x-button type="primary" @click.native="hideAlert">确 定</x-button>
+      </x-dialog>
+      <x-dialog v-model="submitDialog" class="dialog-demo quitDialog" hide-on-blur>
+        <i class="iconfont submit_i">&#xe617;</i>
+        <div class="submit_cont">{{submitCont}}</div>
+        <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button>
+      </x-dialog>
     </group>
-    <div class="upload_box">
-      <camera class="upload_cont1"
-              :popupVisible="popupVisible1"
-              :imageSrc="form.id_front_url"
-              :isFromBank="fromBank"
-              :cerId="cerId"
-              @showPopup="showPopup1"
-              @imgHandler="imageHandler1"
-              @hidePopup="hidePopup1"></camera>
-      <camera class="upload_cont2"
-              :popupVisible="popupVisible2"
-              :imageSrc="form.id_back_url"
-              :isFromBank="fromBank"
-              :cerId="cerId"
-              @imgHandler="imageHandler2"
-              @showPopup="showPopup2"
-              @hidePopup="hidePopup2"></camera>
-      <span class="front_class">正面</span>
-      <span class="back_class">反面</span>
-    </div>
-    <div class="space"></div>
-    <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
-      <span>银行卡（非必填项）</span>
-      <i class="iconfont">&#xe731;</i>
-    </div>
-    <div class="submit_form">
-      <button class="submit" @click="submitInfos">提交</button>
-    </div>
-    <!--<alert v-model="alertMsg" :content="alertCont"></alert>-->
-    <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
-      <div class="quit">{{alertCont}}</div>
-      <x-button type="primary" @click.native="hideAlert">确 定</x-button>
-    </x-dialog>
-    <x-dialog v-model="submitDialog" class="dialog-demo quitDialog" hide-on-blur>
-      <i class="iconfont submit_i">&#xe617;</i>
-      <div class="submit_cont">{{submitCont}}</div>
-      <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button>
-    </x-dialog>
   </div>
 </template>
 

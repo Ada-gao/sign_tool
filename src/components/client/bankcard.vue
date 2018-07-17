@@ -2,10 +2,10 @@
   <div class="bankcard">
     <x-header :left-options="{backText: ''}">客户认证</x-header>
     <div class="wrapper">
-      <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
-        <div class="quit">{{alertCont}}</div>
-        <x-button type="primary" @click.native="hideAlert">确 定</x-button>
-      </x-dialog>
+      <!--<x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>-->
+        <!--<div class="quit">{{alertCont}}</div>-->
+        <!--<x-button type="primary" @click.native="hideAlert">确 定</x-button>-->
+      <!--</x-dialog>-->
 
       <group class="bankcard_cont">
         <x-input title="持卡人："
@@ -70,6 +70,7 @@
   import camera from '@/base/camera/camera'
   import {uploadBankCard, getBankInfos, perfectInfos} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
+  import {bankcrdValidate, toast} from '@/common/js/filter'
 
   export default {
     components: {
@@ -84,13 +85,13 @@
     },
     data () {
       return {
-        alertMsg: false,
-        alertCont: '还有信息没填哦～',
+//        alertMsg: false,
+        alertCont: '还有必填项未填写',
         bankList: [],
         popupVisible: false,
         personInfo: {
           cardOwner: '',
-          bankName: [],
+          bankName: '请选择银行',
           branchBank: '',
           bankCardNumber: ''
         },
@@ -104,13 +105,14 @@
         slots: [
           {
             flex: 1,
-            values: ['请选择银行'],
+            values: [],
             className: 'slot1',
             textAlign: 'center'
           }
         ],
         showCerCode: false,
         timer: null,
+        bankName: '',
         beforeRouteName: ''
       }
     },
@@ -139,7 +141,9 @@
     },
     methods: {
       onValuesChange (picker, values) {
-        this.personInfo.bankName = values[0]
+        if (values[0] !== undefined) {
+          this.bankName = values[0]
+        }
       },
       showCode () {
         this.$refs.cardOwner.blur()
@@ -155,12 +159,13 @@
         clearTimeout(this.timer)
       },
       ensureCerCode (val) {
+        this.personInfo.bankName = this.bankName
         clearTimeout(this.timer)
         this.showCerCode = false
       },
-      hideAlert () {
-        this.alertMsg = false
-      },
+//      hideAlert () {
+//        this.alertMsg = false
+//      },
       showPopup (data) {
         this.popupVisible = data
 //        console.log(this.client_certification_id)
@@ -177,11 +182,16 @@
           name: this.personInfo.cardOwner,
           bank_id: bankId
         }
+        if (!bankcrdValidate(params.card_no).stat) {
+          this.alertCont = '请输入正确的银行卡号'
+          toast(this.alertCont)
+          return false
+        }
         if (!params.card_no ||
             !params.sub_branch_name ||
             !params.name ||
-            !params.bank_id) {
-            this.alertMsg = true
+            params.bank_id < 0) {
+          toast(this.alertCont)
           return false
         }
         uploadBankCard(this.client_certification_id, params).then(res => {

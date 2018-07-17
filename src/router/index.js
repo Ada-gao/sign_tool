@@ -70,7 +70,7 @@ const router = new Router({
             auth: true
           }
         }, {
-          path: '/customerList',
+          path: '/customerList/:mark',
           name: 'CustomerList',
           component: CustomerList,
           meta: {
@@ -112,7 +112,7 @@ const router = new Router({
       }
     },
     {
-      path: '/newCustomer/:isMod', // isMod: 1 修改  0 新增
+      path: '/newCustomer',
       name: 'NewCustomer',
       component: NewCustomer,
       meta: {
@@ -246,7 +246,7 @@ const router = new Router({
     },
     {
       path: '/autoTransfer',
-      name: 'Autotransfer',
+      name: 'AutoTransfer',
       component: AutoTransfer,
       meta: {
         auth: true
@@ -345,6 +345,7 @@ if (window.localStorage.getItem('token')) {
 
 // 登陆拦截
 router.beforeEach((to, from, next) => {
+  window.scrollTo(0, 0)
   if (to.matched.some(m => m.meta.auth)) {
     if (store.state.token) {
       next()
