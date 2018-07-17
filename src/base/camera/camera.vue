@@ -61,6 +61,23 @@
       'mt-popup': Popup
     },
     props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc', 'imageArr', 'isFromAppointment'],
+    // props: {
+    //   imageArr: {
+    //     default: null
+    //   },
+    //   popupVisible: {
+    //     default: false
+    //   },
+    //   imageSrc: {
+    //     default: ''
+    //   },
+    //   isFromAppointment: {
+    //     default: ''
+    //   },
+    //   isFromBank: {
+    //     default: ''
+    //   }
+    // },
     data () {
       return {
         imgSrc: '',
@@ -72,13 +89,17 @@
         idSrc: '',
         appointmentSrc: [],
         spinnerShow: false,
-        fileId: []
+        fileId: [],
+        outsideSrc: []
       }
     },
     watch: {
       'imageSrc': function (n, o) {
         this.setImgSrc()
       },
+      // imageArr(curVal, oldVal) {
+      //   console.log(curVal)
+      // },
       'imageArr': {
         handler (n, o) {
           this.setImgSrcArr()
@@ -86,9 +107,18 @@
         deep: true
       }
     },
+    mounted () {
+      this.outsideSrc = this.imageArr
+      if (this.outsideSrc !== undefined) {
+        for (let i = 0; i < this.outsideSrc.length; i++) {
+          this.appointmentSrc.push(this.outsideSrc[i])
+        }
+      }
+      this.setImgSrc()
+      this.setImgSrcArr()
+    },
     methods: {
       setImgSrc () {
-        console.log(this.imageSrc)
         this.imgSrc = this.imageSrc
       },
       setImgSrcArr () {
@@ -200,7 +230,8 @@
                   this.fileId.push(res.data.client_cert_file_id)
                   this.appointmentSrc.push(res.data.file_url)
                   this.spinnerShow = false
-                  this.fileArr.push('data:image/jpeg;base64,' + imageData)
+                  this.fileArr = this.appointmentSrc
+                  // this.fileArr.push('data:image/jpeg;base64,' + imageData)
                   this.$emit('imgHandler', this.appointmentSrc)
               }
             }).catch(err => {
@@ -225,14 +256,15 @@
       delImage (index) {
         if (this.isFromAppointment === 1) {
           this.appointmentSrc.splice(index, 1)
+          this.fileArr = this.appointmentSrc
         } else {
           deleteDetail(this.cerId, this.fileId[index]).then(res => {
             if (res.status === 200) {
               this.fileId.splice(index, 1)
             }
           })
+          this.fileArr.splice(index, 1)
         }
-        this.fileArr.splice(index, 1)
       }
     }
   }

@@ -18,7 +18,7 @@
 					<mt-cell title="寄出合同方式：">{{emailType}}</mt-cell>
 				</div>
 				<div class="closeReason" v-if="closeOrderReason">
-					<mt-cell title="订单关闭原因：">{{closeReason}}</mt-cell>
+					<mt-cell :title= failTitle>{{closeReason}}</mt-cell>
 				</div>
 				<div class="info">
 					<mt-cell title="预约信息" class="tit">
@@ -362,11 +362,12 @@ export default {
 			collectionAmount: '',
 			refundUrls: '',
 			materialsUrls: '',
-			evidenceUrls: '',
+			evidenceUrls: [],
 			showSpace: false,
 			noReasonShow: '',
 			sureCancleA: false,
 			submitAppointDetail: '已提交待审核中…',
+			failTitle: '',
 			slotsM: [
 				{
           flex: 1,
@@ -581,7 +582,6 @@ export default {
 					'risk_level': this.appointmentList.risk_level,
 					'product_id': this.product_id,
 					'product_name': this.appointmentList.product_name,
-					// 'appointment_amount': parseInt(this.money.slice(0, -1)),
 					'appointment_amount': parseInt(this.money),
 					'appointment_date': this.nowTime
 				}
@@ -656,6 +656,7 @@ export default {
 				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
 					this.alertMsg = true
 					this.msgDetail = '银行卡输入有误'
+					return
 				}
 				if (this.evidenceUrl === undefined || this.materialSrc.length === 0 || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
 					this.alertMsg = true
@@ -830,6 +831,7 @@ export default {
 					this.cardName1 = this.appointmentList.bank_subname
 					this.cardUrl = this.appointmentList.bankcard_front_url
 					this.evidenceUrl = this.appointmentList.file_urls_payments
+					this.materialSrc = this.appointmentList.file_urls_trades
 					this.tradeUrl = this.appointmentList.file_urls_trades
 					this.refundUrl = this.appointmentList.file_urls_refunds
 					this.alreadyPassTime = this.appointmentList.remit_audit_date
@@ -879,6 +881,7 @@ export default {
 					} else if (this.appointmentList.status === '1002') {
 						this.topBar = '预约'
 						this.topTitle = '预约失败'
+						this.failTitle = '预约失败原因：'
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 						let arr = []
 						getProducts().then(res => {
@@ -894,10 +897,12 @@ export default {
 						this.name = this.appointmentList.client_name
 						this.cMob = this.appointmentList.client_mobile
 						this.money = this.appointmentList.appointment_amount
+						this.closeReason = this.appointmentList.appoint_failure
 						this.submitAppointmentBtnShow = false
 						this.repeatAppointmentBtnShow = true
 						this.showNameClick = true
 						this.showMoneyClick = true
+						this.closeOrderReason = true
 						this.sucBtn = false
 						this.uploadShow = false
 						this.appointmentDone = false
@@ -907,7 +912,6 @@ export default {
 						this.cameraShow = false
 						this.uploadCardS = false
 						this.uploadContract = false
-						this.closeOrderReason = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
@@ -1059,6 +1063,8 @@ export default {
 					} else if (this.appointmentList.status === '2002') {
 						this.topBar = '打款'
 						this.topTitle = '已到账待补全材料'
+						this.failTitle = '待补全材料原因：'
+						this.closeReason = this.appointmentList.pending_material_remark
 						this.uploadShow = true
 						this.appointmentDone = true
 						this.uploadCard = true
@@ -1068,11 +1074,11 @@ export default {
 						this.cameraShow = true
 						this.giveMoneyDone = true
 						this.repeatPayMaterials = true
+						this.closeOrderReason = true
 						this.sucBtn = false
 						this.uploadCardS = false
 						this.submitAppointmentBtnShow = false
 						this.uploadContract = false
-						this.closeOrderReason = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.alreadyPass = false
@@ -1088,22 +1094,21 @@ export default {
 						this.orderCloseSuc = false
 						this.popupVisible = false
 						this.sureCancleA = false
+						this.bankId = this.appointmentList.bank_card_id
 						this.cardnum = this.appointmentList.cardno
 						this.bankname = this.appointmentList.bank_name
 						this.bankname1 = this.appointmentList.bank_subname
 						this.cardUrl = this.appointmentList.bankcard_front_url
-						console.log(this.cardUrl)
+						this.materialsUrls = this.appointmentList.file_urls_trades
+						this.evidenceUrls = this.appointmentList.file_urls_payments
 						this.refundUrls = []
-						this.materialsUrls = []
-						this.evidenceUrls = []
-						// this.cardUrl = ''
-						this.evidenceUrl = []
-						this.materialSrc = []
+						// this.materialSrc = []
 						this.refundSrc = []
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2003') {
 						this.topBar = '打款'
 						this.topTitle = '订单关闭'
+						this.failTitle = '订单关闭原因'
 						this.appointmentDone = true
 						this.giveMoneyDone = true
 						this.closeOrderReason = true
@@ -1146,6 +1151,8 @@ export default {
 							this.repeatUploadRefund = true
 						} else if (this.appointmentList.refund_status === '3') {
 							this.topTitle = '退款驳回'
+							this.failTitle = '退款驳回原因：'
+							this.closeReason = this.appointmentList.refund_failure
 							this.uploadRefund = true
 							this.initiateRefund = true
 							this.refundLan = '重新发起退款'
@@ -1510,10 +1517,13 @@ export default {
 					height: 100%;
 					line-height: 100%;
 					background-image: none;
-					.mint-cell-title,.mint-cell-value{
+					.mint-cell-text,.mint-cell-value{
 						font-family: PingFangSC-Medium;
 						font-size: 28px;
 						color: #2672BA;
+					}
+					.mint-cell-text{
+						font-size: 30px;
 					}
 					.mint-cell-value{
 						font-family: PingFangSC-Regular;
