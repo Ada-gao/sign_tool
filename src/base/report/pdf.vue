@@ -93,7 +93,9 @@ export default {
 			var TRANSITION_END = 'transitionend'
 			var TRANSFORM = 'transform'
 			var TRANSFORM_PROPERTY = 'transform'
-			var TRANSITION_PROPERTY = 'transition'
+      var TRANSITION_PROPERTY = 'transition'
+      var WIDTH = 'width'
+      var HEIGHT = 'height'
 			if (typeof document.body.style.webkitTransform !== 'undefined') {
 				TRANSFORM = 'webkitTransform'
 				TRANSITION = 'webkitTransition'
@@ -106,7 +108,9 @@ export default {
 				TRANSITION: TRANSITION,
 				TRANSITION_END: TRANSITION_END,
 				TRANSFORM_PROPERTY: TRANSFORM_PROPERTY,
-				TRANSITION_PROPERTY: TRANSITION_PROPERTY
+        TRANSITION_PROPERTY: TRANSITION_PROPERTY,
+        WIDTH: WIDTH,
+        HEIGHT: HEIGHT
 			}
     },
     getOrigin (first, second) {
@@ -133,7 +137,11 @@ export default {
       }
 			element.style[this.vendors.TRANSITION] = transitionAnimation
 			x = this.origin.x + (-this.origin.x) * this.scale
-			y = this.origin.y + (-this.origin.y) * this.scale
+      y = this.origin.y + (-this.origin.y) * this.scale
+      // width = element.offsetWidth + (-element.offsetWidth) * this.scale
+      // height = element.offsetHeight + (-element.offsetHeight) * this.scale
+      // element.style[this.vendors.WIDTH] = width + 'px'
+      // element.style[this.vendors.HEIGHT] = height + 'px'
 			element.style[this.vendors.TRANSFORM] = 'matrix(' + this.scale + ', 0, 0, ' + this.scale + ', ' + x + ', ' + y + ')'
 		},
     renderPage (num) {
