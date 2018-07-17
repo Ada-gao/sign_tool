@@ -21,24 +21,6 @@
       <div class="upload_file">
         <div class="upload">
           <div class="upload_tit">上传认证资料</div>
-          <div class="time_box" @click="showCode" style="display:none;">
-            <span class="date_tit">认证原因：</span>
-            <span class="date_time">{{reason}}</span>
-            <i class="iconfont">&#xe731;</i>
-          </div>
-          <mt-popup v-model="showCerCode"
-                    position="bottom"
-                    class="cercode_box"
-                    popup-transition="popup-fade">
-            <mt-picker :slots="slots"
-                       :showToolbar="true"
-                       @change="onValuesChange">
-              <div class="toolbar">
-                <span class="cancel" @click="cancelCerCode">取消</span>
-                <span class="ensure" @click="ensureCerCode">确定</span>
-              </div>
-            </mt-picker>
-          </mt-popup>
         </div>
         <camera :popupVisible="popupVisible"
                 @showPopup="showCamera"
@@ -99,7 +81,6 @@
         showSubmit: {
           isShow: false,
           cont: '您的资料已上传成功！',
-//          cont: '对不起！上传失败 请您重新上传资料',
           isSuccess: 0
         },
         popupVisible: false,
@@ -123,16 +104,7 @@
           type: ''
         },
         beforeRouteName: '',
-        showCerCode: false,
-        reason: '',
-        slots: [
-          {
-            flex: 1,
-            values: ['请选择认证原因', '身份证', '护照', '军官证', '台胞证', '港澳通行证', '其他'],
-            className: 'slot1',
-            textAlign: 'center'
-          }
-        ]
+        itemHeight: 60
       }
     },
     mounted () {
@@ -140,7 +112,6 @@
       let id = null
       if (info && info.client_id) {
         id = info.client_id
-        console.log('有storage')
         this.userInfos.name = info.client_name
         this.userInfos.id = info.client_id
         this.userInfos.type = info.client_type
@@ -150,7 +121,6 @@
           this.radio = '专业投资者'
         }
       } else {
-        console.log('没有storage')
         id = this.$route.params.id
         checkCusomersDetail(id).then(res => {
           this.userInfos.name = res.data.client_name
@@ -166,19 +136,15 @@
       perfectInfos({client_id: id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
-          console.log('certified：' + this.uploadData.clientCertificationId)
         }
       })
       this.userInfos.emailAddress = JSON.parse(getStore('data')).email
-//      console.log('client_id：' + info.client_id)
     },
     beforeRouteEnter (to, from, next) {
       if (from.name === 'CustomerManagement') {
         next(vm => {
-          next(vm => {
-            vm.id = from.params.id
-            vm.beforeRouteName = 'CustomerManagement'
-          })
+          vm.id = from.params.id
+          vm.beforeRouteName = 'CustomerManagement'
         })
       } else {
         next(vm => {
@@ -187,26 +153,11 @@
       }
     },
     methods: {
-      showCode () {
-        this.showCerCode = true
-      },
-      cancelCerCode () {
-        this.showCerCode = false
-      },
-      ensureCerCode (val) {
-        this.showCerCode = false
-      },
-      onValuesChange (picker, values) {
-        this.reason = values[0]
-      },
       showCamera (data) {
         this.popupVisible = data
       },
       hideCamera (data) {
         this.popupVisible = data
-      },
-      getAction (id) {
-        return 'http://10.9.60.141:5000/api/v1/client/customers/certfiles/' + id
       },
       toLink (id) {
         this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
@@ -248,8 +199,6 @@
           client_id: this.userInfos.id,
           user_id: data.userId
         }
-//        console.log(params)
-//        console.log(this.convert(this.radio))
         sendEmail(this.convert(this.radio), params).then(res => {
           if (res.status === 200) {
             this.showEmailBox = false
@@ -272,7 +221,10 @@
         this.showSubmit.isShow = false
       },
       submitInfos () {
-        sendFiles(this.uploadData.clientCertificationId, {certification_type: this.convert(this.radio)}).then(res => {
+        let params = {
+          certification_type: this.convert(this.radio)
+        }
+        sendFiles(this.uploadData.clientCertificationId, params).then(res => {
           if (res.status === 200) {
             this.showSubmit.isShow = true
             this.showSubmit.isSuccess = 1
@@ -487,7 +439,7 @@
           }
           .cercode_box {
             width: 100%;
-            height: 300px;
+            height: 400px;
             .picker-items {
               /*height: 244px;*/
             }

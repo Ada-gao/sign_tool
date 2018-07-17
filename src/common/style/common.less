@@ -320,6 +320,7 @@
       .alert_msg {
         color: #ff0000;
         font-size: 28px;
+        margin-top: 15px;
       }
     }
   }
@@ -357,6 +358,11 @@
   }
 
 }
+.customerManagement {
+  .weui-cells {
+    margin-top: 0;
+  }
+}
 //dialog
 .vux-x-dialog.submitDialog{
   .weui-dialog{
@@ -370,4 +376,35 @@
     padding: 0;
     text-align: center;
   }
+}
+// loading-vue reset css
+.customerList,
+.customerManagement,
+.newCustomer,
+.perfect_infos,
+.potentialPage,
+.bankcard,
+.bankcard_infos,
+.certified,
+.autoTransfer {
+  height: 100%;
+  .wrapper {
+    height: 100%;
+  }
+}
+.spinner_box {
+  .mint-spinner-fading-circle {
+    position: absolute;
+    z-index: 99;
+    top: 40%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    width: 80px !important;
+    height: 80px !important;
+  }
+}
+// picker-item reset
+.autoTransfer .picker-item {
+  width: 80%;
+  margin: 0 auto;
 }

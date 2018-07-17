@@ -1,7 +1,8 @@
 <template>
   <div class="newCustomer">
     <x-header :left-options="{backText: ''}">新增潜客</x-header>
-    <group class="wrapper">
+    <div class="wrapper">
+      <group>
 
       <div class="add_tit">
         <i class="iconfont">&#xe61a;</i>
@@ -44,7 +45,7 @@
                 v-model="email"
                 class="new_field"></mt-field>
     </group>
-    <group class="wrapper">
+      <group>
       <mt-field disableClear
                 type="tel"
                 label="手机号码："
@@ -66,7 +67,8 @@
                 class="new_field">
       </mt-field>
     </group>
-    <button class="next" @click="submitCustomer">确 定</button>
+      <button class="next" @click="submitCustomer">确 定</button>
+    </div>
   </div>
 </template>
 
@@ -154,7 +156,7 @@
 //        this.names = names.join()
 //        this.myAddressProvince = names[0]
 //        this.myAddressCity = names[1]
-        this.city = names[1]
+        this.city = names[1] === '市辖区' ? names[0] : names[1]
       },
       selectNation (num) {
         this.num = num
@@ -170,7 +172,6 @@
           wechat: this.wechat,
           city: this.city,
           mobile_validated: this.mobile_validated,
-          //          validated_timestamp: this.validated_timestamp,
           validated_by: this.validated_by,
           client_class: null
         }

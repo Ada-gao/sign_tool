@@ -72,7 +72,6 @@
   import {getStore} from '@/config/mUtils'
 
   export default {
-    name: 'Bankcard',
     components: {
       XHeader,
       Group,
@@ -111,8 +110,16 @@
           }
         ],
         showCerCode: false,
-        timer: null
+        timer: null,
+        beforeRouteName: ''
       }
+    },
+    beforeRouteEnter (to, from, next) {
+      next(vm => {
+        if (from.name === 'AutoTransfer') {
+          vm.beforeRouteName = 'AutoTransfer'
+        }
+      })
     },
     mounted () {
       let info = JSON.parse(getStore('selfInfos'))
@@ -181,7 +188,11 @@
           if (res.status === 200) {
             let info = JSON.parse(getStore('selfInfos'))
             let params = Object.assign({isSubmit: true}, info)
-            this.$router.replace({name: 'PerfectInfos', params: params})
+            if (this.beforeRouteName === 'AutoTransfer') {
+              this.$router.replace({name: 'AutoTransfer', params: {id: info.client_id}})
+            } else {
+              this.$router.replace({name: 'PerfectInfos', params})
+            }
           }
         })
       }
@@ -208,8 +219,8 @@
         line-height: 56px;
         .toolbar {
           width: 100%;
-          -webkit-box-sizing: border-box;
-          -moz-box-sizing: border-box;
+           -webkit-box-sizing: border-box;
+           -moz-box-sizing: border-box;
           box-sizing: border-box;
           height: 56px;
           line-height: 56px;
@@ -339,8 +350,8 @@
       padding: 51px 60px;
       /*padding-bottom: 0;*/
       position: relative;
-      -webkit-box-sizing: border-box;
-      -moz-box-sizing: border-box;
+       -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
       box-sizing: border-box;
     }
   }
