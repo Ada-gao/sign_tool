@@ -134,7 +134,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../common/style/variable.less";
+@import "../../common/style/variable.less";
 .vux-header{
   .vux-header-title{
     font-family: PingFangSC-Regular;
