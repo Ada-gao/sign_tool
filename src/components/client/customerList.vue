@@ -1,7 +1,7 @@
 <template>
   <div class="customerList">
     <x-header v-show="isCancel===false" :left-options="{showBack: false}">客户
-      <router-link slot="right" :to="{name: 'NewCustomer', params: {isMod: 0}}" class="add_newcustomer">新增潜客
+      <router-link slot="right" :to="{name: 'NewCustomer'}" class="add_newcustomer">新增潜客
       </router-link>
     </x-header>
     <x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询
@@ -24,9 +24,9 @@
       <div class="customer-list" v-show="!isCancel">
         <div class="tabbar">
           <span class="tabitem" :class="{'active': idx === 0}" @click="onItemClick(0)">客户列表</span>
-          <i class="sepa"></i>
+          <!--<i class="sepa"></i>-->
           <span class="tabitem" :class="{'active': idx === 1}" @click="onItemClick(1)">潜客列表</span>
-          <i class="sepa"></i>
+          <!--<i class="sepa"></i>-->
           <span class="tabitem" :class="{'active': idx === 2}" @click="onItemClick(2)">手机未验证客户</span>
         </div>
         <div class="list_box">
@@ -154,11 +154,7 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        if (from.params.mark) {
-          vm.idx = from.params.mark
-        } else {
-          vm.idx = 0
-        }
+        vm.idx = to.params.mark
       })
     },
     mounted () {
@@ -230,37 +226,52 @@
       background-color: #fff;
       width: 100%;
       font-size: 0;
+      padding: 17px 0;
       .tabitem {
         display: inline-block;
         font-size: 30px;
         color: #9b9b9b;
-        height: 80px;
-        line-height: 80px;
+        height: 46px;
+        line-height: 46px;
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
         text-align: center;
         vertical-align: middle;
+        width: 33.3%;
+        position: relative;
+        &:after {
+          position: absolute;
+          display: inline-block;
+          content: '';
+          right: 0;
+          top: 0;
+          width: 3px;
+          height: 47px;
+          background-color: #979797;
+        }
       }
-      .tabitem:nth-of-type(1) {
-        width: 246px;
-      }
-      .tabitem:nth-of-type(2) {
-        width: 246px;
-      }
+      /*.tabitem:nth-of-type(1) {*/
+        /*width: 246px;*/
+      /*}*/
+      /*.tabitem:nth-of-type(2) {*/
+        /*width: 246px;*/
+      /*}*/
       .tabitem:nth-of-type(3) {
-        width: 246px;
+        &:after {
+          display: none;
+        }
       }
       .active {
         color: #2672ba;
       }
-      .sepa {
-        vertical-align: middle;
-        display: inline-block;
-        width: 3px;
-        height: 47px;
-        background-color: #979797;
-      }
+      /*.sepa {*/
+        /*vertical-align: middle;*/
+        /*display: inline-block;*/
+        /*width: 3px;*/
+        /*height: 47px;*/
+        /*background-color: #979797;*/
+      /*}*/
     }
 
     .customer-list {

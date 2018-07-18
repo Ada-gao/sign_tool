@@ -21,6 +21,32 @@
       <div class="upload_file">
         <div class="upload">
           <div class="upload_tit">上传认证资料</div>
+          <div class="time_box"
+               v-if="showSelect"
+               @click="showCode">
+              <span class="date_tit">认证原因：</span>
+            <div class="date_box">
+              <div class="date_cont">
+                <span class="date_time">{{reason}}</span>
+                <i class="iconfont rotate_i">&#xe731;</i>
+              </div>
+            </div>
+          </div>
+          <mt-popup v-model="showCerCode"
+                    position="bottom"
+                    class="cercode_box"
+                    popup-transition="popup-fade">
+            <mt-picker :slots="slots"
+                       value-key="apply_reason"
+                       :itemHeight="itemHeight"
+                       :showToolbar="true"
+                       @change="onValuesChange">
+              <div class="toolbar">
+                <span class="cancel" @click="cancelCerCode">取消</span>
+                <span class="ensure" @click="ensureCerCode">确定</span>
+              </div>
+            </mt-picker>
+          </mt-popup>
         </div>
         <camera :popupVisible="popupVisible"
                 @showPopup="showCamera"
@@ -66,7 +92,7 @@
 <script>
   import {XHeader} from 'vux'
   import {Popup, Radio} from 'mint-ui'
-  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail} from '@/service/api/customers'
+  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail, getProReasons} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import camera from '@/base/camera/camera'
   export default {
@@ -104,7 +130,22 @@
           type: ''
         },
         beforeRouteName: '',
-        itemHeight: 60
+        showCerCode: false,
+        showSelect: false, // 是否显示'认证原因select框'
+        flag: false, // 是否已经请求过专业投资者认证原因列表
+        apply_reason: '',
+        reason: '',
+        apply_reason_id: null,
+        reason_id: null,
+        itemHeight: 60,
+        slots: [
+          {
+            flex: 1,
+            values: [],
+            className: 'slot1',
+            textAlign: 'center'
+          }
+        ]
       }
     },
     mounted () {
@@ -136,6 +177,7 @@
       perfectInfos({client_id: id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
+//          console.log('certified：' + this.uploadData.clientCertificationId)
         }
       })
       this.userInfos.emailAddress = JSON.parse(getStore('data')).email
@@ -143,8 +185,10 @@
     beforeRouteEnter (to, from, next) {
       if (from.name === 'CustomerManagement') {
         next(vm => {
-          vm.id = from.params.id
-          vm.beforeRouteName = 'CustomerManagement'
+          next(vm => {
+            vm.id = from.params.id
+            vm.beforeRouteName = 'CustomerManagement'
+          })
         })
       } else {
         next(vm => {
@@ -153,6 +197,23 @@
       }
     },
     methods: {
+      showCode () {
+        this.showCerCode = true
+      },
+      cancelCerCode () {
+        this.showCerCode = false
+      },
+      ensureCerCode (val) {
+        this.reason = this.apply_reason
+        this.reason_id = this.apply_reason_id
+        this.showCerCode = false
+      },
+      onValuesChange (picker, values) {
+        if (values[0] !== undefined) {
+          this.apply_reason = values[0].apply_reason
+          this.apply_reason_id = values[0].apply_reason_id
+        }
+      },
       showCamera (data) {
         this.popupVisible = data
       },
@@ -181,6 +242,23 @@
       },
       ensure () {
         this.showConvertBox = false
+        console.log(this.radio)
+        if (this.radio === '专业投资者') {
+          this.showSelect = true
+        } else {
+          this.showSelect = false
+          this.reason = ''
+        }
+        if (this.radio === '专业投资者' && !this.flag) {
+          getProReasons().then(res => {
+            if (res.status === 200) {
+              this.flag = true
+              for (let value of res.data) {
+                this.slots[0].values.push(value)
+              }
+            }
+          })
+        }
       },
       cancel () {
         this.showConvertBox = false
@@ -223,6 +301,10 @@
       submitInfos () {
         let params = {
           certification_type: this.convert(this.radio)
+        }
+        if (params.certification_type === '1') {
+          params.apply_reason = this.reason
+          params.apply_reason_id = this.reason_id
         }
         sendFiles(this.uploadData.clientCertificationId, params).then(res => {
           if (res.status === 200) {
@@ -477,24 +559,37 @@
             line-height: 82px;
             padding: 0 20px;
             padding-left: 0;
-            /*border-bottom: 1px solid #ddd;*/
-            span {
-              /*font-size: 32px;*/
-            }
-            span.date_tit {
-              /*color: #333;*/
-            }
-            span.date_time {
-              /*color: #999;*/
+            .date_box {
+              width: 440px;
+              position: absolute;
               right: 56px;
-              position: absolute;
-            }
-            i {
-              position: absolute;
-              right: 0;
-              margin-right: 0;
-              font-size: 55px !important;
-              color: #C8C8CD;
+              height: 40px;
+              top: 18px;
+              .date_cont {
+                position: relative;
+                height: 40px;
+                border: 1px solid #CCCCCC;
+                border-radius: 8px;
+                background-color: #f3f3f3;
+              }
+              span.date_time {
+                height: 40px;
+                line-height: 40px;
+                position: absolute;
+                width: 400px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: inline-block;
+                white-space: nowrap;
+              }
+              i {
+                position: absolute;
+                right: 0;
+                top: -18px;
+                margin-right: 0;
+                font-size: 55px !important;
+                color: #C8C8CD;
+              }
             }
           }
         }

@@ -69,10 +69,10 @@
               <span class="fr">{{data.address}}</span>
             </cell-box>
           </group>
-          <cell-box>
-            <label style="color:#333">录入时间：</label>
-            <span class="fr">{{data.email}}</span>
-          </cell-box>
+          <!--<cell-box>-->
+            <!--<label style="color:#333">录入时间：</label>-->
+            <!--<span class="fr">{{data.email}}</span>-->
+          <!--</cell-box>-->
         </group>
         <div class="call-btn">
           <a :href="'tel:'+data.mobile" class="callout">拨打客户电话</a>
@@ -323,7 +323,7 @@
       },
       toLink () {
         removeStore('selfInfos')
-        this.$router.replace({name: 'CustomerList', mark: this.topTitle === '潜客信息' ? 1 : 2})
+        this.$router.replace({name: 'CustomerList', params: {mark: (this.topTitle === '潜客信息' ? 1 : 2)}})
       },
       addNew () {
         this.showHideOnBlur = true
@@ -441,7 +441,7 @@
       line-height: 132px;
       .callout {
         display: inline-block;
-        width: 710px;
+        width: 94.7%;
         height: 72px;
         text-align: center;
         line-height: 72px;
@@ -598,7 +598,8 @@
         }
         span.mobile_title {
           width: 170px;
-          color: #333;
+          color: rgb(51, 51, 51);
+          font-family: PingFangSC-Medium;
         }
         span.mobile_number {
           width: calc(100% - 180px);

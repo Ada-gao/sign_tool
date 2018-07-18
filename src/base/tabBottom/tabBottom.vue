@@ -9,7 +9,7 @@
         <i slot="icon" class="iconfont">&#xe653;</i>
         <span slot="label">交易</span>
       </tabbar-item>
-      <tabbar-item :link="{name: 'CustomerList'}" @on-item-click="clickThis">
+      <tabbar-item :link="{name: 'CustomerList', params: {mark: 0}}" @on-item-click="clickThis">
         <i slot="icon" class="iconfont">&#xe62c;</i>
         <span slot="label">客户</span>
       </tabbar-item>

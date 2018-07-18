@@ -99,45 +99,40 @@
       <div class="upload">
         <div>证件信息</div>
       </div>
+      <div class="upload_box">
+        <camera class="upload_cont1"
+                :popupVisible="popupVisible1"
+                :imageSrc="form.id_front_url"
+                :isFromBank="fromBank"
+                :cerId="cerId"
+                @showPopup="showPopup1"
+                @imgHandler="imageHandler1"
+                @hidePopup="hidePopup1"></camera>
+        <camera class="upload_cont2"
+                :popupVisible="popupVisible2"
+                :imageSrc="form.id_back_url"
+                :isFromBank="fromBank"
+                :cerId="cerId"
+                @imgHandler="imageHandler2"
+                @showPopup="showPopup2"
+                @hidePopup="hidePopup2"></camera>
+        <span class="front_class">正面</span>
+        <span class="back_class">反面</span>
+      </div>
+      <div class="space"></div>
+      <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
+        <span>银行卡（非必填项）</span>
+        <i class="iconfont">&#xe731;</i>
+      </div>
+      <div class="submit_form">
+        <button class="submit" @click="submitInfos">提交</button>
+      </div>
+      <x-dialog v-model="submitDialog" class="dialog-demo quitDialog" hide-on-blur>
+        <i class="iconfont submit_i">&#xe617;</i>
+        <div class="submit_cont">{{submitCont}}</div>
+        <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button>
+      </x-dialog>
     </group>
-    <div class="upload_box">
-      <camera class="upload_cont1"
-              :popupVisible="popupVisible1"
-              :imageSrc="form.id_front_url"
-              :isFromBank="fromBank"
-              :cerId="cerId"
-              @showPopup="showPopup1"
-              @imgHandler="imageHandler1"
-              @hidePopup="hidePopup1"></camera>
-      <camera class="upload_cont2"
-              :popupVisible="popupVisible2"
-              :imageSrc="form.id_back_url"
-              :isFromBank="fromBank"
-              :cerId="cerId"
-              @imgHandler="imageHandler2"
-              @showPopup="showPopup2"
-              @hidePopup="hidePopup2"></camera>
-      <span class="front_class">正面</span>
-      <span class="back_class">反面</span>
-    </div>
-    <div class="space"></div>
-    <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
-      <span>银行卡（非必填项）</span>
-      <i class="iconfont">&#xe731;</i>
-    </div>
-    <div class="submit_form">
-      <button class="submit" @click="submitInfos">提交</button>
-    </div>
-    <!--<alert v-model="alertMsg" :content="alertCont"></alert>-->
-    <x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>
-      <div class="quit">{{alertCont}}</div>
-      <x-button type="primary" @click.native="hideAlert">确 定</x-button>
-    </x-dialog>
-    <x-dialog v-model="submitDialog" class="dialog-demo quitDialog" hide-on-blur>
-      <i class="iconfont submit_i">&#xe617;</i>
-      <div class="submit_cont">{{submitCont}}</div>
-      <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button>
-    </x-dialog>
   </div>
 </template>
 
@@ -147,6 +142,7 @@
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
+  import {idcardValidate, toast} from '@/common/js/filter'
 
   export default {
     name: 'PerfectInfos',
@@ -179,7 +175,6 @@
         endDate: new Date(2100, 0, 1),
         startDate: new Date(1960, 0, 1),
         client_certification_id: 0,
-        alertMsg: false,
         alertCont: '还有信息没填哦～',
         isSubmit: null,
         popupVisible1: false,
@@ -192,7 +187,8 @@
             className: 'slot1',
             textAlign: 'center'
           }
-        ]
+        ],
+        idType: ''
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -251,7 +247,7 @@
     },
     methods: {
       onValuesChange (picker, values) {
-        this.form.id_type = values[0]
+        this.idType = values[0]
       },
       showCode () {
         this.$refs.address.blur()
@@ -266,6 +262,7 @@
         clearTimeout(this.timer)
       },
       ensureCerCode (val) {
+        this.form.id_type = this.idType
         clearTimeout(this.timer)
         this.showCerCode = false
       },
@@ -292,9 +289,6 @@
       dateConfirm2 (val) {
         clearTimeout(this.timer)
         this.id_expiration = this.formatDate(val)
-      },
-      hideAlert () {
-        this.alertMsg = false
       },
       imageHandler1 (data) {
         this.form.id_front_url = data
@@ -339,14 +333,21 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
+        if (params.id_no && !idcardValidate(params.id_no).stat) {
+          this.alertCont = '请输入有效的证件号码'
+          toast(this.alertCont)
+          return false
+        }
+        console.log(params)
         if (!params.birthday ||
-          !params.address ||
-          !params.id_no ||
-          !params.id_start_date ||
-          !params.id_expiration ||
-          !params.id_front_url ||
-          !params.id_back_url) {
-          this.alertMsg = true
+            !params.gender ||
+            !params.address ||
+            !params.id_no ||
+            !params.id_start_date ||
+            !params.id_expiration ||
+            !params.id_front_url ||
+            !params.id_back_url) {
+          toast(this.alertCont)
           return false
         }
         uploadId(this.client_certification_id, params).then(res => {
@@ -377,13 +378,13 @@
   .radio_box {
     padding: 0 20px;
     background-color: #fff;
-    height: 83px;
-    line-height: 83px;
+    height: 82px;
+    line-height: 82px;
     border-bottom: 1px solid #ccc;
     .radio_item.mint-radiolist .mint-cell {
       display: inline-block;
       position: absolute;
-      height: 83px;
+      height: 82px;
       // padding: 20px 0;
       .mint-cell-wrapper{
         height: 100%;
@@ -571,6 +572,8 @@
           color: #333333;
           top: 50%;
           transform: translateY(-50%);
+          width: 100%;
+          left: 0;
         }
         .weui-btn.weui-btn_primary.submit_btn {
           width: 280px;

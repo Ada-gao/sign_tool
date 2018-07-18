@@ -1,75 +1,76 @@
 <template>
   <div class="newCustomer">
-    <x-header :left-options="{backText: ''}">新增潜客</x-header>
+    <x-header :left-options="{backText: '', preventGoBack:true}"
+              @on-click-back="toLink">新增潜客</x-header>
     <div class="wrapper">
       <group>
 
-      <div class="add_tit">
-        <i class="iconfont">&#xe61a;</i>
-        <span style="color: #2672ba">客户信息</span>
-      </div>
-      <div class="space"></div>
-      <mt-field disableClear
-                label="客户姓名："
-                placeholder="输入客户姓名"
-                v-model="name"
-                class="new_field"></mt-field>
-      <div class="radio_box new_field">
-        <mt-radio
-          class="radio_item"
-          title="国籍："
-          v-model="nationality"
-          @change="selectNation"
-          :options="[{label: '中国', value: '0'}, {label: '其他', value: '1'}]">
-        </mt-radio>
-      </div>
-      <x-address id="x_address"
-                 v-show="num === '0'"
-                 :title="title"
-                 v-model="value"
-                 raw-value
-                 :list="addressData"
-                 @on-shadow-change="onShadowChange"
-                 placeholder="请选择您的城市"
-                 :show.sync="showAddress"></x-address>
-      <mt-field disableClear
-                type="wechat"
-                label="(选填)微信："
-                placeholder="输入客户微信"
-                v-model="wechat"
-                class="new_field"></mt-field>
-      <mt-field disableClear
-                type="email"
-                label="(选填)邮箱："
-                placeholder="输入客户邮箱"
-                v-model="email"
-                class="new_field"></mt-field>
-    </group>
+        <div class="add_tit">
+          <i class="iconfont">&#xe61a;</i>
+          <span style="color: #2672ba">客户信息</span>
+        </div>
+        <div class="space"></div>
+        <mt-field disableClear
+                  label="客户姓名："
+                  placeholder="输入客户姓名"
+                  v-model="name"
+                  class="new_field new_field_bb"></mt-field>
+        <div class="radio_box new_field" style="border:0">
+          <mt-radio
+            class="radio_item"
+            title="国籍："
+            v-model="nationality"
+            @change="selectNation"
+            :options="[{label: '中国', value: '0'}, {label: '其他', value: '1'}]">
+          </mt-radio>
+        </div>
+        <x-address id="x_address"
+                   v-show="num === '0'"
+                   :title="title"
+                   v-model="value"
+                   raw-value
+                   :list="addressData"
+                   @on-shadow-change="onShadowChange"
+                   placeholder="请选择您的城市"
+                   :show.sync="showAddress"></x-address>
+        <mt-field disableClear
+                  type="wechat"
+                  label="(选填)微信："
+                  placeholder="输入客户微信"
+                  v-model="wechat"
+                  class="new_field"></mt-field>
+        <mt-field disableClear
+                  type="email"
+                  label="(选填)邮箱："
+                  placeholder="输入客户邮箱"
+                  v-model="email"
+                  class="new_field"></mt-field>
+      </group>
       <group>
-      <mt-field disableClear
-                type="tel"
-                label="手机号码："
-                placeholder="输入客户手机号码"
-                :attr="{ maxlength: 11 }"
-                v-model="mobile"
-                class="new_field">
-        <span class="verificate"
-              v-if="!verificate.isTimeout"
-              @click="sendVer">发送邀请码</span>
-        <span class="verificate"
-              v-else>{{verificate.num}}s</span>
-      </mt-field>
-      <mt-field disableClear
-                type="tel"
-                label="客户邀请码："
-                :attr="{ maxlength: 6 }"
-                v-model="verificate.code"
-                class="new_field">
-      </mt-field>
-    </group>
+        <mt-field disableClear
+                  type="tel"
+                  label="手机号码："
+                  placeholder="输入客户手机号码"
+                  :attr="{ maxlength: 11 }"
+                  v-model="mobile"
+                  class="new_field">
+          <span class="verificate"
+                v-if="!verificate.isTimeout"
+                @click="sendVer">发送邀请码</span>
+          <span class="verificate"
+                v-else>{{verificate.num}}s</span>
+        </mt-field>
+        <mt-field disableClear
+                  type="tel"
+                  label="客户邀请码："
+                  :attr="{ maxlength: 6 }"
+                  v-model="verificate.code"
+                  class="new_field">
+        </mt-field>
+      </group>
       <button class="next" @click="submitCustomer">确 定</button>
     </div>
-  </div>
+    </div>
 </template>
 
 <script>
@@ -84,7 +85,7 @@
   } from 'vux'
   import {Field, Radio} from 'mint-ui'
   import {addCusomer, sendVerCode, confirmVercode} from '@/service/api/customers'
-  import {mobileValidate, toast} from '@/common/js/filter'
+  import {mobileValidate, toast, emailValidate} from '@/common/js/filter'
 
   export default {
     name: 'NewCustomer',
@@ -108,7 +109,7 @@
         },
         alertCont: '',
         num: '0',
-        isMod: -1,
+//        isMod: -1,
         name: '',
         nationality: '0',
         mobile: '',
@@ -123,13 +124,10 @@
         showAddress: false
       }
     },
-    mounted () {
-      this.isMod = Number(this.$route.params.isMod)
-      if (this.isMod === 1) {
-        console.log('需要获取数据')
-      }
-    },
     methods: {
+      toLink () {
+        this.$router.push({name: 'CustomerList', params: {mark: 0}})
+      },
       sendVer () {
         if (!this.mobile || !mobileValidate(this.mobile).stat) {
           this.alertCont = '请输入有效的手机号码'
@@ -166,7 +164,7 @@
       submitCustomer () {
         let params = {
           name: this.name,
-          nationality: this.num === 1 ? '1' : '0',
+          nationality: this.num === '1' ? '1' : '0',
           mobile: this.mobile,
           email: this.email,
           wechat: this.wechat,
@@ -194,6 +192,12 @@
             !mobileValidate(params.mobile).stat) {
           toast(this.alertCont)
           return false
+        } else if (params.email) {
+          if (!emailValidate(params.email).stat) {
+            this.alertCont = '请输入合法的邮箱'
+            toast(this.alertCont)
+            return false
+          }
         }
         let params1 = {
           code: this.verificate.code,
@@ -208,7 +212,7 @@
               this.verificate.code = ''
               addCusomer(params).then(res => {
                 if (res.status === 200) {
-                  this.$router.push({name: 'CustomerList'})
+                  this.$router.push({name: 'CustomerList', params: {mark: 1}})
                 }
               })
             }
@@ -219,7 +223,7 @@
           delete params.client_class
           addCusomer(params).then(res => {
             if (res.status === 200) {
-              this.$router.push({name: 'CustomerList'})
+              this.$router.push({name: 'CustomerList', params: {mark: 2}})
             }
           })
         }
@@ -284,6 +288,7 @@
             }
             .mint-cell{
               display: inline-block;
+              margin-top: 1px;
               .mint-radio-label {
                 font-size: 28px;
                 color: #666;
@@ -405,6 +410,9 @@
         width: 80px;
         font-size: 24px;
         border: none;
+      }
+      .new_field_bb {
+        border-bottom:1px solid #d9d9d9;
       }
     }
     .wrapper:nth-child(3) {
