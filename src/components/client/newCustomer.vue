@@ -31,6 +31,7 @@
                    raw-value
                    :list="addressData"
                    @on-shadow-change="onShadowChange"
+                   @on-hide="onHide"
                    placeholder="请选择您的城市"
                    :show.sync="showAddress"></x-address>
         <mt-field disableClear
@@ -116,6 +117,7 @@
         wechat: '',
         email: '',
         city: '',
+        newCity: '',
         mobile_validated: '1',
         validated_by: '',
         title: '常住中国城市',
@@ -150,6 +152,13 @@
           }
         }, 1000)
       },
+      onHide (stat) {
+        if (stat) {
+          this.newCity = this.city
+        } else {
+          this.newCity = ''
+        }
+      },
       onShadowChange (ids, names) {
 //        this.names = names.join()
 //        this.myAddressProvince = names[0]
@@ -158,8 +167,9 @@
       },
       selectNation (num) {
         this.num = num
+        this.value = ['', '', '']
         this.myAddressProvince = this.myAddressCity = this.myAddresscounty = ''
-        this.city = ''
+        this.newCity = this.city = ''
       },
       submitCustomer () {
         let params = {
@@ -168,7 +178,7 @@
           mobile: this.mobile,
           email: this.email,
           wechat: this.wechat,
-          city: this.city,
+          city: this.newCity,
           mobile_validated: this.mobile_validated,
           validated_by: this.validated_by,
           client_class: null

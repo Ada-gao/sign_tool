@@ -319,6 +319,9 @@
     height: 120px;
     text-align: left;
     padding-left: 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     // .ul {
     //   display: inline-block;
     //   height: 120px;

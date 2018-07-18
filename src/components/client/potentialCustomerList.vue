@@ -58,7 +58,7 @@
             </cell-box>
             <cell-box>
               <label style="color:#333">证件有效期：</label>
-              <span class="fr">{{data.email}}</span>
+              <span class="fr">{{data.id_start_date}} 至 {{data.id_expiration}}</span>
             </cell-box>
             <cell-box>
               <label style="color:#333">出生日期：</label>

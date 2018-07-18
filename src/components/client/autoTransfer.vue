@@ -7,7 +7,7 @@
           <div class="upload_tit">上传认证资料</div>
           <div class="time_box"
                @click="showCode">
-            <span class="date_tit">认证原因：</span>
+            <span class="date_tit">请选择认证原因：</span>
             <div class="date_box">
               <div class="date_cont">
                 <span class="date_time">{{reason}}</span>
@@ -58,6 +58,7 @@
 <script>
   import {XHeader} from 'vux'
   import {Popup, Radio} from 'mint-ui'
+  import {toast} from '@/common/js/filter'
   import {sendFiles, perfectInfos, getProReasons} from '@/service/api/customers'
   import camera from '@/base/camera/camera'
   export default {
@@ -158,19 +159,19 @@
       submitInfos () {
         let params = {
           certification_type: '1',
-          apply_reason: this.apply_reason,
-          apply_reason_id: this.apply_reason_id
+          apply_reason: this.reason,
+          apply_reason_id: this.reason_id
+        }
+        console.log(params)
+        if (!params.apply_reason || !params.apply_reason_id) {
+          toast('请选择认证原因')
+          return false
         }
         sendFiles(this.uploadData.clientCertificationId, params).then(res => {
           if (res.status === 200) {
             this.showSubmit.isShow = true
             this.showSubmit.isSuccess = 1
           }
-        }).catch(err => {
-          console.log('error: ' + err)
-          this.showSubmit.isShow = true
-          this.showSubmit.isSuccess = 2
-          this.showSubmit.cont = '对不起！上传失败 请您重新上传资料'
         })
       }
     }
@@ -226,7 +227,6 @@
   }
 
   .certified {
-    height: 100%;
     background-color: #f5f5f5;
     .vux-header .vux-header-left .left-arrow {
       width: 24px;
@@ -295,9 +295,9 @@
             padding: 0 20px;
             padding-left: 0;
             .date_box {
-              width: 440px;
+              width: 68.5%;
               position: absolute;
-              right: 56px;
+              right: 0;
               height: 40px;
               top: 18px;
               .date_cont {
@@ -311,7 +311,7 @@
                 height: 40px;
                 line-height: 40px;
                 position: absolute;
-                width: 400px;
+                width: calc(100% - 70px);
                 overflow: hidden;
                 text-overflow: ellipsis;
                 display: inline-block;
