@@ -318,7 +318,9 @@
         let idType = ''
         idType = this.slots[0].values.indexOf(this.id_type) - 1
         let gender = ''
-        gender = this.form.gender === '男' ? '0' : '1'
+        if (this.form.gender) {
+          gender = this.form.gender === '男' ? '0' : '1'
+        }
         let params = {
           gender: gender,
           client_id: this.form.client_id,

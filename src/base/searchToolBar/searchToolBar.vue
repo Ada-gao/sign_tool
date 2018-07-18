@@ -69,7 +69,7 @@ export default {
 		border: 1px solid #ccc; /*no*/
     padding-left: 32px;
 		border-radius: 10px;
-		width: 665px;
+		width: 88.7%;
 		height: 70px;
 		box-sizing: border-box;
 		font-size: 28px; /*px*/

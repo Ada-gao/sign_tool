@@ -7,6 +7,7 @@
     <x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询
     </x-header>
     <div class="wrapper">
+      <loading :show="isShowSpinner"></loading>
       <!-- 搜索框组件部分 -->
       <search-tool @searchHandler="updateSearchValue"></search-tool>
       <div class="space"></div>
@@ -30,7 +31,7 @@
           <span class="tabitem" :class="{'active': idx === 2}" @click="onItemClick(2)">手机未验证客户</span>
         </div>
         <div class="list_box">
-          <loading :show="isShowSpinner"></loading>
+          <!--<loading :show="isShowSpinner"></loading>-->
           <ul v-show="idx === 0" :data="customers">
             <li v-for="(item, index) in customers" :key="index">
               <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">

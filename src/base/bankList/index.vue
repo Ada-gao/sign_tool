@@ -47,33 +47,44 @@
         mark: '',
         selectedItem: [],
         addCard: null
+//        stat: null
       }
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        if (from.name === 'Bankcard' || from.name === 'PotentialCustomerList') {
-          vm.addCard = '0'
-        } else if (from.name === 'CustomerManagement') {
-          vm.addCard = '1'
-        } else {
-          vm.addCard = '2'
-        }
+//        if (from.name === 'Bankcard' || from.name === 'PotentialCustomerList') {
+//          vm.addCard = '0'
+//        } else if (from.name === 'CustomerManagement') {
+//          vm.addCard = '1'
+//        } else {
+//          vm.addCard = '2'
+//        }
+//        if (from.name === 'PotentialCustomerList') {
+//          vm.addCard = '0'
+//          vm.stat = true
+//        } else if (from.name === 'CustomerManagement') {
+//          vm.addCard = '1'
+//          vm.stat = true
+//        } else if (from.name === 'Bankcard') {
+//          vm.stat = true
+//        } else {
+//          vm.addCard = '2'
+//          vm.stat = false
+//        }
       })
     },
     methods: {
       routerPush () {
-//        alert(11111)
-        this.$router.push({name: 'Bankcard'})
-//        this.$router.push({name: 'HomePage'})
+        this.$router.push({name: 'Bankcard', params: {addCard: this.addCard}})
       },
       back () {
         // flag: 判断是否是从预约页面进来的
         if (this.$route.params.flag) {
           this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, mark: this.mark}})
-        } else if (this.addCard === '0') {
-          this.$router.push({name: 'PotentialCustomerList', params: {id: this.clientId}})
-        } else if (this.addCard === '1') {
-          this.$router.push({name: 'CustomerManagement', params: {id: this.clientId}})
+        } else if (this.$route.params.addCard === '0') {
+          this.$router.replace({name: 'PotentialCustomerList', params: {id: this.clientId}})
+        } else if (this.$route.params.addCard === '1') {
+          this.$router.replace({name: 'CustomerManagement', params: {id: this.clientId}})
         }
       },
       selected (item) {
@@ -89,6 +100,7 @@
       }
     },
     mounted () {
+      this.addCard = this.$route.params.addCard
       let selfInfos = JSON.parse(getStore('selfInfos'))
       this.clientId = this.$route.params.id || selfInfos.client_id
       this.getList()

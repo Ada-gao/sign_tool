@@ -6,7 +6,7 @@
       <group>
 
         <div class="add_tit">
-          <i class="iconfont">&#xe61a;</i>
+          <i class="iconfont">&#xe62c;</i>
           <span style="color: #2672ba">客户信息</span>
         </div>
         <div class="space"></div>
@@ -194,7 +194,7 @@
           return false
         } else if (params.email) {
           if (!emailValidate(params.email).stat) {
-            this.alertCont = '请输入合法的邮箱'
+            this.alertCont = '请输入正确的邮箱'
             toast(this.alertCont)
             return false
           }

@@ -311,11 +311,6 @@
             this.showSubmit.isShow = true
             this.showSubmit.isSuccess = 1
           }
-        }).catch(err => {
-          console.log('error: ' + err)
-          this.showSubmit.isShow = true
-          this.showSubmit.isSuccess = 2
-          this.showSubmit.cont = '对不起！上传失败 请您重新上传资料'
         })
       }
     }
