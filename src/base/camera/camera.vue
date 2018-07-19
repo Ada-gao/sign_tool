@@ -4,20 +4,20 @@
 
       <div v-if="fromBank === 2" style="display: inline-block;height: 120px">
         <!-- <ul class="ul"> -->
-          <div v-for="(item, index) in fileArr"
-              :key="index"
-              v-show="item"
-              class="img">
-            <img :src="item" v-show="item">
-            <span class="delete_img" @click='delImage(index)'>x</span>
-          </div>
+        <div v-for="(item, index) in fileArr"
+             :key="index"
+             v-show="item"
+             class="img">
+          <img :src="item" v-show="item">
+          <span class="delete_img" @click='delImage(index)'>x</span>
+        </div>
         <!-- </ul> -->
         <div class="addsmall_box" @click="selectcamera()">
           <span class="iconfont icon_bg">+</span>
           <mt-spinner class="camera_spinner"
-          color="#aaa"
-          v-show="spinnerShow"
-          type="fading-circle"></mt-spinner>
+                      color="#aaa"
+                      v-show="spinnerShow"
+                      type="fading-circle"></mt-spinner>
         </div>
       </div>
 
@@ -28,9 +28,9 @@
              class="show"
              v-show="imgSrc">
         <mt-spinner class="camera_spinner"
-        color="#aaa"
-        v-show="spinnerShow"
-        type="fading-circle"></mt-spinner>
+                    color="#aaa"
+                    v-show="spinnerShow"
+                    type="fading-circle"></mt-spinner>
       </div>
 
     </div>
@@ -122,7 +122,8 @@
         this.imgSrc = this.imageSrc
       },
       setImgSrcArr () {
-        this.fileArr = this.imageArr
+        this.fileArr = this.imageArr || []
+        console.log(this.fileArr)
         // this.imageArr = this.fileArr
       },
       selectcamera () {
@@ -152,15 +153,15 @@
           quality: 50,
           sourceType: 0,
           destinationType: navigator.camera.DestinationType.DATA_URL,
-//          saveToPhotoAlbum: true,
+          //          saveToPhotoAlbum: true,
           encodingType: navigator.camera.EncodingType.JPEG
         }
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
       },
       cameraSuccess (imageData) {
         this.spinnerShow = true
-//        this.imgSrc = 'data:image/jpeg;base64,' + imageData
-//        this.show = false
+        //        this.imgSrc = 'data:image/jpeg;base64,' + imageData
+        //        this.show = false
         this.$emit('hidePopup', this.show)
         this.uploadFile(imageData)
       },
@@ -190,11 +191,11 @@
           if (this.isFromAppointment === 1) {
             updateId(formData).then(res => {
               if (res.status === 200) {
-                  this.fileId.push(res.data.client_cert_file_id)
-                  this.idSrc = res.data.file_url
-                  this.spinnerShow = false
-                  this.imgSrc = 'data:image/jpeg;base64,' + imageData
-                  this.$emit('imgHandler', this.idSrc)
+                this.fileId.push(res.data.client_cert_file_id)
+                this.idSrc = res.data.file_url
+                this.spinnerShow = false
+                this.imgSrc = 'data:image/jpeg;base64,' + imageData
+                this.$emit('imgHandler', this.idSrc)
               }
             }).catch(err => {
               console.log('error: ' + err)
@@ -227,27 +228,31 @@
           if (this.isFromAppointment === 1) {
             updateId(formData).then(res => {
               if (res.status === 200) {
-                  this.fileId.push(res.data.client_cert_file_id)
-                  this.appointmentSrc.push(res.data.file_url)
-                  this.spinnerShow = false
-                  this.fileArr = this.appointmentSrc
-                  // this.fileArr.push('data:image/jpeg;base64,' + imageData)
-                  this.$emit('imgHandler', this.appointmentSrc)
+                this.fileId.push(res.data.client_cert_file_id)
+                this.appointmentSrc.push(res.data.file_url)
+                this.spinnerShow = false
+                this.fileArr = this.appointmentSrc
+                // this.fileArr.push('data:image/jpeg;base64,' + imageData)
+                this.$emit('imgHandler', this.appointmentSrc)
               }
             }).catch(err => {
               console.log('error: ' + err)
               this.alertMsg = true
             })
           } else {
-              addMateials(this.cerId, formData).then(res => {
-                if (res.status === 200) {
-                  this.fileId.push(res.data.client_cert_file_id)
-                  this.spinnerShow = false
-                  this.fileArr.push('data:image/jpeg;base64,' + imageData)
-                  this.$emit('imgHandler', this.fileId)
-                }
-              })
-            }
+//            console.log(this.fileArr)
+            addMateials(this.cerId, formData).then(res => {
+              if (res.status === 200) {
+                this.fileId.push(res.data.client_cert_file_id)
+                this.spinnerShow = false
+                this.fileArr.push('data:image/jpeg;base64,' + imageData)
+                this.$emit('imgHandler', this.fileId)
+              }
+            }).catch(err => {
+              console.log('error: ' + err)
+              this.alertMsg = true
+            })
+          }
         }
       },
       delImage (index) {
@@ -314,36 +319,39 @@
     height: 120px;
     text-align: left;
     padding-left: 20px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
     // .ul {
     //   display: inline-block;
     //   height: 120px;
-      .img {
-        width: 132px;
-        height: 120px;
-        position: relative;
+    .img {
+      width: 132px;
+      height: 120px;
+      position: relative;
+      display: inline-block;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      img {
         display: inline-block;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        img {
-          display: inline-block;
-          width: 100%;
-          height: 100%;
-        }
-        .delete_img {
-          position: absolute;
-          text-align: right;
-          top: -11px;
-          right: 0;
-          font-size: 30px;
-          line-height: 30px;
-          color: #000;
-          width: 50px;
-          height: 50px;
-        }
+        width: 100%;
+        height: 100%;
       }
-      li:not(:last-child) {
-        margin-right: 10px;
+      .delete_img {
+        position: absolute;
+        text-align: right;
+        top: -11px;
+        right: 0;
+        font-size: 30px;
+        line-height: 30px;
+        color: #000;
+        width: 50px;
+        height: 50px;
       }
+    }
+    li:not(:last-child) {
+      margin-right: 10px;
+    }
     // }
     .addsmall_box {
       display: inline-block;

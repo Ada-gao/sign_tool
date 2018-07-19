@@ -13,6 +13,7 @@
           class="radio_item"
           title="客户性别："
           v-model="form.gender"
+          @change="radioChange"
           :options="['女', '男']">
         </mt-radio>
       </div>
@@ -171,6 +172,7 @@
         minYear: 1900,
         maxYear: 3000,
         timer: null,
+        gender: null,
         showCerCode: false,
         endDate: new Date(2100, 0, 1),
         startDate: new Date(1960, 0, 1),
@@ -246,6 +248,10 @@
       }
     },
     methods: {
+      radioChange (value) {
+        console.log(value)
+        this.gender = value
+      },
       onValuesChange (picker, values) {
         this.idType = values[0]
       },
@@ -318,7 +324,9 @@
         let idType = ''
         idType = this.slots[0].values.indexOf(this.id_type) - 1
         let gender = ''
-        gender = this.form.gender === '男' ? '0' : '1'
+        if (this.gender) {
+          gender = this.gender === '男' ? '0' : '1'
+        }
         let params = {
           gender: gender,
           client_id: this.form.client_id,
@@ -333,12 +341,16 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
+//        console.log(params)
         if (params.id_no && !idcardValidate(params.id_no).stat) {
           this.alertCont = '请输入有效的证件号码'
           toast(this.alertCont)
           return false
+        } else if (!params.gender) {
+          this.alertCont = '请选择性别'
+          toast(this.alertCont)
+          return false
         }
-        console.log(params)
         if (!params.birthday ||
             !params.gender ||
             !params.address ||

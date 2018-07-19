@@ -109,11 +109,11 @@ export function toast (text) {
 
 /**
  * 转换认证状态为文字
- * certification_status:
+ * realname_status:
  * 0 未认证；1 待审核； 2 已认证；3 已驳回
  * @param status
  */
-export function tfCtypeToText (status) {
+export function tfCerIdToText (status) {
   let params = {
     flag: '',
     disabled: null
@@ -130,6 +130,39 @@ export function tfCtypeToText (status) {
       break
     case '3':
       params.flag = '认证失败！请您重新认证'
+      params.disabled = false
+      break
+    default:
+      params.flag = '未认证'
+      params.disabled = false
+      break
+  }
+  return params
+}
+
+/**
+ * 转换认证状态为文字
+ * certification_status:
+ * 0 未认证；1 待审核； 2 已认证；3 已驳回
+ * @param status
+ */
+export function tfCtypeToText (status) {
+  let params = {
+    flag: '',
+    disabled: null
+  }
+  switch (status) {
+    case '1':
+      params.flag = '待审核'
+      params.disabled = true
+      // params.disabled = false
+      break
+    case '2':
+      params.flag = '修改'
+      params.disabled = false
+      break
+    case '3':
+      params.flag = '修改'
       params.disabled = false
       break
     default:

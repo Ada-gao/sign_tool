@@ -58,7 +58,7 @@
             </cell-box>
             <cell-box>
               <label style="color:#333">证件有效期：</label>
-              <span class="fr">{{data.email}}</span>
+              <span class="fr">{{data.id_start_date}} 至 {{data.id_expiration}}</span>
             </cell-box>
             <cell-box>
               <label style="color:#333">出生日期：</label>
@@ -177,7 +177,7 @@
   } from '@/service/api/customers'
 
   import {setStore, removeStore} from '@/config/mUtils'
-  import {tfCtypeToText} from '@/common/js/filter'
+  import {tfCtypeToText, tfCerIdToText} from '@/common/js/filter'
 
   export default {
     name: 'PotentialCustomerList',
@@ -249,8 +249,8 @@
         } else if (this.data.client_type === '1') {
           this.clickArrowObj.cerObj.type = '专业投资者'
         }
-        this.clickArrowObj.realnameObj.stat = tfCtypeToText(this.data.realname_status).flag
-        this.clickArrowObj.realnameObj.disabled = tfCtypeToText(this.data.realname_status).disabled
+        this.clickArrowObj.realnameObj.stat = tfCerIdToText(this.data.realname_status).flag
+        this.clickArrowObj.realnameObj.disabled = tfCerIdToText(this.data.realname_status).disabled
       })
     },
     methods: {

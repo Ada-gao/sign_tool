@@ -6,7 +6,7 @@
       <div class="info">
         <group>
           <cell-box style="color: #2672ba;">
-            <i class="iconfont">&#xe61a;</i>客户信息
+            <i class="iconfont">&#xe62c;</i>客户信息
             <!-- <span class="fr" style="color:#333;">{{investorType}}</span> -->
           </cell-box>
         </group>
@@ -91,11 +91,18 @@
       <div class="space"></div>
       <div class="product">
         <group>
-          <mt-cell title="实名认证："
-                   to="/perfectInfos"
-                   :value="clickArrowObj.realnameObj.stat"
-                   :is-link="!clickArrowObj.realnameObj.disabled">
-          </mt-cell>
+          <!--<mt-cell title="实名认证："-->
+                   <!--to="/perfectInfos"-->
+                   <!--:value="clickArrowObj.realnameObj.stat"-->
+                   <!--:is-link="false">-->
+          <!--</mt-cell>-->
+          <cell style="color:#333"
+                :is-link="!clickArrowObj.realnameObj.disabled"
+                :link="{name: 'PerfectInfos'}"
+                title="投资者类型："
+                :value="clickArrowObj.realnameObj.stat"
+                :disabled="clickArrowObj.realnameObj.disabled">
+          </cell>
           <div class="space1"></div>
           <group v-if="data.realname_status === '2'">
             <cell style="color:#333"
@@ -103,12 +110,11 @@
                   :link="{name: 'Certified',params: {id: data.client_id}}"
                   :title="'投资者类型：' + clickArrowObj.cerObj.type"
                   :value="clickArrowObj.cerObj.stat"
-                  :disabled="clickArrowObj.cerObj.disabled"
-            >
+                  :disabled="clickArrowObj.cerObj.disabled">
             </cell>
             <div class="space1"></div>
             <cell is-link
-                  :link="{name: 'BankList', params: {id: data.client_id}}"
+                  :link="{name: 'BankList', params: {id: data.client_id, addCard: '1'}}"
                   title="银行卡信息："
             ></cell>
           </group>
@@ -174,7 +180,7 @@
     checkCustomerRemarks,
     addCustomerRemarks
   } from '@/service/api/customers'
-  import {tfCtypeToText} from '@/common/js/filter'
+  import {tfCtypeToText, tfCerIdToText} from '@/common/js/filter'
   import {setStore, removeStore} from '@/config/mUtils'
 
   export default {
@@ -252,8 +258,8 @@
         } else if (this.data.client_type === '1') {
           this.clickArrowObj.cerObj.type = '专业投资者'
         }
-        this.clickArrowObj.realnameObj.stat = tfCtypeToText(this.data.realname_status).flag
-        this.clickArrowObj.realnameObj.disabled = tfCtypeToText(this.data.realname_status).disabled
+        this.clickArrowObj.realnameObj.stat = tfCerIdToText(this.data.realname_status).flag
+        this.clickArrowObj.realnameObj.disabled = tfCerIdToText(this.data.realname_status).disabled
         switch (res.data.client_type) {
           case '0':
             this.stat = '普通投资者'

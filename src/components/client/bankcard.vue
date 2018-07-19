@@ -1,6 +1,6 @@
 <template>
   <div class="bankcard">
-    <x-header :left-options="{backText: ''}">客户认证</x-header>
+    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="back">客户认证</x-header>
     <div class="wrapper">
       <!--<x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>-->
         <!--<div class="quit">{{alertCont}}</div>-->
@@ -113,17 +113,19 @@
         showCerCode: false,
         timer: null,
         bankName: '',
-        beforeRouteName: ''
+        beforeRouteName: '',
+        addCard: null
       }
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        if (from.name === 'AutoTransfer') {
-          vm.beforeRouteName = 'AutoTransfer'
+        if (from.name === 'BankList') {
+          vm.beforeRouteName = 'BankList'
         }
       })
     },
     mounted () {
+      this.addCard = this.$route.params.addCard || null
       let info = JSON.parse(getStore('selfInfos'))
       this.client_certification_id = info.client_certification_id
       if (this.client_certification_id === undefined) {
@@ -140,6 +142,14 @@
       })
     },
     methods: {
+      back () {
+        let info = JSON.parse(getStore('selfInfos'))
+        if (this.beforeRouteName === 'BankList') {
+          this.$router.replace({name: 'BankList', params: {id: info.client_id, addCard: this.addCard}})
+        } else {
+          this.$router.replace({name: 'PerfectInfos', params: info})
+        }
+      },
       onValuesChange (picker, values) {
         if (values[0] !== undefined) {
           this.bankName = values[0]
@@ -198,8 +208,8 @@
           if (res.status === 200) {
             let info = JSON.parse(getStore('selfInfos'))
             let params = Object.assign({isSubmit: true}, info)
-            if (this.beforeRouteName === 'AutoTransfer') {
-              this.$router.replace({name: 'AutoTransfer', params: {id: info.client_id}})
+            if (this.beforeRouteName === 'BankList') {
+              this.$router.replace({name: 'BankList', params: {id: info.client_id, addCard: this.addCard}})
             } else {
               this.$router.replace({name: 'PerfectInfos', params})
             }
