@@ -14,7 +14,7 @@
                   label="客户姓名："
                   placeholder="输入客户姓名"
                   v-model="name"
-                  class="new_field new_field_bb"></mt-field>
+                  class="new_field new_field_bb ipt"></mt-field>
         <div class="radio_box new_field" style="border:0">
           <mt-radio
             class="radio_item"
@@ -32,20 +32,19 @@
                    :list="addressData"
                    @on-shadow-change="onShadowChange"
                    @on-hide="onHide"
-                   placeholder="请选择您的城市"
-                   :show.sync="showAddress"></x-address>
+                   placeholder="请选择您的城市"></x-address>
         <mt-field disableClear
                   type="wechat"
                   label="(选填)微信："
                   placeholder="输入客户微信"
                   v-model="wechat"
-                  class="new_field"></mt-field>
+                  class="new_field ipt"></mt-field>
         <mt-field disableClear
                   type="email"
                   label="(选填)邮箱："
                   placeholder="输入客户邮箱"
                   v-model="email"
-                  class="new_field"></mt-field>
+                  class="new_field ipt"></mt-field>
       </group>
       <group>
         <mt-field disableClear
@@ -54,7 +53,7 @@
                   placeholder="输入客户手机号码"
                   :attr="{ maxlength: 11 }"
                   v-model="mobile"
-                  class="new_field">
+                  class="new_field ipt">
           <span class="verificate"
                 v-if="!verificate.isTimeout"
                 @click="sendVer">发送邀请码</span>
@@ -66,7 +65,7 @@
                   label="客户邀请码："
                   :attr="{ maxlength: 6 }"
                   v-model="verificate.code"
-                  class="new_field">
+                  class="new_field ipt">
         </mt-field>
       </group>
       <button class="next" @click="submitCustomer">确 定</button>
@@ -122,8 +121,7 @@
         validated_by: '',
         title: '常住中国城市',
         value: [],
-        addressData: ChinaAddressV4Data,
-        showAddress: false
+        addressData: ChinaAddressV4Data
       }
     },
     methods: {
@@ -183,6 +181,7 @@
           validated_by: this.validated_by,
           client_class: null
         }
+        console.log(params)
         if (!params.name) {
           this.alertCont = '请输入客户姓名'
           if (!params.mobile) {
@@ -208,6 +207,11 @@
             toast(this.alertCont)
             return false
           }
+        }
+        if (params.nationality === '0' && params.city === '') {
+          this.alertCont = '城市不能为空'
+          toast(this.alertCont)
+          return false
         }
         let params1 = {
           code: this.verificate.code,

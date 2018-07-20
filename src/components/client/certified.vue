@@ -69,7 +69,7 @@
       </mt-popup>
       <mt-popup v-model="showConvertBox" closeOnClickModel="false">
         <div class="convert_box">
-          <div class="title"> 您的确定要变更为{{radio}}吗？</div>
+          <div class="title"> 您的确定要成为{{radio}}吗？</div>
           <div class="btn_box">
             <button class="ensure" @click="ensure">确定</button>
             <button class="cancel" @click="cancel">取消</button>
@@ -138,7 +138,7 @@
         reason: '',
         apply_reason_id: null,
         reason_id: null,
-        itemHeight: 60,
+        itemHeight: 45,
         slots: [
           {
             flex: 1,
@@ -161,6 +161,7 @@
           this.radio = '普通投资者'
         } else if (this.userInfos.type === '1') {
           this.radio = '专业投资者'
+          this.showSelect = true
         }
       } else {
         id = this.$route.params.id

@@ -12,7 +12,7 @@
                  ref="cardOwner"
                  v-model="personInfo.cardOwner"
                  :show-clear="false"
-                 class="x_iptname"
+                 class="x_iptname ipt"
         ></x-input>
         <!--<popup-picker title="开户银行："-->
                       <!--:data="bankList"-->
@@ -30,6 +30,7 @@
                   popup-transition="popup-fade">
           <mt-picker :slots="slots"
                      :showToolbar="true"
+                     :itemHeight="itemHeight"
                      @change="onValuesChange">
             <div class="toolbar">
               <span class="cancel" @click="cancelCerCode">取消</span>
@@ -38,14 +39,14 @@
           </mt-picker>
         </mt-popup>
         <x-input title="支行："
-                 class="x_branch"
+                 class="x_branch ipt"
                  ref="bankBranch"
                  v-model="personInfo.branchBank"
                  :show-clear="false"
         ></x-input>
         <x-input title="银行卡号："
                  ref="cardNum"
-                 class="x_cardnumber"
+                 class="x_cardnumber ipt"
                  v-model="personInfo.bankCardNumber"
                  :show-clear="false"
         ></x-input>
@@ -102,6 +103,7 @@
         city: '',
         client_id: '',
         fromBank: 0,
+        itemHeight: 45,
         slots: [
           {
             flex: 1,

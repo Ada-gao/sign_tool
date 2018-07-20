@@ -17,7 +17,7 @@
             <span class="fr">{{data.name}}</span>
           </cell-box>
           <cell-box>
-            <label for="name">客户姓别：</label>
+            <label for="name">客户性别：</label>
             <span class="fr">{{data.gender === '0' ? '男' : '女'}}</span>
           </cell-box>
           <cell-box>
@@ -55,7 +55,7 @@
             <span class="fr">{{data.email}}</span>
           </cell-box>
           <cell-box>
-            <label for="name">客户电话：</label>
+            <label for="name">手机号码：</label>
             <span class="fr">{{data.mobile}}</span>
           </cell-box>
           <div class="space"></div>
@@ -99,7 +99,7 @@
           <cell style="color:#333"
                 :is-link="!clickArrowObj.realnameObj.disabled"
                 :link="{name: 'PerfectInfos'}"
-                title="投资者类型："
+                title="实名认证："
                 :value="clickArrowObj.realnameObj.stat"
                 :disabled="clickArrowObj.realnameObj.disabled">
           </cell>
@@ -462,7 +462,7 @@
       margin-left: -8px;
     }
     .remark {
-      padding-bottom: 120px;
+      margin-bottom: 120px;
       background-color: #fff;
       .vux-cell-box.weui-cell{
         padding: 0;

@@ -6,12 +6,12 @@
         <mt-cell title="银行卡信息">
           <span slot="icon" class="iconfont">&#xe621;</span>
         </mt-cell>
-        <div class="add_card_btn"
-             v-if="addCard !== '2'"
-             @click="routerPush">
-          <i class="iconfont">&#xe640;</i>
-          <span>银行卡</span>
-        </div>
+        <!--<div class="add_card_btn"-->
+             <!--v-if="addCard !== '2'"-->
+             <!--@click="routerPush">-->
+          <!--<i class="iconfont">&#xe640;</i>-->
+          <!--<span>银行卡</span>-->
+        <!--</div>-->
       </div>
       <div class="list">
         <div class="item" :data="bankList" v-for="item in bankList" :key="item.bank_id" @click="selected(item)">
@@ -45,8 +45,8 @@
         clientId: '',
         bankList: [],
         mark: '',
-        selectedItem: [],
-        addCard: null
+        selectedItem: []
+//        addCard: null
 //        stat: null
       }
     },
@@ -74,9 +74,9 @@
       })
     },
     methods: {
-      routerPush () {
-        this.$router.push({name: 'Bankcard', params: {addCard: this.addCard}})
-      },
+//      routerPush () {
+//        this.$router.push({name: 'Bankcard', params: {addCard: this.addCard}})
+//      },
       back () {
         // flag: 判断是否是从预约页面进来的
         if (this.$route.params.flag) {

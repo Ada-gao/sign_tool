@@ -40,7 +40,7 @@
           <div class="ver_box">
             <div class="mobile_box"
                  :class="{'limit_width': data.mobile_validated === '1'}">
-              <span class="mobile_title">客户电话：</span>
+              <span class="mobile_title">手机号码：</span>
               <span class="mobile_number"
                     :class="{'limit_width': data.mobile_validated === '1'}">
                 {{data.mobile}}{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}
@@ -81,11 +81,14 @@
       <div v-if="data.mobile_validated === '0'">
         <div class="space"></div>
         <div class="product">
-          <mt-cell title="实名认证："
-                   to="/perfectInfos"
-                   :value="clickArrowObj.realnameObj.stat"
-                   :is-link="!clickArrowObj.realnameObj.disabled">
-          </mt-cell>
+          <group>
+          <cell style="color:#333"
+                :is-link="!clickArrowObj.realnameObj.disabled"
+                :link="{name: 'PerfectInfos'}"
+                title="实名认证："
+                :value="clickArrowObj.realnameObj.stat"
+                :disabled="clickArrowObj.realnameObj.disabled">
+          </cell>
           <div class="space1"></div>
           <group v-if="data.realname_status === '2'">
             <cell style="color:#333"
@@ -102,8 +105,9 @@
                   title="银行卡信息："
             ></cell>
           </group>
-        </div>
         <div class="space"></div>
+          </group>
+        </div>
         <div class="remark">
           <group>
             <cell-box>备注</cell-box>
@@ -359,7 +363,7 @@
 
         let params = {
           remark: this.remarkInfo,
-          client_name: this.data.client_name
+          client_name: this.data.name
         }
         addCustomerRemarks(this.client_id, params).then(res => {
           if (res.status === 200) {
@@ -512,7 +516,7 @@
       margin-left: -8px;
     }
     .remark {
-      padding-bottom: 120px;
+      margin-bottom: 120px;
       background-color: #fff;
       .vux-cell-box.weui-cell{
         padding: 0;
@@ -600,11 +604,13 @@
           width: 170px;
           color: rgb(51, 51, 51);
           font-family: PingFangSC-Medium;
+          font-size: 30px;
         }
         span.mobile_number {
           width: calc(100% - 180px);
           text-align: right;
           color: #666;
+          font-size: 28px;
         }
       }
       .mobile_box.limit_width {
