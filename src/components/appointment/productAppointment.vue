@@ -89,10 +89,10 @@
 										</mt-popup>
 										<mt-field label="支行名称:" v-model="bankname1" @focus.native.capture="cardFocus"></mt-field>
 										<camera :popupVisible="popupVisible"
-              				@imgHandler="imageHandler1"
-              				:imageSrc="cardUrl"
+											@imgHandler="imageHandler1"
+											:imageSrc="cardUrl"
 											:isFromAppointment="fromAppointment"
-              				:isFromBank="fromBankCard"
+              								:isFromBank="fromBankCard"
 											@showPopup="showPopup"
 											@hidePopup="hidePopup"
 											v-if="cameraShow">
@@ -840,9 +840,9 @@ export default {
 					this.expressNums = this.appointmentList.express_no
 					this.closeReason = this.appointmentList.order_closure_remark
 					this.emailClose = this.appointmentList.contract_no_pass_remark
-					if (this.appointmentList.express_type === '0') {
+					if (this.appointmentList.audit_contract_express === '0') {
 						this.emailType = '自取'
-					} else if (this.appointmentList.express_type === '1') {
+					} else if (this.appointmentList.audit_contract_express === '1') {
 						this.emailType = '快递寄出'
 					}
 					if (this.appointmentList.status === '1001') {
@@ -1374,14 +1374,14 @@ export default {
 			this.getList()
 			this.getBankList()
 		} else if (this.$route.params.mark === 'selected') {
-			this.cameraShow = false
-			this.uploadCard = false
-			this.uploadCardS = true
-			this.chooseSelectedBank = false
+			this.cameraShow = true
+			this.uploadCard = true
+			this.uploadCardS = false
+			this.chooseSelectedBank = true
 			let obj = this.$route.params.item
-			this.cardNum = obj.card_no
-			this.cardName = obj.bank_name
-			this.cardName1 = obj.sub_branch_name
+			this.cardnum = obj.card_no
+			this.bankname = obj.bank_name
+			this.bankname1 = obj.sub_branch_name
 			this.cardUrl = obj.card_front_url
 			this.bankId = obj.bank_id
 		} else if (this.$route.params.selectFlag === 'selectFlag') {
