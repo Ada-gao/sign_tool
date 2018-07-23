@@ -149,7 +149,8 @@
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
-  import {idcardValidate, toast, passportValidate} from '@/common/js/filter'
+//  import {idcardValidate, toast, passportValidate} from '@/common/js/filter'
+  import {idcardValidate, toast} from '@/common/js/filter'
 
   export default {
     name: 'PerfectInfos',
@@ -355,18 +356,18 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
-        console.log(params)
+//        console.log(params)
         if (params.id_no) {
           if (params.id_type === '0' && !idcardValidate(params.id_no).stat) {
             this.alertCont = '请输入有效的证件号码'
             toast(this.alertCont)
             return false
           }
-          if (params.id_type === '1' && !passportValidate(params.id_no).stat) {
-            this.alertCont = '请输入有效的证件号码'
-            toast(this.alertCont)
-            return false
-          }
+//          if (params.id_type === '1' && !passportValidate(params.id_no).stat) {
+//            this.alertCont = '请输入有效的证件号码'
+//            toast(this.alertCont)
+//            return false
+//          }
         } else if (!params.gender) {
           this.alertCont = '请选择性别'
           toast(this.alertCont)
