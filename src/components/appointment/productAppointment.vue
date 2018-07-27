@@ -1883,7 +1883,7 @@ export default {
 				// line-height: 120px;
 				padding: 0;
 				div:first-child{
-					height: 100% !important;
+					height: 100%;
 					.addsmall_box{
 						height: 120px !important;
 					}
