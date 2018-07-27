@@ -2,7 +2,7 @@
   <div>
     <div class="upload_cont" :class="{'upload_small': fromBank === 2}">
 
-      <div v-if="fromBank === 2" style="display: inline-block;height: 120px">
+      <div v-if="fromBank === 2" class="upload_more">
         <!-- <ul class="ul"> -->
         <div v-for="(item, index) in fileArr"
              :key="index"
@@ -310,6 +310,10 @@
       height: 100%;
       left: 0;
       top: 0;
+    }
+    .upload_more{
+      display: inline-block;
+      height: 120px;
     }
   }
 
