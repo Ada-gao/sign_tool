@@ -31,6 +31,7 @@
           <mt-picker :slots="slots"
                      :showToolbar="true"
                      :itemHeight="itemHeight"
+                     :visibleItemCount="3"
                      @change="onValuesChange">
             <div class="toolbar">
               <span class="cancel" @click="cancelCerCode">取消</span>
@@ -103,7 +104,7 @@
         city: '',
         client_id: '',
         fromBank: 0,
-        itemHeight: 45,
+        itemHeight: 70,
         slots: [
           {
             flex: 1,
@@ -187,7 +188,8 @@
       },
       submitBankInfos () {
         let bankId = ''
-        bankId = this.slots[0].values.indexOf(this.personInfo.bankName)
+        bankId = this.slots[0].values.indexOf(this.personInfo.bankName) + 1
+        console.log(bankId)
         let params = {
           card_no: this.personInfo.bankCardNumber,
           sub_branch_name: this.personInfo.branchBank,

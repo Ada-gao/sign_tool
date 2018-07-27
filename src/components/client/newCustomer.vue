@@ -434,7 +434,7 @@
     }
     .next {
       display: block;
-      width: 710px;
+      width: 94.7%;
       height: 72px;
       line-height: 72px;
       font-size: 28px;

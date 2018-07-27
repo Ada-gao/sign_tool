@@ -43,7 +43,7 @@
               <span class="mobile_title">手机号码：</span>
               <span class="mobile_number"
                     :class="{'limit_width': data.mobile_validated === '1'}">
-                {{data.mobile}}{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}
+                <span>{{data.mobile}}</span>{{data.mobile_validated === '1' ? '(未验证)' : '(已验证)'}}
               </span>
             </div>
             <span class="verificate"
@@ -89,7 +89,7 @@
                 :value="clickArrowObj.realnameObj.stat"
                 :disabled="clickArrowObj.realnameObj.disabled">
           </cell>
-          <div class="space1"></div>
+          <div class="space1" v-if="data.realname_status === '2'"></div>
           <group v-if="data.realname_status === '2'">
             <cell style="color:#333"
                   :is-link="!clickArrowObj.cerObj.disabled"
@@ -286,6 +286,14 @@
             }
             this.verificate.isShow = false
             this.validatePop = true
+            this.verificate.code = ''
+            clearInterval(this.verificate.timer)
+            this.verificate.num = 60
+          }).catch(() => {
+            this.verificate.code = ''
+            this.verificate.isShow = false
+            clearInterval(this.verificate.timer)
+            this.verificate.num = 60
           })
         }
       },
@@ -294,6 +302,10 @@
       },
       showValPop () {
         this.verificate.isShow = true
+        clearInterval(this.verificate.timer)
+        this.verificate.code = ''
+        this.verificate.num = 60
+        this.alertCont = this.verificate.isTimeout = false
       },
       sendVerCode () {
           this.verificate.isTimeout = true
