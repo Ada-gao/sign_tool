@@ -1,5 +1,5 @@
 <template>
-  <div class="perfect_infos">
+  <div class="perfect_infos" @touchmove="touchScreen">
     <x-header :left-options="{backText: ''}">实名认证</x-header>
     <group class="perfect_group wrapper">
       <div class="add_tit">
@@ -31,6 +31,8 @@
                 popup-transition="popup-fade">
         <mt-picker :slots="slots"
                    :showToolbar="true"
+                   :itemHeight="itemHeight"
+                   :visibleItemCount="visibleItemCount"
                    @change="onValuesChange">
           <div class="toolbar">
             <span class="cancel" @click="cancelCerCode">取消</span>
@@ -54,6 +56,7 @@
                           type="date"
                           :endDate="endDate"
                           :startDate="startDate"
+                          :itemHeight="itemHeight"
                           class="datetime_picker"
                           year-format="{value} 年"
                           month-format="{value} 月"
@@ -69,6 +72,7 @@
                           type="date"
                           :endDate="endDate"
                           :startDate="startDate"
+                          :itemHeight="itemHeight"
                           class="datetime_picker"
                           year-format="{value} 年"
                           month-format="{value} 月"
@@ -84,6 +88,7 @@
                           type="date"
                           :endDate="endDate"
                           :startDate="startDate"
+                          :itemHeight="itemHeight"
                           class="datetime_picker"
                           year-format="{value} 年"
                           month-format="{value} 月"
@@ -95,6 +100,7 @@
                ref="address"
                :show-clear="false"
                class="address"
+               id="ipt"
       ></x-input>
       <div class="space"></div>
       <div class="upload">
@@ -143,6 +149,7 @@
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
+//  import {idcardValidate, toast, passportValidate} from '@/common/js/filter'
   import {idcardValidate, toast} from '@/common/js/filter'
 
   export default {
@@ -182,6 +189,8 @@
         popupVisible1: false,
         popupVisible2: false,
         fromBank: 1,
+        itemHeight: 45,
+        visibleItemCount: 5,
         slots: [
           {
             flex: 1,
@@ -248,12 +257,16 @@
       }
     },
     methods: {
+      touchScreen () {
+        document.getElementById('ipt').blur()
+      },
       radioChange (value) {
         console.log(value)
         this.gender = value
       },
       onValuesChange (picker, values) {
         this.idType = values[0]
+        console.log(values)
       },
       showCode () {
         this.$refs.address.blur()
@@ -269,6 +282,7 @@
       },
       ensureCerCode (val) {
         this.form.id_type = this.idType
+        console.log(this.form.id_type)
         clearTimeout(this.timer)
         this.showCerCode = false
       },
@@ -322,7 +336,8 @@
       },
       submitInfos () {
         let idType = ''
-        idType = this.slots[0].values.indexOf(this.id_type) - 1
+        idType = this.slots[0].values.indexOf(this.form.id_type) - 1 + ''
+        console.log(idType)
         let gender = ''
         if (this.gender) {
           gender = this.gender === '男' ? '0' : '1'
@@ -342,10 +357,17 @@
           id_back_url: this.form.id_back_url
         }
 //        console.log(params)
-        if (params.id_no && !idcardValidate(params.id_no).stat) {
-          this.alertCont = '请输入有效的证件号码'
-          toast(this.alertCont)
-          return false
+        if (params.id_no) {
+          if (params.id_type === '0' && !idcardValidate(params.id_no).stat) {
+            this.alertCont = '请输入有效的证件号码'
+            toast(this.alertCont)
+            return false
+          }
+//          if (params.id_type === '1' && !passportValidate(params.id_no).stat) {
+//            this.alertCont = '请输入有效的证件号码'
+//            toast(this.alertCont)
+//            return false
+//          }
         } else if (!params.gender) {
           this.alertCont = '请选择性别'
           toast(this.alertCont)

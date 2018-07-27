@@ -13,7 +13,8 @@
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
     "ios": "npm run build && cordova prepare ios && cordova run ios",
-    "android": "npm run build && cordova prepare android && cordova run android"
+    "android": "npm run build && cordova prepare android && cordova run android --debug --buildConfig build.json",
+    "android-release": "npm run build && cordova prepare android && cordova build android --release --buildConfig build.json"
   },
   "dependencies": {
     "axios": "^0.18.0",

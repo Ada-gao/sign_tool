@@ -1,0 +1,41 @@
+{
+    "android": {
+        "debug": {
+            "keystore": "signtool-debug-key.jks",
+            "storePassword": "signtool_debug_20180723_1",
+            "alias": "signtool-debug-alias",
+            "password" : "signtool_debug_20180723_1",
+            "keystoreType": "jks"
+        },
+        "release": {
+            "keystore": "signtool-release-key.jks",
+            "storePassword": "signtool_hybrid_20180723_1",
+            "alias": "signtool-release-alias",
+            "password" : "signtool_hybrid_20180723_1",
+            "keystoreType": "jks"
+        }
+    },
+
+  "ios": {
+    "debug": {
+      "codeSignIdentity": "iPhone Developer",
+      "developmentTeam": "5K64LCY2JG",
+      "packageType": "development",
+      "buildFlag": [
+        "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+        "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
+        "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
+      ]
+    },
+    "release": {
+      "codeSignIdentity": "iPhone Developer",
+      "developmentTeam": "5K64LCY2JG",
+      "packageType": "app-store",
+      "buildFlag": [
+        "EMBEDDED_CONTENT_CONTAINS_SWIFT = YES",
+        "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES=NO",
+        "LD_RUNPATH_SEARCH_PATHS = \"@executable_path/Frameworks\""
+      ]
+    }
+  }
+}
