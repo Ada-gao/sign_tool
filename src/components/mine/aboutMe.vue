@@ -2,13 +2,13 @@
   <div class="mypage">
     <x-header :left-options="{showBack: false}">我的</x-header>
     <div class="wrapper">
-      <div class="top">
+      <!-- <div class="top">
         <div class="img"><img src="static/img/banner.png" alt=""></div>
         <div class="right">
           <p>用户名：</p>
           <p>手机号码：</p>
         </div>
-      </div>
+      </div> -->
       <group>
         <cell title="我的消息" :link="{name: 'MyInfo'}">
 				  <i slot="icon" class="iconfont icon">&#xe62d;</i>
@@ -94,9 +94,9 @@ export default {
 <style lang="less">
 .mypage{
   .vux-header{
-    background: #fff !important;
+    // background: #fff !important;
     .vux-header-title{
-      color: #000;
+      // color: #000;
     }
   }
   .wrapper {
@@ -140,7 +140,7 @@ export default {
       height: 82px;
       padding-left: 20px;
       .icon{
-        color: #DD4D4C;
+        color: #2B7DC2;
         font-size: 40px;
       }
       label{
