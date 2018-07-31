@@ -149,7 +149,6 @@
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
-//  import {idcardValidate, toast, passportValidate} from '@/common/js/filter'
   import {idcardValidate, toast} from '@/common/js/filter'
 
   export default {
@@ -261,12 +260,10 @@
         document.getElementById('ipt').blur()
       },
       radioChange (value) {
-        console.log(value)
         this.gender = value
       },
       onValuesChange (picker, values) {
         this.idType = values[0]
-        console.log(values)
       },
       showCode () {
         this.$refs.address.blur()
@@ -282,7 +279,6 @@
       },
       ensureCerCode (val) {
         this.form.id_type = this.idType
-        console.log(this.form.id_type)
         clearTimeout(this.timer)
         this.showCerCode = false
       },
@@ -337,10 +333,9 @@
       submitInfos () {
         let idType = ''
         idType = this.slots[0].values.indexOf(this.form.id_type) - 1 + ''
-        console.log(idType)
         let gender = ''
-        if (this.gender) {
-          gender = this.gender === '男' ? '0' : '1'
+        if (this.form.gender || this.gender) {
+          gender = (this.form.gender || this.gender) === '男' ? '0' : '1'
         }
         let params = {
           gender: gender,
@@ -356,18 +351,12 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
-//        console.log(params)
         if (params.id_no) {
           if (params.id_type === '0' && !idcardValidate(params.id_no).stat) {
             this.alertCont = '请输入有效的证件号码'
             toast(this.alertCont)
             return false
           }
-//          if (params.id_type === '1' && !passportValidate(params.id_no).stat) {
-//            this.alertCont = '请输入有效的证件号码'
-//            toast(this.alertCont)
-//            return false
-//          }
         } else if (!params.gender) {
           this.alertCont = '请选择性别'
           toast(this.alertCont)
@@ -388,6 +377,8 @@
           if (res.status === 200) {
             this.submitDialog = true
           }
+        }).catch(err => {
+          console.log(err)
         })
       }
     }

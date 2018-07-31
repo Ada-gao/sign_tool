@@ -85,7 +85,7 @@
           </cell-box>
         </group>
         <div class="call-btn">
-          <a :href="'tel:'+data.client_id" class="callout">拨打客户电话</a>
+          <a :href="'tel:'+data.mobile" class="callout">拨打客户电话</a>
         </div>
       </div>
       <div class="space"></div>
@@ -240,37 +240,42 @@
         }
       })
       clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
-      checkCusomersDetail(clientId).then(res => {
-        this.data = res.data
-        setStore('selfInfos', res.data)
-        this.data.asset_amount = this.data.asset_amount || 0
-        this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
-        this.clientId = res.data.client_id
-        this.clientName = res.data.name
-        this.clientType = res.data.client_type
-        if (this.data.asset_amount > 500) {
-          this.transformDialog = true
-        }
-        this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
-        this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
-        if (this.data.client_type === '0') {
-          this.clickArrowObj.cerObj.type = '普通投资者'
-        } else if (this.data.client_type === '1') {
-          this.clickArrowObj.cerObj.type = '专业投资者'
-        }
-        this.clickArrowObj.realnameObj.stat = tfCerIdToText(this.data.realname_status).flag
-        this.clickArrowObj.realnameObj.disabled = tfCerIdToText(this.data.realname_status).disabled
-        switch (res.data.client_type) {
-          case '0':
-            this.stat = '普通投资者'
-            break
-          case '1':
-            this.stat = '专业投资者'
-            break
-        }
-      })
+      this.getList(clientId)
     },
     methods: {
+      getList (id) {
+        checkCusomersDetail(id).then(res => {
+          this.data = res.data
+          setStore('selfInfos', res.data)
+          this.data.asset_amount = this.data.asset_amount || 0
+          this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
+          this.clientId = res.data.client_id
+          this.clientName = res.data.name
+          this.clientType = res.data.client_type
+          if (this.data.asset_amount > 500 &&
+              this.data.client_type !== '1' &&
+              this.data.certification_status !== '1') {
+            this.transformDialog = true
+          }
+          this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
+          this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
+          if (this.data.client_type === '0') {
+            this.clickArrowObj.cerObj.type = '普通投资者'
+          } else if (this.data.client_type === '1') {
+            this.clickArrowObj.cerObj.type = '专业投资者'
+          }
+          this.clickArrowObj.realnameObj.stat = tfCerIdToText(this.data.realname_status).flag
+          this.clickArrowObj.realnameObj.disabled = tfCerIdToText(this.data.realname_status).disabled
+          switch (res.data.client_type) {
+            case '0':
+              this.stat = '普通投资者'
+              break
+            case '1':
+              this.stat = '专业投资者'
+              break
+          }
+        })
+      },
       addNew () {
         this.showHideOnBlur = true
         this.$refs.textarea.focus()

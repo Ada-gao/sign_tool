@@ -38,9 +38,16 @@ axios.interceptors.response.use(
     response => response,
     error => {
       const res = error.response
+      console.log(res)
       // res.data.codeMsg = interceptorsMsg.errMessage(res.config.url, res.data.code)
       // console.log(res.data.codeMsg)
       switch (res.status) {
+        case 500:
+          if (res.data.body.error.indexOf('身份证') !== -1) {
+            toast('请输入正确的证件号码')
+          }
+          error.message = '参数错误'
+          break
         case 400:
           // error.message = '手机号已被注册'
           toast(res.data.message)
