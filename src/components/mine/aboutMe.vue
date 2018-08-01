@@ -2,16 +2,26 @@
   <div class="mypage">
     <x-header :left-options="{showBack: false}">我的</x-header>
     <div class="wrapper">
+      <!-- <div class="top">
+        <div class="img"><img src="static/img/banner.png" alt=""></div>
+        <div class="right">
+          <p>用户名：</p>
+          <p>手机号码：</p>
+        </div>
+      </div> -->
       <group>
         <cell title="我的消息" :link="{name: 'MyInfo'}">
-				  <i slot="icon" class="iconfont icon">&#xe63e;</i>
+				  <i slot="icon" class="iconfont icon">&#xe62d;</i>
         </cell>
         <cell title="我的备注" :link="{name: 'Remark'}">
-				  <i slot="icon" class="iconfont icon">&#xe7d1;</i>
+				  <i slot="icon" class="iconfont icon">&#xe622;</i>
+        </cell>
+        <cell title="我的二维码" :link="{name: 'Remark'}">
+				  <i slot="icon" class="iconfont icon">&#xe614;</i>
         </cell>
         <!-- <cell title="我的业绩" :link="{name: 'MyPerformance'}"></cell> -->
         <cell title="关于我们" :link="{name: 'MyVersion'}">
-				  <i slot="icon" class="iconfont icon">&#xe60e;</i>
+				  <i slot="icon" class="iconfont icon">&#xe625;</i>
         </cell>
         <cell title="退出" @click.native="logout">
 				  <i slot="icon" class="iconfont icon">&#xe60c;</i>
@@ -83,11 +93,35 @@ export default {
 
 <style lang="less">
 .mypage{
-  // .vux-header{
-  //   height: 128px;
-  // }
+  .vux-header{
+    // background: #fff !important;
+    .vux-header-title{
+      // color: #000;
+    }
+  }
   .wrapper {
     padding-bottom: 0;
+    .top{
+      height: 266px;
+      background: #fff;
+      margin-bottom: 27px;
+      padding-top: 70px;
+      padding-left: 80px;
+      .img{
+        border-radius: 50%;
+        width: 130px;
+        height: 130px;
+        overflow: hidden;
+        display: inline-block;        
+        img{
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .right{
+        display: inline-block;
+      }
+    }
     .weui-cells{
       margin-top: 0px;
     }
@@ -106,7 +140,7 @@ export default {
       height: 82px;
       padding-left: 20px;
       .icon{
-        color: #2672BA;
+        color: #2B7DC2;
         font-size: 40px;
       }
       label{
