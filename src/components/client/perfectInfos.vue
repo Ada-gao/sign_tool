@@ -31,8 +31,8 @@
                 popup-transition="popup-fade">
         <mt-picker :slots="slots"
                    :showToolbar="true"
-                   :itemHeight="itemHeight"
-                   :visibleItemCount="visibleItemCount"
+                   :itemHeight="70"
+                   :visibleItemCount="3"
                    @change="onValuesChange">
           <div class="toolbar">
             <span class="cancel" @click="cancelCerCode">取消</span>
@@ -149,7 +149,8 @@
   import camera from '@/base/camera/camera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
-  import {idcardValidate, toast} from '@/common/js/filter'
+//  import {idcardValidate, toast} from '@/common/js/filter'
+  import {toast} from '@/common/js/filter'
 
   export default {
     name: 'PerfectInfos',
@@ -188,8 +189,8 @@
         popupVisible1: false,
         popupVisible2: false,
         fromBank: 1,
-        itemHeight: 45,
-        visibleItemCount: 5,
+        itemHeight: 70,
+        visibleItemCount: 3,
         slots: [
           {
             flex: 1,
@@ -351,13 +352,14 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
-        if (params.id_no) {
-          if (params.id_type === '0' && !idcardValidate(params.id_no).stat) {
-            this.alertCont = '请输入有效的证件号码'
-            toast(this.alertCont)
-            return false
-          }
-        } else if (!params.gender) {
+//        if (params.id_no) {
+//          if (params.id_type === '0' && !idcardValidate(params.id_no).stat) {
+//            this.alertCont = '请输入有效的证件号码'
+//            toast(this.alertCont)
+//            return false
+//          }
+//        } else
+        if (!params.gender) {
           this.alertCont = '请选择性别'
           toast(this.alertCont)
           return false
@@ -377,8 +379,6 @@
           if (res.status === 200) {
             this.submitDialog = true
           }
-        }).catch(err => {
-          console.log(err)
         })
       }
     }
