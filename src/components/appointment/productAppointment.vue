@@ -67,7 +67,7 @@
 								<mt-cell title="银行卡信息"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
 									<div class="warn" v-if="chooseSelectedBank">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
 									<div class="card" v-if="uploadCard">
-										<mt-field label="银行卡号:" v-model="cardnum" ref="cardInput" @change="cardNumChange" @focus.native.capture="cardFocus" @blur.native.capture="cardBlur"></mt-field>
+										<mt-field label="银行卡号:" v-model="cardnum" ref="cardInput" @change="cardNumChange"></mt-field>
 										<mt-field label="银行名称:" disabled v-model="bankname">
 											<i class="iconfont" @click="chooseBankName">&#xe731;</i>
 										</mt-field>
@@ -87,7 +87,7 @@
 												</div>
 											</mt-picker>
 										</mt-popup>
-										<mt-field label="支行名称:" v-model="bankname1" @focus.native.capture="cardFocus"></mt-field>
+										<mt-field label="支行名称:" v-model="bankname1"></mt-field>
 										<camera :popupVisible="popupVisible"
 											@imgHandler="imageHandler1"
 											:imageSrc="cardUrl"
@@ -108,7 +108,9 @@
 									</div>
 							</div>
 							<div class="evidence" v-if="evidenceShow">
-								<mt-cell title="打款凭证"></mt-cell>
+								<mt-cell title="打款凭证">
+									<mt-field class="remitAmount" label="打款金额:" v-model="remitAmount" ref="remitAmountInput"></mt-field>万
+								</mt-cell>
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler4"
@@ -121,7 +123,7 @@
 								</div>
 							</div>
 							<div class="evidence" v-if="!evidenceShow">
-								<mt-cell title="打款凭证"></mt-cell>
+								<mt-cell class="remitAmount" title="打款凭证"><mt-cell title="打款金额:" :value="  remitAmount + '万'"></mt-cell></mt-cell>
 								<div class="camera">
 									<img :src="evidenceUrl[index]" v-for="(item, index) in evidenceUrl" :key="index">
 								</div>
@@ -368,6 +370,7 @@ export default {
 			sureCancleA: false,
 			submitAppointDetail: '已提交待审核中…',
 			failTitle: '',
+			remitAmount: '',
 			slotsM: [
 				{
           flex: 1,
@@ -444,6 +447,7 @@ export default {
 					document.getElementsByTagName('input')[1].blur()
 					document.getElementsByTagName('input')[2].blur()
 					document.getElementsByTagName('input')[3].blur()
+					document.getElementsByTagName('input')[4].blur()
 				}
 			},
 			chooseName () {
@@ -618,10 +622,6 @@ export default {
 			chooseBankCard () {
 				this.$router.push({name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}})
 			},
-			cardFocus () {
-			},
-			cardBlur () {
-			},
 			cardNumChange () {
 			},
 			submitPayMaterials () {
@@ -642,7 +642,8 @@ export default {
 					'bank_name': this.bankname || this.cardName,
 					'bank_subname': this.bankname1 || this.cardName1,
 					'bank_id': this.bankId,
-					'card_no': this.cardnum || this.cardNum
+					'card_no': this.cardnum || this.cardNum,
+					'remit_amount': parseInt(this.remitAmount)
 				}
 				submitMaterials(this.appointmentId, obj).then(res => {
 					if (res.status === 200) {
@@ -840,6 +841,7 @@ export default {
 					this.expressNums = this.appointmentList.express_no
 					this.closeReason = this.appointmentList.order_closure_remark
 					this.emailClose = this.appointmentList.contract_no_pass_remark
+					this.remitAmount = this.appointmentList.remit_amount
 					if (this.appointmentList.audit_contract_express === '0') {
 						this.emailType = '自取'
 					} else if (this.appointmentList.audit_contract_express === '1') {
@@ -1838,6 +1840,32 @@ export default {
 				}
 				.evidence{
 					margin-bottom: 20px;
+					.mint-cell{
+						.mint-cell-value{
+							color: #333;
+						}
+					}
+					.remitAmount{
+						.mint-cell-wrapper{
+							color: #333;
+							font-size: 26px;
+							.mint-cell-title{
+								.mint-cell-text{
+									font-weight: 400;
+								}
+							}
+							.mint-cell-value{
+								.mint-field-core{
+									width: 180px;
+									height: 40px;
+								}
+								span{
+									color: #333;
+									font-size: 26px;
+								}
+							}
+						}
+					}
 				}
 			}
 			.refund{

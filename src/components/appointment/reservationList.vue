@@ -15,13 +15,14 @@
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
 							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
-							<span class="tit bot">预约状态：
+							<span class="tit">预约状态：
 								<span class="cont" v-if='item.status === "1001"'>已预约（申请中)</span>
 								<span class="cont" v-if='item.status === "1002"'>预约失败</span>
 								<span class="cont" v-if='item.status === "1003"'>预约成功</span>
 								<span class="cont" v-if='item.status === "1004"'>预约取消</span>
 								<span class="cont" v-if='item.status === "1005"'>预约失效</span>
 							</span>
+							<span class="tit red" v-if="timeDown">倒计时：<span class="cont red">{{time_val}}</span></span>
 							<i class="iconfont right">&#xe731;</i>
 						</div>
 					</div>
@@ -82,7 +83,10 @@ export default {
 			selected: '1',
 			appoinmentList: [],
 			remittanceList: [],
-			contractList: []
+			contractList: [],
+			timeDown: false,
+			time_val: '',
+			timeSetInterval: null
 		}
 	},
   components: {
@@ -91,6 +95,35 @@ export default {
 	methods: {
 		toDetail (id) {
 			this.$router.push({name: 'ProductAppointment', params: {appointmentId: id, fromUrl: 'reservationList'}})
+			clearInterval(this.timeSetInterval)
+		},
+		prefix (num, n) {
+            var len = num.toString().length
+            while (len < n) {
+                num = '0' + num
+                len++
+            }
+            return num
+		},
+		timer () {
+			this.appoinmentList.map(item => {
+				let date = new Date()
+				// console.log(date, new Date(item.update_time), date - new Date(item.update_time))
+				// console.log(parseInt((date - new Date(item.update_time)) / 1000))
+				// console.log(item.timeliness * 60 * 60)
+				if (item.timeliness * 60 * 60 > parseInt((date - new Date(item.update_time)) / 1000)) {
+					this.timeDown = true
+				}
+				let ms = item.timeliness * 60 * 60 - parseInt((date - new Date(item.update_time)) / 1000)
+				let h = Math.floor(ms / 60 / 60)
+            	let m = Math.floor((ms - h * 60 * 60) / 60)
+				let s = Math.floor((ms - h * 60 * 60 - m * 60))
+				h = this.prefix(h, 2)
+				m = this.prefix(m, 2)
+				s = this.prefix(s, 2)
+				this.time_val = h + ':' + m + ':' + s
+				ms--
+			})
 		}
 	},
 	// beforeRouteLeave (to, from, next) {
@@ -104,6 +137,8 @@ export default {
 			this.appoinmentList = res.data.filter(item => item.status.slice(0, 1) === '1')
 			this.remittanceList = res.data.filter(item => item.status.slice(0, 1) === '2')
 			this.contractList = res.data.filter(item => item.status.slice(0, 1) === '3')
+			this.timer()
+			this.timeSetInterval = setInterval(() => { this.timer() }, 1000)
 		})
 	}
 }
@@ -182,9 +217,15 @@ export default {
 							span.cont{
 								color: #666;
 							}
+							span.red{
+								color: #FF0200;
+							}
 						}
 						span.tit:nth-child(4){
 							width: 320px;
+						}
+						span.red{
+							color: #FF0200;
 						}
 						span.bot{
 							min-width: 300px;

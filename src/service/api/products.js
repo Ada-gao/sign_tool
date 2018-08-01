@@ -33,12 +33,12 @@ export function getProductFiles (productId) {
 }
 
 /**
- * 获取产品公告列表
+ * 获取投后报告列表
  * @param productId
  */
 export function getAnnoucement (productId) {
   return axios({
-    url: `/v1/product/${productId}/get_product_announcement_files/`,
+    url: `/v1/product/${productId}/get_post_investment_reports/`,
     method: 'get'
   })
 }

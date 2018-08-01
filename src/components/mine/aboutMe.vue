@@ -16,7 +16,7 @@
         <cell title="我的备注" :link="{name: 'Remark'}">
 				  <i slot="icon" class="iconfont icon">&#xe622;</i>
         </cell>
-        <cell title="我的二维码" :link="{name: 'Remark'}">
+        <cell title="我的二维码" :is-link='isLink' @click.native="showQrcode">
 				  <i slot="icon" class="iconfont icon">&#xe614;</i>
         </cell>
         <!-- <cell title="我的业绩" :link="{name: 'MyPerformance'}"></cell> -->
@@ -40,11 +40,22 @@
           <x-button @click.native="cancle" type="primary">取 消</x-button>
       </x-dialog>
     </div>
+    <div class="myQrcode" :style="qheight" v-if="showMyQrcode">
+      <div class="qTitle">
+        <i class="iconfont" @click="hideQrcode">&#xe731;</i>
+        <span class="tip">我的二维码</span>
+      </div>
+      <div class="qrcodeBox">
+        <qrcode :value="value" :size="size"></qrcode>
+      </div>
+      <div class="sao">扫一扫二维码，关注理财师</div>
+      <!-- <x-button @click.native="save" type="primary"><i class="iconfont">&#xe688;</i>保存到相册中</x-button> -->
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton } from 'vux'
+import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, Qrcode } from 'vux'
 import { removeStore } from '@/config/mUtils'
 
 export default {
@@ -56,7 +67,12 @@ export default {
       },
       dialogTableVisible: false,
       append: true,
-      show: false
+      show: false,
+      isLink: true,
+      showMyQrcode: false,
+      qheight: '',
+      value: '',
+      size: 500
     }
   },
   components: {
@@ -67,7 +83,8 @@ export default {
     Actionsheet,
     XSwitch,
     XDialog,
-    XButton
+    XButton,
+    Qrcode
   },
   methods: {
     logoutEvent (key) {
@@ -86,7 +103,18 @@ export default {
     },
     cancle () {
       this.dialogTableVisible = false
+    },
+    showQrcode () {
+      this.showMyQrcode = true
+    },
+    hideQrcode () {
+      this.showMyQrcode = false
     }
+  },
+  mounted () {
+    this.qheight = 'height:' + window.innerHeight + 'px'
+    let data = JSON.parse(window.localStorage.data)
+    this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
   }
 }
 </script>
@@ -112,7 +140,7 @@ export default {
         width: 130px;
         height: 130px;
         overflow: hidden;
-        display: inline-block;        
+        display: inline-block;
         img{
           width: 100%;
           height: 100%;
@@ -188,6 +216,67 @@ export default {
       .weui-btn.weui-btn_primary:nth-child(2){
         margin-right: 43px;
       }
+      }
+    }
+  }
+  .myQrcode{
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    background: rgba(0,0,0,0.85);
+    font-family: PingFangSC-Regular;
+    color: #fff;
+    .qTitle{
+      padding: 60px 0 0 0;
+      .iconfont{
+        position: absolute;
+        top: 42px;
+        left: 10px;
+        font-size: 60px;
+        transform: rotate(180deg);
+        display: inline-block;
+        width: 60px;
+        font-weight: bold;
+      }
+      .tip{
+        display: inline-block;
+        width: 100%;
+        font-size: 36px;
+        text-align: center;
+      }
+    }
+    .qrcodeBox{
+      width: 500px;
+      height: 500px;
+      padding: 20px;
+      background: #fff;
+      margin: 0 auto;
+      margin-top: 180px;
+      margin-bottom: 110px;
+      img{
+        padding: 30px;
+        border: 1px solid #666;
+        border-radius: 5px;
+        background: #fff;
+        box-sizing: border-box;
+      }
+    }
+    .sao{
+      font-size: 36px;
+      text-align: center;
+      margin-bottom: 100px;
+    }
+    .weui-btn.weui-btn_primary{
+      width: 500px;
+      height: 70px;
+      line-height: 70px;
+      background: #2B7DC2;
+      font-size: 30px;
+      .iconfont{
+        font-size: 36px;
+        margin-right: 24px;
       }
     }
   }

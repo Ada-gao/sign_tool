@@ -14,6 +14,9 @@
         <p class="year">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</p>
       </div>
       <div class="product">
+        <div class="box">
+          <div class="announcement">产品公告：{{item.announcement}}待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售</div>
+        </div>
         <div class="title"><span class="line-blue"></span>产品信息</div>
         <div class="cont">
           <p class="cont-text firstName">产品名称 ：{{item.product_name}}
@@ -49,12 +52,16 @@
           <p class="cont-text">风险评级 ：{{item.product_risk_level}}</p>
           <p class="cont-text">产品期限 ：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
           <p class="cont-text">产品亮点 ：{{item.highlight}}</p>
+          <p class="cont-text">购买人群 ：{{item.buying_crowds}}</p>
+          <p class="cont-text" v-if="item.subscribe === '0'">认购费 ：无需认购</p>
+          <p class="cont-text" v-else-if="item.subscribe === '1'">认购费 ：价内认购</p>
+          <p class="cont-text" v-else-if="item.subscribe === '2'">认购费 ：{{item.subscribe_rate}}%</p>
         </div>
         <div class="report-pdf">
           <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
           <div class="doc" @click="toPptReport(id)">产品说明材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toProductReport(id)">产品公告<span class="iconfont right">&#xe731;</span></div>
           <div class="doc" @click="toUploadCustomer(id)">上传客户材料<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toProductReport(id)">投后报告<span class="iconfont right">&#xe731;</span></div>
         </div>
         <div class="reservation" v-if="showBtn">
           <mt-button type="primary" @click="toAppointment">预约</mt-button>
@@ -181,6 +188,23 @@ export default {
         font-size: 30px;
         // margin-top: 40px;
         height: 48px;
+      }
+    }
+    .box{
+      // display: -webkit-box;
+      // overflow-x: auto;
+      // -webkit-overflow-scrolling: touch;
+      height: 70px;
+      white-space: nowrap;
+      background: #EB4F4C;
+      .announcement{
+        height: 70px;
+        line-height: 70px;
+        color: #fff;
+        font-family: PingFangSC-Semibold;
+        font-size: 26px;
+        padding: 0 20px;
+        overflow-x: auto;
       }
     }
     .title {

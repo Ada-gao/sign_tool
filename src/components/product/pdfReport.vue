@@ -177,7 +177,7 @@ export default {
         })
       } else if (this.$route.params.mark === 2) {
         this.type = 2
-        this.title = '产品公告'
+        this.title = '投后报告'
         getAnnoucement(this.id).then(res => {
           this.documentList = res.data
           const list = []
