@@ -111,7 +111,7 @@ export default {
 				// console.log(date, new Date(item.update_time), date - new Date(item.update_time))
 				// console.log(parseInt((date - new Date(item.update_time)) / 1000))
 				// console.log(item.timeliness * 60 * 60)
-				if (item.timeliness * 60 * 60 > parseInt((date - new Date(item.update_time)) / 1000)) {
+				if (item.timeliness * 60 * 60 > parseInt((date - new Date(item.update_time)) / 1000) && item.status === '1003') {
 					this.timeDown = true
 				}
 				let ms = item.timeliness * 60 * 60 - parseInt((date - new Date(item.update_time)) / 1000)

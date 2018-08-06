@@ -15,47 +15,55 @@
       </div>
       <div class="product">
         <div class="box">
-          <div class="announcement">产品公告：{{item.announcement}}待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售待发售</div>
+          <div class="announcement">产品公告：{{item.announcement}}</div>
         </div>
         <div class="title"><span class="line-blue"></span>产品信息</div>
         <div class="cont">
           <p class="cont-text firstName">产品名称 ：{{item.product_name}}
             <span class="important" v-if="this.$route.params.important">重点产品</span>
           </p>
-          <p class="cont-text" v-if="item.product_type_id === 1">产品类型 ：二级市场</p>
+          <p class="cont-text">产品结构类型 ：{{item.product_cons_name}}</p>
+          <p class="cont-text" v-if="item.product_type_id === 1">产品收益类型 ：二级市场</p>
           <p class="cont-text" v-else-if="item.product_type_id === 2">产品类型 ：理财</p>
           <p class="cont-text" v-else-if="item.product_type_id === 3">产品类型 ：固收</p>
           <p class="cont-text" v-else-if="item.product_type_id === 4">产品类型 ：另类</p>
-          <p class="cont-text" v-if="item.product_status === 1">产品状态 ：预热中</p>
+          <p class="cont-text">产品风险级别 ：{{item.product_risk_level}}</p>
+          <!-- <p class="cont-text" v-if="item.product_status === 1">产品状态 ：预热中</p>
           <p class="cont-text" v-else-if="item.product_status === 2">产品状态 ：募集中</p>
-          <p class="cont-text" v-else-if="item.product_status === 3">产品状态 ：已关帐</p>
+          <p class="cont-text" v-else-if="item.product_status === 3">产品状态 ：已关帐</p> -->
           <!-- <p class="cont-text">产品编号 ：{{item.product_code}}</p> -->
-          <!-- <p class="cont-text">募集人数 ：{{item.product_lp}}</p> -->
-          <p class="cont-text">基金管理人 : {{item.manager}}</p>
+          <!-- <p class="cont-text">基金管理人 : {{item.manager}}</p> -->
         </div>
         <div class="cont">
-          <p class="cont-text" v-if="item.is_float === 0">浮动收益 ：一</p>
-          <p class="cont-text" v-else>收益对标基准 ：{{item.annualized_return}}%</p>
-          <p class="cont-text">发行额度 ：{{item.collection_amount}}万</p>
-          <!-- <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p> -->
-          <p class="cont-text">最低追加金额 ：{{item.minimal_add_amount}}万</p>
-          <p class="cont-text">起投金额 : {{item.minimal_amount}}万</p>
+          <p class="cont-text">交易币种 : {{item.currency_id === 1 ? '人民币' : '美元' }}</p>
+          <p class="cont-text">购买人群 ：{{item.buying_crowds}}</p>
+          <p class="cont-text">产品期限 ：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
+          <!-- <p class="cont-text" v-if="item.is_float === 0">浮动收益 ：一</p> -->
+          <!-- <p class="cont-text" v-else>收益对标基准 ：{{item.annualized_return}}%</p> -->
+          <!-- <p class="cont-text">发行额度 ：{{item.collection_amount}}万</p> -->
+          <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p>
+          <p class="cont-text">募集人数 ：{{item.product_lp}}</p>
+          <!-- <p class="cont-text">最低追加金额 ：{{item.minimal_add_amount}}万</p> -->
+          <!-- <p class="cont-text">起投金额 : {{item.minimal_amount}}万</p> -->
           <!-- <p class="cont-text">投资门槛 : </p> -->
-          <p class="cont-text">募集币种 : {{item.currency_id === 1 ? '人民币' : '美元' }}</p>
           <!-- <p class="cont-text">净值 : {{item.net_value}}</p> -->
         </div>
         <div class="cont">
+          <p class="cont-text">起投金额 : {{item.minimal_amount}}万</p>
+          <p class="cont-text">最低追加金额 ：{{item.minimal_add_amount}}万</p>
           <p class="cont-text">收益分配方式 ：{{item.income_distribution}}</p>
-          <p class="cont-text">开户银行 ：{{item.bank_name}}</p>
-          <p class="cont-text">支行名称 ：{{item.sub_branch_name}}</p>
-          <p class="cont-text">打款帐号 ：{{item.card_no}}</p>
-          <p class="cont-text">风险评级 ：{{item.product_risk_level}}</p>
-          <p class="cont-text">产品期限 ：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
-          <p class="cont-text">产品亮点 ：{{item.highlight}}</p>
-          <p class="cont-text">购买人群 ：{{item.buying_crowds}}</p>
+          <p class="cont-text">资产团队 ：{{item.asset_team}}</p>
+          <p class="cont-text">托管银行 ：{{item.custodian_bank}}</p>
+          <p class="cont-text">关联产品 ：{{item.relevance_id}}</p>
+          <p class="cont-text">付息方式 ：{{item.interest_payment}}</p>
           <p class="cont-text" v-if="item.subscribe === '0'">认购费 ：无需认购</p>
           <p class="cont-text" v-else-if="item.subscribe === '1'">认购费 ：价内认购</p>
           <p class="cont-text" v-else-if="item.subscribe === '2'">认购费 ：{{item.subscribe_rate}}%</p>
+          <p class="cont-text">账户名称 ：{{item.bank_name}}</p>
+          <p class="cont-text">帐号 ：{{item.card_no}}</p>
+          <p class="cont-text">支行名称 ：{{item.sub_branch_name}}</p>
+          <!-- <p class="cont-text">产品亮点 ：{{item.highlight}}</p> -->
+          <p class="cont-text">大额支付行号 ：{{item.payment_number}}</p>
         </div>
         <div class="report-pdf">
           <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
