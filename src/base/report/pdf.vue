@@ -41,7 +41,6 @@ export default {
   methods: {
     back () {
       this.$router.push({name: 'PdfReport', params: {id: this.$route.params.id, mark: this.$route.params.mark}})
-
     },
     handleTouch (e) {
       // e.preventDefault()
@@ -230,7 +229,9 @@ export default {
     let url = Base64.decode(this.$route.params.url)
     this.loadFile(url)
     let paint = JSON.parse(window.localStorage.getItem('data')).name + ',' + JSON.parse(window.localStorage.getItem('data')).mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
-    this.paintFixedWaterMark(paint)
+    if (this.$route.params.mark === 1 || this.$route.params.mark === 2) {
+      this.paintFixedWaterMark(paint)
+    }
   }
 }
 </script>
