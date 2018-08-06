@@ -15,14 +15,17 @@
 							<span class="tit">预约金额：<span class="cont">{{item.appointment_amount}}万</span></span>
 							<span class="tit">产品名称：<span class="cont">{{item.product_name}}</span></span>
 							<span class="tit">预约时间：<span class="cont">{{item.appointment_date}}</span></span>
-							<span class="tit">预约状态：
+							<span class="tit bot">预约状态：
 								<span class="cont" v-if='item.status === "1001"'>已预约（申请中)</span>
 								<span class="cont" v-if='item.status === "1002"'>预约失败</span>
 								<span class="cont" v-if='item.status === "1003"'>预约成功</span>
 								<span class="cont" v-if='item.status === "1004"'>预约取消</span>
 								<span class="cont" v-if='item.status === "1005"'>预约失效</span>
 							</span>
-							<span class="tit red" v-if="timeDown">倒计时：<span class="cont red">{{time_val}}</span></span>
+							<span class="tit bot red" v-if="item.flag">
+								倒计时：<counter :timeCount='item.timeout'></counter>
+								<!-- <span class="cont red">{{item.timeout}}</span> -->
+							</span>
 							<i class="iconfont right">&#xe731;</i>
 						</div>
 					</div>
@@ -76,70 +79,52 @@
 <script type="text/ecmascript-6">
 import { XHeader } from 'vux'
 import { getList } from '@/service/api/appointment'
+import counter from '@/base/countDown/countDown'
+// import { setInterval, clearInterval } from 'timers';
 export default {
 	data () {
 		return {
 			selectedTip: '',
+			timer: null,
 			selected: '1',
 			appoinmentList: [],
 			remittanceList: [],
 			contractList: [],
-			timeDown: false,
-			time_val: '',
-			timeSetInterval: null
+			timeCount: 3
 		}
 	},
-  components: {
-    XHeader
+	components: {
+		XHeader,
+		counter
 	},
 	methods: {
 		toDetail (id) {
 			this.$router.push({name: 'ProductAppointment', params: {appointmentId: id, fromUrl: 'reservationList'}})
-			clearInterval(this.timeSetInterval)
 		},
-		prefix (num, n) {
-            var len = num.toString().length
-            while (len < n) {
-                num = '0' + num
-                len++
-            }
-            return num
-		},
-		timer () {
-			this.appoinmentList.map(item => {
+		getList () {
+			getList().then(res => {
+				this.appoinmentList = res.data.filter(item => item.status.slice(0, 1) === '1')
 				let date = new Date()
-				// console.log(date, new Date(item.update_time), date - new Date(item.update_time))
-				// console.log(parseInt((date - new Date(item.update_time)) / 1000))
-				// console.log(item.timeliness * 60 * 60)
-				if (item.timeliness * 60 * 60 > parseInt((date - new Date(item.update_time)) / 1000) && item.status === '1003') {
-					this.timeDown = true
-				}
-				let ms = item.timeliness * 60 * 60 - parseInt((date - new Date(item.update_time)) / 1000)
-				let h = Math.floor(ms / 60 / 60)
-            	let m = Math.floor((ms - h * 60 * 60) / 60)
-				let s = Math.floor((ms - h * 60 * 60 - m * 60))
-				h = this.prefix(h, 2)
-				m = this.prefix(m, 2)
-				s = this.prefix(s, 2)
-				this.time_val = h + ':' + m + ':' + s
-				ms--
+				this.appoinmentList.map((ele, index) => {
+					if (ele.status === '1003' && ele.timeliness * 60 * 60 > parseInt((date - new Date(ele.update_time)) / 1000)) {
+						ele.flag = true
+						let ms = ele.timeliness * 60 * 60 - parseInt((date - new Date(ele.update_time)) / 1000)
+						ele.timeout = ms
+					} else {
+						ele.flag = false
+					}
+				})
+				this.remittanceList = res.data.filter(item => item.status.slice(0, 1) === '2')
+				this.contractList = res.data.filter(item => item.status.slice(0, 1) === '3')
 			})
 		}
 	},
-	// beforeRouteLeave (to, from, next) {
-	// 		to.meta.keepAlive = true
-	// 		console.log(to, to.meta)
-	// 		next()
-	// },
+	watch: {
+
+	},
 	created () {
 		this.selected = this.$route.params.mark || '1'
-		getList().then(res => {
-			this.appoinmentList = res.data.filter(item => item.status.slice(0, 1) === '1')
-			this.remittanceList = res.data.filter(item => item.status.slice(0, 1) === '2')
-			this.contractList = res.data.filter(item => item.status.slice(0, 1) === '3')
-			this.timer()
-			this.timeSetInterval = setInterval(() => { this.timer() }, 1000)
-		})
+		this.getList()
 	}
 }
 </script>
@@ -217,15 +202,9 @@ export default {
 							span.cont{
 								color: #666;
 							}
-							span.red{
-								color: #FF0200;
-							}
 						}
 						span.tit:nth-child(4){
 							width: 320px;
-						}
-						span.red{
-							color: #FF0200;
 						}
 						span.bot{
 							min-width: 300px;
@@ -233,6 +212,12 @@ export default {
 							color: #2672BA;
 							span.cont{
 								color: #2672BA;
+							}
+						}
+						span.red{
+							color: #FF0200;
+							span.red{
+								color: #FF0200;
 							}
 						}
 						.right{
