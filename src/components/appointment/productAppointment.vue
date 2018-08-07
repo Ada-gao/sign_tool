@@ -672,6 +672,7 @@ export default {
 					'bank_subname': this.bankname1 || this.cardName1,
 					'bank_id': this.bankId,
 					'card_no': this.cardnum || this.cardNum,
+					'remit_amount': parseInt(this.remitAmount),
 					'flag': '1'
 				}
 				submitMaterials(this.appointmentId, obj).then(res => {

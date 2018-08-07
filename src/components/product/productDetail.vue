@@ -69,7 +69,7 @@
           <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
           <div class="doc" @click="toPptReport(id)">产品说明材料<span class="iconfont right">&#xe731;</span></div>
           <div class="doc" @click="toUploadCustomer(id)">上传客户材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toProductReport(id)">投后报告<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" v-if="item.after_buy_file === '1'" @click="toProductReport(id)">投后报告<span class="iconfont right">&#xe731;</span></div>
         </div>
         <div class="reservation" v-if="showBtn">
           <mt-button type="primary" @click="toAppointment">预约</mt-button>

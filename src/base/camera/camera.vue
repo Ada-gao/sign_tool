@@ -123,7 +123,7 @@
       },
       setImgSrcArr () {
         this.fileArr = this.imageArr || []
-        console.log(this.fileArr)
+        // console.log(this.fileArr)
         // this.imageArr = this.fileArr
       },
       selectcamera () {
