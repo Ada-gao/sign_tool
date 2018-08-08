@@ -229,7 +229,7 @@ export default {
     let url = Base64.decode(this.$route.params.url)
     this.loadFile(url)
     let paint = JSON.parse(window.localStorage.getItem('data')).name + ',' + JSON.parse(window.localStorage.getItem('data')).mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
-    if (this.$route.params.mark === 1 || this.$route.params.mark === 2) {
+    if (this.$route.params.mark !== 3) {
       this.paintFixedWaterMark(paint)
     }
   }
