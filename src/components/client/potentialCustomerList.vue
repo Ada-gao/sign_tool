@@ -276,11 +276,14 @@
             if (res.status === 200) {
               this.data.mobile_validated = res.data.mobile_validated
               if (res.data.mobile_validated === '0') {
+                this.topTitle = '潜客信息'
                 this.validateCont = '邀请通过'
               } else {
+                this.topTitle = '手机未验证'
                 this.validateCont = '邀请失败'
               }
             } else {
+              this.topTitle = '手机未验证'
               this.data.mobile_validated = '1'
               this.validateCont = '邀请失败'
             }
