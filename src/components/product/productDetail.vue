@@ -14,9 +14,17 @@
         <p class="year">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</p>
       </div>
       <div class="product">
-        <div class="box">
-          <div class="announcement">产品公告：{{item.announcement}}</div>
-        </div>
+        <!-- <div class="box"> -->
+          <div class="announcement">
+            <span class="announcementTit">产品公告：</span>
+            <span class="announcementDetail">
+              <span class="detail-text">
+                {{item.announcement}}
+                <span class="content-space"></span>
+              </span>
+            </span>
+          </div>
+        <!-- </div> -->
         <div class="title"><span class="line-blue"></span>产品信息</div>
         <div class="cont">
           <p class="cont-text firstName">产品名称 ：{{item.product_name}}
@@ -37,7 +45,9 @@
         <div class="cont">
           <p class="cont-text">交易币种 : {{item.currency_id === 1 ? '人民币' : '美元' }}</p>
           <p class="cont-text">购买人群 ：{{item.buying_crowds}}</p>
-          <p class="cont-text">产品期限 ：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
+          <p class="cont-text" v-if="item.investment_horizon_unit === '0'">产品期限 ：{{item.investment_horizon}}月</p>
+          <p class="cont-text" v-if="item.investment_horizon_unit === '1'">产品期限 ：{{item.investment_horizon}}年</p>
+          <p class="cont-text" v-if="item.investment_horizon_unit === '2'">产品期限 ：{{item.investment_horizon}}天</p>
           <!-- <p class="cont-text" v-if="item.is_float === 0">浮动收益 ：一</p> -->
           <!-- <p class="cont-text" v-else>收益对标基准 ：{{item.annualized_return}}%</p> -->
           <!-- <p class="cont-text">发行额度 ：{{item.collection_amount}}万</p> -->
@@ -131,6 +141,25 @@ export default {
     },
     toAppointment () {
       this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail', minimalAmount: this.item.minimal_amount, collectionAmount: this.item.collection_amount, riskLevel: this.item.product_risk_level}})
+    },
+    scrollAnnouncement () {
+      var speed = 50 // 速度 -- px每秒
+      var $marquee = document.querySelector('.announcementDetail')
+      var $marqueeContent = $marquee.querySelector('.detail-text')
+      if (!($marquee.offsetWidth < $marquee.scrollWidth)) {
+        return
+      }
+      // 内容复制3份好有连续性
+      $marqueeContent.innerHTML = $marqueeContent.innerHTML + $marqueeContent.innerHTML + $marqueeContent.innerHTML
+      var contentWidth = $marqueeContent.getBoundingClientRect().width
+      // if (contentWidth <= 0) { // 没有内容搞什么动画
+      //   return
+      // }
+      // 内容复制了3份，宽度也要除以3
+      contentWidth = contentWidth / 3
+      // 计算一次动画应该要花费多少时间
+      var onceTime = contentWidth / speed * 1000 // ms
+      $marqueeContent.style.animationDuration = onceTime + 'ms'
     }
   },
   mounted () {
@@ -144,6 +173,7 @@ export default {
       this.showBtn = false
     }
     window.scroll(0, 0)
+    this.scrollAnnouncement()
   }
 }
 </script>
@@ -198,13 +228,13 @@ export default {
         height: 48px;
       }
     }
-    .box{
-      // display: -webkit-box;
-      // overflow-x: auto;
-      // -webkit-overflow-scrolling: touch;
-      height: 70px;
-      white-space: nowrap;
-      background: #EB4F4C;
+    // .box{
+    //   // display: -webkit-box;
+    //   // overflow-x: auto;
+    //   // -webkit-overflow-scrolling: touch;
+    //   height: 70px;
+    //   white-space: nowrap;
+    //   background: #EB4F4C;
       .announcement{
         height: 70px;
         line-height: 70px;
@@ -212,9 +242,34 @@ export default {
         font-family: PingFangSC-Semibold;
         font-size: 26px;
         padding: 0 20px;
-        overflow-x: auto;
+        background: #EB4F4C;
+        @keyframes kf-marque-animation{ 0% { transform: translateX(0); } 100% { transform: translateX(-33.3%); } }
+        .announcementDetail{
+          width: 570px;
+          height: 70px;
+          line-height: 70px;
+          // background: #e9eaea;
+          display: inline-block;
+          // margin: 0 auto;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: clip;
+          position: absolute;
+          left: 150px;
+          .detail-text{
+            display: inline-block;
+            position: relative;
+            padding-right: 0px;
+            white-space: nowrap;
+            animation: kf-marque-animation 0s infinite linear;
+          }
+          .content-space{
+            display: inline-block;
+            width: 5em;
+          }
+        }
       }
-    }
+    // }
     .title {
       height: 90px;
       margin: 26px 0 20px 0;

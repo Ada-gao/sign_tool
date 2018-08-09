@@ -13,7 +13,7 @@
         <li v-for="(item, index) in documentList" :key="index">{{item.file_name}}</li>
       </ul>
     </div>
-    <div class="select" v-if="this.$route.params.mark !== 3">
+    <div class="select" v-if="selectShow">
       <div :class="'my_checkbox' + (this.flag ? ' checked' : '' )">
         <div :class="'box mint-toast-icon mintui mintui-success' + (this.flag ? ' checked' : '' )" @click="checkAll"></div>
         <div class="name">全选</div>
@@ -78,7 +78,8 @@ export default {
       pdfUrl: '',
       title: '',
       type: null,
-      customerNameList: []
+      customerNameList: [],
+      selectShow: true
     }
 	},
 	watch: {
@@ -122,7 +123,12 @@ export default {
             this.checkedList.push(item.announcement_file_id)
           })
         }
-        let obj = {'email': this.newEmail, 'checkedList': this.checkedList, 'userId': this.newUserId, 'type': this.type}
+        let obj = {}
+        if (this.$route.params.mark === 0) {
+          obj = {'email': this.newEmail, 'checkedList': this.checkedList, 'userId': this.newUserId, 'type': this.type, 'watermark': 0}
+        } else if (this.$route.params.mark === 1) {
+          obj = {'email': this.newEmail, 'checkedList': this.checkedList, 'userId': this.newUserId, 'type': this.type, 'watermark': 1}
+        }
         sendTrade(obj).then(res => {
           this.successDialog = true
         }).catch(err => {
@@ -178,6 +184,7 @@ export default {
       } else if (this.$route.params.mark === 2) {
         this.type = 2
         this.title = '投后报告'
+        this.selectShow = false
         getAnnoucement(this.id).then(res => {
           this.documentList = res.data
           const list = []
@@ -194,6 +201,7 @@ export default {
         })
       } else if (this.$route.params.mark === 3) {
         this.title = '上传客户材料'
+        this.selectShow = false
         getCustomerMaterials(this.id).then(res => {
           this.documentList = res.data.data
         })
