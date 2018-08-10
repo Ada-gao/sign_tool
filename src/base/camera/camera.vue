@@ -7,7 +7,9 @@
         <div v-for="(item, index) in fileArr"
              :key="index"
              v-show="item"
-             class="img">
+             class="img"
+             @click="showBigImg">
+          <thumbnails :showImg="showImg"></thumbnails>q
           <img :src="item" v-show="item">
           <span class="delete_img" @click='delImage(index)'>x</span>
         </div>
@@ -54,11 +56,13 @@
     deleteDetail
   } from '@/service/api/customers'
   import {Popup} from 'mint-ui'
+  import thumbnails from '@/base/camera/thumbnails'
   //  import {getStore} from '@/config/mUtils'
   export default {
     name: 'Camera',
     components: {
-      'mt-popup': Popup
+      'mt-popup': Popup,
+      thumbnails
     },
     props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc', 'imageArr', 'isFromAppointment'],
     // props: {
@@ -90,7 +94,8 @@
         appointmentSrc: [],
         spinnerShow: false,
         fileId: [],
-        outsideSrc: []
+        outsideSrc: [],
+        showImg: false
       }
     },
     watch: {
@@ -267,6 +272,10 @@
           })
           this.fileArr.splice(index, 1)
         }
+      },
+      showBigImg () {
+        console.log('bbbb')
+        this.showImg = true
       }
     }
   }

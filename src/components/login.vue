@@ -190,7 +190,14 @@ export default {
           registration_id: this.device.uuid
         }
         getVerificationCode(obj).then(res => {
-          console.log('数据库查看验证码')
+          if (res.data.message === '用户不存在') {
+            this.msgTip = '用户不存在'
+            clearInterval(this.tiemr)
+            this.timer = null
+            this.show = true
+          } else {
+            console.log('数据库查看验证码')
+          }
         })
         .catch(err => {
           if (err) {
