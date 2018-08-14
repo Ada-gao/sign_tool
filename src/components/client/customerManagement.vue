@@ -60,7 +60,7 @@
           </cell-box>
           <div class="space"></div>
           <cell-box>
-            <label>身份证号：</label>
+            <label>证件号码：</label>
             <span class="fr">{{data.id_no}}</span>
           </cell-box>
           <cell-box>
@@ -133,12 +133,13 @@
         <group>
           <cell-box>备注</cell-box>
         </group>
-        <ul>
+        <ul :class="{'no_padding' : remarkList.length === 0}">
           <li v-for="(item, index) in remarkList" :key="index">
             <div class="iText text-overflow-one">{{item.remark}}</div>
             <span class="iTime">{{item.create_time}}</span>
-            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}"><i
-              class="iconfont">&#xe624;</i>&nbsp;查看
+            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}">
+              <i class="iconfont" style="font-size:36px;vertical-align: middle;">&#xe624;</i>
+              <span class="font-size:26px;color:#2672ba;vertical-align: middle;">查看</span>
             </router-link>
           </li>
         </ul>
@@ -303,18 +304,20 @@
           return fmt
         }
         if (!this.remarkInfo || this.remarkInfo.trim().length === 0) return
-        this.remarkList.push({
-          remark: this.remarkInfo.trim(),
-          create_time: dateFormat(new Date(), 'yyyy-MM-dd')
-        })
         let params = {
           remark: this.remarkInfo,
           client_name: this.clientName
         }
         addCustomerRemarks(this.clientId, params).then(res => {
           if (res.status === 200) {
+            this.remarkList.push({
+              remark: this.remarkInfo.trim(),
+              create_time: dateFormat(new Date(), 'yyyy-MM-dd')
+            })
             this.remarkInfo = ''
           }
+        }).catch(() => {
+          this.remarkInfo = ''
         })
       },
       toLink () {
@@ -467,7 +470,7 @@
       margin-left: -8px;
     }
     .remark {
-      margin-bottom: 120px;
+      padding-bottom: 120px;
       background-color: #fff;
       .vux-cell-box.weui-cell{
         padding: 0;
@@ -480,22 +483,34 @@
       .weui-cells .weui-cell i {
         font-size: 32px; /*px*/
       }
+      .no_padding {
+        padding-bottom: 0;
+      }
       ul {
+        padding-bottom: 20px;
+        max-height: 440px;
+        overflow-y: scroll;
         li {
-          border-bottom: 1px solid #eee; /*no*/
-          /*padding: 30px 40px;*/
-          padding: 20px 120px 0px 68px;
-          font-size: 24px; /*px*/
+          height: 110px;
+          padding: 0 120px 0 68px;
+          font-size: 26px;
+          color: #666;
+          -webkit-box-sizing: border-box;
+          -moz-box-sizing: border-box;
+          box-sizing: border-box;
           .iText {
+            padding-top: 20px;
             margin-bottom: 10px;
-            font-size: 28px; /*px*/
+            /*font-size: 28px;*/
           }
           .view {
             color: #2672BA;
+            line-height: 30px;
           }
           .fr i {
-            font-size: 24px; /*px*/
+            font-size: 36px;
             padding-right: 15px;
+            vertical-align: top;
           }
         }
       }
