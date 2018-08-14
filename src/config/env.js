@@ -13,9 +13,13 @@ if (process.env.NODE_ENV === 'development') {
     // debugger
     baseUrl = 'http://10.9.60.141:5000/api/'
     imgBaseUrl = 'http://10.9.60.141:5000/api/'
+    // baseUrl = 'http://106.14.115.164:5000/api/'
+    // imgBaseUrl = 'http://106.14.115.164:5000/api/'
 } else if (process.env.NODE_ENV === 'production') {
     baseUrl = 'http://10.9.60.141:5000/api/'
     imgBaseUrl = 'http://10.9.60.141:5000/api/'
+    // baseUrl = 'http://106.14.115.164:5000/api/'
+    // imgBaseUrl = 'http://106.14.115.164:5000/api/'
 }
 
 // if (process.env.NODE_ENV === 'development') {

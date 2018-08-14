@@ -102,9 +102,8 @@
 										<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
 										<mt-cell title="银行名称:" :value="cardName"></mt-cell>
 										<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
-										<img class="camera" :src="cardUrl">
-											<!-- <img :src="item.index" alt="">
-										</div> -->
+										<img class="camera" :src="cardUrl" @click="showBigImg('bank')">
+        								<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
 									</div>
 							</div>
 							<div class="evidence" v-if="evidenceShow">
@@ -124,8 +123,9 @@
 							</div>
 							<div class="evidence" v-if="!evidenceShow">
 								<mt-cell class="remitAmount" title="打款凭证"><mt-cell title="打款金额:" :value="  remitAmount + '万'"></mt-cell></mt-cell>
-								<div class="camera">
-									<img :src="evidenceUrl[index]" v-for="(item, index) in evidenceUrl" :key="index">
+								<div class="camera" v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)">
+									<img :src="item">
+        							<!-- <thumbnails v-if="showImg" :imgTotal="evidenceUrl" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
 								</div>
 							</div>
 							<div class="materialsNeeded" v-if="uploadCardMaterials">
@@ -133,9 +133,9 @@
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
-              			:imageArr="materialsUrls"
+              							:imageArr="materialsUrls"
 										:isFromAppointment="fromAppointment"
-              			:isFromBank="fromBank"
+              							:isFromBank="fromBank"
 										@showPopup="showPopup"
 										@hidePopup="hidePopup">
 									</camera>
@@ -143,8 +143,8 @@
 							</div>
 							<div class="materialsNeeded" v-if="!uploadCardMaterials">
 								<mt-cell title="交易所需材料"></mt-cell>
-								<div class="camera">
-									<img :src="tradeUrl[index]" v-for="(item, index) in tradeUrl" :key="index">
+								<div class="camera" v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)">
+									<img :src="item">
 								</div>
 							</div>
 						</div>
@@ -167,8 +167,8 @@
 					<div class="refund" v-if="repeatUploadRefund">
 						<div class="cont">
 							<mt-cell title="提交退款申请书"></mt-cell>
-							<div class="camera">
-								<img :src="refundUrl[index]" v-for="(item, index) in refundUrl" :key="index">
+							<div class="camera" v-for="(item, index) in refundUrl" :key="index" @click="showBigImg('refund', index)">
+								<img :src="item">
 							</div>
 						</div>
 					</div>
@@ -258,6 +258,7 @@
 						<div class="success">请您重新申请提交</div>
 						<x-button @click.native="failMakeSure" type="primary">确 定</x-button>
 					</x-dialog>
+        			<thumbnails v-if="showImg" :imgTotal="imgTotal" :imgKey="imgIndex" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
 				</div>
 			</div>
 		</div>
@@ -269,6 +270,7 @@ import { appointmentList, submitAppointment, cancelAppointment, submitMaterials,
 import { getProducts } from '@/service/api/products'
 import { checkBankDetail } from '@/service/api/customers'
 import { formatDate } from '@/common/js/date'
+import thumbnails from '@/base/camera/thumbnails'
 
 export default {
 	data () {
@@ -371,6 +373,9 @@ export default {
 			submitAppointDetail: '已提交待审核中…',
 			failTitle: '',
 			remitAmount: '',
+			showImg: false,
+			imgTotal: null,
+			imgIndex: '',
 			slotsM: [
 				{
           flex: 1,
@@ -416,12 +421,13 @@ export default {
 	components: {
 		XHeader,
 		Flow,
-    FlowState,
+    	FlowState,
 		FlowLine,
 		XDialog,
 		XButton,
 		XInput,
-    camera
+		camera,
+		thumbnails
 	},
 	methods: {
 			back () {
@@ -442,7 +448,7 @@ export default {
 				if (this.$route.params.fromUrl === 'productDetail') {
 					document.getElementsByTagName('input')[0].blur()
 				}
-				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002') {
+				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002' || this.appointmentList.status === '2004') {
 					document.getElementsByTagName('input')[0].blur()
 					document.getElementsByTagName('input')[1].blur()
 					document.getElementsByTagName('input')[2].blur()
@@ -630,7 +636,8 @@ export default {
 					this.msgDetail = '银行卡输入有误'
 					return
 				}
-				if (this.evidenceUrl === undefined || this.materialSrc.length === 0 || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+				console.log(this.materialSrc)
+				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
 					this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
 					return
@@ -659,7 +666,7 @@ export default {
 					this.msgDetail = '银行卡输入有误'
 					return
 				}
-				if (this.evidenceUrl === undefined || this.materialSrc.length === 0 || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
 					this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
 					return
@@ -693,6 +700,7 @@ export default {
 				this.refundSrc = data
 			},
 			imageHandler4 (data) {
+				console.log(data)
 				this.evidenceUrl = data
 			},
 			refund () {
@@ -1340,6 +1348,23 @@ export default {
 						this.nameValues.push({'bankName': item.bank_name, 'bankId': item.bank_id})
 					})
 				})
+			},
+			showBigImg (data, index) {
+				console.log(data)
+				if (data === 'bank') {
+					this.imgTotal = this.cardUrl
+				} else if (data === 'remit') {
+					this.imgTotal = this.evidenceUrl
+				} else if (data === 'material') {
+					this.imgTotal = this.tradeUrl
+				} else if (data === 'refund') {
+					this.imgTotal = this.refundUrl
+				}
+				this.imgIndex = index
+				this.showImg = true
+			},
+			hideBigImg (data) {
+				this.showImg = data
 			}
 	},
 	beforeRouteEnter (to, from, next) {
@@ -1364,6 +1389,7 @@ export default {
 	// 		next()
 	// },
 	activated () {
+		console.log('cmi', this.showImg)
 		if (this.$route.params.fromUrl === 'productDetail') {
 			this.writeAppointment()
 		} else if (this.$route.params.fromUrl === 'reservationList') {
