@@ -7,11 +7,10 @@
         <div v-for="(item, index) in fileArr"
              :key="index"
              v-show="item"
-             class="img"
-             @click="showBigImg">
-          <thumbnails :showImg="showImg"></thumbnails>q
-          <img :src="item" v-show="item">
+             class="img">
+          <img :src="item + '!132x120'" v-show="item" @click="showBigImg">
           <span class="delete_img" @click='delImage(index)'>x</span>
+          <thumbnails v-if="showImg" :imgTotal="fileArr" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
         </div>
         <!-- </ul> -->
         <div class="addsmall_box" @click="selectcamera()">
@@ -28,13 +27,13 @@
         <span class='iconfont icon_bg'>+</span>
         <img :src="imgSrc"
              class="show"
-             v-show="imgSrc">
+             v-show="imgSrc" @click="showBigImg">
+        <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
         <mt-spinner class="camera_spinner"
                     color="#aaa"
                     v-show="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
-
     </div>
     <mt-popup v-model="show"
               position="bottom"
@@ -122,13 +121,23 @@
       this.setImgSrc()
       this.setImgSrcArr()
     },
+    activated () {
+      this.outsideSrc = this.imageArr
+      this.appointmentSrc = []
+      if (this.outsideSrc !== undefined) {
+        for (let i = 0; i < this.outsideSrc.length; i++) {
+          this.appointmentSrc.push(this.outsideSrc[i])
+        }
+      }
+      this.setImgSrc()
+      this.setImgSrcArr()
+    },
     methods: {
       setImgSrc () {
         this.imgSrc = this.imageSrc
       },
       setImgSrcArr () {
         this.fileArr = this.imageArr || []
-        // console.log(this.fileArr)
         // this.imageArr = this.fileArr
       },
       selectcamera () {
@@ -236,7 +245,7 @@
                 this.fileId.push(res.data.client_cert_file_id)
                 this.appointmentSrc.push(res.data.file_url)
                 this.spinnerShow = false
-                this.fileArr = this.appointmentSrc
+                this.fileArr = [...this.appointmentSrc]
                 // this.fileArr.push('data:image/jpeg;base64,' + imageData)
                 this.$emit('imgHandler', this.appointmentSrc)
               }
@@ -274,8 +283,10 @@
         }
       },
       showBigImg () {
-        console.log('bbbb')
         this.showImg = true
+      },
+      hideBigImg (data) {
+        this.showImg = data
       }
     }
   }
