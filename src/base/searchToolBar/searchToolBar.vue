@@ -87,7 +87,7 @@ export default {
 }
 .cancelSearch {
 	.ipt {
-		width: 549px;
+		width: 70%;
 	}
 	.btn-cancel {
 		display: inline-block;

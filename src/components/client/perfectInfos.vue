@@ -265,6 +265,7 @@
       },
       onValuesChange (picker, values) {
         this.idType = values[0]
+        console.log(this.idType)
       },
       showCode () {
         this.$refs.address.blur()
@@ -455,6 +456,11 @@
       .mint-radio-core::after {
         width: 16px;
         height: 16px;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
       }
     }
     .mint-cell-wrapper {
@@ -695,11 +701,13 @@
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
+      font-size: 0;
       .upload_cont1,
       .upload_cont2 {
         display: inline-block;
         position: relative;
-        width: 270px;
+        /*width: 270px;*/
+        width: 42%;
         height: 180px;
         background-color: #ddd;
         line-height: 180px;
@@ -725,7 +733,8 @@
         font-size: 30px;
         color: #333;
         position: absolute;
-        right: 165px;
+        /*right: 165px;*/
+        right: 180px;
       }
     }
     .submit_form {

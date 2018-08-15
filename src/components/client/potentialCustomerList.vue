@@ -50,6 +50,10 @@
                   @click="showValPop"
                   v-show="data.mobile_validated === '1'">去验证</span>
           </div>
+          <cell-box>
+            <label style="color:#333">录入时间：</label>
+            <span class="fr">{{data.create_time}}</span>
+          </cell-box>
           <div class="space" v-if="data.realname_status === '2'"></div>
           <group v-if="data.realname_status === '2'">
             <cell-box>
@@ -632,7 +636,9 @@
       }
       .mobile_box.limit_width {
         display: inline-block;
-        width: 555px;
+        /*width: 555px;*/
+        /*padding-right: 140px;*/
+        width: 78.1%;
       }
     }
   }
@@ -670,7 +676,8 @@
   }
   .verificate_code {
     display: inline-block;
-    width: 140px;
+    /*width: 140px;*/
+    width: 13.3%;
     height: 40px;
     line-height: 40px;
     background: #2672ba;

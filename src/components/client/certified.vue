@@ -69,7 +69,7 @@
       </mt-popup>
       <mt-popup v-model="showConvertBox" closeOnClickModel="false">
         <div class="convert_box">
-          <div class="title"> 您的确定要成为{{radio}}吗？</div>
+          <div class="title"> 确定要变成{{radio}}吗？</div>
           <div class="btn_box">
             <button class="ensure" @click="ensure">确定</button>
             <button class="cancel" @click="cancel">取消</button>
