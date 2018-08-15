@@ -409,7 +409,7 @@
     .radio_item.mint-radiolist .mint-cell {
       display: inline-block;
       position: absolute;
-      height: 82px;
+      height: 80px;
       // padding: 20px 0;
       .mint-cell-wrapper{
         height: 100%;
@@ -444,6 +444,7 @@
         height: 28px;
         border-radius: 8px;
         border-color: #979797;
+        border-width: 2px;
       }
       .mint-radio-input:checked + .mint-radio-core {
         background-color: #fff;
@@ -453,8 +454,8 @@
         background-color: #2672BA;
       }
       .mint-radio-core::after {
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
       }
     }
     .mint-cell-wrapper {
