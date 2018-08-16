@@ -44,6 +44,7 @@
       <div class="qTitle">
         <i class="iconfont" @click="hideQrcode">&#xe731;</i>
         <span class="tip">我的二维码</span>
+        <i class="iconfont"></i>
       </div>
       <div class="qrcodeBox">
         <qrcode :value="value" :size="size"></qrcode>
