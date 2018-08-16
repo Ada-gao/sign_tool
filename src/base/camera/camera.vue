@@ -8,7 +8,7 @@
              :key="index"
              v-show="item"
              class="img">
-          <img :src="item + '!132x120'" v-show="item" @click="showBigImg">
+          <img :src="item" v-show="item" @click="showBigImg">
           <span class="delete_img" @click='delImage(index)'>x</span>
           <thumbnails v-if="showImg" :imgTotal="fileArr" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
         </div>
@@ -27,13 +27,14 @@
         <span class='iconfont icon_bg'>+</span>
         <img :src="imgSrc"
              class="show"
-             v-show="imgSrc" @click="showBigImg">
-        <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
+             v-show="imgSrc">
         <mt-spinner class="camera_spinner"
                     color="#aaa"
                     v-show="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
+      <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe64e;</i>
     </div>
     <mt-popup v-model="show"
               position="bottom"
@@ -141,6 +142,7 @@
         // this.imageArr = this.fileArr
       },
       selectcamera () {
+        console.log('selectC')
         this.show = true
         this.$emit('showPopup', this.show)
       },
@@ -284,9 +286,11 @@
       },
       showBigImg () {
         this.showImg = true
+        console.log('fileArr', this.fileArr)
       },
       hideBigImg (data) {
         this.showImg = data
+        console.log(this.show)
       }
     }
   }
@@ -336,7 +340,13 @@
       height: 120px;
     }
   }
-
+  .enlarge{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-size: 30px;
+    line-height: 30px;
+  }
   .upload_small {
     width: 100%;
     background-color: #fff;

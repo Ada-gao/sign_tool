@@ -448,7 +448,7 @@ export default {
 				if (this.$route.params.fromUrl === 'productDetail') {
 					document.getElementsByTagName('input')[0].blur()
 				}
-				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002' || this.appointmentList.status === '2004') {
+				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002' || this.appointmentList.status === '2004' || this.appointmentList.status === '3003') {
 					document.getElementsByTagName('input')[0].blur()
 					document.getElementsByTagName('input')[1].blur()
 					document.getElementsByTagName('input')[2].blur()
@@ -1389,7 +1389,6 @@ export default {
 	// 		next()
 	// },
 	activated () {
-		console.log('cmi', this.showImg)
 		if (this.$route.params.fromUrl === 'productDetail') {
 			this.writeAppointment()
 		} else if (this.$route.params.fromUrl === 'reservationList') {

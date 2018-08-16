@@ -4,47 +4,35 @@
 			v-model="popupVisible"
 			style="width:750px; height:750px">
 			<mt-swipe :show-indicators="false" style="width:750px; height:750px" :auto="0" :defaultIndex="imgKey">
-				<mt-swipe-item v-if="Array.isArray(imgTotal)" v-for="(item, index) in imgTotal" :key="index" v-show="item">
+				<mt-swipe-item v-if="Array.isArray(imgArr)" v-for="(item, index) in imgArr" :key="index" v-show="item">
 					<img :src="item" v-show="item">
 				</mt-swipe-item>
-				<mt-swipe-item v-else v-show="imgTotal">
-					<img :src="imgTotal" v-show="imgTotal">
+				<mt-swipe-item v-else v-show="imgArr">
+					<img :src="imgArr" v-show="imgArr">
 				</mt-swipe-item>
 			</mt-swipe>
 		</mt-popup>
 	</div>
 </template>
 <script>
-			// v-model="popupVisible"
-  // import {Popup} from 'mint-ui'
 	export default {
-		components: {
-			// 'mt-popup': Popup
-		},
 		props: ['showImg', 'imgTotal', 'imgKey'],
-		// watch: {
-		// 	'popupVisible': function (n, o) {
-    //     this.setPopup()
-    //   }
-		// },
 		data () {
 			return {
 				popupVisible: true,
-				hidePop: false
+				hidePop: false,
+				imgArr: null
 			}
 		},
 		created () {
-			// this.setPopup()
 			this.hidePop = this.showImg
+			this.imgArr = this.imgTotal
+			console.log('bbbbbb', this.showImg, this.imgTotal, this.imgKey)
 		},
 		methods: {
-			// setPopup () {
-			// 	// this.popupVisible = this.showImg
-			// 	this.hidePop = this.showImg
-			// },
 			hidePopup () {
 				this.hidePop = false
-        this.$emit('hideBigPop', this.hidePop)
+        		this.$emit('hideBigPop', this.hidePop)
 			}
 		}
 	}
