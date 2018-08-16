@@ -8,7 +8,7 @@
              :key="index"
              v-show="item"
              class="img">
-          <img :src="item + '!132x120'" v-show="item" @click="showBigImg">
+          <img :src="item" v-show="item" @click="showBigImg">
           <span class="delete_img" @click='delImage(index)'>x</span>
           <thumbnails v-if="showImg" :imgTotal="fileArr" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
         </div>
@@ -286,6 +286,7 @@
       },
       showBigImg () {
         this.showImg = true
+        console.log('fileArr', this.fileArr)
       },
       hideBigImg (data) {
         this.showImg = data
