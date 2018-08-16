@@ -146,7 +146,7 @@
 <script>
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
   import {uploadId, perfectInfos} from '@/service/api/customers'
-  import camera from '@/base/camera/camera'
+  import camera from '@/base/clientCamera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
 //  import {idcardValidate, toast} from '@/common/js/filter'

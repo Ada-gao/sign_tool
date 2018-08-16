@@ -14,7 +14,9 @@
         </li>
       </ul>
       <div class="space"></div>
-      <selling-products :child-data="content[n]"></selling-products>
+      <selling-products :child-data="content[n]"
+                        @cgPopup="cgPopup"
+                        :popupVisible="popupVisible"></selling-products>
     </div>
   </div>
 </template>
@@ -31,6 +33,7 @@
     data () {
       return {
         id: '',
+        popupVisible: false,
         n: 0,
         tabBars: ['全部', '理财', '二级市场', '固收', '另类投资'],
         content: {
@@ -43,9 +46,16 @@
       }
     },
     beforeRouteEnter (to, from, next) {
-      next(vm => {
-        vm.id = from.params.id
-      })
+      if (from.name === 'CustomerManagement') {
+        next(vm => {
+          vm.popupVisible = true
+          vm.id = from.params.id
+        })
+      } else {
+        next(vm => {
+          vm.id = from.params.id
+        })
+      }
     },
     mounted () {
       this.id = this.$route.params.id
@@ -72,6 +82,9 @@
     methods: {
       switchTab (index) {
           this.n = index
+      },
+      cgPopup (data) {
+        this.popupVisible = data
       }
     }
   }
