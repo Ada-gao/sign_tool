@@ -50,10 +50,14 @@
                   @click="showValPop"
                   v-show="data.mobile_validated === '1'">去验证</span>
           </div>
+          <cell-box>
+            <label style="color:#333">录入时间：</label>
+            <span class="fr">{{data.create_time}}</span>
+          </cell-box>
           <div class="space" v-if="data.realname_status === '2'"></div>
           <group v-if="data.realname_status === '2'">
             <cell-box>
-              <label style="color:#333">身份证号：</label>
+              <label style="color:#333">证件号码：</label>
               <span class="fr">{{data.id_no}}</span>
             </cell-box>
             <cell-box>
@@ -371,10 +375,6 @@
           return fmt
         }
         if (!this.remarkInfo || this.remarkInfo.trim().length === 0) return
-        this.remarkList.push({
-          remark: this.remarkInfo.trim(),
-          create_time: dateFormat(new Date(), 'yyyy-MM-dd')
-        })
 
         let params = {
           remark: this.remarkInfo,
@@ -382,8 +382,14 @@
         }
         addCustomerRemarks(this.client_id, params).then(res => {
           if (res.status === 200) {
+            this.remarkList.push({
+              remark: this.remarkInfo.trim(),
+              create_time: dateFormat(new Date(), 'yyyy-MM-dd')
+            })
             this.remarkInfo = ''
           }
+        }).catch(() => {
+          this.remarkInfo = ''
         })
       }
     }
@@ -531,7 +537,7 @@
       margin-left: -8px;
     }
     .remark {
-      margin-bottom: 120px;
+      padding-bottom: 120px;
       background-color: #fff;
       .vux-cell-box.weui-cell{
         padding: 0;
@@ -630,7 +636,9 @@
       }
       .mobile_box.limit_width {
         display: inline-block;
-        width: 555px;
+        /*width: 555px;*/
+        /*padding-right: 140px;*/
+        width: 78.1%;
       }
     }
   }
@@ -668,7 +676,8 @@
   }
   .verificate_code {
     display: inline-block;
-    width: 140px;
+    /*width: 140px;*/
+    width: 13.3%;
     height: 40px;
     line-height: 40px;
     background: #2672ba;

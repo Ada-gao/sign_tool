@@ -265,6 +265,7 @@
       },
       onValuesChange (picker, values) {
         this.idType = values[0]
+        console.log(this.idType)
       },
       showCode () {
         this.$refs.address.blur()
@@ -409,7 +410,7 @@
     .radio_item.mint-radiolist .mint-cell {
       display: inline-block;
       position: absolute;
-      height: 82px;
+      height: 80px;
       // padding: 20px 0;
       .mint-cell-wrapper{
         height: 100%;
@@ -444,6 +445,7 @@
         height: 28px;
         border-radius: 8px;
         border-color: #979797;
+        border-width: 2px;
       }
       .mint-radio-input:checked + .mint-radio-core {
         background-color: #fff;
@@ -455,6 +457,13 @@
       .mint-radio-core::after {
         width: 16px;
         height: 16px;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        /*width: 14px;*/
+        /*height: 14px;*/
       }
     }
     .mint-cell-wrapper {
@@ -695,11 +704,13 @@
       -webkit-box-sizing: border-box;
       -moz-box-sizing: border-box;
       box-sizing: border-box;
+      font-size: 0;
       .upload_cont1,
       .upload_cont2 {
         display: inline-block;
         position: relative;
-        width: 270px;
+        /*width: 270px;*/
+        width: 42%;
         height: 180px;
         background-color: #ddd;
         line-height: 180px;
@@ -725,7 +736,8 @@
         font-size: 30px;
         color: #333;
         position: absolute;
-        right: 165px;
+        /*right: 165px;*/
+        right: 180px;
       }
     }
     .submit_form {
