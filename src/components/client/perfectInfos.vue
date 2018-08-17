@@ -748,7 +748,8 @@
         height: 82px;
         line-height: 82px;
         display: inline-block;
-        width: 710px;
+        /*width: 710px;*/
+        width: 94.7%;
         background-color: #2672BA;
         text-align: center;
         border-radius: 10px;

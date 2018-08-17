@@ -160,7 +160,8 @@
       .list{
         padding: 20px;
         .item{
-          width: 710px;
+          /*width: 710px;*/
+          width: 94.7%;
           padding: 20px;
           height: 210px;
           background: #fff;

@@ -6,9 +6,15 @@
         <ul class="ul">
           <li v-for="(item, index) in fileArr"
               :key="index"
+              @click="showBigImg(index)"
               v-show="item">
             <img :src="item" v-show="item">
             <span class="delete_img" @click='delImage(index)'>x</span>
+            <thumbnails v-if="showImg"
+                        :imgTotal="fileArr"
+                        :imgKey="index"
+                        :showImg="showImg"
+                        v-on:hideBigPop="hideBigImg"></thumbnails>
           </li>
         </ul>
         <div class="addsmall_box" @click="selectcamera()">
@@ -31,7 +37,8 @@
                     v-show="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
-
+      <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg()">&#xe64e;</i>
     </div>
     <mt-popup v-model="show"
               position="bottom"
@@ -53,11 +60,13 @@
     deleteDetail
   } from '@/service/api/customers'
   import {Popup} from 'mint-ui'
+  import thumbnails from '@/base/clientCamera/thumbnails'
   //  import {getStore} from '@/config/mUtils'
   export default {
     name: 'Camera',
     components: {
-      'mt-popup': Popup
+      'mt-popup': Popup,
+      thumbnails
     },
     props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc'],
     data () {
@@ -70,7 +79,12 @@
         fromBank: this.isFromBank,
         idSrc: '',
         spinnerShow: false,
-        fileId: []
+        fileId: [],
+        showSearchIcon: false,
+        showThumbnail: false,
+        tempArr: [],
+        defIdx: 0,
+        showImg: false
       }
     },
     mounted () {
@@ -78,6 +92,10 @@
     watch: {
       'imageSrc': function (n, o) {
         this.setImgSrc()
+      },
+      'defIdx': function (n, o) {
+        console.log(n)
+        this.changeDefIdx()
       }
     },
     methods: {
@@ -99,7 +117,7 @@
           quality: 50,
           sourceType: 1,
           destinationType: navigator.camera.DestinationType.DATA_URL,
-          saveToPhotoAlbum: true,
+          // saveToPhotoAlbum: true,
           encodingType: navigator.camera.EncodingType.JPEG
         }
         navigator.camera.getPicture(this.cameraSuccess, this.cameraError, cameraOptions)
@@ -159,8 +177,8 @@
           updateId(formData).then(res => {
             if (res.status === 200) {
               this.spinnerShow = false
-              this.imgSrc = 'data:image/jpeg;base64,' + imageData
-              this.idSrc = res.data.file_url
+              // this.imgSrc = 'data:image/jpeg;base64,' + imageData
+              this.imgSrc = this.idSrc = res.data.file_url + '!132x120'
               this.$emit('imgHandler', this.idSrc)
             }
           }).catch(err => {
@@ -172,13 +190,31 @@
             if (res.status === 200) {
               this.fileId.push(res.data.client_cert_file_id)
               this.spinnerShow = false
-              this.fileArr.push('data:image/jpeg;base64,' + imageData)
+              // this.tempArr.push(res.data.file_url)
+              // this.fileArr.push('data:image/jpeg;base64,' + imageData)
+              this.fileArr.push(res.data.file_url + '!132x120')
             }
           }).catch(err => {
             console.log('error: ' + err)
             this.alertMsg = true
           })
         }
+      },
+      showSwiper (index) {
+        this.defIdx = index
+        this.showThumbnail = true
+      },
+      changeDefIdx () {
+        this.defaultIdx = this.defIdx
+      },
+      hideBigImg (data) {
+        this.showImg = data
+        console.log(this.show)
+      },
+      showBigImg (index) {
+        console.log(index)
+        this.showImg = true
+        // console.log('tempArr', this.tempArr)
       },
       delImage (index) {
         deleteDetail(this.cerId, this.fileId[index]).then(res => {
@@ -187,6 +223,7 @@
           }
         })
         this.fileArr.splice(index, 1)
+        // this.tempArr.splice(index, 1)
       }
     }
   }
@@ -232,13 +269,21 @@
       top: 0;
     }
   }
-
+  .enlarge{
+    position: absolute;
+    bottom: 3px;
+    right: 0;
+    font-size: 30px;
+    line-height: 30px;
+    margin-right: 0;
+  }
   .upload_small {
     width: 100%;
     background-color: #fff;
     height: 120px;
     text-align: left;
     padding-left: 20px;
+    box-sizing: border-box;
     .ul {
       display: inline-block;
       height: 120px;
