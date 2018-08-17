@@ -1,11 +1,13 @@
 <template>
   <div @click="hidePopup" class="thumbnails" v-if="hidePop">
     <mt-popup v-model="popupVisible">
-      <mt-swipe :show-indicators="false" :auto="0" :defaultIndex="imgKey">
-        <mt-swipe-item v-if="Array.isArray(imgArr)" v-for="(item, index) in imgArr" :key="index" v-show="item">
+      <mt-swipe :show-indicators="false" :auto="0" :defaultIndex="imgKey" v-if="Array.isArray(imgArr)">
+        <mt-swipe-item v-for="(item, index) in imgArr" :key="index" v-show="item">
           <img :src="item" v-show="item" style="width:100%;height:calc(100%)">
         </mt-swipe-item>
-        <mt-swipe-item v-else v-show="imgArr">
+      </mt-swipe>
+      <mt-swipe v-else>
+        <mt-swipe-item v-show="imgArr">
           <img :src="imgArr" v-show="imgArr" style="width:100%;height:calc(100%)">
         </mt-swipe-item>
       </mt-swipe>
@@ -22,9 +24,19 @@
         imgArr: null
       }
     },
+    watch: {
+      'imgTotal': {
+        handler: function (n, o) {
+          console.log(n)
+        },
+        deep: true
+      }
+    },
     created () {
       this.hidePop = this.showImg
       this.imgArr = this.imgTotal
+      console.log(this.imgArr)
+      console.log(Array.isArray(this.imgArr))
       console.log('bbbbbb', this.showImg, this.imgTotal, this.imgKey)
     },
     methods: {
@@ -45,10 +57,6 @@
         height: 750px;
         .mint-swipe-items-wrap{
           .mint-swipe-item{
-            img{
-              width: 100% !important;
-              height: 100% !important;
-            }
           }
         }
       }

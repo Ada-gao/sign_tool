@@ -1,5 +1,23 @@
 <template>
   <div>
+    <div class="thumbnails" v-if="fromBank === 2">
+    <mt-popup v-model="showImg">
+      <mt-swipe :show-indicators="false" :auto="0" :defaultIndex="defIdx">
+        <mt-swipe-item v-for="(item, idx) in fileArr" :key="idx" v-show="item">
+          <img :src="item" v-show="item" style="width:100%;height:calc(100%)">
+        </mt-swipe-item>
+      </mt-swipe>
+    </mt-popup>
+    </div>
+    <div v-else class="thumbnails">
+      <mt-popup v-model="showImg">
+        <mt-swipe :show-indicators="false" :auto="0">
+          <mt-swipe-item v-show="imgSrc">
+            <img :src="imgSrc" v-show="imgSrc" style="width:100%;height:calc(100%)">
+          </mt-swipe-item>
+        </mt-swipe>
+      </mt-popup>
+    </div>
     <div class="upload_cont" :class="{'upload_small': fromBank === 2}">
 
       <div v-if="fromBank === 2" style="display: inline-block;height: 120px">
@@ -8,13 +26,8 @@
               :key="index"
               @click="showBigImg(index)"
               v-show="item">
-            <img :src="item" v-show="item">
-            <span class="delete_img" @click='delImage(index)'>x</span>
-            <thumbnails v-if="showImg"
-                        :imgTotal="fileArr"
-                        :imgKey="index"
-                        :showImg="showImg"
-                        v-on:hideBigPop="hideBigImg"></thumbnails>
+            <img :src="item + '!132x120'" v-show="item">
+            <span class="delete_img" @click.prevent='delImage(index, $event)'>x</span>
           </li>
         </ul>
         <div class="addsmall_box" @click="selectcamera()">
@@ -37,8 +50,7 @@
                     v-show="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
-      <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
-      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg()">&#xe64e;</i>
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe64e;</i>
     </div>
     <mt-popup v-model="show"
               position="bottom"
@@ -60,13 +72,10 @@
     deleteDetail
   } from '@/service/api/customers'
   import {Popup} from 'mint-ui'
-  import thumbnails from '@/base/clientCamera/thumbnails'
-  //  import {getStore} from '@/config/mUtils'
   export default {
     name: 'Camera',
     components: {
-      'mt-popup': Popup,
-      thumbnails
+      'mt-popup': Popup
     },
     props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc'],
     data () {
@@ -92,10 +101,6 @@
     watch: {
       'imageSrc': function (n, o) {
         this.setImgSrc()
-      },
-      'defIdx': function (n, o) {
-        console.log(n)
-        this.changeDefIdx()
       }
     },
     methods: {
@@ -178,7 +183,7 @@
             if (res.status === 200) {
               this.spinnerShow = false
               // this.imgSrc = 'data:image/jpeg;base64,' + imageData
-              this.imgSrc = this.idSrc = res.data.file_url + '!132x120'
+              this.imgSrc = this.idSrc = res.data.file_url
               this.$emit('imgHandler', this.idSrc)
             }
           }).catch(err => {
@@ -192,7 +197,7 @@
               this.spinnerShow = false
               // this.tempArr.push(res.data.file_url)
               // this.fileArr.push('data:image/jpeg;base64,' + imageData)
-              this.fileArr.push(res.data.file_url + '!132x120')
+              this.fileArr.push(res.data.file_url)
             }
           }).catch(err => {
             console.log('error: ' + err)
@@ -200,30 +205,23 @@
           })
         }
       },
-      showSwiper (index) {
-        this.defIdx = index
-        this.showThumbnail = true
-      },
-      changeDefIdx () {
-        this.defaultIdx = this.defIdx
-      },
       hideBigImg (data) {
         this.showImg = data
         console.log(this.show)
       },
       showBigImg (index) {
-        console.log(index)
+        // console.log(typeof index)
+        this.defIdx = typeof index === 'object' ? 0 : index
         this.showImg = true
-        // console.log('tempArr', this.tempArr)
       },
-      delImage (index) {
+      delImage (index, ev) {
+        ev.stopPropagation()
         deleteDetail(this.cerId, this.fileId[index]).then(res => {
           if (res.status === 200) {
             this.fileId.splice(index, 1)
           }
         })
         this.fileArr.splice(index, 1)
-        // this.tempArr.splice(index, 1)
       }
     }
   }
@@ -337,6 +335,20 @@
         top: 50%;
         margin-left: -50px;
         margin-top: -50px;
+      }
+    }
+  }
+  .thumbnails{
+    .mint-popup{
+      width: 750px;
+      height: 750px;
+      .mint-swipe{
+        width: 750px;
+        height: 750px;
+        .mint-swipe-items-wrap{
+          .mint-swipe-item{
+          }
+        }
       }
     }
   }
