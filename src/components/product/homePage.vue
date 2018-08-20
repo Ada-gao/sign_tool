@@ -21,7 +21,11 @@
 				<i slot="icon" v-else class="iconfont yellow">&#xe633;</i>
 				</cell>
 				 <!-- :email="email" :userId="userId" -->
-				<selling-products :child-data="item.products"  mark="homePage" v-show="showContentList[index]"></selling-products>
+				<selling-products :child-data="item.products"
+                          mark="homePage"
+                          @cgPopup="cgPopup"
+                          :popupVisible="popupVisible"
+                          v-show="showContentList[index]"></selling-products>
         <div class="divide-line"></div>
 			</group>
     </div>
@@ -44,7 +48,10 @@ export default {
 	},
 	methods: {
     showContent (status, index) {
-		this.showContentList[index] = !status
+		  this.showContentList[index] = !status
+    },
+    cgPopup (data) {
+      this.popupVisible = data
     }
   },
   data () {
@@ -63,7 +70,8 @@ export default {
 				'10': true
 			},
 			productsList: [],
-			spinner: true
+			spinner: true,
+      popupVisible: false
 			// email: '',
 			// userId: ''
     }

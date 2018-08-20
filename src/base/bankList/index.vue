@@ -1,5 +1,8 @@
 <template>
   <div class="bankList">
+    <mt-popup v-model="popupVisible">
+      <mt-spinner type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
+    </mt-popup>
     <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡</x-header>
     <div class="wrapper">
       <div class="top">
@@ -45,7 +48,9 @@
         clientId: '',
         bankList: [],
         mark: '',
-        selectedItem: []
+        selectedItem: [],
+        popupVisible: true,
+        timer: null
 //        addCard: null
 //        stat: null
       }
@@ -95,7 +100,10 @@
       },
       getList () {
         checkCustomerBankDetail(this.clientId).then(res => {
-          this.bankList = res.data
+          this.timer = setTimeout(() => {
+            this.bankList = res.data
+            this.popupVisible = false
+          }, 200)
         })
       }
     },
@@ -152,7 +160,8 @@
       .list{
         padding: 20px;
         .item{
-          width: 710px;
+          /*width: 710px;*/
+          width: 94.7%;
           padding: 20px;
           height: 210px;
           background: #fff;
