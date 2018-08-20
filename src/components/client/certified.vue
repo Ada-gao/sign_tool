@@ -162,6 +162,14 @@
         } else if (this.userInfos.type === '1') {
           this.radio = '专业投资者'
           this.showSelect = true
+          getProReasons().then(res => {
+            if (res.status === 200) {
+              this.flag = true
+              for (let value of res.data) {
+                this.slots[0].values.push(value)
+              }
+            }
+          })
         }
       } else {
         id = this.$route.params.id
@@ -173,6 +181,14 @@
             this.radio = '普通投资者'
           } else if (this.userInfos.type === '1') {
             this.radio = '专业投资者'
+            getProReasons().then(res => {
+              if (res.status === 200) {
+                this.flag = true
+                for (let value of res.data) {
+                  this.slots[0].values.push(value)
+                }
+              }
+            })
           }
         })
       }

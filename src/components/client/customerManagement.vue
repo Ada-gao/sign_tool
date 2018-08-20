@@ -253,7 +253,7 @@
           this.clientId = res.data.client_id
           this.clientName = res.data.name
           this.clientType = res.data.client_type
-          if (this.data.asset_amount > 500 &&
+          if (this.data.asset_amount > this.data.asset_standard &&
               this.data.client_type !== '1' &&
               this.data.certification_status !== '1') {
             this.transformDialog = true
