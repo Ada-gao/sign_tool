@@ -42,9 +42,9 @@
     </div>
     <div class="myQrcode" :style="qheight" v-if="showMyQrcode">
       <div class="qTitle">
-        <i class="iconfont" @click="hideQrcode">&#xe731;</i>
+        <i class="iconfont back" @click="hideQrcode">&#xe731;</i>
         <span class="tip">我的二维码</span>
-        <i class="iconfont"></i>
+        <i class="iconfont share" @click="showShareBtn">&#xea31;</i>
       </div>
       <div class="qrcodeBox">
         <qrcode :value="value" :size="size"></qrcode>
@@ -52,6 +52,23 @@
       <div class="sao">扫一扫二维码，关注理财师</div>
       <!-- <x-button @click.native="save" type="primary"><i class="iconfont">&#xe688;</i>保存到相册中</x-button> -->
     </div>
+    <mt-popup v-model="showShare"
+              position="bottom"
+              :modal="false">
+      <!-- <div> -->
+        <div class="topBorder">
+          <span class="line1"></span>
+          <span class="topTitle">分享到</span>
+          <span class="line2"></span>
+        </div>
+        <div class="content">
+          <span><img src="static/img/wechat.png" class="iconfont" @click="wachatShare"><p>微信好友</p></span>
+          <span><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>微信好友</p></span>
+          <span><img src="static/img/qq.png" class="iconfont" @click="qqShare"><p>微信好友</p></span>
+        </div>
+        <div class="hideBtn" @click="hideShareBtn">取消</div>
+      <!-- </div> -->
+    </mt-popup>
   </div>
 </template>
 
@@ -73,7 +90,8 @@ export default {
       showMyQrcode: false,
       qheight: '',
       value: '',
-      size: 500
+      size: 500,
+      showShare: false
     }
   },
   components: {
@@ -90,7 +108,6 @@ export default {
   methods: {
     logoutEvent (key) {
       if (key === 'men1') {
-        console.log(key)
         removeStore('token')
         this.$router.push({name: 'Login'})
       }
@@ -98,9 +115,6 @@ export default {
     logout () {
       this.show3 = !this.show3
       this.dialogTableVisible = true
-    },
-    sure () {
-      console.log('ssss')
     },
     cancle () {
       this.dialogTableVisible = false
@@ -110,7 +124,17 @@ export default {
     },
     hideQrcode () {
       this.showMyQrcode = false
-    }
+      this.showShare = false
+    },
+    showShareBtn () {
+      this.showShare = true
+    },
+    hideShareBtn () {
+      this.showShare = false
+    },
+    wachatShare () {},
+    friendShare () {},
+    qqShare () {}
   },
   mounted () {
     this.qheight = 'height:' + window.innerHeight + 'px'
@@ -231,12 +255,23 @@ export default {
     color: #fff;
     .qTitle{
       padding: 60px 0 0 0;
-      .iconfont{
+      .back{
         position: absolute;
-        top: 42px;
+        // top: 42px;
         left: 10px;
         font-size: 60px;
+        line-height: 60px;
         transform: rotate(180deg);
+        display: inline-block;
+        width: 60px;
+        font-weight: bold;
+      }
+      .share{
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        font-size: 45px;
+        line-height: 60px;
         display: inline-block;
         width: 60px;
         font-weight: bold;
@@ -257,6 +292,8 @@ export default {
       margin-top: 180px;
       margin-bottom: 110px;
       img{
+        width: 500px !important;
+        height: 500px !important;
         padding: 30px;
         border: 1px solid #666;
         border-radius: 5px;
@@ -281,6 +318,79 @@ export default {
       }
     }
   }
+  .mint-popup{
+    width: 100%;
+    height: 460px;
+    padding: 40px 60px 0;
+    background: #FBFBFB;
+    box-sizing: border-box;
+    font-family: PingFangSC-Medium;
+    letter-spacing: 0;
+    .topBorder{
+      font-size: 28px;
+      color: #000000;
+      .line1{
+        display: inline-block;
+        height: 1px;
+        width: 205px;
+        background: #666;
+        margin-right: 40px;
+        vertical-align: middle;
+      }
+      .line2{
+        display: inline-block;
+        height: 1px;
+        width: 205px;
+        background: #666;
+        margin-left: 40px;
+        vertical-align: middle;
+      }
+      .topTitle:before{
+        display: inline-block;
+        content: '';
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #666;
+        right: 60px;
+        position: relative;
+      }
+      .topTitle:after{
+        display: inline-block;
+        content: '';
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #666;
+        left: 60px;
+        position: relative;
+      }
+    }
+    .content{
+      text-align: center;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      font-size: 24px;
+      color: #000000;
+      span{
+        display: inline-block;
+        img{
+          width: 112px;
+          height: 112px;
+        }
+      }
+      span:nth-child(2){
+        margin: 0 100px;
+      }
+    }
+    .hideBtn{
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+      font-size: 28px;
+      color: #333333;
+      border-top: 1px solid #C9C9C9;
+    }
+  }
 }
-
 </style>
