@@ -264,9 +264,9 @@
     methods: {
       hideVerBox () {
         if (!this.verificate.code) {
-          this.verificate.isTimeout = false
-          this.verificate.num = 60
-          clearInterval(this.verificate.timer)
+          // this.verificate.isTimeout = false
+          // this.verificate.num = 60
+          // clearInterval(this.verificate.timer)
           this.alertCont = '邀请码不能为空'
           return false
         }
@@ -276,20 +276,20 @@
         }
         if (params.code) {
           confirmVercode(params).then(res => {
-            this.verificate.code = ''
+            this.alertCont = this.verificate.code = ''
             if (res.status === 200) {
               this.data.mobile_validated = res.data.mobile_validated
               if (res.data.mobile_validated === '0') {
                 this.topTitle = '潜客信息'
-                this.validateCont = '邀请通过'
+                this.validateCont = '验证通过'
               } else {
                 this.topTitle = '手机未验证'
-                this.validateCont = '邀请失败'
+                this.validateCont = '验证失败'
               }
             } else {
               this.topTitle = '手机未验证'
               this.data.mobile_validated = '1'
-              this.validateCont = '邀请失败'
+              this.validateCont = '验证失败'
             }
             this.verificate.isShow = false
             this.validatePop = true
@@ -297,7 +297,7 @@
             clearInterval(this.verificate.timer)
             this.verificate.num = 60
           }).catch(() => {
-            this.verificate.code = ''
+            this.alertCont = this.verificate.code = ''
             this.verificate.isShow = false
             clearInterval(this.verificate.timer)
             this.verificate.num = 60
@@ -677,7 +677,7 @@
   .verificate_code {
     display: inline-block;
     /*width: 140px;*/
-    width: 13.3%;
+    width: 26.3%;
     height: 40px;
     line-height: 40px;
     background: #2672ba;
