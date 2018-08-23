@@ -2,7 +2,8 @@
 // list here all supported plugins
 const pluginsList = [
   'cordova-plugin-camera',
-  'cordova-plugin-device'
+  'cordova-plugin-device',
+  'cordova-plugin-qqsdk'
 ]
 
 exports.install = (Vue, options) => {
