@@ -2,7 +2,9 @@
   <div>
     <div class="thumbnails" v-if="fromBank === 2">
     <mt-popup v-model="showImg">
-      <mt-swipe :show-indicators="false" :auto="0" :defaultIndex="defIdx">
+      <mt-swipe :show-indicators="false"
+                :auto="0"
+                id="mt-swiper">
         <mt-swipe-item v-for="(item, idx) in fileArr" :key="idx" v-show="item">
           <img :src="item" v-show="item" style="width:100%;height:calc(100%)">
         </mt-swipe-item>
@@ -205,13 +207,18 @@
           })
         }
       },
-      hideBigImg (data) {
-        this.showImg = data
-        console.log(this.show)
-      },
       showBigImg (index) {
-        // console.log(typeof index)
-        this.defIdx = typeof index === 'object' ? 0 : index
+        if (typeof index === 'object') {
+          this.defIdx = 0
+        } else {
+          this.defIdx = index
+          let children = Array.from(document.querySelector('#mt-swiper').querySelectorAll('.mint-swipe-item'))
+          children.map((item, index) => {
+            item.classList.remove('is-active')
+          })
+          children[this.defIdx].classList.add('is-active')
+        }
+        // this.defIdx = typeof index === 'object' ? 0 : index
         this.showImg = true
       },
       delImage (index, ev) {

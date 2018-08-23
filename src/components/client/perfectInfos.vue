@@ -106,7 +106,17 @@
       <div class="upload">
         <div>证件信息</div>
       </div>
-      <div class="upload_box">
+      <div v-if="this.idSymbol === 0" class="upload_box one_upd_box">
+        <camera class="upload_cont1"
+                :popupVisible="popupVisible1"
+                :imageSrc="form.id_front_url"
+                :isFromBank="fromBank"
+                :cerId="cerId"
+                @showPopup="showPopup1"
+                @imgHandler="imageHandler1"
+                @hidePopup="hidePopup1"></camera>
+      </div>
+      <div class="upload_box" v-else-if="this.idSymbol === 1">
         <camera class="upload_cont1"
                 :popupVisible="popupVisible1"
                 :imageSrc="form.id_front_url"
@@ -168,6 +178,8 @@
     data () {
       return {
         submitDialog: false,
+        idSymbol: 1,
+        idFlag: false,
         submitCont: '认证提交待审核中…',
         form: {},
         id_start_date: '',
@@ -234,7 +246,8 @@
           id_expiration: this.id_expiration,
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url,
-          id_type: idType
+          id_type: idType,
+          id_symbol: this.idSymbol
         }
         setStore('perInfos', perInfos)
       }
@@ -254,6 +267,7 @@
         this.form.id_front_url = perInfos.id_front_url
         this.form.id_back_url = perInfos.id_back_url
         this.form.id_type = this.slots[0].values[perInfos.id_type + 1]
+        this.idSymbol = perInfos.id_symbol
       }
     },
     methods: {
@@ -265,9 +279,18 @@
       },
       onValuesChange (picker, values) {
         this.idType = values[0]
+        if (this.idFlag) {
+          console.log('come in')
+          if (this.idType === '身份证') {
+            this.idSymbol = 1
+          } else {
+            this.idSymbol = 0
+          }
+        }
         console.log(this.idType)
       },
       showCode () {
+        this.idFlag = true
         this.$refs.address.blur()
         this.$refs.certificateCode.blur()
         this.timer = null
@@ -728,7 +751,8 @@
         font-size: 30px;
         color: #333;
         position: absolute;
-        left: 165px;
+        /*left: 165px;*/
+        left: calc(29% - 60px);
         top: 240px;
       }
       .back_class {
@@ -737,7 +761,14 @@
         color: #333;
         position: absolute;
         /*right: 165px;*/
-        right: 180px;
+        /*right: 180px;*/
+        right: calc(29% - 60px);
+      }
+    }
+    .one_upd_box {
+      text-align: center;
+      .upload_cont1:first-child {
+        margin-right: 0;
       }
     }
     .submit_form {
