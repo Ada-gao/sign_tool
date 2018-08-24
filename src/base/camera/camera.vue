@@ -8,9 +8,9 @@
              :key="index"
              v-show="item"
              class="img">
-          <img :src="item" v-show="item" @click="showBigImg">
+          <img :src="item + '!132x120'" v-show="item" @click="showBigImg('imgArr', index)">
           <span class="delete_img" @click='delImage(index)'>x</span>
-          <thumbnails v-if="showImg" :imgTotal="fileArr" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
+          <!-- <thumbnails v-if="showImg" :imgTotal="fileArr" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
         </div>
         <!-- </ul> -->
         <div class="addsmall_box" @click="selectcamera()">
@@ -33,9 +33,10 @@
                     v-show="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
-      <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
-      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe64e;</i>
+      <!-- <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg('imgSrc')">&#xe64e;</i>
     </div>
+    <thumbnails v-if="showImg" :imgTotal="bigImg" :imgKey="bigImgIndex" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
     <mt-popup v-model="show"
               position="bottom"
               class="camera_pop">
@@ -95,7 +96,9 @@
         spinnerShow: false,
         fileId: [],
         outsideSrc: [],
-        showImg: false
+        showImg: false,
+        bigImg: null,
+        bigImgIndex: ''
       }
     },
     watch: {
@@ -284,13 +287,17 @@
           this.fileArr.splice(index, 1)
         }
       },
-      showBigImg () {
+      showBigImg (data, index) {
         this.showImg = true
-        console.log('fileArr', this.fileArr)
+        if (data === 'imgArr') {
+          this.bigImg = this.fileArr
+          this.bigImgIndex = index
+        } else if (data === 'imgSrc') {
+          this.bigImg = this.imgSrc
+        }
       },
       hideBigImg (data) {
         this.showImg = data
-        console.log(this.show)
       }
     }
   }

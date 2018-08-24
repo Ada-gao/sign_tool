@@ -1,14 +1,16 @@
 <template>
   <div class="mypage">
-    <x-header :left-options="{showBack: false}">我的</x-header>
+    <x-header :left-options="{showBack: false}">我的
+      <i slot="overwrite-left" class="iconfont mes">&#xe641;</i>
+    </x-header>
     <div class="wrapper">
-      <!-- <div class="top">
+      <div class="top">
         <div class="img"><img src="static/img/banner.png" alt=""></div>
         <div class="right">
-          <p>用户名：</p>
-          <p>手机号码：</p>
+          <p>用户名：小阿西</p>
+          <p>手机号码：18876539837</p>
         </div>
-      </div> -->
+      </div>
       <group>
         <cell title="我的消息" :link="{name: 'MyInfo'}">
 				  <i slot="icon" class="iconfont icon">&#xe62d;</i>
@@ -23,10 +25,11 @@
         <cell title="关于我们" :link="{name: 'MyVersion'}">
 				  <i slot="icon" class="iconfont icon">&#xe625;</i>
         </cell>
-        <cell title="退出" @click.native="logout">
+        <!-- <cell title="退出" @click.native="logout">
 				  <i slot="icon" class="iconfont icon">&#xe60c;</i>
-        </cell>
+        </cell> -->
       </group>
+      <button class="quitBtn" @click="logout">退出</button>
       <!-- <actionsheet v-model="show3" :menus="menus3" @on-click-menu="logoutEvent" show-cancel></actionsheet> -->
       <!-- <el-dialog title="您确定要退出吗？" :visible.sync="dialogTableVisible" :append-to-body="append" center :show-close="show" class="closeDialog">
         <div class="button">
@@ -37,14 +40,14 @@
       <x-dialog v-model="dialogTableVisible" class="dialog-demo quitDialog" hide-on-blur>
           <div class="quit">您确定要退出吗？</div>
           <x-button @click.native="logoutEvent('men1')" type="primary">确 定</x-button>
-          <x-button @click.native="cancle" type="primary">取 消</x-button>
+          <x-button @click.native="cancle" class="secCancle" type="primary">取 消</x-button>
       </x-dialog>
     </div>
     <div class="myQrcode" :style="qheight" v-if="showMyQrcode">
       <div class="qTitle">
-        <i class="iconfont" @click="hideQrcode">&#xe731;</i>
+        <i class="iconfont back" @click="hideQrcode">&#xe731;</i>
         <span class="tip">我的二维码</span>
-        <i class="iconfont"></i>
+        <i class="iconfont share" @click="showShareBtn">&#xea31;</i>
       </div>
       <div class="qrcodeBox">
         <qrcode :value="value" :size="size"></qrcode>
@@ -52,12 +55,30 @@
       <div class="sao">扫一扫二维码，关注理财师</div>
       <!-- <x-button @click.native="save" type="primary"><i class="iconfont">&#xe688;</i>保存到相册中</x-button> -->
     </div>
+    <mt-popup v-model="showShare"
+              position="bottom"
+              :modal="false">
+      <!-- <div> -->
+        <div class="topBorder">
+          <span class="line1"></span>
+          <span class="topTitle">分享到</span>
+          <span class="line2"></span>
+        </div>
+        <div class="content">
+          <span><img src="static/img/wechat.png" class="iconfont" @click="wachatShare"><p>微信好友</p></span>
+          <span><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>朋友圈</p></span>
+          <span><img src="static/img/qq.png" class="iconfont" @click="qqShare"><p>QQ好友</p></span>
+        </div>
+        <div class="hideBtn" @click="hideShareBtn">取消</div>
+      <!-- </div> -->
+    </mt-popup>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, Qrcode } from 'vux'
 import { removeStore } from '@/config/mUtils'
+import { getShare } from '@/service/api/aboutMe'
 
 export default {
   data () {
@@ -73,7 +94,9 @@ export default {
       showMyQrcode: false,
       qheight: '',
       value: '',
-      size: 500
+      size: 500,
+      showShare: false,
+      shareUrl: ''
     }
   },
   components: {
@@ -90,7 +113,6 @@ export default {
   methods: {
     logoutEvent (key) {
       if (key === 'men1') {
-        console.log(key)
         removeStore('token')
         this.$router.push({name: 'Login'})
       }
@@ -98,9 +120,6 @@ export default {
     logout () {
       this.show3 = !this.show3
       this.dialogTableVisible = true
-    },
-    sure () {
-      console.log('ssss')
     },
     cancle () {
       this.dialogTableVisible = false
@@ -110,6 +129,41 @@ export default {
     },
     hideQrcode () {
       this.showMyQrcode = false
+      this.showShare = false
+    },
+    showShareBtn () {
+      this.showShare = true
+    },
+    hideShareBtn () {
+      this.showShare = false
+    },
+    wachatShare () {},
+    friendShare () {},
+    qqShare () {
+      let obj = {
+        shareType: '1',
+        shareChannel: '2'
+      }
+      getShare(obj).then(res => {
+        this.shareUrl = res.data.share_url
+      })
+      var args = {}
+      args.client = QQSDK.ClientType.QQ
+      QQSDK.checkClientInstalled(function () {
+        console.log('client is installed')
+      }, function () {
+        console.log('client is not installed')
+      }, args)
+      args.scene = QQSDK.Scene.QQ
+      args.title = '注册理财师'
+      args.description = '扫一扫注册理财师'
+      args.image = this.shareUrl
+      QQSDK.shareImage(function () {
+        console.log('shareImage success')
+      }, function (failReason) {
+        console.log('失败')
+        console.log(failReason)
+      }, args)
     }
   },
   mounted () {
@@ -123,9 +177,14 @@ export default {
 <style lang="less">
 .mypage{
   .vux-header{
-    // background: #fff !important;
+    .vux-header-left{
+      .mes{
+        font-size: 40px;
+        color: #000;
+      }
+    }
     .vux-header-title{
-      // color: #000;
+      color: #000;
     }
   }
   .wrapper {
@@ -149,16 +208,28 @@ export default {
       }
       .right{
         display: inline-block;
+        margin-left: 60px;
+        vertical-align: top;
+        padding-top: 10px;
+        p{
+          font-family: PingFangSC-Regular;
+          font-size: 30px;
+          color: #000;
+          margin-bottom: 15px;
+        }
       }
     }
     .weui-cells{
       margin-top: 0px;
     }
+    .weui-cells:before{
+      border-top: none;
+    }
     .weui-cell:after{
       border-top: 1px solid #CCCCCC;
     }
     .weui-cells:after{
-      border-bottom: 1px solid #CCCCCC;
+      border-bottom: none;
     }
     .weui-cell {
       font-size: 30px; /*px*/
@@ -166,22 +237,41 @@ export default {
       padding-bottom: 40px;
       height: 103px;
       box-sizing: border-box;
-      height: 82px;
+      height: 90px;
       padding-left: 20px;
+      border-bottom: 1px solid #D0D0D0;
       .icon{
-        color: #2B7DC2;
+        // color: #2B7DC2;
+        color: #B68458;
         font-size: 40px;
       }
       label{
-        font-family: PingFangSC-Medium;
+        font-family: PingFangSC-Regular;
         font-size: 30px;
         color: #333333;
       }
+    }
+    .weui-cell:last-child{
+      border-bottom: none;
     }
     .weui-actionsheet {
       .weui-actionsheet__cell {
         font-size: 38px!important; /*px*/
       }
+    }
+    .quitBtn{
+      display: block;
+      margin: 113px auto;
+      width: 710px;
+      height: 90px;
+      background: #fff;
+      border-radius: 10px;
+      font-family: PingFangSC-Medium;
+      font-size: 30px;
+      color: #B68458;
+      line-height: 90px;
+      text-align: center;
+      outline: none;
     }
     .quitDialog{
       .weui-dialog{
@@ -203,13 +293,17 @@ export default {
       }
       .weui-btn.weui-btn_primary{
         display: inline-block;
-        background: #2A7DC1;
+        // background: #2A7DC1;
+        background: #B68458;
         border-radius: 10px;
         width: 190px;
         height: 80px;
         font-family: PingFangSC-Medium;
         font-size: 36px;
         color: #F0F0F0;
+      }
+      .weui-btn.weui-btn_primary.secCancle{
+        background: #CBCBCB;
       }
       .weui-btn.weui-btn_primary:first-child{
         margin-left: 43px;
@@ -231,12 +325,23 @@ export default {
     color: #fff;
     .qTitle{
       padding: 60px 0 0 0;
-      .iconfont{
+      .back{
         position: absolute;
-        top: 42px;
+        // top: 42px;
         left: 10px;
         font-size: 60px;
+        line-height: 60px;
         transform: rotate(180deg);
+        display: inline-block;
+        width: 60px;
+        font-weight: bold;
+      }
+      .share{
+        position: absolute;
+        top: 60px;
+        right: 10px;
+        font-size: 45px;
+        line-height: 60px;
         display: inline-block;
         width: 60px;
         font-weight: bold;
@@ -257,6 +362,8 @@ export default {
       margin-top: 180px;
       margin-bottom: 110px;
       img{
+        width: 500px !important;
+        height: 500px !important;
         padding: 30px;
         border: 1px solid #666;
         border-radius: 5px;
@@ -281,6 +388,79 @@ export default {
       }
     }
   }
+  .mint-popup{
+    width: 100%;
+    height: 460px;
+    padding: 40px 60px 0;
+    background: #FBFBFB;
+    box-sizing: border-box;
+    font-family: PingFangSC-Medium;
+    letter-spacing: 0;
+    .topBorder{
+      font-size: 28px;
+      color: #000000;
+      .line1{
+        display: inline-block;
+        height: 1px;
+        width: 205px;
+        background: #666;
+        margin-right: 40px;
+        vertical-align: middle;
+      }
+      .line2{
+        display: inline-block;
+        height: 1px;
+        width: 205px;
+        background: #666;
+        margin-left: 40px;
+        vertical-align: middle;
+      }
+      .topTitle:before{
+        display: inline-block;
+        content: '';
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #666;
+        right: 60px;
+        position: relative;
+      }
+      .topTitle:after{
+        display: inline-block;
+        content: '';
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #666;
+        left: 60px;
+        position: relative;
+      }
+    }
+    .content{
+      text-align: center;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      font-size: 24px;
+      color: #000000;
+      span{
+        display: inline-block;
+        img{
+          width: 112px;
+          height: 112px;
+        }
+      }
+      span:nth-child(2){
+        margin: 0 100px;
+      }
+    }
+    .hideBtn{
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+      font-size: 28px;
+      color: #333333;
+      border-top: 1px solid #C9C9C9;
+    }
+  }
 }
-
 </style>
