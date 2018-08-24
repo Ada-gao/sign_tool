@@ -54,8 +54,8 @@
                     <!-- <span class="gray_item" v-show="item.certification_status === '0'">投资者身份未认证</span> -->
                     <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
                     <!--<span v-show="item.certification_status === '2'">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>-->
+                    <span class="red_color" v-show="item.certification_status === '3'">身份验证失败</span>
                     <span>{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
-                    <span class="red_color" v-show="item.certification_status === '3'">普通投资者身份验证失败</span>
                     <!--<span class="red_color" v-show="item.certification_status === '4'">普通投资者认证已过期</span>-->
                     <i class="iconfont icon-right"></i>
                   </div>
@@ -77,11 +77,11 @@
                     <span style="display: block;">{{item.mobile}}</span>
                   </div>
                   <div class="customer_right">
-                    <span class="gray_item" v-show="item.certification_status === '0'">投资者身份未认证</span>
-                    <span class="gray_item" v-show="item.certification_status === '1'">投资者身份认证待审核</span>
-                    <span class="gray_item" v-show="item.certification_status === '2'">投资者身份已认证</span>
-                    <span class="red_color" v-show="item.certification_status === '3'">普通投资者身份验证失败</span>
-                    <span class="red_color" v-show="item.certification_status === '4'">普通投资者认证已过期</span>
+                    <span class="gray_item" v-show="item.certification_status === '0'">未认证</span>
+                    <span class="gray_item" v-show="item.certification_status === '1'">认证待审核</span>
+                    <span class="gray_item" v-show="item.certification_status === '2'">已认证</span>
+                    <span class="red_color" v-show="item.certification_status === '3'">身份验证失败</span>
+                    <span class="red_color" v-show="item.certification_status === '4'">认证已过期</span>
                     <i class="iconfont icon-right"></i>
                   </div>
                 </div>

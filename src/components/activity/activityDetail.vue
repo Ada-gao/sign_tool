@@ -1,20 +1,11 @@
 <template>
-  <div class="activity_list activity_detail">
-    <mt-popup v-model="show"
-              position="bottom"
-              class="camera_pop">
-      <div>
-        <div class='popup-item' @click="camera()">相机</div>
-        <div class='popup-item' @click="photo()">从相册中选取</div>
-        <div class='popup-item' @click="cancel()">取消</div>
-      </div>
-    </mt-popup>
+  <div class="activity_list">
     <mt-header fixed title="活动详情" class="header">
       <router-link to="/" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
       <mt-button slot="right">
-        <div @click="handleShare">
+        <div @click="showShareBtn">
           <mt-button class="right_btn"><span>分享</span><i class="iconfont">&#xea31;</i></mt-button>
         </div>
       </mt-button>
@@ -77,31 +68,90 @@
         <mt-cell
           title="代客户报名"
           class="def_mtcell"
-          to="/"
+          :to="{name: 'clientList'}"
           is-link>
         </mt-cell>
         <mt-cell
           title="查看报名列表"
           class="def_mtcell"
-          to="/"
+          :to="{name: 'clientSignedList'}"
           is-link>
         </mt-cell>
       </main>
     </div>
+    <div class="popup_banner" v-if="showShare">
+      <img :src="posterBanner"
+           v-if="showShare"
+           alt="">
+    </div>
+    <mt-popup v-model="showShare"
+              position="bottom"
+              class="activity_popup">
+      <!-- <div> -->
+      <div class="topBorder">
+        <span class="line1"></span>
+        <span class="topTitle">分享到</span>
+        <span class="line2"></span>
+      </div>
+      <div class="content">
+        <span><img src="static/img/wechat.png" class="iconfont" @click="wachatShare"><p>微信好友</p></span>
+        <span><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>朋友圈</p></span>
+        <span><img src="static/img/qq.png" class="iconfont" @click="qqShare"><p>QQ好友</p></span>
+      </div>
+      <div class="hideBtn" @click="hideShareBtn">取消</div>
+      <!-- </div> -->
+    </mt-popup>
   </div>
 </template>
 <script>
+  import { getShare } from '@/service/api/aboutMe'
   export default {
     components: {},
     data () {
       return {
         src: 'static/img/banner.jpg',
-        show: false
+        posterBanner: 'static/img/banner.jpg',
+        showShare: false,
+        shareUrl: ''
       }
     },
     methods: {
       handleShare () {
         console.log(111)
+      },
+      showShareBtn () {
+        this.showShare = true
+      },
+      hideShareBtn () {
+        this.showShare = false
+      },
+      wachatShare () {},
+      friendShare () {},
+      qqShare () {
+        let obj = {
+          shareType: '1',
+          shareChannel: '2'
+        }
+        getShare(obj).then(res => {
+          this.shareUrl = res.data.share_url
+        })
+        var args = {}
+        args.client = QQSDK.ClientType.QQ
+        QQSDK.checkClientInstalled(() => {
+          console.log('client is installed')
+        }, () => {
+          console.log('client is not installed')
+        }, args)
+        args.scene = QQSDK.Scene.QQ
+        args.title = '注册理财师'
+        args.description = '扫一扫注册理财师'
+        args.image = this.shareUrl
+        QQSDK.shareImage(() => {
+          console.log('shareImage success')
+        }, (failReason) => {
+          console.log('失败')
+          console.log(failReason)
+        }, args)
       }
     },
     mounted () {}
@@ -109,16 +159,106 @@
 </script>
 <style lang="less" scoped>
   @import '../../common/style/variable.less';
+  .popup_banner {
+    width: 86.67%;
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 34px 25px;
+    position: fixed;
+    top: 36%;
+    left: 50%;
+    z-index: 9999;
+    transform: translateX(-50%) translateY(-50%);
+    img {
+      display: inline-block;
+      width: 100%;
+    }
+  }
+  .activity_popup.mint-popup{
+    width: 100%;
+    height: 460px;
+    padding: 40px 60px 0;
+    background: #FBFBFB;
+    box-sizing: border-box;
+    font-family: PingFangSC-Regular;
+    letter-spacing: 0;
+    .topBorder{
+      font-size: 28px;
+      color: #000000;
+      .line1{
+        display: inline-block;
+        height: 1px;
+        width: 205px;
+        background: #666;
+        margin-right: 40px;
+        vertical-align: middle;
+      }
+      .line2{
+        display: inline-block;
+        height: 1px;
+        width: 205px;
+        background: #666;
+        margin-left: 40px;
+        vertical-align: middle;
+      }
+      .topTitle:before{
+        display: inline-block;
+        content: '';
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #666;
+        right: 60px;
+        position: relative;
+      }
+      .topTitle:after{
+        display: inline-block;
+        content: '';
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #666;
+        left: 60px;
+        position: relative;
+      }
+    }
+    .content{
+      text-align: center;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      font-size: 24px;
+      color: #000000;
+      span{
+        display: inline-block;
+        img{
+          width: 112px;
+          height: 112px;
+        }
+      }
+      span:nth-child(2){
+        margin: 0 100px;
+      }
+    }
+    .hideBtn{
+      height: 100px;
+      line-height: 100px;
+      text-align: center;
+      font-size: 28px;
+      color: #333333;
+      border-top: 1px solid #C9C9C9;
+    }
+  }
   .activity_list {
     font-family: PingFangSC-Regular;
     .mint-header.header {
-      height: 88px;
+      height: 98px;
       background-color: @new-header-color;
       font-size: 36px;
       color: #333;
+      padding-top: 30px;
     }
     .detail {
-      padding-top: 88px;
+      padding-top: 98px;
       background-color: #fff;
       .left, .right {
         position: absolute;

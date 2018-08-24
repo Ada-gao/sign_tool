@@ -52,13 +52,14 @@
   .activity_list {
     font-family: PingFangSC-Regular;
     .mint-header.header {
-      height: 88px;
+      height: 98px;
       background-color: @new-header-color;
       font-size: 36px;
       color: #333;
+      padding-top: 30px;
     }
     .activity_cont {
-      padding-top: 88px;
+      padding-top: 98px;
       background-color: @new-bg-color;
       li {
         .header {
