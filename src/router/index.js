@@ -38,6 +38,8 @@ const ReservationList = r => require.ensure([], () => r(require('@/components/ap
 const ProductAppointment = r => require.ensure([], () => r(require('@/components/appointment/productAppointment')), 'productAppointment')
 const BankList = r => require.ensure([], () => r(require('@/base/bankList')), 'bankList')
 const CustomerNameList = r => require.ensure([], () => r(require('@/components/appointment/customerNameList')), 'customerNameList')
+const activityList = r => require.ensure([], () => r(require('@/components/activity/activityList')), 'activityList')
+const activityDetail = r => require.ensure([], () => r(require('@/components/activity/activityDetail')), 'activityDetail')
 
 Vue.use(Router)
 
@@ -330,6 +332,22 @@ const router = new Router({
       path: '/customerNameList',
       name: 'CustomerNameList',
       component: CustomerNameList,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/activityList',
+      name: 'activityList',
+      component: activityList,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/activityDetail',
+      name: 'activityDetail',
+      component: activityDetail,
       meta: {
         auth: true
       }
