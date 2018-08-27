@@ -115,8 +115,11 @@ export default {
       }
     },
      nextStep () {
-        console.log('click...')
+      console.log('click...')
       this.$store.state.token = '100'
+      // window.JPush.getRegistrationID((id) => {
+      //   console.log('getRegistrationID: ' + id)
+      // })
       getAuthToken({
         code: this.num,
         username: this.username,
@@ -202,6 +205,9 @@ export default {
         .catch(err => {
           if (err) {
             this.errorMsg = '验证码发送失败'
+            clearInterval(this.tiemr)
+            this.timer = null
+            this.show = true
             setTimeout(() => {
               this.errorMsg = ''
             }, 5000)

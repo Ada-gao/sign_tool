@@ -3,6 +3,7 @@
 const pluginsList = [
   'cordova-plugin-camera',
   'cordova-plugin-device',
+  'jPush',
   'cordova-plugin-qqsdk'
 ]
 

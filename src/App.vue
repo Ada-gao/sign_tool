@@ -19,10 +19,6 @@ export default {
   name: 'App',
   components: {
   	TabBottom
-  },
-  created () {
-    // window.JPush.init()
-    // console.log(window.plugins.jPushPlugin)
   }
 }
 </script>

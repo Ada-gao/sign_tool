@@ -2,6 +2,7 @@
   <div class="mypage">
     <x-header :left-options="{showBack: false}">我的
       <i slot="overwrite-left" class="iconfont mes">&#xe641;</i>
+      <i slot="right" class="iconfont mes" @click="barcodescanner">&#xe661;</i>
     </x-header>
     <div class="wrapper">
       <div class="top">
@@ -164,6 +165,27 @@ export default {
         console.log('失败')
         console.log(failReason)
       }, args)
+    },
+    barcodescanner () {
+      console.log('barcodescanner')
+      this.$router.push({name: 'Barcodescanner'})
+      // cordova.plugins.barcodeScanner.scan(
+      //   function (result) {
+      //       alert('We got a barcode\n' +
+      //             'Result: ' + result.text + '\n' +
+      //             'Format: ' + result.format + '\n' +
+      //             'Cancelled: ' + result.cancelled)
+      //   },
+      //   function (error) {
+      //       alert('Scanning failed: ' + error)
+      //   }
+      // )
+      // cordova.plugins.barcodeScanner.encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com", function(success) {
+      //     alert("encode success: " + success)
+      //   }, function(fail) {
+      //     alert("encoding failed: " + fail)
+      //   }
+      // )
     }
   },
   mounted () {
@@ -185,6 +207,12 @@ export default {
     }
     .vux-header-title{
       color: #000;
+    }
+    .vux-header-right{
+      .mes{
+        font-size: 35px;
+        color: #000;
+      }
     }
   }
   .wrapper {
