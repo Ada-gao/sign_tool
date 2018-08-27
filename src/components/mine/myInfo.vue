@@ -14,7 +14,6 @@
         <cell title="职位：" value=""></cell>
         <cell title="所属部门：" value=""></cell>
       </group> -->
-      
     </div>
   </div>
 </template>

@@ -115,8 +115,11 @@ export default {
       }
     },
      nextStep () {
-        console.log('click...')
+      console.log('click...')
       this.$store.state.token = '100'
+      // window.JPush.getRegistrationID((id) => {
+      //   console.log('getRegistrationID: ' + id)
+      // })
       getAuthToken({
         code: this.num,
         username: this.username,
