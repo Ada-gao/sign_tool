@@ -1,6 +1,11 @@
 <template>
-  <div class="perfect_infos" @touchmove="touchScreen">
-    <x-header :left-options="{backText: ''}">实名认证</x-header>
+  <div class="perfect_infos activity_list" @touchmove="touchScreen">
+    <!--<x-header :left-options="{backText: ''}">实名认证</x-header>-->
+    <mt-header fixed title="实名认证" class="header">
+      <router-link :to="{name: 'PotentialCustomerList'}" slot="left">
+        <mt-button icon="back" class="def_btn"></mt-button>
+      </router-link>
+    </mt-header>
     <group class="perfect_group wrapper">
       <div class="add_tit">
         <i class="iconfont">&#xe62c;</i>
@@ -31,7 +36,7 @@
                 popup-transition="popup-fade">
         <mt-picker :slots="slots"
                    :showToolbar="true"
-                   :itemHeight="70"
+                   :itemHeight="itemHeight"
                    :visibleItemCount="3"
                    @change="onValuesChange">
           <div class="toolbar">
@@ -231,6 +236,7 @@
     beforeRouteLeave (to, from, next) {
       let info = JSON.parse(getStore('selfInfos'))
       if (to.name === 'PotentialCustomerList') {
+        to.params.id = info.client_id
         info.client_certification_id = 0
         setStore('selfInfos', info)
         removeStore('perInfos')
@@ -495,6 +501,13 @@
     }
   }
   .perfect_infos {
+    .mint-header.header {
+      height: 98px;
+      background-color: #fff;
+      font-size: 36px;
+      color: #333;
+      padding-top: 30px;
+    }
     .cercode_box {
       width: 100%;
       height: 300px;

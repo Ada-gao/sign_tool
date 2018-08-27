@@ -158,7 +158,11 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        vm.idx = to.params.mark
+        if (!from.params.mark) {
+          vm.idx = 0
+        } else {
+          vm.idx = from.params.mark
+        }
       })
     },
     mounted () {
