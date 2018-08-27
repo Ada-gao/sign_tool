@@ -221,6 +221,9 @@ export default {
         .catch(err => {
           if (err) {
             this.errorMsg = '验证码发送失败'
+            clearInterval(this.tiemr)
+            this.timer = null
+            this.show = true
             setTimeout(() => {
               this.errorMsg = ''
             }, 5000)
