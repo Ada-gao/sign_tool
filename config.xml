@@ -48,11 +48,11 @@
     </edit-config>
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <plugin name="cordova-plugin-qqsdk" spec="^0.9.7">
-        <variable name="QQ_APP_ID" value="1107777578" />
-    </plugin>
     <plugin name="jpush-phonegap-plugin" spec="^3.4.3">
         <variable name="APP_KEY" value="1a08f552ec200520baccf2bb" />
+    </plugin>
+    <plugin name="cordova-plugin-qqsdk" spec="^0.9.7">
+        <variable name="QQ_APP_ID" value="1107707505" />
     </plugin>
     <engine name="ios" spec="^4.5.4" />
     <engine name="browser" spec="^5.0.3" />
