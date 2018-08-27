@@ -47,7 +47,10 @@
     </edit-config>
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <engine name="android" spec="^7.1.0" />
+    <plugin name="jpush-phonegap-plugin" spec="^3.4.3">
+        <variable name="APP_KEY" value="1a08f552ec200520baccf2bb" />
+    </plugin>
+    <engine name="android" spec="^7.1.1" />
     <engine name="ios" spec="^4.5.4" />
     <engine name="browser" spec="^5.0.3" />
 </widget>
