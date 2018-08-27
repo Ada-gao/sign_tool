@@ -38,6 +38,11 @@ const ReservationList = r => require.ensure([], () => r(require('@/components/ap
 const ProductAppointment = r => require.ensure([], () => r(require('@/components/appointment/productAppointment')), 'productAppointment')
 const BankList = r => require.ensure([], () => r(require('@/base/bankList')), 'bankList')
 const CustomerNameList = r => require.ensure([], () => r(require('@/components/appointment/customerNameList')), 'customerNameList')
+const activityList = r => require.ensure([], () => r(require('@/components/activity/activityList')), 'activityList')
+const activityDetail = r => require.ensure([], () => r(require('@/components/activity/activityDetail')), 'activityDetail')
+const clientSignedList = r => require.ensure([], () => r(require('@/components/activity/clientSignedList')), 'clientSignedList')
+const clientList = r => require.ensure([], () => r(require('@/components/activity/clientList')), 'clientList')
+const clientSigned = r => require.ensure([], () => r(require('@/components/activity/clientSigned')), 'clientSigned')
 
 Vue.use(Router)
 
@@ -330,6 +335,46 @@ const router = new Router({
       path: '/customerNameList',
       name: 'CustomerNameList',
       component: CustomerNameList,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/activityList',
+      name: 'activityList',
+      component: activityList,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/activityDetail',
+      name: 'activityDetail',
+      component: activityDetail,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/clientSignedList',
+      name: 'clientSignedList',
+      component: clientSignedList,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/clientList',
+      name: 'clientList',
+      component: clientList,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/clientSigned/:id',
+      name: 'clientSigned',
+      component: clientSigned,
       meta: {
         auth: true
       }

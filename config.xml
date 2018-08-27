@@ -7,6 +7,7 @@
     <author email="zhuangyinping@shuyun365.com" href="http://www.techlab.ai/">
         Shuyun
     </author>
+    <preference name="StatusBarBackgroundColor" value="#ffffff" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="target-device" value="handset" />
     <preference name="deployment-target" value="9.0" />
@@ -47,10 +48,13 @@
     </edit-config>
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
+    <plugin name="cordova-plugin-qqsdk" spec="^0.9.7">
+        <variable name="QQ_APP_ID" value="1107777578" />
+    </plugin>
     <plugin name="jpush-phonegap-plugin" spec="^3.4.3">
         <variable name="APP_KEY" value="1a08f552ec200520baccf2bb" />
     </plugin>
-    <engine name="android" spec="^7.1.1" />
     <engine name="ios" spec="^4.5.4" />
     <engine name="browser" spec="^5.0.3" />
+    <engine name="android" spec="^7.1.0" />
 </widget>

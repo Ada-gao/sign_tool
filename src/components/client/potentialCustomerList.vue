@@ -61,6 +61,10 @@
               <span class="fr">{{data.id_no}}</span>
             </cell-box>
             <cell-box>
+              <label style="color:#333">证件类型：</label>
+              <span class="fr">{{data.id_type}}</span>
+            </cell-box>
+            <cell-box>
               <label style="color:#333">证件有效期：</label>
               <span class="fr">{{data.id_start_date}} 至 {{data.id_expiration}}</span>
             </cell-box>
@@ -185,7 +189,7 @@
   } from '@/service/api/customers'
 
   import {setStore, removeStore} from '@/config/mUtils'
-  import {tfCtypeToText, tfCerIdToText} from '@/common/js/filter'
+  import {tfCtypeToText, tfCerIdToText, tfIdtype} from '@/common/js/filter'
 
   export default {
     name: 'PotentialCustomerList',
@@ -248,7 +252,9 @@
       checkCusomersDetail(this.client_id).then(res => {
         let selfInfos = Object.assign({}, res.data)
         setStore('selfInfos', selfInfos)
-        this.data = res.data
+        this.data = Object.assign({}, res.data)
+        this.data.id_type = tfIdtype(this.data.id_type)
+        console.log(this.data)
         this.topTitle = this.data.mobile_validated === '0' ? '潜客信息' : '手机未验证'
         this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
         this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled

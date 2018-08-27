@@ -154,7 +154,7 @@
       </x-dialog>
     </div>
     <x-dialog v-model="transformDialog" class="submitDialog">
-      <div class="tip">客户当前资产规模已到达500万<br/>
+      <div class="tip">客户当前资产规模已到达{{data.asset_standard}}万<br/>
             是否自动转变为专业投资者？</div>
 			<x-button type="primary" @click.native="transform">转 变</x-button>
 			<x-button type="primary" @click.native="cancel">取 消</x-button>

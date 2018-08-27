@@ -1350,7 +1350,6 @@ export default {
 				})
 			},
 			showBigImg (data, index) {
-				console.log(data)
 				if (data === 'bank') {
 					this.imgTotal = this.cardUrl
 				} else if (data === 'remit') {

@@ -29,7 +29,9 @@
               @click="showBigImg(index)"
               v-show="item">
             <img :src="item + '!132x120'" v-show="item">
-            <span class="delete_img" @click.prevent='delImage(index, $event)'>x</span>
+            <span class="delete_img" @click.prevent='delImage(index, $event)'>
+              <i>x</i>
+            </span>
           </li>
         </ul>
         <div class="addsmall_box" @click="selectcamera()">
@@ -304,14 +306,22 @@
         }
         .delete_img {
           position: absolute;
-          text-align: right;
+          display: block;
           top: -20px;
-          right: 0;
+          right: -6px;
           font-size: 50px;
-          line-height: 30px;
+          line-height: 22px;
           color: #000;
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
+          border-radius: 100%;
+          text-align: center;
+          background: rgba(0,0,0,0.60);
+          i {
+            display: inline-block;
+            font-size: 30px;
+            color: #fff;
+          }
         }
       }
       li:not(:last-child) {
