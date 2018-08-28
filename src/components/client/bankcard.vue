@@ -361,6 +361,7 @@
         line-height: 82px;
         display: inline-block;
         /*width: 710px;*/
+        width: 91.2%;
         background-color: #2672BA;
         text-align: center;
         border-radius: 10px;
