@@ -52,7 +52,6 @@ export const install = function (Vue, options, cb) {
         } else {
           alertContent = event.aps.alert
         }
-        alert(JSON.stringify(alertContent))
       } catch (exception) {
         console.log('JPushPlugin:onOpenNotification' + exception)
       }

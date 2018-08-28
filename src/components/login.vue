@@ -40,7 +40,7 @@
 import { XHeader, XButton, Countdown, XInput, Group } from 'vux'
 import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
-import { getVerificationCode, getAuthToken } from '@/service/api/login'
+import { getVerificationCode, getAuthToken, getTags } from '@/service/api/login'
 import Vue from 'vue'
 import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
@@ -62,7 +62,8 @@ export default {
       clear: false,
       platform: '',
       device: '',
-      disabledSend: true
+      disabledSend: true,
+      registrationId: ''
       // telTip: false
       // start: false
     }
@@ -121,13 +122,12 @@ export default {
       // window.JPush.getRegistrationID((id) => {
       //   console.log('getRegistrationID: ' + id)
       // })
-      console.log(this.platform, this.device.uuid)
       getAuthToken({
         code: this.num,
         username: this.username,
-        platform: this.platform,
+        platform: this.platform === 'iOS' ? 2 : 1,
         app_version: 'v1.0',
-        registration_id: this.device.uuid
+        registration_id: this.registrationId
       }).then(res => {
         console.log(res)
         if (res.status === 200) {
@@ -155,6 +155,20 @@ export default {
 //          this.$router.push({path: decodeURIComponent(url)})
           this.$router.push({name: 'HomePage'})
           // this.$router.push({name: name, params: {email: res.data.email, userId: res.data.user_id}})
+          // 获取用户tags
+          getTags().then(res => {
+            if(!res.tags) return
+            // res.tags
+            window.JPush.setTags({ sequence: 1, tags: [].concat(res.tags) }, (result) => {
+              // var sequence = result.sequence
+              var tags = result.tags  // 数组类型
+              console.log(tags)
+            }, (error) => {
+              console.log(error)
+              // var sequence = error.sequence
+              // var errorCode = error.code
+            })
+          })
         } else {
           return false
         }
@@ -170,6 +184,9 @@ export default {
       })
     },
     getIdentifyingCode () {
+      window.JPush.getRegistrationID((id) => {
+        this.registrationId = id
+      })
       if (this.disabledSend === true) {
         const TIME_COUNT = 60
         if (!this.timer) {

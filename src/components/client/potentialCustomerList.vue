@@ -266,6 +266,9 @@
         this.clickArrowObj.realnameObj.stat = tfCerIdToText(this.data.realname_status).flag
         this.clickArrowObj.realnameObj.disabled = tfCerIdToText(this.data.realname_status).disabled
       })
+      window.onpopstate = () => {
+        this.toLink()
+      }
     },
     methods: {
       hideVerBox () {

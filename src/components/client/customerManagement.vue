@@ -242,6 +242,9 @@
       })
       clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
       this.getList(clientId)
+      window.onpopstate = () => {
+        this.toLink()
+      }
     },
     methods: {
       getList (id) {
