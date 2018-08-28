@@ -5,7 +5,7 @@ const pluginsList = [
   'cordova-plugin-device',
   'jPush',
   'cordova-plugin-qqsdk',
-  'cordova-plugin-wechatv2'  
+  'cordova-plugin-wechatv2'
 ]
 
 exports.install = (Vue, options) => {

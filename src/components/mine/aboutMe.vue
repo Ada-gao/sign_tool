@@ -80,8 +80,6 @@
 import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, Qrcode } from 'vux'
 import { removeStore } from '@/config/mUtils'
 import { getShare } from '@/service/api/aboutMe'
-import { watchFile } from 'fs';
-
 export default {
   data () {
     return {
@@ -142,25 +140,33 @@ export default {
     wachatShare () {
       console.log('wachatShare')
       Wechat.isInstalled(function (installed) {
-        console.log("Wechat installed: " + (installed ? "Yes" : "No"));
+        console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
       }, function (reason) {
-        console.log("Failed: " + reason);
-      });
+        console.log('isInstalled: ' + reason)
+      })
+      // var scope = 'snsapi_userinfo'
+      // var state = '_' + (+new Date())
+      // Wechat.auth(scope, state, function (response) {
+      //   // you may use response.code to get the access token.
+      //   alert(JSON.stringify(response))
+      // }, function (reason) {
+      //   alert('Failed: ' + reason)
+      // })
       Wechat.share({
       message: {
-          title: "Hi, there",
-          description: "This is description.",
-          thumb: "https://cordova.apache.org/static/img/cordova_bot.png",
-          mediaTagName: "TEST-TAG-001",
-          messageExt: "这是第三方带的测试字段",
-          messageAction: "<action>dotalist</action>",
-          media: "YOUR_MEDIA_OBJECT_HERE"
+          title: 'Hi, there',
+          description: 'This is description.',
+          thumb: 'https://cordova.apache.org/static/img/cordova_bot.png',
+          mediaTagName: 'TEST-TAG-001',
+          messageExt: '这是第三方带的测试字段',
+          messageAction: '<action>dotalist</action>',
+          media: 'YOUR_MEDIA_OBJECT_HERE'
       },
-      scene: Wechat.Scene.TIMELINE   // share to Timeline
+      scene: Wechat.Scene.TIMELINE // share to Timeline
       }, function () {
-          console.log("Success")
+          console.log('Success')
       }, function (reason) {
-          console.log("Failed: " + reason)
+          console.log('share: ' + reason)
       })
     },
     friendShare () {},

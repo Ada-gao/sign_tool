@@ -42,7 +42,6 @@ import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken, getTags } from '@/service/api/login'
 import Vue from 'vue'
-import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
 export default {
   data () {
@@ -157,11 +156,11 @@ export default {
           // this.$router.push({name: name, params: {email: res.data.email, userId: res.data.user_id}})
           // 获取用户tags
           getTags().then(res => {
-            if(!res.tags) return
+            if (!res.tags) return
             // res.tags
             window.JPush.setTags({ sequence: 1, tags: [].concat(res.tags) }, (result) => {
               // var sequence = result.sequence
-              var tags = result.tags  // 数组类型
+              var tags = result.tags // 数组类型
               console.log(tags)
             }, (error) => {
               console.log(error)

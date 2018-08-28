@@ -2,7 +2,6 @@
   <div class="barcodeScanner">
     <x-header :left-options="{backText: ''}">扫一扫</x-header>
     <div class="wrapper">
-
     </div>
   </div>
 </template>
@@ -24,4 +23,3 @@ export default {
     }
   }
 </style>
-
