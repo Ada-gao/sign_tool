@@ -110,6 +110,14 @@ export default {
       if (key === 'men1') {
         removeStore('token')
         this.$router.push({name: 'Login'})
+        // window.JPush.cleanTags({ sequence: 1 }, (result) => {
+        //   var sequence = result.sequence
+        //   console.log(sequence)
+        //   alert('清空了')
+        // }, (error) => {
+        //   console.log(error)
+        // })
+      window.JPush.stopPush()
       }
     },
     logout () {

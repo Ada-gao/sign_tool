@@ -36,6 +36,7 @@
 import { XHeader, Group, CellBox, Cell } from 'vux'
 import SellingProducts from '@/base/sellingProducts/sellingProducts'
 import { getProducts } from '@/service/api/products'
+import { getTags } from '@/service/api/mineJPush'
 
 export default {
   name: 'HomePage',
@@ -52,7 +53,19 @@ export default {
     },
     cgPopup (data) {
       this.popupVisible = data
-    }
+		},
+		getTag () {
+			getTags().then(res => {
+				if (!res.data.tags) return
+				const tags = [].concat(res.data.tags.split(','))
+      	window.JPush.setTags({ sequence: 1, tags: tags },
+					function (result) {
+						console.log(result.tags)
+					}, function (error) {
+						console.log(error.code)
+					})
+			})
+		}
   },
   data () {
     return {
@@ -87,6 +100,7 @@ export default {
 				this.spinner = false
 			}
 		})
+		this.getTag()
 	}
 }
 </script>
@@ -96,9 +110,9 @@ export default {
 .homePage{
 	height: 100%;
 	background: #F5F5F5;
-	.vux-header{
-		// height: 128px;
-	}
+	// .vux-header{
+	// 	height: 128px;
+	// }
 	h1, h2 {
 		font-weight: normal;
 	}

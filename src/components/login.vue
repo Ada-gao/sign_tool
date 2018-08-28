@@ -41,6 +41,7 @@ import { XHeader, XButton, Countdown, XInput, Group } from 'vux'
 import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken } from '@/service/api/login'
+// import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
 
 export default {
@@ -61,7 +62,8 @@ export default {
       clear: false,
       platform: '',
       device: '',
-      disabledSend: true
+      disabledSend: true,
+      registrationId: ''
       // telTip: false
       // start: false
     }
@@ -83,6 +85,53 @@ export default {
     }
   },
   methods: {
+    registJPush () {
+      // var onGetRegistrationID = function (data) {
+      //   console.log('onGetRegistrationID event')
+      //   try {
+      //     this.registrationId = data
+      //     console.log('JPushPlugin:registrationID is ' + data)
+      //     if (data.length === 0) {
+      //       window.setTimeout(getRegistrationID, 1000)
+      //     }
+      //     if (Vue.cordova.device.platform !== 'Android') {
+      //       console.log('iOS clear badge number')
+      //       window.JPush.setApplicationIconBadgeNumber(0)
+      //     }
+      //   } catch (exception) {
+      //     console.log(exception)
+      //   }
+      // }
+      console.log('registJPush is operating')
+      window.JPush.init()
+      window.JPush.getRegistrationID((data) => {
+        alert('onGetRegistrationID event' + data)
+        try {
+          this.registrationId = data
+          alert('registrationID is ' + data)
+          if (data.length === 0) {
+            window.setTimeout(getRegistrationID, 1000)
+          }
+          if (Vue.cordova.device.platform !== 'Android') {
+            console.log('iOS clear badge number')
+            window.JPush.setApplicationIconBadgeNumber(0)
+          }
+        } catch (exception) {
+          console.log(exception)
+        }
+      })
+      window.JPush.setDebugMode(true)
+      window.JPush.isPushStopped(function (result) {
+        if (result === 0) {
+          // 开启
+          console.log('开启极光推送')
+        } else {
+          // 关闭
+          console.log('恢复极光推送')
+          window.JPush.resumePush()
+        }
+      })
+    },
     userChange (username) {
       if (/^[0-9]*$/.test(username)) {
         if (!(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test(username))) {
@@ -115,18 +164,16 @@ export default {
       }
     },
      nextStep () {
-        console.log('click...')
+      console.log('click...')
       this.$store.state.token = '100'
       getAuthToken({
         code: this.num,
         username: this.username,
         platform: this.platform,
         app_version: 'v1.0',
-        registration_id: this.device.uuid
+        registration_id: this.registrationId
       }).then(res => {
-        console.log(res)
         if (res.status === 200) {
-//          debugger
           this.$store.state.token = res.data.token
           window.localStorage.setItem('token', this.$store.state.token)
 //          let queryUrl = this.$router.currentRoute.query
@@ -165,6 +212,7 @@ export default {
       })
     },
     getIdentifyingCode () {
+      this.registJPush()
       if (this.disabledSend === true) {
         const TIME_COUNT = 60
         if (!this.timer) {
