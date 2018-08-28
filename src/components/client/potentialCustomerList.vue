@@ -57,12 +57,12 @@
           <div class="space" v-if="data.realname_status === '2'"></div>
           <group v-if="data.realname_status === '2'">
             <cell-box>
-              <label style="color:#333">证件号码：</label>
-              <span class="fr">{{data.id_no}}</span>
-            </cell-box>
-            <cell-box>
               <label style="color:#333">证件类型：</label>
               <span class="fr">{{data.id_type}}</span>
+            </cell-box>
+            <cell-box>
+              <label style="color:#333">证件号码：</label>
+              <span class="fr">{{data.id_no}}</span>
             </cell-box>
             <cell-box>
               <label style="color:#333">证件有效期：</label>

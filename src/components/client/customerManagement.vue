@@ -60,6 +60,10 @@
           </cell-box>
           <div class="space"></div>
           <cell-box>
+            <label style="color:#333">证件类型：</label>
+            <span class="fr">{{data.id_type}}</span>
+          </cell-box>
+          <cell-box>
             <label>证件号码：</label>
             <span class="fr">{{data.id_no}}</span>
           </cell-box>
@@ -181,7 +185,7 @@
     checkCustomerRemarks,
     addCustomerRemarks
   } from '@/service/api/customers'
-  import {tfCtypeToText, tfCerIdToText} from '@/common/js/filter'
+  import {tfCtypeToText, tfCerIdToText, tfIdtype} from '@/common/js/filter'
   import {setStore, removeStore} from '@/config/mUtils'
 
   export default {
@@ -249,7 +253,8 @@
     methods: {
       getList (id) {
         checkCusomersDetail(id).then(res => {
-          this.data = res.data
+          this.data = Object.assign({}, res.data)
+          this.data.id_type = tfIdtype(this.data.id_type)
           setStore('selfInfos', res.data)
           this.data.asset_amount = this.data.asset_amount || 0
           this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')

@@ -185,3 +185,29 @@ export function tfCtypeToText (status) {
   return params
 }
 // export { twoDecimals, percent, formatNum, upperNum }
+/**
+ * id_type: id => text
+ * @param status
+ * @returns {string}
+ */
+export function tfIdtype (status) {
+  let text = ''
+  switch (status) {
+    case '0':
+      text = '身份证'
+      break
+    case '1':
+      text = '护照'
+      break
+    case '2':
+      text = '军官证'
+      break
+    case '3':
+      text = '台胞证'
+      break
+    case '4':
+      text = '港澳通行证'
+      break
+  }
+  return text
+}

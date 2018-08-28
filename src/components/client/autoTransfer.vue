@@ -60,7 +60,7 @@
   import {Popup, Radio} from 'mint-ui'
   import {toast} from '@/common/js/filter'
   import {sendFiles, perfectInfos, getProReasons} from '@/service/api/customers'
-  import camera from '@/base/camera/camera'
+  import camera from '@/base/clientCamera'
   export default {
     components: {
       XHeader,
