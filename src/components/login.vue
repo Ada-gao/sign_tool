@@ -42,6 +42,7 @@ import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken } from '@/service/api/login'
 import Vue from 'vue'
+import { POINT_CONVERSION_COMPRESSED } from 'constants';
 
 export default {
   data () {
@@ -120,6 +121,7 @@ export default {
       // window.JPush.getRegistrationID((id) => {
       //   console.log('getRegistrationID: ' + id)
       // })
+      console.log(this.platform, this.device.uuid)
       getAuthToken({
         code: this.num,
         username: this.username,

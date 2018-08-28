@@ -15,13 +15,10 @@ export function getVerificationCode (obj) {
 /**
  * 获取用户 token
  */
-export function getAuthToken ({username, code}) {
+export function getAuthToken (obj) {
     return axios({
         url: '/v1/auth/auth_token/',
         method: 'post',
-        data: {
-            username,
-            code
-        }
+        data: obj
     })
 }

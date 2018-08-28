@@ -80,6 +80,7 @@
 import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, Qrcode } from 'vux'
 import { removeStore } from '@/config/mUtils'
 import { getShare } from '@/service/api/aboutMe'
+import { watchFile } from 'fs';
 
 export default {
   data () {
@@ -138,7 +139,30 @@ export default {
     hideShareBtn () {
       this.showShare = false
     },
-    wachatShare () {},
+    wachatShare () {
+      console.log('wachatShare')
+      Wechat.isInstalled(function (installed) {
+        console.log("Wechat installed: " + (installed ? "Yes" : "No"));
+      }, function (reason) {
+        console.log("Failed: " + reason);
+      });
+      Wechat.share({
+      message: {
+          title: "Hi, there",
+          description: "This is description.",
+          thumb: "https://cordova.apache.org/static/img/cordova_bot.png",
+          mediaTagName: "TEST-TAG-001",
+          messageExt: "这是第三方带的测试字段",
+          messageAction: "<action>dotalist</action>",
+          media: "YOUR_MEDIA_OBJECT_HERE"
+      },
+      scene: Wechat.Scene.TIMELINE   // share to Timeline
+      }, function () {
+          console.log("Success")
+      }, function (reason) {
+          console.log("Failed: " + reason)
+      })
+    },
     friendShare () {},
     qqShare () {
       let obj = {
