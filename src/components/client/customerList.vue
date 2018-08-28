@@ -1,7 +1,9 @@
 <template>
   <div class="customerList">
     <x-header v-show="isCancel===false" :left-options="{showBack: false}">客户
-      <router-link slot="right" :to="{name: 'NewCustomer'}" class="add_newcustomer">新增潜客
+      <!--<router-link slot="right" :to="{name: 'NewCustomer'}" class="add_newcustomer">新增潜客-->
+      <!--</router-link>-->
+      <router-link slot="right" :to="{name: 'activityList'}" class="add_newcustomer">新增潜客
       </router-link>
     </x-header>
     <x-header v-show="isCancel===true" :left-options="{showBack: false}">客户查询

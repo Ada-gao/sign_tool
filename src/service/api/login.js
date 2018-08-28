@@ -1,6 +1,4 @@
 import axios from '../../config/axios'
-// import { getStore } from '../config/mUtils'
-
 /**
  * 获取用户验证码
  */
@@ -11,17 +9,13 @@ export function getVerificationCode (obj) {
         data: obj
     })
 }
-
 /**
  * 获取用户 token
  */
-export function getAuthToken ({username, code}) {
+export function getAuthToken (obj) {
     return axios({
         url: '/v1/auth/auth_token/',
         method: 'post',
-        data: {
-            username,
-            code
-        }
+        data: obj
     })
 }

@@ -17,12 +17,14 @@
     .vux-header-title {
         font-size: 36px; /*px*/
         line-height: 88px;
+        color: #333333 !important;
+        font-family: PingFangSC-Regular;
     }
     .left-arrow {
         bottom: 2px !important;
         left: 10px !important;
         &:before {
-            border-color: #fff !important;
+            border-color: #333 !important;
             width: 20px !important;
             height: 20px !important;
         }
@@ -180,6 +182,39 @@
         width: 20px;
         height: 20px;
         border-color: #666;
+      }
+    }
+  }
+}
+
+// activity module
+.activity_list {
+  .header {
+    .def_btn {
+      i.mintui {
+        font-size: 33px;
+        color: #aaa;
+      }
+    }
+    .right_btn {
+      font-size: 26px;
+      color: #6C6C6C;
+      span, i {
+        vertical-align: middle;
+      }
+      i {
+        font-size: 32px;
+      }
+    }
+  }
+  .def_mtcell {
+    color: #626161;
+    font-size: 26px;
+    .mint-cell-wrapper {
+      padding: 0 20px;
+      .mint-cell-text {
+        color: #626161;
+        font-family: PingFangSC-Regular;
       }
     }
   }

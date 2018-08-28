@@ -8,37 +8,35 @@
         <cell title="职位：" value=""></cell>
         <cell title="所属部门：" value=""></cell>
       </group> -->
-      <group>
+      <!-- <group>
         <cell title="姓名：" :value="name"></cell>
         <cell title="手机号：" value=""></cell>
         <cell title="职位：" value=""></cell>
         <cell title="所属部门：" value=""></cell>
-      </group>
-      <qrcode :value="value"></qrcode>
+      </group> -->
     </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
-import { XHeader, Group, Cell, CellBox, Qrcode } from 'vux'
+import { XHeader, Group, Cell, CellBox } from 'vux'
 
 export default {
   data () {
     return {
-      name: '小小',
-      value: ''
+      name: '小小'
+      // value: ''
     }
   },
   components: {
     XHeader,
     Group,
     Cell,
-    CellBox,
-    Qrcode
+    CellBox
   },
   mounted () {
-    let data = JSON.parse(window.localStorage.data)
-    this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
+    // let data = JSON.parse(window.localStorage.data)
+    // this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
   }
 }
 </script>
