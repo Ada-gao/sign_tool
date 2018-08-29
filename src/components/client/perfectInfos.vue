@@ -285,15 +285,16 @@
       },
       onValuesChange (picker, values) {
         this.idType = values[0]
-        if (this.idFlag) {
-          console.log('come in')
-          if (this.idType === '身份证') {
-            this.idSymbol = 1
-          } else {
-            this.idSymbol = 0
-          }
-        }
-        console.log(this.idType)
+//        if (this.idFlag) {
+//          // console.log('come in')
+//          if (this.idType === '身份证') {
+//            this.idSymbol = 1
+//          } else {
+//            this.idSymbol = 0
+//          }
+//        }
+//        this.form.id_back_url = this.form.id_front_url = ''
+        // console.log(this.idType)
       },
       showCode () {
         this.idFlag = true
@@ -310,6 +311,15 @@
       },
       ensureCerCode (val) {
         this.form.id_type = this.idType
+        if (this.idFlag) {
+          // console.log('come in')
+          if (this.idType === '身份证') {
+            this.idSymbol = 1
+          } else {
+            this.idSymbol = 0
+          }
+        }
+        this.form.id_back_url = this.form.id_front_url = ''
         clearTimeout(this.timer)
         this.showCerCode = false
       },
@@ -382,6 +392,7 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
+        console.log(params)
 //        if (params.id_no) {
 //          if (params.id_type === '0' && !idcardValidate(params.id_no).stat) {
 //            this.alertCont = '请输入有效的证件号码'
@@ -394,7 +405,8 @@
           toast(this.alertCont)
           return false
         }
-        if (!params.birthday ||
+        if (params.id_type === '0') {
+          if (!params.birthday ||
             !params.gender ||
             !params.address ||
             !params.id_no ||
@@ -402,8 +414,20 @@
             !params.id_expiration ||
             !params.id_front_url ||
             !params.id_back_url) {
-          toast(this.alertCont)
-          return false
+            toast(this.alertCont)
+            return false
+          }
+        } else {
+          if (!params.birthday ||
+            !params.gender ||
+            !params.address ||
+            !params.id_no ||
+            !params.id_start_date ||
+            !params.id_expiration ||
+            !params.id_front_url) {
+            toast(this.alertCont)
+            return false
+          }
         }
         uploadId(this.client_certification_id, params).then(res => {
           if (res.status === 200) {

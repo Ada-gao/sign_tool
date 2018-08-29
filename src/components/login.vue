@@ -40,7 +40,8 @@
 import { XHeader, XButton, Countdown, XInput, Group } from 'vux'
 import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
-import { getVerificationCode, getAuthToken, getTags } from '@/service/api/login'
+import { getVerificationCode, getAuthToken } from '@/service/api/login'
+import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
 
 export default {
@@ -84,6 +85,53 @@ export default {
     }
   },
   methods: {
+    registJPush () {
+      // var onGetRegistrationID = function (data) {
+      //   console.log('onGetRegistrationID event')
+      //   try {
+      //     this.registrationId = data
+      //     console.log('JPushPlugin:registrationID is ' + data)
+      //     if (data.length === 0) {
+      //       window.setTimeout(getRegistrationID, 1000)
+      //     }
+      //     if (Vue.cordova.device.platform !== 'Android') {
+      //       console.log('iOS clear badge number')
+      //       window.JPush.setApplicationIconBadgeNumber(0)
+      //     }
+      //   } catch (exception) {
+      //     console.log(exception)
+      //   }
+      // }
+      console.log('registJPush is operating')
+      window.JPush.init()
+      window.JPush.getRegistrationID((data) => {
+        // alert('onGetRegistrationID event' + data)
+        try {
+          this.registrationId = data
+          // alert('registrationID is ' + data)
+          if (data.length === 0) {
+            window.setTimeout(getRegistrationID, 1000)
+          }
+          if (Vue.cordova.device.platform !== 'Android') {
+            console.log('iOS clear badge number')
+            window.JPush.setApplicationIconBadgeNumber(0)
+          }
+        } catch (exception) {
+          console.log(exception)
+        }
+      })
+      window.JPush.setDebugMode(true)
+      window.JPush.isPushStopped(function (result) {
+        if (result === 0) {
+          // 开启
+          console.log('开启极光推送')
+        } else {
+          // 关闭
+          console.log('恢复极光推送')
+          window.JPush.resumePush()
+        }
+      })
+    },
     userChange (username) {
       if (/^[0-9]*$/.test(username)) {
         if (!(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test(username))) {
@@ -128,9 +176,7 @@ export default {
         app_version: 'v1.0',
         registration_id: this.registrationId
       }).then(res => {
-        console.log(res)
         if (res.status === 200) {
-//          debugger
           this.$store.state.token = res.data.token
           window.localStorage.setItem('token', this.$store.state.token)
 //          let queryUrl = this.$router.currentRoute.query
@@ -155,19 +201,14 @@ export default {
           this.$router.push({name: 'HomePage'})
           // this.$router.push({name: name, params: {email: res.data.email, userId: res.data.user_id}})
           // 获取用户tags
-          getTags().then(res => {
-            if (!res.tags) return
-            // res.tags
-            window.JPush.setTags({ sequence: 1, tags: [].concat(res.tags) }, (result) => {
-              // var sequence = result.sequence
-              var tags = result.tags // 数组类型
-              console.log(tags)
-            }, (error) => {
-              console.log(error)
-              // var sequence = error.sequence
-              // var errorCode = error.code
-            })
-          })
+          // getTags().then(res => {
+          //   if (!res.tags) return
+          //   window.JPush.setTags({ sequence: 1, tags: [].concat(res.tags) }, (result) => {
+          //     console.log(tags)
+          //   }, (error) => {
+          //     console.log(error)
+          //   })
+          // })
         } else {
           return false
         }
@@ -183,9 +224,10 @@ export default {
       })
     },
     getIdentifyingCode () {
-      window.JPush.getRegistrationID((id) => {
-        this.registrationId = id
-      })
+      this.registJPush()
+      // window.JPush.getRegistrationID((id) => {
+      //   this.registrationId = id
+      // })
       if (this.disabledSend === true) {
         const TIME_COUNT = 60
         if (!this.timer) {

@@ -7,10 +7,10 @@ export const install = function (Vue, options, cb) {
     // pass through the camera object
     var onDeviceReady = function () {
       document.addEventListener('jpush.receiveRegistrationId', function (event) {
-            alert('receiveRegistrationId' + JSON.stringify(event))
-            // $('#registrationId').html(event.registrationId)
-            console.log(event.registrationId)
-        }, false)
+          // alert('receiveRegistrationId' + JSON.stringify(event))
+          // $('#registrationId').html(event.registrationId)
+          console.log(event.registrationId)
+      }, false)
       initiateUI()
     }
     var getRegistrationID = function () {
@@ -22,7 +22,6 @@ export const install = function (Vue, options, cb) {
         if (data.length === 0) {
           // var t1 = window.setTimeout(getRegistrationID, 1000)
         }
-        // $('#registrationId').html(data)
       } catch (exception) {
         console.log(exception)
       }
