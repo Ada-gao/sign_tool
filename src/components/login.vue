@@ -105,10 +105,10 @@ export default {
       console.log('registJPush is operating')
       window.JPush.init()
       window.JPush.getRegistrationID((data) => {
-        alert('onGetRegistrationID event' + data)
+        // alert('onGetRegistrationID event' + data)
         try {
           this.registrationId = data
-          alert('registrationID is ' + data)
+          // alert('registrationID is ' + data)
           if (data.length === 0) {
             window.setTimeout(getRegistrationID, 1000)
           }
