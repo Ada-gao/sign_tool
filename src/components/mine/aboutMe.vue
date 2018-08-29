@@ -146,38 +146,71 @@ export default {
       this.showShare = false
     },
     wachatShare () {
-      console.log('wachatShare')
+      let obj = {
+        shareType: '1',
+        shareChannel: '0'
+      }
+      getShare(obj).then(res => {
+        this.shareUrl = res.data.share_url
+      })
       Wechat.isInstalled(function (installed) {
         console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
       }, function (reason) {
         console.log('isInstalled: ' + reason)
       })
-      // var scope = 'snsapi_userinfo'
-      // var state = '_' + (+new Date())
-      // Wechat.auth(scope, state, function (response) {
-      //   // you may use response.code to get the access token.
-      //   alert(JSON.stringify(response))
-      // }, function (reason) {
-      //   alert('Failed: ' + reason)
-      // })
       Wechat.share({
-      message: {
-          title: 'Hi, there',
-          description: 'This is description.',
-          thumb: 'https://cordova.apache.org/static/img/cordova_bot.png',
-          mediaTagName: 'TEST-TAG-001',
-          messageExt: '这是第三方带的测试字段',
-          messageAction: '<action>dotalist</action>',
-          media: 'YOUR_MEDIA_OBJECT_HERE'
-      },
-      scene: Wechat.Scene.TIMELINE // share to Timeline
+        message: {
+            title: 'Hi, there',
+            description: 'This is description.',
+            thumb: this.shareUrl,
+            mediaTagName: 'TEST-TAG-001',
+            messageExt: '这是第三方带的测试字段',
+            messageAction: '<action>dotalist</action>',
+            media: {
+              type: Wechat.Type.IMAGE,
+              image: this.shareUrl
+            }
+        },
+        scene: Wechat.Scene.SESSION // share to Timeline
       }, function () {
           console.log('Success')
       }, function (reason) {
           console.log('share: ' + reason)
       })
     },
-    friendShare () {},
+    friendShare () {
+      let obj = {
+        shareType: '1',
+        shareChannel: '1'
+      }
+      getShare(obj).then(res => {
+        this.shareUrl = res.data.share_url
+      })
+      Wechat.isInstalled(function (installed) {
+        console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
+      }, function (reason) {
+        console.log('isInstalled: ' + reason)
+      })
+      Wechat.share({
+        message: {
+            title: 'Hi, there',
+            description: 'This is description.',
+            thumb: this.shareUrl,
+            mediaTagName: 'TEST-TAG-001',
+            messageExt: '这是第三方带的测试字段',
+            messageAction: '<action>dotalist</action>',
+            media: {
+              type: Wechat.Type.IMAGE,
+              image: this.shareUrl
+            }
+        },
+        scene: Wechat.Scene.TIMELINE // share to Timeline
+      }, function () {
+          console.log('Success')
+      }, function (reason) {
+          console.log('share: ' + reason)
+      })
+    },
     qqShare () {
       let obj = {
         shareType: '1',
