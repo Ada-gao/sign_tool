@@ -41,7 +41,7 @@ import { XHeader, XButton, Countdown, XInput, Group } from 'vux'
 import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken } from '@/service/api/login'
-import { getTags } from '@/service/api/mineJPush'
+// import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
 
 export default {
@@ -109,9 +109,9 @@ export default {
         try {
           this.registrationId = data
           // alert('registrationID is ' + data)
-          if (data.length === 0) {
-            window.setTimeout(getRegistrationID, 1000)
-          }
+          // if (data.length === 0) {
+          //   window.setTimeout(getRegistrationID, 1000)
+          // }
           if (Vue.cordova.device.platform !== 'Android') {
             console.log('iOS clear badge number')
             window.JPush.setApplicationIconBadgeNumber(0)
