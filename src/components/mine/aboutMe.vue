@@ -1,14 +1,17 @@
 <template>
   <div class="mypage">
-    <x-header :left-options="{showBack: false}">我的</x-header>
+    <x-header :left-options="{showBack: false}">我的
+      <i slot="overwrite-left" class="iconfont mes">&#xe641;</i>
+      <i slot="right" class="iconfont mes" @click="barcodescanner">&#xe661;</i>
+    </x-header>
     <div class="wrapper">
-      <!-- <div class="top">
+      <div class="top">
         <div class="img"><img src="static/img/banner.png" alt=""></div>
         <div class="right">
-          <p>用户名：</p>
-          <p>手机号码：</p>
+          <p>用户名：小阿西</p>
+          <p>手机号码：18876539837</p>
         </div>
-      </div> -->
+      </div>
       <group>
         <cell title="我的消息" :link="{name: 'MyInfo'}">
 				  <i slot="icon" class="iconfont icon">&#xe62d;</i>
@@ -23,10 +26,11 @@
         <cell title="关于我们" :link="{name: 'MyVersion'}">
 				  <i slot="icon" class="iconfont icon">&#xe625;</i>
         </cell>
-        <cell title="退出" @click.native="logout">
+        <!-- <cell title="退出" @click.native="logout">
 				  <i slot="icon" class="iconfont icon">&#xe60c;</i>
-        </cell>
+        </cell> -->
       </group>
+      <button class="quitBtn" @click="logout">退出</button>
       <!-- <actionsheet v-model="show3" :menus="menus3" @on-click-menu="logoutEvent" show-cancel></actionsheet> -->
       <!-- <el-dialog title="您确定要退出吗？" :visible.sync="dialogTableVisible" :append-to-body="append" center :show-close="show" class="closeDialog">
         <div class="button">
@@ -37,7 +41,7 @@
       <x-dialog v-model="dialogTableVisible" class="dialog-demo quitDialog" hide-on-blur>
           <div class="quit">您确定要退出吗？</div>
           <x-button @click.native="logoutEvent('men1')" type="primary">确 定</x-button>
-          <x-button @click.native="cancle" type="primary">取 消</x-button>
+          <x-button @click.native="cancle" class="secCancle" type="primary">取 消</x-button>
       </x-dialog>
     </div>
     <div class="myQrcode" :style="qheight" v-if="showMyQrcode">
@@ -63,8 +67,8 @@
         </div>
         <div class="content">
           <span><img src="static/img/wechat.png" class="iconfont" @click="wachatShare"><p>微信好友</p></span>
-          <span><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>微信好友</p></span>
-          <span><img src="static/img/qq.png" class="iconfont" @click="qqShare"><p>微信好友</p></span>
+          <span><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>朋友圈</p></span>
+          <span><img src="static/img/qq.png" class="iconfont" @click="qqShare"><p>QQ好友</p></span>
         </div>
         <div class="hideBtn" @click="hideShareBtn">取消</div>
       <!-- </div> -->
@@ -75,7 +79,7 @@
 <script type="text/ecmascript-6">
 import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, Qrcode } from 'vux'
 import { removeStore } from '@/config/mUtils'
-
+import { getShare } from '@/service/api/aboutMe'
 export default {
   data () {
     return {
@@ -91,7 +95,8 @@ export default {
       qheight: '',
       value: '',
       size: 500,
-      showShare: false
+      showShare: false,
+      shareUrl: ''
     }
   },
   components: {
@@ -140,9 +145,86 @@ export default {
     hideShareBtn () {
       this.showShare = false
     },
-    wachatShare () {},
+    wachatShare () {
+      console.log('wachatShare')
+      Wechat.isInstalled(function (installed) {
+        console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
+      }, function (reason) {
+        console.log('isInstalled: ' + reason)
+      })
+      // var scope = 'snsapi_userinfo'
+      // var state = '_' + (+new Date())
+      // Wechat.auth(scope, state, function (response) {
+      //   // you may use response.code to get the access token.
+      //   alert(JSON.stringify(response))
+      // }, function (reason) {
+      //   alert('Failed: ' + reason)
+      // })
+      Wechat.share({
+      message: {
+          title: 'Hi, there',
+          description: 'This is description.',
+          thumb: 'https://cordova.apache.org/static/img/cordova_bot.png',
+          mediaTagName: 'TEST-TAG-001',
+          messageExt: '这是第三方带的测试字段',
+          messageAction: '<action>dotalist</action>',
+          media: 'YOUR_MEDIA_OBJECT_HERE'
+      },
+      scene: Wechat.Scene.TIMELINE // share to Timeline
+      }, function () {
+          console.log('Success')
+      }, function (reason) {
+          console.log('share: ' + reason)
+      })
+    },
     friendShare () {},
-    qqShare () {}
+    qqShare () {
+      let obj = {
+        shareType: '1',
+        shareChannel: '2'
+      }
+      getShare(obj).then(res => {
+        this.shareUrl = res.data.share_url
+      })
+      var args = {}
+      args.client = QQSDK.ClientType.QQ
+      QQSDK.checkClientInstalled(function () {
+        console.log('client is installed')
+      }, function () {
+        console.log('client is not installed')
+      }, args)
+      args.scene = QQSDK.Scene.QQ
+      args.title = '注册理财师'
+      args.description = '扫一扫注册理财师'
+      args.image = this.shareUrl
+      QQSDK.shareImage(function () {
+        console.log('shareImage success')
+      }, function (failReason) {
+        console.log('失败')
+        console.log(failReason)
+      }, args)
+    },
+    barcodescanner () {
+      console.log('barcodescanner')
+      this.$router.push({name: 'Barcodescanner'})
+      // cordova.plugins.barcodeScanner.scan(
+      //   function (result) {
+      //       alert('We got a barcode\n' +
+      //             'Result: ' + result.text + '\n' +
+      //             'Format: ' + result.format + '\n' +
+      //             'Cancelled: ' + result.cancelled)
+      //   },
+      //   function (error) {
+      //       alert('Scanning failed: ' + error)
+      //   }
+      // )
+      // cordova.plugins.barcodeScanner.encode(BarcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com", function(success) {
+      //     alert("encode success: " + success)
+      //   }, function(fail) {
+      //     alert("encoding failed: " + fail)
+      //   }
+      // )
+    }
   },
   mounted () {
     this.qheight = 'height:' + window.innerHeight + 'px'
@@ -155,9 +237,20 @@ export default {
 <style lang="less">
 .mypage{
   .vux-header{
-    // background: #fff !important;
+    .vux-header-left{
+      .mes{
+        font-size: 40px;
+        color: #000;
+      }
+    }
     .vux-header-title{
-      // color: #000;
+      color: #000;
+    }
+    .vux-header-right{
+      .mes{
+        font-size: 35px;
+        color: #000;
+      }
     }
   }
   .wrapper {
@@ -181,16 +274,28 @@ export default {
       }
       .right{
         display: inline-block;
+        margin-left: 60px;
+        vertical-align: top;
+        padding-top: 10px;
+        p{
+          font-family: PingFangSC-Regular;
+          font-size: 30px;
+          color: #000;
+          margin-bottom: 15px;
+        }
       }
     }
     .weui-cells{
       margin-top: 0px;
     }
+    .weui-cells:before{
+      border-top: none;
+    }
     .weui-cell:after{
       border-top: 1px solid #CCCCCC;
     }
     .weui-cells:after{
-      border-bottom: 1px solid #CCCCCC;
+      border-bottom: none;
     }
     .weui-cell {
       font-size: 30px; /*px*/
@@ -198,22 +303,41 @@ export default {
       padding-bottom: 40px;
       height: 103px;
       box-sizing: border-box;
-      height: 82px;
+      height: 90px;
       padding-left: 20px;
+      border-bottom: 1px solid #D0D0D0;
       .icon{
-        color: #2B7DC2;
+        // color: #2B7DC2;
+        color: #B68458;
         font-size: 40px;
       }
       label{
-        font-family: PingFangSC-Medium;
+        font-family: PingFangSC-Regular;
         font-size: 30px;
         color: #333333;
       }
+    }
+    .weui-cell:last-child{
+      border-bottom: none;
     }
     .weui-actionsheet {
       .weui-actionsheet__cell {
         font-size: 38px!important; /*px*/
       }
+    }
+    .quitBtn{
+      display: block;
+      margin: 113px auto;
+      width: 710px;
+      height: 90px;
+      background: #fff;
+      border-radius: 10px;
+      font-family: PingFangSC-Medium;
+      font-size: 30px;
+      color: #B68458;
+      line-height: 90px;
+      text-align: center;
+      outline: none;
     }
     .quitDialog{
       .weui-dialog{
@@ -235,13 +359,17 @@ export default {
       }
       .weui-btn.weui-btn_primary{
         display: inline-block;
-        background: #2A7DC1;
+        // background: #2A7DC1;
+        background: #B68458;
         border-radius: 10px;
         width: 190px;
         height: 80px;
         font-family: PingFangSC-Medium;
         font-size: 36px;
         color: #F0F0F0;
+      }
+      .weui-btn.weui-btn_primary.secCancle{
+        background: #CBCBCB;
       }
       .weui-btn.weui-btn_primary:first-child{
         margin-left: 43px;

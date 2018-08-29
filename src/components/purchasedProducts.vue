@@ -35,7 +35,7 @@
         id: '',
         popupVisible: false,
         n: 0,
-        tabBars: ['全部', '理财', '二级市场', '固收', '另类投资'],
+        tabBars: ['全部', '固收', '理财', '二级市场', '另类投资'],
         content: {
           '0': [],
           '1': [],
@@ -62,6 +62,13 @@
       checkSpecifiedPro(this.id).then(res => {
         this.content['0'] = res.data
         this.content['0'].forEach((value, index) => {
+          /**
+           * product_type_id
+           * 1:固收
+           * 2:理财
+           * 3:二级市场
+           * 4:另类
+           */
           switch (value.product_type_id) {
             case 1:
               this.content['1'].push(value)

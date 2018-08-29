@@ -7,6 +7,7 @@
     <author email="zhuangyinping@shuyun365.com" href="http://www.techlab.ai/">
         Shuyun
     </author>
+    <preference name="StatusBarBackgroundColor" value="#ffffff" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="target-device" value="handset" />
     <preference name="deployment-target" value="9.0" />
@@ -47,7 +48,16 @@
     </edit-config>
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
-    <engine name="android" spec="^7.1.0" />
+    <plugin name="jpush-phonegap-plugin" spec="^3.4.3">
+        <variable name="APP_KEY" value="1a08f552ec200520baccf2bb" />
+    </plugin>
+    <plugin name="cordova-plugin-qqsdk" spec="^0.9.7">
+        <variable name="QQ_APP_ID" value="1107707505" />
+    </plugin>
+    <plugin name="cordova-plugin-wechatv2" spec="^2.1.3">
+        <variable name="WECHATAPPID" value="wx0bb7de63a5d6e772" />
+    </plugin>
     <engine name="ios" spec="^4.5.4" />
     <engine name="browser" spec="^5.0.3" />
+    <engine name="android" spec="^7.1.1" />
 </widget>

@@ -60,6 +60,10 @@
           </cell-box>
           <div class="space"></div>
           <cell-box>
+            <label style="color:#333">证件类型：</label>
+            <span class="fr">{{data.id_type}}</span>
+          </cell-box>
+          <cell-box>
             <label>证件号码：</label>
             <span class="fr">{{data.id_no}}</span>
           </cell-box>
@@ -154,7 +158,7 @@
       </x-dialog>
     </div>
     <x-dialog v-model="transformDialog" class="submitDialog">
-      <div class="tip">客户当前资产规模已到达500万<br/>
+      <div class="tip">客户当前资产规模已到达{{data.asset_standard}}万<br/>
             是否自动转变为专业投资者？</div>
 			<x-button type="primary" @click.native="transform">转 变</x-button>
 			<x-button type="primary" @click.native="cancel">取 消</x-button>
@@ -181,7 +185,7 @@
     checkCustomerRemarks,
     addCustomerRemarks
   } from '@/service/api/customers'
-  import {tfCtypeToText, tfCerIdToText} from '@/common/js/filter'
+  import {tfCtypeToText, tfCerIdToText, tfIdtype} from '@/common/js/filter'
   import {setStore, removeStore} from '@/config/mUtils'
 
   export default {
@@ -242,18 +246,22 @@
       })
       clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
       this.getList(clientId)
+      window.onpopstate = () => {
+        this.toLink()
+      }
     },
     methods: {
       getList (id) {
         checkCusomersDetail(id).then(res => {
-          this.data = res.data
+          this.data = Object.assign({}, res.data)
+          this.data.id_type = tfIdtype(this.data.id_type)
           setStore('selfInfos', res.data)
           this.data.asset_amount = this.data.asset_amount || 0
           this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
           this.clientId = res.data.client_id
           this.clientName = res.data.name
           this.clientType = res.data.client_type
-          if (this.data.asset_amount > 500 &&
+          if (this.data.asset_amount > this.data.asset_standard &&
               this.data.client_type !== '1' &&
               this.data.certification_status !== '1') {
             this.transformDialog = true

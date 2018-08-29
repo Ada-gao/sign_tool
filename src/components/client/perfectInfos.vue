@@ -1,6 +1,11 @@
 <template>
-  <div class="perfect_infos" @touchmove="touchScreen">
-    <x-header :left-options="{backText: ''}">实名认证</x-header>
+  <div class="perfect_infos activity_list" @touchmove="touchScreen">
+    <!--<x-header :left-options="{backText: ''}">实名认证</x-header>-->
+    <mt-header fixed title="实名认证" class="header">
+      <router-link :to="{name: 'PotentialCustomerList'}" slot="left">
+        <mt-button icon="back" class="def_btn"></mt-button>
+      </router-link>
+    </mt-header>
     <group class="perfect_group wrapper">
       <div class="add_tit">
         <i class="iconfont">&#xe62c;</i>
@@ -31,7 +36,7 @@
                 popup-transition="popup-fade">
         <mt-picker :slots="slots"
                    :showToolbar="true"
-                   :itemHeight="70"
+                   :itemHeight="itemHeight"
                    :visibleItemCount="3"
                    @change="onValuesChange">
           <div class="toolbar">
@@ -106,7 +111,17 @@
       <div class="upload">
         <div>证件信息</div>
       </div>
-      <div class="upload_box">
+      <div v-if="this.idSymbol === 0" class="upload_box one_upd_box">
+        <camera class="upload_cont1"
+                :popupVisible="popupVisible1"
+                :imageSrc="form.id_front_url"
+                :isFromBank="fromBank"
+                :cerId="cerId"
+                @showPopup="showPopup1"
+                @imgHandler="imageHandler1"
+                @hidePopup="hidePopup1"></camera>
+      </div>
+      <div class="upload_box" v-else-if="this.idSymbol === 1">
         <camera class="upload_cont1"
                 :popupVisible="popupVisible1"
                 :imageSrc="form.id_front_url"
@@ -168,6 +183,8 @@
     data () {
       return {
         submitDialog: false,
+        idSymbol: 1,
+        idFlag: false,
         submitCont: '认证提交待审核中…',
         form: {},
         id_start_date: '',
@@ -219,6 +236,7 @@
     beforeRouteLeave (to, from, next) {
       let info = JSON.parse(getStore('selfInfos'))
       if (to.name === 'PotentialCustomerList') {
+        to.params.id = info.client_id
         info.client_certification_id = 0
         setStore('selfInfos', info)
         removeStore('perInfos')
@@ -234,7 +252,8 @@
           id_expiration: this.id_expiration,
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url,
-          id_type: idType
+          id_type: idType,
+          id_symbol: this.idSymbol
         }
         setStore('perInfos', perInfos)
       }
@@ -254,6 +273,7 @@
         this.form.id_front_url = perInfos.id_front_url
         this.form.id_back_url = perInfos.id_back_url
         this.form.id_type = this.slots[0].values[perInfos.id_type + 1]
+        this.idSymbol = perInfos.id_symbol
       }
     },
     methods: {
@@ -265,9 +285,18 @@
       },
       onValuesChange (picker, values) {
         this.idType = values[0]
+        if (this.idFlag) {
+          console.log('come in')
+          if (this.idType === '身份证') {
+            this.idSymbol = 1
+          } else {
+            this.idSymbol = 0
+          }
+        }
         console.log(this.idType)
       },
       showCode () {
+        this.idFlag = true
         this.$refs.address.blur()
         this.$refs.certificateCode.blur()
         this.timer = null
@@ -472,6 +501,13 @@
     }
   }
   .perfect_infos {
+    .mint-header.header {
+      height: 98px;
+      background-color: #fff;
+      font-size: 36px;
+      color: #333;
+      padding-top: 30px;
+    }
     .cercode_box {
       width: 100%;
       height: 300px;
@@ -728,7 +764,8 @@
         font-size: 30px;
         color: #333;
         position: absolute;
-        left: 165px;
+        /*left: 165px;*/
+        left: calc(29% - 60px);
         top: 240px;
       }
       .back_class {
@@ -737,7 +774,14 @@
         color: #333;
         position: absolute;
         /*right: 165px;*/
-        right: 180px;
+        /*right: 180px;*/
+        right: calc(29% - 60px);
+      }
+    }
+    .one_upd_box {
+      text-align: center;
+      .upload_cont1:first-child {
+        margin-right: 0;
       }
     }
     .submit_form {

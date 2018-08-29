@@ -1,5 +1,4 @@
 import axios from '../../config/axios'
-
 /**
  * 获取用户验证码
  */
@@ -10,7 +9,6 @@ export function getVerificationCode (obj) {
         data: obj
     })
 }
-
 /**
  * 获取用户 token
  */

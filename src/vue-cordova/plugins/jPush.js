@@ -39,7 +39,6 @@ export const install = function (Vue, options, cb) {
         if (Vue.cordova.device.platform !== 'Android') {
           window.JPush.setApplicationIconBadgeNumber(0)
         }
-        console.log('it is initiateUI')
       } catch (exception) {
         console.log(exception)
       }
@@ -58,6 +57,9 @@ export const install = function (Vue, options, cb) {
     }
     document.addEventListener('deviceready', onDeviceReady, false)
     document.addEventListener('jpush.openNotification', onOpenNotification, false)
+    Vue.cordova.jPush = window.jPush
+    // console.log('jpush: ' + jPush)
+    console.log(window.plugins)
 
     // eslint-disable-next-line
     return cb(true)

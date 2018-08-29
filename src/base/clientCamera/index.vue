@@ -2,7 +2,9 @@
   <div>
     <div class="thumbnails" v-if="fromBank === 2">
     <mt-popup v-model="showImg">
-      <mt-swipe :show-indicators="false" :auto="0" :defaultIndex="defIdx">
+      <mt-swipe :show-indicators="false"
+                :auto="0"
+                id="mt-swiper">
         <mt-swipe-item v-for="(item, idx) in fileArr" :key="idx" v-show="item">
           <img :src="item" v-show="item" style="width:100%;height:calc(100%)">
         </mt-swipe-item>
@@ -27,7 +29,9 @@
               @click="showBigImg(index)"
               v-show="item">
             <img :src="item + '!132x120'" v-show="item">
-            <span class="delete_img" @click.prevent='delImage(index, $event)'>x</span>
+            <span class="delete_img" @click.prevent='delImage(index, $event)'>
+              <i>x</i>
+            </span>
           </li>
         </ul>
         <div class="addsmall_box" @click="selectcamera()">
@@ -205,13 +209,18 @@
           })
         }
       },
-      hideBigImg (data) {
-        this.showImg = data
-        console.log(this.show)
-      },
       showBigImg (index) {
-        // console.log(typeof index)
-        this.defIdx = typeof index === 'object' ? 0 : index
+        if (typeof index === 'object') {
+          this.defIdx = 0
+        } else {
+          this.defIdx = index
+          let children = Array.from(document.querySelector('#mt-swiper').querySelectorAll('.mint-swipe-item'))
+          children.map((item, index) => {
+            item.classList.remove('is-active')
+          })
+          children[this.defIdx].classList.add('is-active')
+        }
+        // this.defIdx = typeof index === 'object' ? 0 : index
         this.showImg = true
       },
       delImage (index, ev) {
@@ -297,14 +306,22 @@
         }
         .delete_img {
           position: absolute;
-          text-align: right;
+          display: block;
           top: -20px;
-          right: 0;
+          right: -6px;
           font-size: 50px;
-          line-height: 30px;
+          line-height: 22px;
           color: #000;
-          width: 50px;
-          height: 50px;
+          width: 40px;
+          height: 40px;
+          border-radius: 100%;
+          text-align: center;
+          background: rgba(0,0,0,0.60);
+          i {
+            display: inline-block;
+            font-size: 30px;
+            color: #fff;
+          }
         }
       }
       li:not(:last-child) {
