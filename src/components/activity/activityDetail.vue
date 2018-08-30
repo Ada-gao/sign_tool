@@ -105,6 +105,7 @@
 </template>
 <script>
   import { getShare } from '@/service/api/aboutMe'
+  import Vue from 'vue'
   export default {
     components: {},
     data () {
@@ -136,17 +137,17 @@
           this.shareUrl = res.data.share_url
         })
         var args = {}
-        args.client = QQSDK.ClientType.QQ
-        QQSDK.checkClientInstalled(() => {
+        args.client = Vue.cordova.QQSDK.ClientType.QQ
+        Vue.cordova.QQSDK.checkClientInstalled(() => {
           console.log('client is installed')
         }, () => {
           console.log('client is not installed')
         }, args)
-        args.scene = QQSDK.Scene.QQ
+        args.scene = Vue.cordova.QQSDK.Scene.QQ
         args.title = '注册理财师'
         args.description = '扫一扫注册理财师'
         args.image = this.shareUrl
-        QQSDK.shareImage(() => {
+        Vue.cordova.QQSDK.shareImage(() => {
           console.log('shareImage success')
         }, (failReason) => {
           console.log('失败')

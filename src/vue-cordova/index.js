@@ -3,7 +3,7 @@
 const pluginsList = [
   'cordova-plugin-camera',
   'cordova-plugin-device',
-  'jPush',
+  'jpush-phonegap-plugin',
   'cordova-plugin-qqsdk',
   'cordova-plugin-wechatv2'
 ]
