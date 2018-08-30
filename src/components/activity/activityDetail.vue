@@ -107,6 +107,7 @@
   import { getShare } from '@/service/api/aboutMe'
   import { getActivityDet } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
+  import Vue from 'vue'
   export default {
     components: {},
     data () {
@@ -149,12 +150,12 @@
         getShare(obj).then(res => {
           this.shareUrl = res.data.share_url
         })
-        Wechat.isInstalled(function (installed) {
+        Vue.cordova.Wechat.isInstalled(function (installed) {
           console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
         }, function (reason) {
           console.log('isInstalled: ' + reason)
         })
-        Wechat.share({
+        Vue.cordova.Wechat.share({
           message: {
             title: 'Hi, there',
             description: 'This is description.',
@@ -163,11 +164,11 @@
             messageExt: '这是第三方带的测试字段',
             messageAction: '<action>dotalist</action>',
             media: {
-              type: Wechat.Type.IMAGE,
+              type: Vue.cordova.Wechat.Type.IMAGE,
               image: this.shareUrl
             }
           },
-          scene: Wechat.Scene.SESSION // share to Timeline
+          scene: Vue.cordova.Wechat.Scene.SESSION // share to Timeline
         }, function () {
           console.log('Success')
         }, function (reason) {
@@ -182,12 +183,12 @@
         getShare(obj).then(res => {
           this.shareUrl = res.data.share_url
         })
-        Wechat.isInstalled(function (installed) {
+        Vue.cordova.Wechat.isInstalled(function (installed) {
           console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
         }, function (reason) {
           console.log('isInstalled: ' + reason)
         })
-        Wechat.share({
+        Vue.cordova.Wechat.share({
           message: {
             title: 'Hi, there',
             description: 'This is description.',
@@ -196,11 +197,11 @@
             messageExt: '这是第三方带的测试字段',
             messageAction: '<action>dotalist</action>',
             media: {
-              type: Wechat.Type.IMAGE,
+              type: Vue.cordova.Wechat.Type.IMAGE,
               image: this.shareUrl
             }
           },
-          scene: Wechat.Scene.TIMELINE // share to Timeline
+          scene: Vue.cordova.Wechat.Scene.TIMELINE // share to Timeline
         }, function () {
           console.log('Success')
         }, function (reason) {
