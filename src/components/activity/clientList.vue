@@ -136,7 +136,7 @@
         data.forEach(item => {
           if (item.client_class === 1) {
             this.customers.push(item)
-          } else if (item.client_class === 0) {
+          } else if (item.client_class === 0 && item.realname_status === '2') {
             this.customers1.push(item)
           }
         })
