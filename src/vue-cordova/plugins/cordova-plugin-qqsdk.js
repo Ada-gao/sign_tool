@@ -5,8 +5,9 @@ export const install = function (Vue, options, cb) {
         // eslint-disable-next-line
         return cb(false)
       }
-      Vue.cordova.QQSDK = QQSDK
-      console.log('QQSDK is ready..')
+      // pass through the camera object
+      Vue.cordova.qqsdk = QQSDK
+      console.log('qqsdk is ready..')
       // eslint-disable-next-line
       return cb(true)
     }, false)

@@ -206,7 +206,7 @@
         popupVisible1: false,
         popupVisible2: false,
         fromBank: 1,
-        itemHeight: 70,
+        itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
         visibleItemCount: 3,
         slots: [
           {
@@ -260,6 +260,7 @@
       next()
     },
     mounted () {
+//      this.itemHeight = getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0
       this.form = JSON.parse(getStore('selfInfos'))
       this.isSubmit = this.$route.params.isSubmit
       let perInfos = JSON.parse(getStore('perInfos'))

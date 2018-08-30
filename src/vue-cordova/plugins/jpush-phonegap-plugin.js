@@ -1,3 +1,5 @@
+import router from '../../router'
+
 export const install = function (Vue, options, cb) {
   document.addEventListener('deviceready', () => {
     document.addEventListener('jpush.receiveRegistrationId', function (event) {
@@ -41,8 +43,10 @@ export const install = function (Vue, options, cb) {
         var alertContent
         if (Vue.cordova.device.platform === 'Android') {
           alertContent = event
+          router.push({name: 'WriteNotes', params: {id: event.extras['cn.jpush.android.EXTRA'].notificationId}})
         } else {
           alertContent = event.aps.alert
+          router.push({name: 'WriteNotes', params: {id: event.extras.notificationId}})
         }
         // TODO 此处应当根据具体的消息内容跳转到不同route
         console.log('alertContent:')

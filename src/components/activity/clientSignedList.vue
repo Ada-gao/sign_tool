@@ -9,10 +9,10 @@
       <ul class="signed_ul">
         <li v-for="item in list" :key="item.id" @click="handleRoute(item)">
           <div class="left">
-            {{item.name}}（{{item.mobile}}）
+            {{item.clientName}}（{{item.mobile}}）
           </div>
           <div class="right">
-            {{item.method}}
+            {{item.registrationType}}
           </div>
         </li>
       </ul>
@@ -20,44 +20,32 @@
   </div>
 </template>
 <script>
+  import { getSignedClientList } from '@/service/api/activity'
   export default {
     components: {},
     data () {
       return {
-        list: [
-          {
-            id: 0,
-            name: 'paul',
-            mobile: '17717054760',
-            method: '代报名'
-          },
-          {
-            id: 1,
-            name: 'james',
-            mobile: '17717054722',
-            method: '代报名'
-          },
-          {
-            id: 2,
-            name: 'harden',
-            mobile: '17717054733',
-            method: '代报名'
-          },
-          {
-            id: 3,
-            name: 'antetokunbo',
-            mobile: '17717054744',
-            method: '自报名'
-          }
-        ]
+        list: []
       }
     },
     methods: {
+      getList () {
+        getSignedClientList(1).then(res => {
+          if (res.status === 200) {
+            this.list = Object.assign([], res.data.records)
+            this.list.forEach(item => {
+              item.registrationType = item.registrationType === 0 ? '自报名' : '代报名'
+            })
+          }
+        })
+      },
       handleRoute (item) {
         this.$router.push({path: '/clientSigned/' + item.id, params: item})
       }
     },
-    mounted () {}
+    mounted () {
+      this.getList()
+    }
   }
 </script>
 <style lang="less" scoped>
