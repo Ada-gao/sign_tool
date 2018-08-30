@@ -1,3 +1,5 @@
+import router from '../../router'
+
 export const install = function (Vue, options, cb) {
   document.addEventListener('deviceready', () => {
     // if (typeof window.jPush === 'undefined') {
@@ -48,8 +50,10 @@ export const install = function (Vue, options, cb) {
         var alertContent
         if (Vue.cordova.device.platform === 'Android') {
           alertContent = event
+          router.push({name: 'WriteNotes', params: {id: event.extras['cn.jpush.android.EXTRA'].notificationId}})
         } else {
           alertContent = event.aps.alert
+          router.push({name: 'WriteNotes', params: {id: event.extras.notificationId}})
         }
       } catch (exception) {
         console.log('JPushPlugin:onOpenNotification' + exception)
