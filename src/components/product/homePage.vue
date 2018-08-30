@@ -37,6 +37,7 @@ import { XHeader, Group, CellBox, Cell } from 'vux'
 import SellingProducts from '@/base/sellingProducts/sellingProducts'
 import { getProducts } from '@/service/api/products'
 import { getTags } from '@/service/api/mineJPush'
+import { getInfoList } from '@/service/api/aboutMe'
 
 export default {
   name: 'HomePage',
@@ -101,6 +102,11 @@ export default {
 			}
 		})
 		this.getTag()
+		getInfoList().then(res => {
+			console.log('Jpush...........777777')
+			let noCheckInfo = res.data.filter(item => item.is_read === '0')
+			window.JPush.setApplicationIconBadgeNumber(noCheckInfo.length)
+		})
 	}
 }
 </script>

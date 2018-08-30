@@ -1,6 +1,6 @@
 <template>
 	<div class="writePage">
-		<x-header :left-options="{backText: ''}">我的备注-查看</x-header>
+		<x-header :left-options="{backText: ''}">{{this.title}}</x-header>
 		<div class="wrapper">
 			<!--<input type="text" v-focus v-model="msg"/>-->
 			<!-- <textarea class="inputing" v-focus v-model="msg" name="" rows="" cols=""></textarea> -->
@@ -13,6 +13,7 @@
 
 <script>
 import { XHeader } from 'vux'
+import { infoDetail } from '@/service/api/aboutMe'
 // import RemarkList from 'base/remarkList/remarkList'
 
 export default {
@@ -21,11 +22,18 @@ export default {
   },
   data () {
   	return {
+			title: '我的备注-查看',
 			remark: ''
   	}
 	},
 	mounted () {
 		this.remark = this.$route.params.remark
+		if (this.$route.params.id) {
+			this.title = '我的消息-查看'
+			infoDetail(this.$route.params.id).then(res => {
+				this.remark = res.data.notification_content
+			})
+		}
 	}
 }
 </script>

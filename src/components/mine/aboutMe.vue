@@ -1,7 +1,10 @@
 <template>
   <div class="mypage">
     <x-header :left-options="{showBack: false}">我的
-      <i slot="overwrite-left" class="iconfont mes">&#xe641;</i>
+      <span slot="overwrite-left" @click="infoList" class="warn">
+        <i class="iconfont mes">&#xe641;</i>
+        <i class="num" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</i>
+      </span>
       <i slot="right" class="iconfont mes" @click="barcodescanner">&#xe661;</i>
     </x-header>
     <div class="wrapper">
@@ -13,7 +16,7 @@
         </div>
       </div>
       <group>
-        <cell title="我的消息" :link="{name: 'MyInfo'}">
+        <cell title="我的消息" :link="{name: 'MyInfo'}">{{this.noCheckNum === 0 ? '' : this.noCheckNum}}
 				  <i slot="icon" class="iconfont icon">&#xe62d;</i>
         </cell>
         <cell title="我的备注" :link="{name: 'Remark'}">
@@ -79,8 +82,7 @@
 <script type="text/ecmascript-6">
 import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, Qrcode } from 'vux'
 import { removeStore } from '@/config/mUtils'
-import { getShare } from '@/service/api/aboutMe'
-import Vue from 'vue'
+import { getShare, getInfoList } from '@/service/api/aboutMe'
 export default {
   data () {
     return {
@@ -97,7 +99,8 @@ export default {
       value: '',
       size: 500,
       showShare: false,
-      shareUrl: ''
+      shareUrl: '',
+      noCheckNum: 0
     }
   },
   components: {
@@ -260,12 +263,22 @@ export default {
       //     alert("encoding failed: " + fail)
       //   }
       // )
+    },
+    infoList () {
+      this.$router.push({name: 'MyInfo'})
     }
   },
   mounted () {
+    console.log('mounted')
     this.qheight = 'height:' + window.innerHeight + 'px'
     let data = JSON.parse(window.localStorage.data)
     this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
+    getInfoList().then(res => {
+      let noCheckInfo = res.data.filter(item => item.is_read === '0')
+      this.noCheckNum = noCheckInfo.length
+      window.JPush.setBadge(this.noCheckNum)
+      console.log('Jpush...........7777777')
+    })
   }
 }
 </script>
@@ -274,9 +287,29 @@ export default {
 .mypage{
   .vux-header{
     .vux-header-left{
-      .mes{
-        font-size: 40px;
-        color: #000;
+      .warn{
+        display: inline-block;
+        position: relative;
+        width: 40px;
+        height: 40px;
+        .mes{
+          font-size: 40px;
+          color: #000;
+        }
+        .num{
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: #B68458;
+          border-radius: 50%;
+          position: absolute;
+          top: 0;
+          right: 0;
+          font-family: PingFangSC-Medium;
+          font-size: 14px;
+          color: #FFFFFF;
+          text-align: center;
+        }
       }
     }
     .vux-header-title{
@@ -351,6 +384,11 @@ export default {
         font-family: PingFangSC-Regular;
         font-size: 30px;
         color: #333333;
+      }
+      .weui-cell__ft{
+        font-family: PingFangSC-Medium;
+        font-size: 28px;
+        color: #B68458;
       }
     }
     .weui-cell:last-child{
