@@ -1,5 +1,6 @@
 export const install = function (Vue, options, cb) {
     document.addEventListener('deviceready', () => {
+      /* global QQSDK */
       if (typeof QQSDK === 'undefined') {
         // eslint-disable-next-line
         return cb(false)

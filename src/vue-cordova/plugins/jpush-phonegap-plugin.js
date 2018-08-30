@@ -2,19 +2,12 @@ import router from '../../router'
 
 export const install = function (Vue, options, cb) {
   document.addEventListener('deviceready', () => {
-    // if (typeof window.jPush === 'undefined') {
-    //   return cb(false)
-    // }
-
-    // pass through the camera object
-    var onDeviceReady = function () {
-      document.addEventListener('jpush.receiveRegistrationId', function (event) {
+    document.addEventListener('jpush.receiveRegistrationId', function (event) {
           // alert('receiveRegistrationId' + JSON.stringify(event))
           // $('#registrationId').html(event.registrationId)
           console.log(event.registrationId)
-      }, false)
-      initiateUI()
-    }
+    }, false)
+
     var getRegistrationID = function () {
       window.JPush.getRegistrationID(onGetRegistrationID)
     }
@@ -55,16 +48,17 @@ export const install = function (Vue, options, cb) {
           alertContent = event.aps.alert
           router.push({name: 'WriteNotes', params: {id: event.extras.notificationId}})
         }
+        // TODO 此处应当根据具体的消息内容跳转到不同route
+        console.log('alertContent:')
+        console.dir(alertContent)
       } catch (exception) {
         console.log('JPushPlugin:onOpenNotification' + exception)
       }
     }
-    document.addEventListener('deviceready', onDeviceReady, false)
+    initiateUI()
     document.addEventListener('jpush.openNotification', onOpenNotification, false)
     Vue.cordova.jPush = window.jPush
-    // console.log('jpush: ' + jPush)
-    console.log(window.plugins)
-
+    console.log('jpush is ready..')
     // eslint-disable-next-line
     return cb(true)
   }, false)

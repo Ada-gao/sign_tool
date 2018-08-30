@@ -7,22 +7,22 @@
     </mt-header>
     <div class="activity_cont">
       <ul>
-        <li v-for="item in 4" :key="item" @click="handleRouter">
-          <div class="header">{{item}}</div>
+        <li v-for="(item, index) in list" :key="index" @click="handleRouter(item.activityId)">
+          <div class="header">{{index + 1}}</div>
           <img :src="src" alt="">
           <div class="bottom">
             <div class="left">
               <i class="iconfont">&#xe637;</i>
-              <span>上海市</span>
+              <span>{{item.activitySite}}</span>
             </div>
             <div class="right">
               <span>
                 <i>开始：</i>
-                <i>2018.02.01 14:20</i>
+                <i>{{item.activityStart}}</i>
               </span>
               <span>
                 <i>结束：</i>
-                <i>2018.02.01 14:20</i>
+                <i>{{item.activityEnd}}</i>
               </span>
             </div>
           </div>
@@ -32,19 +32,35 @@
   </div>
 </template>
 <script>
+  import { getActivityList } from '@/service/api/activity'
+  import { parseTime } from '@/common/js/filter'
   export default {
     components: {},
     data () {
       return {
-        src: 'static/img/banner.jpg'
+        src: 'static/img/banner.jpg',
+        list: null
       }
     },
     methods: {
-      handleRouter () {
-        this.$router.push({name: 'activityDetail'})
+      getList () {
+        getActivityList().then(res => {
+          if (res.status === 200) {
+            this.list = Object.assign([], res.data.records)
+            this.list.forEach(item => {
+              item.activityStart = parseTime(item.activityStart, '{y}.{m}.{d} {h}:{i}')
+              item.activityEnd = parseTime(item.activityEnd, '{y}.{m}.{d} {h}:{i}')
+            })
+          }
+        })
+      },
+      handleRouter (id) {
+        this.$router.push({name: 'activityDetail', params: {id}})
       }
     },
-    mounted () {}
+    mounted () {
+      this.getList()
+    }
   }
 </script>
 <style lang="less" scoped>
@@ -52,14 +68,14 @@
   .activity_list {
     font-family: PingFangSC-Regular;
     .mint-header.header {
-      height: 98px;
+      height: 88px;
       background-color: @new-header-color;
       font-size: 36px;
       color: #333;
-      padding-top: 30px;
+      padding-top: 40px;
     }
     .activity_cont {
-      padding-top: 98px;
+      padding-top: 88px;
       background-color: @new-bg-color;
       li {
         .header {
@@ -96,7 +112,7 @@
           .right {
             right: 20px;
             font-size: 24px;
-            width: 270px;
+            width: 280px;
             height: 66px;
           }
         }

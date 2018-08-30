@@ -1,7 +1,7 @@
 <template>
   <div class="activity_list">
     <mt-header fixed title="活动详情" class="header">
-      <router-link to="/" slot="left">
+      <router-link :to="{name: 'activityList'}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
       <mt-button slot="right">
@@ -13,51 +13,51 @@
     <div class="detail">
       <div class="space"></div>
       <div class="tit">
-        <div class="left">8号会员日</div>
+        <div class="left">{{detail.activityName}}</div>
         <div class="right">
           <span>编号：</span>
-          <span>1203355</span>
+          <span>{{detail.activityCode}}</span>
         </div>
       </div>
       <main class="cont">
         <img :src="src" alt="">
         <section class="detail_item">
           <span>活动开始：</span>
-          <span>2018.02.01 14:20</span>
+          <span>{{detail.activityStart}}</span>
         </section>
         <section class="detail_item">
           <span>活动结束：</span>
-          <span>2018.02.01 14:20</span>
+          <span>{{detail.activityEnd}}</span>
         </section>
         <section class="detail_item">
           <span>报名开始：</span>
-          <span>2018.02.01 14:20</span>
+          <span>{{detail.registrationStart}}</span>
         </section>
         <section class="detail_item">
           <span>报名结束：</span>
-          <span>2018.02.01 14:20</span>
+          <span>{{detail.registrationEnd}}</span>
         </section>
         <section class="detail_item">
           <span>活动人数：</span>
-          <span>100人</span>
+          <span>{{detail.activityActivitiesNumber}}人</span>
         </section>
         <section class="detail_item">
           <span>活动负责人：</span>
-          <span>小阿希</span>
+          <span>{{detail.activityPrincipal}}</span>
         </section>
         <section class="detail_item">
           <span>活动所属部门：</span>
-          <span>财富部</span>
+          <span>{{detail.activityDept}}</span>
         </section>
         <section class="detail_item def_item">
           <i class="iconfont">&#xe637;</i>
-          <span>上海市浦东新区陆家嘴软件园</span>
+          <span>{{detail.activitySite}}</span>
         </section>
         <div class="space"></div>
         <section class="brief_info">
           <div>活动简介：</div>
           <div class="brief_cont">
-            qwerqwerwerqwedsfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf
+            {{detail.activityIntroduction}}
           </div>
         </section>
         <div class="space"></div>
@@ -105,6 +105,8 @@
 </template>
 <script>
   import { getShare } from '@/service/api/aboutMe'
+  import { getActivityDet } from '@/service/api/activity'
+  import { parseTime } from '@/common/js/filter'
   export default {
     components: {},
     data () {
@@ -112,10 +114,24 @@
         src: 'static/img/banner.jpg',
         posterBanner: 'static/img/banner.jpg',
         showShare: false,
-        shareUrl: ''
+        shareUrl: '',
+        detail: {},
+        activityId: null
       }
     },
     methods: {
+      getData () {
+        getActivityDet(this.activityId).then(res => {
+          if (res.status === 200) {
+            console.log(res.data)
+            this.detail = Object.assign({}, res.data)
+            this.detail.activityStart = parseTime(this.detail.activityStart, '{y}.{m}.{d} {h}:{i}')
+            this.detail.activityEnd = parseTime(this.detail.activityEnd, '{y}.{m}.{d} {h}:{i}')
+            this.detail.registrationStart = parseTime(this.detail.registrationStart, '{y}.{m}.{d} {h}:{i}')
+            this.detail.registrationEnd = parseTime(this.detail.registrationEnd, '{y}.{m}.{d} {h}:{i}')
+          }
+        })
+      },
       handleShare () {
         console.log(111)
       },
@@ -125,8 +141,72 @@
       hideShareBtn () {
         this.showShare = false
       },
-      wachatShare () {},
-      friendShare () {},
+      wachatShare () {
+        let obj = {
+          shareType: '1',
+          shareChannel: '0'
+        }
+        getShare(obj).then(res => {
+          this.shareUrl = res.data.share_url
+        })
+        Wechat.isInstalled(function (installed) {
+          console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
+        }, function (reason) {
+          console.log('isInstalled: ' + reason)
+        })
+        Wechat.share({
+          message: {
+            title: 'Hi, there',
+            description: 'This is description.',
+            thumb: this.shareUrl,
+            mediaTagName: 'TEST-TAG-001',
+            messageExt: '这是第三方带的测试字段',
+            messageAction: '<action>dotalist</action>',
+            media: {
+              type: Wechat.Type.IMAGE,
+              image: this.shareUrl
+            }
+          },
+          scene: Wechat.Scene.SESSION // share to Timeline
+        }, function () {
+          console.log('Success')
+        }, function (reason) {
+          console.log('share: ' + reason)
+        })
+      },
+      friendShare () {
+        let obj = {
+          shareType: '1',
+          shareChannel: '1'
+        }
+        getShare(obj).then(res => {
+          this.shareUrl = res.data.share_url
+        })
+        Wechat.isInstalled(function (installed) {
+          console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
+        }, function (reason) {
+          console.log('isInstalled: ' + reason)
+        })
+        Wechat.share({
+          message: {
+            title: 'Hi, there',
+            description: 'This is description.',
+            thumb: this.shareUrl,
+            mediaTagName: 'TEST-TAG-001',
+            messageExt: '这是第三方带的测试字段',
+            messageAction: '<action>dotalist</action>',
+            media: {
+              type: Wechat.Type.IMAGE,
+              image: this.shareUrl
+            }
+          },
+          scene: Wechat.Scene.TIMELINE // share to Timeline
+        }, function () {
+          console.log('Success')
+        }, function (reason) {
+          console.log('share: ' + reason)
+        })
+      },
       qqShare () {
         let obj = {
           shareType: '1',
@@ -136,17 +216,17 @@
           this.shareUrl = res.data.share_url
         })
         var args = {}
-        args.client = QQSDK.ClientType.QQ
-        QQSDK.checkClientInstalled(() => {
+        args.client = Vue.cordova.QQSDK.ClientType.QQ
+        Vue.cordova.QQSDK.checkClientInstalled(() => {
           console.log('client is installed')
         }, () => {
           console.log('client is not installed')
         }, args)
-        args.scene = QQSDK.Scene.QQ
+        args.scene = Vue.cordova.QQSDK.Scene.QQ
         args.title = '注册理财师'
         args.description = '扫一扫注册理财师'
         args.image = this.shareUrl
-        QQSDK.shareImage(() => {
+        Vue.cordova.QQSDK.shareImage(() => {
           console.log('shareImage success')
         }, (failReason) => {
           console.log('失败')
@@ -154,7 +234,10 @@
         }, args)
       }
     },
-    mounted () {}
+    mounted () {
+      this.activityId = this.$route.params.id
+      this.getData(this.activityId)
+    }
   }
 </script>
 <style lang="less" scoped>
@@ -251,14 +334,14 @@
   .activity_list {
     font-family: PingFangSC-Regular;
     .mint-header.header {
-      height: 98px;
+      height: 88px;
       background-color: @new-header-color;
       font-size: 36px;
       color: #333;
-      padding-top: 30px;
+      padding-top: 40px;
     }
     .detail {
-      padding-top: 98px;
+      padding-top: 88px;
       background-color: #fff;
       .left, .right {
         position: absolute;

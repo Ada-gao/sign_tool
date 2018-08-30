@@ -150,6 +150,7 @@ export default {
       this.showShare = false
     },
     wachatShare () {
+      let Wechat = Vue.cordova.wechat
       let obj = {
         shareType: '1',
         shareChannel: '0'
@@ -183,6 +184,7 @@ export default {
       })
     },
     friendShare () {
+      let Wechat = Vue.cordova.wechat
       let obj = {
         shareType: '1',
         shareChannel: '1'
@@ -224,17 +226,17 @@ export default {
         this.shareUrl = res.data.share_url
       })
       var args = {}
-      args.client = QQSDK.ClientType.QQ
-      QQSDK.checkClientInstalled(function () {
+      args.client = Vue.cordova.QQSDK.ClientType.QQ
+      Vue.cordova.QQSDK.checkClientInstalled(function () {
         console.log('client is installed')
       }, function () {
         console.log('client is not installed')
       }, args)
-      args.scene = QQSDK.Scene.QQ
+      args.scene = Vue.cordova.QQSDK.Scene.QQ
       args.title = '注册理财师'
       args.description = '扫一扫注册理财师'
       args.image = this.shareUrl
-      QQSDK.shareImage(function () {
+      Vue.cordova.QQSDK.shareImage(function () {
         console.log('shareImage success')
       }, function (failReason) {
         console.log('失败')
