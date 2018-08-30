@@ -45,7 +45,8 @@ export const install = function (Vue, options, cb) {
           alertContent = event.aps.alert
         }
         // TODO 此处应当根据具体的消息内容跳转到不同route
-        console.log('alertContent' + alertContent)
+        console.log('alertContent:')
+        console.dir(alertContent)
       } catch (exception) {
         console.log('JPushPlugin:onOpenNotification' + exception)
       }
