@@ -5,7 +5,8 @@ const pluginsList = [
   'cordova-plugin-device',
   'jpush-phonegap-plugin',
   'cordova-plugin-qqsdk',
-  'cordova-plugin-wechatv2'
+  'cordova-plugin-wechatv2',
+  'shuyunqrcodescanner'
 ]
 
 exports.install = (Vue, options) => {
