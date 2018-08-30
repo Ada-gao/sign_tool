@@ -357,7 +357,7 @@ const router = new Router({
       }
     },
     {
-      path: '/activityDetail',
+      path: '/activityDetail/:id',
       name: 'activityDetail',
       component: activityDetail,
       meta: {
