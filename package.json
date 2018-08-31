@@ -12,7 +12,7 @@
     "test": "npm run unit && npm run e2e",
     "lint": "eslint --ext .js,.vue src test/unit test/e2e/specs",
     "build": "node build/build.js",
-    "ios": "npm run build && cordova prepare ios && cordova run ios",
+    "ios": "npm run build && cordova prepare ios && cordova run ios --debug --buildConfig build.json",
     "android": "npm run build && cordova prepare android && cordova run android --debug --buildConfig build.json",
     "android-release": "npm run build && cordova prepare android && cordova build android --release --buildConfig build.json"
   },
@@ -37,6 +37,7 @@
     "element-ui": "^2.3.9",
     "jpush-phonegap-plugin": "^3.4.3",
     "mint-ui": "^2.2.13",
+    "shuyunqrcodescanner": "^1.1.19",
     "vue": "^2.5.2",
     "vue-pdf": "^3.3.1",
     "vue-router": "^3.0.1",
@@ -57,6 +58,10 @@
       },
       "cordova-plugin-qqsdk": {
         "QQ_APP_ID": "1107707505"
+      },
+      "shuyunqrcodescanner": {
+        "CAMERA_USAGE_DESCRIPTION": "This app needs camera access",
+        "PHOTO_LIBRARY_USAGE_DESCRIPTION": "This app needs photo library access"
       }
     },
     "platforms": [

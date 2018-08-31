@@ -37,6 +37,7 @@ import { XHeader, Group, CellBox, Cell } from 'vux'
 import SellingProducts from '@/base/sellingProducts/sellingProducts'
 import { getProducts } from '@/service/api/products'
 import { getTags } from '@/service/api/mineJPush'
+import Vue from 'vue'
 import { getInfoList } from '@/service/api/aboutMe'
 
 export default {
@@ -59,12 +60,14 @@ export default {
 			getTags().then(res => {
 				if (!res.data.tags) return
 				const tags = [].concat(res.data.tags.split(','))
-      	window.JPush.setTags({ sequence: 1, tags: tags },
-					function (result) {
-						console.log(result.tags)
-					}, function (error) {
-						console.log(error.code)
-					})
+        if (Vue.cordova.jPush) {
+          Vue.cordova.jPush.setTags({ sequence: 1, tags: tags },
+            function (result) {
+              console.log(result.tags)
+            }, function (error) {
+              console.log(error.code)
+            })
+        }
 			})
 		}
   },
