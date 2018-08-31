@@ -78,7 +78,7 @@
 											<mt-picker :slots="slotsN"
 																:showToolbar="true"
 																value-key="bankName"
-																:itemHeight=70
+																:itemHeight="itemHeight"
 																:visibleItemCount=3
 																@change="onValuesChange">
 												<div class="toolbar">
@@ -275,6 +275,7 @@ import thumbnails from '@/base/camera/thumbnails'
 export default {
 	data () {
 		return {
+		  itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
 			topBar: '预约',
 			count: '',
 			topTitle: '',

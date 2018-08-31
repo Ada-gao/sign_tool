@@ -143,6 +143,7 @@
         this.showShare = false
       },
       wachatShare () {
+        let Wechat = Vue.cordova.Wechat
         let obj = {
           shareType: '1',
           shareChannel: '0'
@@ -150,12 +151,12 @@
         getShare(obj).then(res => {
           this.shareUrl = res.data.share_url
         })
-        Vue.cordova.Wechat.isInstalled(function (installed) {
+        Wechat.isInstalled(function (installed) {
           console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
         }, function (reason) {
           console.log('isInstalled: ' + reason)
         })
-        Vue.cordova.Wechat.share({
+        Wechat.share({
           message: {
             title: 'Hi, there',
             description: 'This is description.',
@@ -164,11 +165,11 @@
             messageExt: '这是第三方带的测试字段',
             messageAction: '<action>dotalist</action>',
             media: {
-              type: Vue.cordova.Wechat.Type.IMAGE,
+              type: Wechat.Type.IMAGE,
               image: this.shareUrl
             }
           },
-          scene: Vue.cordova.Wechat.Scene.SESSION // share to Timeline
+          scene: Wechat.Scene.SESSION // share to Timeline
         }, function () {
           console.log('Success')
         }, function (reason) {
@@ -176,6 +177,7 @@
         })
       },
       friendShare () {
+        let Wechat = Vue.cordova.Wechat
         let obj = {
           shareType: '1',
           shareChannel: '1'
@@ -183,12 +185,12 @@
         getShare(obj).then(res => {
           this.shareUrl = res.data.share_url
         })
-        Vue.cordova.Wechat.isInstalled(function (installed) {
+        Wechat.isInstalled(function (installed) {
           console.log('Wechat installed: ' + (installed ? 'Yes' : 'No'))
         }, function (reason) {
           console.log('isInstalled: ' + reason)
         })
-        Vue.cordova.Wechat.share({
+        Wechat.share({
           message: {
             title: 'Hi, there',
             description: 'This is description.',
@@ -197,11 +199,11 @@
             messageExt: '这是第三方带的测试字段',
             messageAction: '<action>dotalist</action>',
             media: {
-              type: Vue.cordova.Wechat.Type.IMAGE,
+              type: Wechat.Type.IMAGE,
               image: this.shareUrl
             }
           },
-          scene: Vue.cordova.Wechat.Scene.TIMELINE // share to Timeline
+          scene: Wechat.Scene.TIMELINE // share to Timeline
         }, function () {
           console.log('Success')
         }, function (reason) {
@@ -209,6 +211,7 @@
         })
       },
       qqShare () {
+        let QQSDK = Vue.cordova.QQSDK
         let obj = {
           shareType: '1',
           shareChannel: '2'
@@ -217,17 +220,17 @@
           this.shareUrl = res.data.share_url
         })
         var args = {}
-        args.client = Vue.cordova.QQSDK.ClientType.QQ
-        Vue.cordova.QQSDK.checkClientInstalled(() => {
+        args.client = QQSDK.ClientType.QQ
+        QQSDK.checkClientInstalled(() => {
           console.log('client is installed')
         }, () => {
           console.log('client is not installed')
         }, args)
-        args.scene = Vue.cordova.QQSDK.Scene.QQ
+        args.scene = QQSDK.Scene.QQ
         args.title = '注册理财师'
         args.description = '扫一扫注册理财师'
         args.image = this.shareUrl
-        Vue.cordova.QQSDK.shareImage(() => {
+        QQSDK.shareImage(() => {
           console.log('shareImage success')
         }, (failReason) => {
           console.log('失败')

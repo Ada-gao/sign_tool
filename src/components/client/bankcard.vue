@@ -104,7 +104,7 @@
         city: '',
         client_id: '',
         fromBank: 0,
-        itemHeight: 70,
+        itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
         slots: [
           {
             flex: 1,
