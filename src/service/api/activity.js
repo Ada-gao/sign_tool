@@ -31,7 +31,7 @@ export function getActivityDet (id) {
  */
 export function getActivityList () {
   return axios({
-    url: baseUrl + '/activity/financial/activity/',
+    url: baseUrl + '/activity/financial/activity',
     method: 'get'
   })
 }
