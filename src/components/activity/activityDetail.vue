@@ -107,6 +107,7 @@
   import { getShare } from '@/service/api/aboutMe'
   import { getActivityDet } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
+  import {getStore, setStore, removeStore} from '@/config/mUtils'
   import Vue from 'vue'
   export default {
     components: {},
@@ -118,6 +119,14 @@
         shareUrl: '',
         detail: {},
         activityId: null
+      }
+    },
+    beforeRouteLeave (to, from, next) {
+      if (to.name === 'activityList') {
+        removeStore('activityId')
+        next()
+      } else {
+        next()
       }
     },
     methods: {
@@ -211,7 +220,7 @@
         })
       },
       qqShare () {
-        let QQSDK = Vue.cordova.QQSDK
+        let QQSDK = Vue.cordova.qqsdk
         let obj = {
           shareType: '1',
           shareChannel: '2'
@@ -239,7 +248,11 @@
       }
     },
     mounted () {
-      this.activityId = this.$route.params.id
+      let activityId = JSON.parse(getStore('activityId'))
+      this.activityId = this.$route.params.id || activityId
+      if (!activityId) {
+        setStore('activityId', this.activityId)
+      }
       this.getData(this.activityId)
     }
   }
