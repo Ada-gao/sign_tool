@@ -1,4 +1,5 @@
 import router from '../../router'
+import { setStore } from '@/config/mUtils'
 
 export const install = function (Vue, options, cb) {
   document.addEventListener('deviceready', () => {
@@ -6,6 +7,7 @@ export const install = function (Vue, options, cb) {
           // alert('receiveRegistrationId' + JSON.stringify(event))
           // $('#registrationId').html(event.registrationId)
           console.log(event.registrationId)
+          setStore('registrationId', event.registrationId)
     }, false)
 
     var getRegistrationID = function () {
@@ -14,6 +16,7 @@ export const install = function (Vue, options, cb) {
     var onGetRegistrationID = function (data) {
       try {
         console.log('JPushPlugin:registrationID is ' + data)
+        setStore('registrationId', event.registrationId)
         if (data.length === 0) {
           // var t1 = window.setTimeout(getRegistrationID, 1000)
         }
