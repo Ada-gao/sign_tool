@@ -30,21 +30,23 @@
         <span class="date_time">{{form.id_type}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
-      <mt-popup v-model="showCerCode"
-                position="bottom"
-                class="cercode_box"
-                popup-transition="popup-fade">
-        <mt-picker :slots="slots"
-                   :showToolbar="true"
-                   :itemHeight="itemHeight"
-                   :visibleItemCount="3"
-                   @change="onValuesChange">
-          <div class="toolbar">
-            <span class="cancel" @click="cancelCerCode">取消</span>
-            <span class="ensure" @click="ensureCerCode">确定</span>
-          </div>
-        </mt-picker>
-      </mt-popup>
+      <div @touchmove.prevent v-if="showCerCode">
+        <mt-popup v-model="showCerCode"
+                  position="bottom"
+                  class="cercode_box"
+                  popup-transition="popup-fade">
+          <mt-picker :slots="slots"
+                     :showToolbar="true"
+                     :itemHeight="itemHeight"
+                     :visibleItemCount="3"
+                     @change="onValuesChange">
+            <div class="toolbar">
+              <span class="cancel" @click="cancelCerCode">取消</span>
+              <span class="ensure" @click="ensureCerCode">确定</span>
+            </div>
+          </mt-picker>
+        </mt-popup>
+      </div>
       <x-input title="证件号码："
                class="cell_id"
                v-model="form.id_no"
@@ -57,49 +59,55 @@
         <span class="date_time">{{id_start_date}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
-      <mt-datetime-picker ref="pickerStart"
-                          type="date"
-                          :endDate="endDate"
-                          :startDate="startDate"
-                          :itemHeight="itemHeight"
-                          class="datetime_picker"
-                          year-format="{value} 年"
-                          month-format="{value} 月"
-                          date-format="{value} 日"
-                          @confirm="dateConfirm1"
-                          :value="id_start_date"></mt-datetime-picker>
+      <div @touchmove.prevent>
+        <mt-datetime-picker ref="pickerStart"
+                            type="date"
+                            :endDate="endDate"
+                            :startDate="startDate"
+                            :itemHeight="itemHeight"
+                            class="datetime_picker"
+                            year-format="{value} 年"
+                            month-format="{value} 月"
+                            date-format="{value} 日"
+                            @confirm="dateConfirm1"
+                            :value="id_start_date"></mt-datetime-picker>
+      </div>
       <div class="time_box" @click="open('pickerEnd')">
         <span class="date_tit">证件有效期结束时间：</span>
         <span class="date_time">{{id_expiration}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
-      <mt-datetime-picker ref="pickerEnd"
-                          type="date"
-                          :endDate="endDate"
-                          :startDate="startDate"
-                          :itemHeight="itemHeight"
-                          class="datetime_picker"
-                          year-format="{value} 年"
-                          month-format="{value} 月"
-                          date-format="{value} 日"
-                          @confirm="dateConfirm2"
-                          :value="id_expiration"></mt-datetime-picker>
+      <div @touchmove.prevent>
+        <mt-datetime-picker ref="pickerEnd"
+                            type="date"
+                            :endDate="endDate"
+                            :startDate="startDate"
+                            :itemHeight="itemHeight"
+                            class="datetime_picker"
+                            year-format="{value} 年"
+                            month-format="{value} 月"
+                            date-format="{value} 日"
+                            @confirm="dateConfirm2"
+                            :value="id_expiration"></mt-datetime-picker>
+      </div>
       <div class="time_box" @click="open('pickerDate')">
         <span class="date_tit">出生日期：</span>
         <span class="date_time">{{birthday}}</span>
         <i class="iconfont">&#xe731;</i>
       </div>
-      <mt-datetime-picker ref="pickerDate"
-                          type="date"
-                          :endDate="endDate"
-                          :startDate="startDate"
-                          :itemHeight="itemHeight"
-                          class="datetime_picker"
-                          year-format="{value} 年"
-                          month-format="{value} 月"
-                          date-format="{value} 日"
-                          @confirm="dateConfirm"
-                          :value="birthday"></mt-datetime-picker>
+      <div @touchmove.prevent>
+        <mt-datetime-picker ref="pickerDate"
+                            type="date"
+                            :endDate="endDate"
+                            :startDate="startDate"
+                            :itemHeight="itemHeight"
+                            class="datetime_picker"
+                            year-format="{value} 年"
+                            month-format="{value} 月"
+                            date-format="{value} 日"
+                            @confirm="dateConfirm"
+                            :value="birthday"></mt-datetime-picker>
+      </div>
       <x-input title="地址："
                v-model="form.address"
                ref="address"
