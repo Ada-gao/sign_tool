@@ -46,7 +46,7 @@
           <p class="cont-text">交易币种 : {{item.currency_id === 1 ? '人民币' : '美元' }}</p>
           <p class="cont-text" v-if="item.buying_crowds === '0'">购买人群 ：大陆</p>
           <p class="cont-text" v-if="item.buying_crowds === '1'">购买人群 ：港澳台</p>
-          <p class="cont-text" v-if="item.buying_crowds === '2'">购买人群 ：境外</p>          
+          <p class="cont-text" v-if="item.buying_crowds === '2'">购买人群 ：境外</p>
           <p class="cont-text" v-if="item.investment_horizon_unit === '0'">产品期限 ：{{item.investment_horizon}}月</p>
           <p class="cont-text" v-if="item.investment_horizon_unit === '1'">产品期限 ：{{item.investment_horizon}}年</p>
           <p class="cont-text" v-if="item.investment_horizon_unit === '2'">产品期限 ：{{item.investment_horizon}}天</p>
@@ -71,7 +71,7 @@
           <p class="cont-text" v-if="item.interest_payment === '1'">付息方式 ：季度付息</p>
           <p class="cont-text" v-if="item.interest_payment === '2'">付息方式 ：自然季度付息</p>
           <p class="cont-text" v-if="item.interest_payment === '3'">付息方式 ：半年度付息</p>
-          <p class="cont-text" v-if="item.interest_payment === '4'">付息方式 ：按年付息</p>          
+          <p class="cont-text" v-if="item.interest_payment === '4'">付息方式 ：按年付息</p>
           <p class="cont-text" v-if="item.subscribe === '0'">认购费 ：无需认购</p>
           <p class="cont-text" v-else-if="item.subscribe === '1'">认购费 ：价内认购</p>
           <p class="cont-text" v-else-if="item.subscribe === '2'">认购费 ：{{item.subscribe_rate}}%</p>
