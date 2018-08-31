@@ -138,7 +138,7 @@
         reason: '',
         apply_reason_id: null,
         reason_id: null,
-        itemHeight: 45,
+        itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
         slots: [
           {
             flex: 1,
