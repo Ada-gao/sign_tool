@@ -23,7 +23,6 @@ const AboutMe = r => require.ensure([], () => r(require('@/components/mine/about
 const MyInfo = r => require.ensure([], () => r(require('@/components/mine/myInfo')), 'myInfo')
 const MyPerformance = r => require.ensure([], () => r(require('@/components/myPerformance')), 'myPerformance')
 const MyVersion = r => require.ensure([], () => r(require('@/components/mine/myVersion')), 'myVersion')
-const Barcodescanner = r => require.ensure([], () => r(require('@/components/mine/barcodescanner')), 'barcodescanner')
 const Login = r => require.ensure([], () => r(require('@/components/login')), 'login')
 const Index = r => require.ensure([], () => r(require('@/components/index')), 'index')
 const Certified = r => require.ensure([], () => r(require('@/components/client/certified')), 'certified')
@@ -231,14 +230,6 @@ const router = new Router({
       component: MyVersion,
       meta: {
         // navShow: false
-        auth: true
-      }
-    },
-    {
-      path: '/barcodescanner',
-      name: 'Barcodescanner',
-      component: Barcodescanner,
-      meta: {
         auth: true
       }
     },
