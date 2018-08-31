@@ -86,51 +86,6 @@ export default {
   },
   methods: {
     registJPush () {
-      // var onGetRegistrationID = function (data) {
-      //   console.log('onGetRegistrationID event')
-      //   try {
-      //     this.registrationId = data
-      //     console.log('JPushPlugin:registrationID is ' + data)
-      //     if (data.length === 0) {
-      //       window.setTimeout(getRegistrationID, 1000)
-      //     }
-      //     if (Vue.cordova.device.platform !== 'Android') {
-      //       console.log('iOS clear badge number')
-      //       window.JPush.setApplicationIconBadgeNumber(0)
-      //     }
-      //   } catch (exception) {
-      //     console.log(exception)
-      //   }
-      // }
-      console.log('registJPush is operating')
-      window.JPush.init()
-      window.JPush.getRegistrationID((data) => {
-        // alert('onGetRegistrationID event' + data)
-        try {
-          this.registrationId = data
-          // alert('registrationID is ' + data)
-          // if (data.length === 0) {
-          //   window.setTimeout(getRegistrationID, 1000)
-          // }
-          if (Vue.cordova.device.platform !== 'Android') {
-            console.log('iOS clear badge number')
-            window.JPush.setApplicationIconBadgeNumber(0)
-          }
-        } catch (exception) {
-          console.log(exception)
-        }
-      })
-      window.JPush.setDebugMode(true)
-      window.JPush.isPushStopped(function (result) {
-        if (result === 0) {
-          // 开启
-          console.log('开启极光推送')
-        } else {
-          // 关闭
-          console.log('恢复极光推送')
-          window.JPush.resumePush()
-        }
-      })
     },
     userChange (username) {
       if (/^[0-9]*$/.test(username)) {

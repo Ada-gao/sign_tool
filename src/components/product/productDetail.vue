@@ -44,7 +44,9 @@
         </div>
         <div class="cont">
           <p class="cont-text">交易币种 : {{item.currency_id === 1 ? '人民币' : '美元' }}</p>
-          <p class="cont-text">购买人群 ：{{item.buying_crowds}}</p>
+          <p class="cont-text" v-if="item.buying_crowds === '0'">购买人群 ：大陆</p>
+          <p class="cont-text" v-if="item.buying_crowds === '1'">购买人群 ：港澳台</p>
+          <p class="cont-text" v-if="item.buying_crowds === '2'">购买人群 ：境外</p>          
           <p class="cont-text" v-if="item.investment_horizon_unit === '0'">产品期限 ：{{item.investment_horizon}}月</p>
           <p class="cont-text" v-if="item.investment_horizon_unit === '1'">产品期限 ：{{item.investment_horizon}}年</p>
           <p class="cont-text" v-if="item.investment_horizon_unit === '2'">产品期限 ：{{item.investment_horizon}}天</p>
@@ -65,12 +67,16 @@
           <p class="cont-text">资产团队 ：{{item.asset_team}}</p>
           <p class="cont-text">托管银行 ：{{item.custodian_bank}}</p>
           <p class="cont-text">关联产品 ：{{item.relevance_id}}</p>
-          <p class="cont-text">付息方式 ：{{item.interest_payment}}</p>
+          <p class="cont-text" v-if="item.interest_payment === '0'">付息方式 ：无</p>
+          <p class="cont-text" v-if="item.interest_payment === '1'">付息方式 ：季度付息</p>
+          <p class="cont-text" v-if="item.interest_payment === '2'">付息方式 ：自然季度付息</p>
+          <p class="cont-text" v-if="item.interest_payment === '3'">付息方式 ：半年度付息</p>
+          <p class="cont-text" v-if="item.interest_payment === '4'">付息方式 ：按年付息</p>          
           <p class="cont-text" v-if="item.subscribe === '0'">认购费 ：无需认购</p>
           <p class="cont-text" v-else-if="item.subscribe === '1'">认购费 ：价内认购</p>
           <p class="cont-text" v-else-if="item.subscribe === '2'">认购费 ：{{item.subscribe_rate}}%</p>
-          <p class="cont-text">账户名称 ：{{item.bank_name}}</p>
-          <p class="cont-text">帐号 ：{{item.card_no}}</p>
+          <p class="cont-text">账户名称 ：{{item.account_name}}</p>
+          <p class="cont-text">账号 ：{{item.card_no}}</p>
           <p class="cont-text">支行名称 ：{{item.sub_branch_name}}</p>
           <!-- <p class="cont-text">产品亮点 ：{{item.highlight}}</p> -->
           <p class="cont-text">大额支付行号 ：{{item.payment_number}}</p>
