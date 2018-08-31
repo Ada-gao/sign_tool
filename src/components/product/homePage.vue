@@ -110,8 +110,8 @@ export default {
 		this.getTag()
 		getInfoList().then(res => {
 			console.log('Jpush...........777777')
-			let noCheckInfo = res.data.filter(item => item.is_read === '0')
-			window.JPush.setApplicationIconBadgeNumber(noCheckInfo.length)
+			// let noCheckInfo = res.data.filter(item => item.is_read === '0')
+			// window.JPush.setApplicationIconBadgeNumber(noCheckInfo.length)
 		})
 	}
 }
