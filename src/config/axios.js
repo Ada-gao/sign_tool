@@ -21,9 +21,9 @@ axios.interceptors.request.use(
             config.headers['X-Token'] = XToken
         }
         if (navigator.onLine) {
-            console.log('正常')
+            // console.log('正常')
         } else {
-            console.log('断网')
+            // console.log('断网')
             router.replace({name: 'NoInternet'})
         }
         return config

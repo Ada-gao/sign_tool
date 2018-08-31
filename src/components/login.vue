@@ -43,6 +43,7 @@ import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken } from '@/service/api/login'
 // import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
+import { getStore } from '@/config/mUtils'
 
 export default {
   data () {
@@ -124,12 +125,13 @@ export default {
       // window.JPush.getRegistrationID((id) => {
       //   console.log('getRegistrationID: ' + id)
       // })
+      console.log('getStore registrationId :' + getStore('registrationId'))
       getAuthToken({
         code: this.num,
         username: this.username,
         platform: this.platform === 'iOS' ? 2 : 1,
         app_version: 'v1.0',
-        registration_id: this.registrationId
+        registration_id: getStore('registrationId')
       }).then(res => {
         if (res.status === 200) {
           this.$store.state.token = res.data.token
