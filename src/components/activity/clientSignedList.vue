@@ -21,16 +21,18 @@
 </template>
 <script>
   import { getSignedClientList } from '@/service/api/activity'
+  import { getStore } from '@/config/mUtils'
   export default {
     components: {},
     data () {
       return {
-        list: []
+        list: [],
+        activityId: null
       }
     },
     methods: {
       getList () {
-        getSignedClientList(1).then(res => {
+        getSignedClientList(this.activityId).then(res => {
           if (res.status === 200) {
             this.list = Object.assign([], res.data.records)
             this.list.forEach(item => {
@@ -44,6 +46,7 @@
       }
     },
     mounted () {
+      this.activityId = JSON.parse(getStore('activityId'))
       this.getList()
     }
   }
