@@ -133,7 +133,7 @@
       getData () {
         getActivityDet(this.activityId).then(res => {
           if (res.status === 200) {
-            console.log(res.data)
+            // console.log(res.data)
             this.detail = Object.assign({}, res.data)
             this.detail.activityStart = parseTime(this.detail.activityStart, '{y}.{m}.{d} {h}:{i}')
             this.detail.activityEnd = parseTime(this.detail.activityEnd, '{y}.{m}.{d} {h}:{i}')
@@ -248,7 +248,7 @@
       }
     },
     mounted () {
-      let activityId = JSON.parse(getStore('activityId'))
+      let activityId = getStore('activityId')
       this.activityId = this.$route.params.id || activityId
       if (!activityId) {
         setStore('activityId', this.activityId)

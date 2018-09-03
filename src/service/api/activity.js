@@ -35,3 +35,11 @@ export function getActivityList () {
     method: 'get'
   })
 }
+
+export function signActivity (data) {
+  return axios({
+    url: baseUrl + '/activity/financial/activityClient',
+    data,
+    method: 'post'
+  })
+}

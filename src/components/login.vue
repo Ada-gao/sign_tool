@@ -257,7 +257,8 @@ export default {
       border: none;
     }
     .borderB-1{
-      width: 650px;
+      /*width: 650px;*/
+      width: 86.67%;
       height: 80px;
       color: #666666;
       margin: 0 auto;
@@ -302,7 +303,8 @@ export default {
     }
     .error,.noError{
       text-align: left;
-      width: 650px;
+      /*width: 650px;*/
+      width: 86.67%;
       height: 33px;
       line-height: 33px;
       margin: 33px auto;
@@ -311,7 +313,8 @@ export default {
     }
     .userTip{
       text-align: left;
-      width: 650px;
+      /*width: 650px;*/
+      width: 86.67%;
       height: 33px;
       line-height: 33px;
       margin: 12px auto;
@@ -320,10 +323,14 @@ export default {
     }
     .btn_wrap{
       position: static;
-      margin-top: 0px;
       text-align: center;
+      padding: 0;
+      margin: 0 auto;
+      margin-top: 0px;
+      width: 86.67%;
       .weui-btn.weui-btn_primary{
-        width: 650px;
+        /*width: 650px;*/
+        width: 100%;
         height: 80px;
         background: #2A7DC1;
         border-radius: 10px;

@@ -1,7 +1,7 @@
 <template>
   <div class="activity_list">
     <mt-header fixed title="报名客户列表" class="header">
-      <router-link :to="{name: 'activityDetail'}" slot="left">
+      <router-link :to="{name: 'activityDetail', params: {id: activityId}}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
     </mt-header>
@@ -46,7 +46,7 @@
       }
     },
     mounted () {
-      this.activityId = JSON.parse(getStore('activityId'))
+      this.activityId = getStore('activityId')
       this.getList()
     }
   }

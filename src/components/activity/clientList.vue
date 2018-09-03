@@ -1,17 +1,16 @@
 <template>
   <div class="activity_list">
     <mt-popup v-model="popupVisible" class="signed_pop">
-      <div class="popup_box" v-if="successFlag">
-        <div>报名成功</div>
-        <button>确定</button>
-      </div>
-      <div class="popup_box" v-else>
-        <div>对不起！当前客户已报名</div>
-        <button>请您重新选择</button>
+      <div class="popup_box">
+        <div class="pop_tit">报名成功</div>
+        <div class="btn_box">
+          <mt-button @click="handlerContinue">继续报名</mt-button>
+          <mt-button @click="handlerReturn">返回列表</mt-button>
+        </div>
       </div>
     </mt-popup>
     <mt-header fixed title="客户" class="header">
-      <router-link :to="{name: 'activityDetail'}" slot="left">
+      <router-link :to="{name: 'activityDetail', params: {id: activityId}}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
     </mt-header>
@@ -40,7 +39,7 @@
         </div>
         <div class="list_box">
           <ul v-show="idx === 0" :data="customers">
-            <li v-for="(item, index) in customers" :key="index">
+            <li v-for="(item, index) in customers" :key="index" @click="handlerClick(item.client_id)">
                 <div class="customer_list">
                   <div class="customer_left">
                     <span>{{item.name}}</span>
@@ -59,7 +58,7 @@
             </li>
           </ul>
           <ul v-show="idx === 1" :data="customers1">
-            <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
+            <li v-for="(item, index) in customers1" :key="index" v-if="item.name" @click="handlerClick(item.client_id)">
                 <div class="customer_list">
                   <div class="customer_left">
                     <span>{{item.name}}</span>
@@ -99,6 +98,8 @@
   import SearchTool from 'base/searchToolBar/searchToolBar'
   import ShowSearch from 'base/searchToolBar/showSearchList'
   import {checkCusomersList} from '@/service/api/customers'
+  import { signActivity } from '@/service/api/activity'
+  import { getStore, removeStore } from '@/config/mUtils'
   import Loading from 'base/loading'
 
   export default {
@@ -126,23 +127,44 @@
         cancel: null,
         CancelToken: this.$axios.CancelToken,
         popupVisible: false,
-        successFlag: null
+        activityId: null
       }
     },
     mounted () {
-      checkCusomersList().then(res => {
-        this.isShowSpinner = false
-        let data = res.data
-        data.forEach(item => {
-          if (item.client_class === 1) {
-            this.customers.push(item)
-          } else if (item.client_class === 0 && item.realname_status === '2') {
-            this.customers1.push(item)
-          }
-        })
-      })
+      this.activityId = getStore('activityId')
+      this.getList()
     },
     methods: {
+      getList () {
+        checkCusomersList().then(res => {
+          this.isShowSpinner = false
+          let data = res.data
+          data.forEach(item => {
+            if (item.client_class === 1) {
+              this.customers.push(item)
+            } else if (item.client_class === 0 && item.realname_status === '2') {
+              this.customers1.push(item)
+            }
+          })
+        })
+      },
+      handlerContinue () {
+        this.popupVisible = false
+      },
+      handlerReturn () {
+        this.popupVisible = false
+        removeStore('activityId')
+        this.$router.replace({name: 'activityList'})
+      },
+      handlerClick (id) {
+        let params = {
+          clientId: id,
+          activityId: this.activityId
+        }
+        signActivity(params).then(res => {
+            this.popupVisible = true
+        })
+      },
       onItemClick (index) {
         this.idx = index
       },
@@ -201,7 +223,34 @@
       width: 100%;
       height: 100%;
       font-family: PingFangSC-Regular;
-      div, button {
+      .pop_tit {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 30px;
+        color: #333333;
+      }
+      .btn_box {
+        position: absolute;
+        bottom: 50px;
+        width: 100%;
+        text-align: center;
+        button {
+          width: 200px;
+          height: 58px;
+          line-height: 58px;
+          text-align: center;
+          background: @new-font-color;
+          border-radius: 10px;
+          font-size: 24px;
+          color: #F0F0F0;
+        }
+        button:nth-of-type(1) {
+          margin-right: 20px;
+        }
+      }
+      /*div, button {
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
@@ -224,7 +273,7 @@
         border-radius: 10px;
         font-size: 24px;
         color: #F0F0F0;
-      }
+      }*/
     }
   }
   .tabbar {
