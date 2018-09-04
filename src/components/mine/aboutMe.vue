@@ -443,7 +443,8 @@ export default {
     .quitBtn{
       display: block;
       margin: 113px auto;
-      width: 710px;
+      /*width: 710px;*/
+      width: 94.67%;
       height: 90px;
       background: #fff;
       border-radius: 10px;
