@@ -1741,7 +1741,8 @@ export default {
 				text-align: center;
 				padding: 10px 0 30px 0;
 				.mint-button.mint-button--primary.mint-button--normal{
-					width: 300px;
+					/*width: 300px;*/
+          width: 40%;
 					height: 72px;
 					background: #2672BA;
 					border-radius: 8px;

@@ -1,8 +1,7 @@
 <template>
   <div class="purchased">
-    <x-header :left-options="{backText: ''}"
-              left-options.preventGoBack="true"
-              on-click-back="toLink(id)">已购买产品
+    <x-header :left-options="{backText: '', preventGoBack: true}"
+              @on-click-back="toLink(id)">已购买产品
     </x-header>
     <div class="content wrapper">
       <ul class="tabbar">
@@ -59,34 +58,40 @@
     },
     mounted () {
       this.id = this.$route.params.id
-      checkSpecifiedPro(this.id).then(res => {
-        this.content['0'] = res.data
-        this.content['0'].forEach((value, index) => {
-          /**
-           * product_type_id
-           * 1:固收
-           * 2:理财
-           * 3:二级市场
-           * 4:另类
-           */
-          switch (value.product_type_id) {
-            case 1:
-              this.content['1'].push(value)
-              break
-            case 2:
-              this.content['2'].push(value)
-              break
-            case 3:
-              this.content['3'].push(value)
-              break
-            case 4:
-              this.content['4'].push(value)
-              break
-          }
-        })
-      })
+      this.getList()
     },
     methods: {
+      getList () {
+        checkSpecifiedPro(this.id).then(res => {
+          this.content['0'] = res.data
+          this.content['0'].forEach((value, index) => {
+            /**
+             * product_type_id
+             * 1:固收
+             * 2:理财
+             * 3:二级市场
+             * 4:另类
+             */
+            switch (value.product_type_id) {
+              case 1:
+                this.content['1'].push(value)
+                break
+              case 2:
+                this.content['2'].push(value)
+                break
+              case 3:
+                this.content['3'].push(value)
+                break
+              case 4:
+                this.content['4'].push(value)
+                break
+            }
+          })
+        })
+      },
+      toLink (id) {
+        this.$router.replace({name: 'CustomerManagement', params: {id}})
+      },
       switchTab (index) {
           this.n = index
       },

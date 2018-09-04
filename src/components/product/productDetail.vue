@@ -19,8 +19,8 @@
             <span class="announcementTit">产品公告：</span>
             <span class="announcementDetail">
               <span class="detail-text">
-                {{item.announcement}}
-                <span class="content-space"></span>
+                {{item.announcement}}&nbsp;&nbsp;
+                <!--<span class="content-space"></span>-->
               </span>
             </span>
           </div>
@@ -158,9 +158,9 @@ export default {
       // 内容复制3份好有连续性
       $marqueeContent.innerHTML = $marqueeContent.innerHTML + $marqueeContent.innerHTML + $marqueeContent.innerHTML
       var contentWidth = $marqueeContent.getBoundingClientRect().width
-      // if (contentWidth <= 0) { // 没有内容搞什么动画
-      //   return
-      // }
+       if (contentWidth <= 0) { // 没有内容搞什么动画
+         return
+       }
       // 内容复制了3份，宽度也要除以3
       contentWidth = contentWidth / 3
       // 计算一次动画应该要花费多少时间
@@ -249,9 +249,41 @@ export default {
         font-size: 26px;
         padding: 0 20px;
         background: #EB4F4C;
-        @keyframes kf-marque-animation{ 0% { transform: translateX(0); } 100% { transform: translateX(-33.3%); } }
+        @-webkit-keyframes kf-marque-animation{
+          0% {
+            -webkit-transform: translateX(0);
+            -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+            -o-transform: translateX(0);
+            transform: translateX(0);
+          }
+          100% {
+            -webkit-transform: translateX(-33.3%);
+            -moz-transform: translateX(-33.3%);
+            -ms-transform: translateX(-33.3%);
+            -o-transform: translateX(-33.3%);
+            transform: translateX(-33.3%);
+          }
+        }
+        @keyframes kf-marque-animation{
+          0% {
+            -webkit-transform: translateX(0);
+            -moz-transform: translateX(0);
+            -ms-transform: translateX(0);
+            -o-transform: translateX(0);
+            transform: translateX(0);
+          }
+          100% {
+            -webkit-transform: translateX(-33.3%);
+            -moz-transform: translateX(-33.3%);
+            -ms-transform: translateX(-33.3%);
+            -o-transform: translateX(-33.3%);
+            transform: translateX(-33.3%);
+          }
+        }
         .announcementDetail{
-          width: 570px;
+          /*width: 570px;*/
+          width: 76%;
           height: 70px;
           line-height: 70px;
           // background: #e9eaea;
@@ -267,11 +299,14 @@ export default {
             position: relative;
             padding-right: 0px;
             white-space: nowrap;
+            -o-animation: kf-marque-animation 0s infinite linear;
+            -webkit-animation: kf-marque-animation 0s infinite linear;
             animation: kf-marque-animation 0s infinite linear;
           }
           .content-space{
             display: inline-block;
-            width: 5em;
+            /*width: 5em;*/
+            width: 20%;
           }
         }
       }
@@ -344,7 +379,8 @@ export default {
     .reservation{
       text-align: center;
       .mint-button.mint-button--primary.mint-button--normal{
-        width: 710px;
+        /*width: 710px;*/
+        width: 94.67%;
         height: 72px;
         margin-top: 33px;
         margin-bottom: 40px;
