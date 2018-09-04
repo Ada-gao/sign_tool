@@ -383,6 +383,7 @@ export default {
 			showImg: false,
 			imgTotal: null,
 			imgIndex: '',
+			timer1: null,
 			slotsM: [
 				{
           flex: 1,
@@ -452,16 +453,19 @@ export default {
 				this.showSpace = false
 			},
 			touchScreen () {
-				if (this.$route.params.fromUrl === 'productDetail') {
-					document.getElementsByTagName('input')[0].blur()
-				}
-				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002' || this.appointmentList.status === '2004' || this.appointmentList.status === '3003') {
-					document.getElementsByTagName('input')[0].blur()
-					document.getElementsByTagName('input')[1].blur()
-					document.getElementsByTagName('input')[2].blur()
-					document.getElementsByTagName('input')[3].blur()
-					document.getElementsByTagName('input')[4].blur()
-				}
+				// if (this.$route.params.fromUrl === 'productDetail') {
+				// 	document.getElementsByTagName('input')[0].blur()
+				// }
+				// if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002' || this.appointmentList.status === '2004' || this.appointmentList.status === '3003') {
+				// 	document.getElementsByTagName('input')[0].blur()
+				// 	document.getElementsByTagName('input')[1].blur()
+				// 	document.getElementsByTagName('input')[2].blur()
+				// 	document.getElementsByTagName('input')[3].blur()
+				// 	document.getElementsByTagName('input')[4].blur()
+				// }
+				Array.from(document.querySelectorAll("input[type='text']")).map(item => {
+					item.blur()
+				})
 			},
 			chooseName () {
 				if (this.$route.params.riskLevel) {
@@ -493,16 +497,29 @@ export default {
       //   this.showMoney = false
 			// },
 			showPopup (data) {
-        this.popupVisible = data
-      },
+				console.log('showpopup..............')
+				Array.from(document.querySelectorAll("input[type='text']")).map(item => {
+					item.blur()
+				})
+				this.timer1 = null
+                this.timer1 = setTimeout(() => {
+					this.popupVisible = data
+                }, 3000)
+			},
       hidePopup (data) {
         this.popupVisible = data
 			},
 			chooseBankName () {
+				Array.from(document.querySelectorAll("input[type='text']")).map(item => {
+					item.blur()
+				})
+				this.timer1 = null
 				if (this.alertMsg === true) {
 					// return
 				} else {
-					this.showBankCardName = true
+					this.timer1 = setTimeout(() => {
+						this.showBankCardName = true
+					}, 600)
 				}
 			},
 			onValuesChange (picker, values) {
