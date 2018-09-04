@@ -43,6 +43,7 @@ import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken } from '@/service/api/login'
 // import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
+import { getStore } from '@/config/mUtils'
 
 export default {
   data () {
@@ -124,12 +125,13 @@ export default {
       // window.JPush.getRegistrationID((id) => {
       //   console.log('getRegistrationID: ' + id)
       // })
+      console.log('getStore registrationId :' + getStore('registrationId'))
       getAuthToken({
         code: this.num,
         username: this.username,
         platform: this.platform === 'iOS' ? 2 : 1,
         app_version: 'v1.0',
-        registration_id: this.registrationId
+        registration_id: getStore('registrationId')
       }).then(res => {
         if (res.status === 200) {
           this.$store.state.token = res.data.token
@@ -255,7 +257,8 @@ export default {
       border: none;
     }
     .borderB-1{
-      width: 650px;
+      /*width: 650px;*/
+      width: 86.67%;
       height: 80px;
       color: #666666;
       margin: 0 auto;
@@ -300,7 +303,8 @@ export default {
     }
     .error,.noError{
       text-align: left;
-      width: 650px;
+      /*width: 650px;*/
+      width: 86.67%;
       height: 33px;
       line-height: 33px;
       margin: 33px auto;
@@ -309,7 +313,8 @@ export default {
     }
     .userTip{
       text-align: left;
-      width: 650px;
+      /*width: 650px;*/
+      width: 86.67%;
       height: 33px;
       line-height: 33px;
       margin: 12px auto;
@@ -318,10 +323,14 @@ export default {
     }
     .btn_wrap{
       position: static;
-      margin-top: 0px;
       text-align: center;
+      padding: 0;
+      margin: 0 auto;
+      margin-top: 0px;
+      width: 86.67%;
       .weui-btn.weui-btn_primary{
-        width: 650px;
+        /*width: 650px;*/
+        width: 100%;
         height: 80px;
         background: #2A7DC1;
         border-radius: 10px;

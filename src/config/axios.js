@@ -21,9 +21,9 @@ axios.interceptors.request.use(
             config.headers['X-Token'] = XToken
         }
         if (navigator.onLine) {
-            console.log('正常')
+            // console.log('正常')
         } else {
-            console.log('断网')
+            // console.log('断网')
             router.replace({name: 'NoInternet'})
         }
         return config
@@ -37,8 +37,8 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
     response => response,
     error => {
+      console.log(error)
       const res = error.response
-      console.log(res)
       // res.data.codeMsg = interceptorsMsg.errMessage(res.config.url, res.data.code)
       // console.log(res.data.codeMsg)
       switch (res.status) {
@@ -50,7 +50,7 @@ axios.interceptors.response.use(
           break
         case 400:
           // error.message = '手机号已被注册'
-          toast(res.data.message)
+          res.data.message ? toast(res.data.message) : toast(res.data.msg)
           error.message = '请求错误'
           break
         case 401:

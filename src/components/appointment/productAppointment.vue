@@ -176,10 +176,11 @@
 						<mt-cell title="邮寄合同" class="tit">
 							<i slot="icon" class="iconfont">&#xe6ac;</i>
 						</mt-cell>
-						<div class="cont">
+						<div class="cont last_cont">
 							<mt-cell title="合同编号：" :value="contractNumW"></mt-cell>
 							<mt-cell title="快递公司：" :value="expresszCom"></mt-cell>
 							<mt-cell title="快递编号：" :value="expressNums"></mt-cell>
+              <div class="space"></div>
 						</div>
 					</div>
 					<div class="mailingContract" v-if="sendEmailW">
@@ -1707,6 +1708,9 @@ export default {
 					}
 				}
 			}
+      .cont.last_cont {
+        margin-bottom: 0;
+      }
 			.submitBtn{
 				text-align: center;
 				.mint-button.mint-button--primary.mint-button--normal{

@@ -5,7 +5,7 @@
 		<mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
 	</div>
     <div class="wrapper">
-			<img src="static/img/banner.png">
+			<img src="static/img/banner.png" @click="handleRoute">
 			<!-- <div class="space"></div> -->
 			<group class="group-list" :data="productsList"  v-for="(item,index) in productsList" :key="item.product_type_id">
 				<cell
@@ -50,6 +50,9 @@ export default {
   	SellingProducts
 	},
 	methods: {
+    handleRoute () {
+      this.$router.push({name: 'activityList'})
+    },
     showContent (status, index) {
 		  this.showContentList[index] = !status
     },
