@@ -66,7 +66,7 @@
           <p class="cont-text">收益分配方式 ：{{item.income_distribution}}</p>
           <p class="cont-text">资产团队 ：{{item.asset_team}}</p>
           <p class="cont-text">托管银行 ：{{item.custodian_bank}}</p>
-          <p class="cont-text">关联产品 ：{{item.relevance_id}}</p>
+          <p class="cont-text">关联产品 ：{{item.relevance_name}}</p>
           <p class="cont-text" v-if="item.interest_payment === '0'">付息方式 ：无</p>
           <p class="cont-text" v-if="item.interest_payment === '1'">付息方式 ：季度付息</p>
           <p class="cont-text" v-if="item.interest_payment === '2'">付息方式 ：自然季度付息</p>
