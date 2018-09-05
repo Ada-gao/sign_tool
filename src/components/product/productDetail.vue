@@ -243,16 +243,6 @@ export default {
         font-size: 26px;
         padding: 0 20px;
         background: #EB4F4C;
-<<<<<<< HEAD
-        @keyframes kf-marque-animation{
-          0% {
-            transform: translateX(0);
-            }
-          100% {
-            transform: translateX(-33.3%);
-            }
-          }
-=======
         @-webkit-keyframes kf-marque-animation{
           0% {
             -webkit-transform: translateX(0);
@@ -285,7 +275,6 @@ export default {
             transform: translateX(-33.3%);
           }
         }
->>>>>>> 4cb165730696f4d82a7f6ca59fbbfe2ab2b804b1
         .announcementDetail{
           /*width: 570px;*/
           width: 76%;
