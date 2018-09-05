@@ -6,10 +6,7 @@
         <p class="text-plus-white">
           <span v-if="item.is_float === 0">一</span>
           <span v-else><i class="percent">{{item.annualized_return}}</i>%</span>
-          <span class="label absolute-center-y" v-if="item.product_type_id === 1">二级市场</span>
-          <span class="label absolute-center-y" v-else-if="item.product_type_id === 2">理财</span>
-          <span class="label absolute-center-y" v-else-if="item.product_type_id === 3">固收</span>
-          <span class="label absolute-center-y" v-else-if="item.product_type_id === 4">另类</span>
+          <span class="label absolute-center-y">{{item.product_type_name}}</span>
         </p>
         <p class="year">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</p>
       </div>
@@ -31,10 +28,7 @@
             <span class="important" v-if="this.$route.params.important">重点产品</span>
           </p>
           <p class="cont-text">产品结构类型 ：{{item.product_cons_name}}</p>
-          <p class="cont-text" v-if="item.product_type_id === 1">产品收益类型 ：二级市场</p>
-          <p class="cont-text" v-else-if="item.product_type_id === 2">产品类型 ：理财</p>
-          <p class="cont-text" v-else-if="item.product_type_id === 3">产品类型 ：固收</p>
-          <p class="cont-text" v-else-if="item.product_type_id === 4">产品类型 ：另类</p>
+          <p class="cont-text">产品类型 ：{{item.product_type_name}}</p>
           <p class="cont-text">产品风险级别 ：{{item.product_risk_level}}</p>
           <!-- <p class="cont-text" v-if="item.product_status === 1">产品状态 ：预热中</p>
           <p class="cont-text" v-else-if="item.product_status === 2">产品状态 ：募集中</p>
@@ -249,6 +243,16 @@ export default {
         font-size: 26px;
         padding: 0 20px;
         background: #EB4F4C;
+<<<<<<< HEAD
+        @keyframes kf-marque-animation{
+          0% {
+            transform: translateX(0);
+            }
+          100% {
+            transform: translateX(-33.3%);
+            }
+          }
+=======
         @-webkit-keyframes kf-marque-animation{
           0% {
             -webkit-transform: translateX(0);
@@ -281,6 +285,7 @@ export default {
             transform: translateX(-33.3%);
           }
         }
+>>>>>>> 4cb165730696f4d82a7f6ca59fbbfe2ab2b804b1
         .announcementDetail{
           /*width: 570px;*/
           width: 76%;
@@ -299,9 +304,13 @@ export default {
             position: relative;
             padding-right: 0px;
             white-space: nowrap;
+<<<<<<< HEAD
+            animation: kf-marque-animation 5s infinite linear;
+=======
             -o-animation: kf-marque-animation 0s infinite linear;
             -webkit-animation: kf-marque-animation 0s infinite linear;
             animation: kf-marque-animation 0s infinite linear;
+>>>>>>> 4cb165730696f4d82a7f6ca59fbbfe2ab2b804b1
           }
           .content-space{
             display: inline-block;
