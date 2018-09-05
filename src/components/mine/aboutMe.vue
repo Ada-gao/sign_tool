@@ -85,6 +85,7 @@ import { removeStore } from '@/config/mUtils'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
 import { getShare, getInfoList } from '@/service/api/aboutMe'
+//import { qscan } from '@/service/api/activity'
 
 export default {
   data () {
@@ -121,7 +122,7 @@ export default {
     logoutEvent (key) {
       if (key === 'men1') {
         removeStore('token')
-        this.$router.push({name: 'Login'})
+        this.$router.replace({name: 'Login'})
         // window.JPush.cleanTags({ sequence: 1 }, (result) => {
         //   var sequence = result.sequence
         //   console.log(sequence)
@@ -298,7 +299,10 @@ export default {
           // (支持手电筒, 默认false)
         },
         function (result) {
-          console.log(result)// 二维码数据
+          console.log('result', result)// 二维码数据
+//          qscan().then(res => {
+//            console.log('res', res)
+//          })
         },
         function (error) {
           console.log(error)// 原因
@@ -443,7 +447,8 @@ export default {
     .quitBtn{
       display: block;
       margin: 113px auto;
-      width: 710px;
+      /*width: 710px;*/
+      width: 94.67%;
       height: 90px;
       background: #fff;
       border-radius: 10px;

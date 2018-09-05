@@ -1,13 +1,13 @@
 <template>
   <div class="activity_list">
     <mt-header fixed title="报名客户列表" class="header">
-      <router-link :to="{name: 'activityDetail'}" slot="left">
+      <router-link :to="{name: 'activityDetail', params: {id: activityId}}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
     </mt-header>
     <div class="detail">
       <ul class="signed_ul">
-        <li v-for="item in list" :key="item.id" @click="handleRoute(item)">
+        <li v-for="item in list" :key="item.id" @click="handleRoute(item.activityClientId)">
           <div class="left">
             {{item.clientName}}（{{item.mobile}}）
           </div>
@@ -41,12 +41,12 @@
           }
         })
       },
-      handleRoute (item) {
-        this.$router.push({path: '/clientSigned/' + item.id, params: item})
+      handleRoute (id) {
+        this.$router.push({name: 'clientSigned', params: {id}})
       }
     },
     mounted () {
-      this.activityId = JSON.parse(getStore('activityId'))
+      this.activityId = getStore('activityId')
       this.getList()
     }
   }

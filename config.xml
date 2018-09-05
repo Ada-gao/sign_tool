@@ -62,7 +62,8 @@
         <variable name="CAMERA_USAGE_DESCRIPTION" value="This app needs camera access" />
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="This app needs photo library access" />
     </plugin>
-    <engine name="ios" spec="^4.5.4" />
+    <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
+    <engine name="ios" spec="^4.5.5" />
     <engine name="browser" spec="^5.0.3" />
     <engine name="android" spec="^7.1.1" />
 </widget>

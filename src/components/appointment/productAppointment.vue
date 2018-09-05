@@ -69,23 +69,28 @@
 									<div class="card" v-if="uploadCard">
 										<mt-field label="银行卡号:" v-model="cardnum" ref="cardInput" @change="cardNumChange"></mt-field>
 										<mt-field label="银行名称:" disabled v-model="bankname">
-											<i class="iconfont" @click="chooseBankName">&#xe731;</i>
+                      <div class="define_box"
+                           @click="chooseBankName">
+                        <i class="iconfont">&#xe731;</i>
+                      </div>
 										</mt-field>
 										<mt-popup v-model="showBankCardName"
 												position="bottom"
 												class="cercode_box"
 												popup-transition="popup-fade">
-											<mt-picker :slots="slotsN"
-																:showToolbar="true"
-																value-key="bankName"
-																:itemHeight="itemHeight"
-																:visibleItemCount=3
-																@change="onValuesChange">
-												<div class="toolbar">
-													<span class="cancel" @click="cancelCerName">取消</span>
-													<span class="ensure" @click="ensureCerName">确定</span>
-												</div>
-											</mt-picker>
+											<div @touchmove.prevent>
+                        <mt-picker :slots="slotsN"
+                                   :showToolbar="true"
+                                   value-key="bankName"
+                                   :itemHeight="itemHeight"
+                                   :visibleItemCount=3
+                                   @change="onValuesChange">
+                          <div class="toolbar">
+                            <span class="cancel" @click="cancelCerName">取消</span>
+                            <span class="ensure" @click="ensureCerName">确定</span>
+                          </div>
+                        </mt-picker>
+                      </div>
 										</mt-popup>
 										<mt-field label="支行名称:" v-model="bankname1"></mt-field>
 										<camera :popupVisible="popupVisible"
@@ -176,10 +181,11 @@
 						<mt-cell title="邮寄合同" class="tit">
 							<i slot="icon" class="iconfont">&#xe6ac;</i>
 						</mt-cell>
-						<div class="cont">
+						<div class="cont last_cont">
 							<mt-cell title="合同编号：" :value="contractNumW"></mt-cell>
 							<mt-cell title="快递公司：" :value="expresszCom"></mt-cell>
 							<mt-cell title="快递编号：" :value="expressNums"></mt-cell>
+              <div class="space"></div>
 						</div>
 					</div>
 					<div class="mailingContract" v-if="sendEmailW">
@@ -377,6 +383,7 @@ export default {
 			showImg: false,
 			imgTotal: null,
 			imgIndex: '',
+			timer1: null,
 			slotsM: [
 				{
           flex: 1,
@@ -446,16 +453,19 @@ export default {
 				this.showSpace = false
 			},
 			touchScreen () {
-				if (this.$route.params.fromUrl === 'productDetail') {
-					document.getElementsByTagName('input')[0].blur()
-				}
-				if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002' || this.appointmentList.status === '2004' || this.appointmentList.status === '3003') {
-					document.getElementsByTagName('input')[0].blur()
-					document.getElementsByTagName('input')[1].blur()
-					document.getElementsByTagName('input')[2].blur()
-					document.getElementsByTagName('input')[3].blur()
-					document.getElementsByTagName('input')[4].blur()
-				}
+				// if (this.$route.params.fromUrl === 'productDetail') {
+				// 	document.getElementsByTagName('input')[0].blur()
+				// }
+				// if (this.appointmentList.status === '1003' || this.appointmentList.status === '2002' || this.appointmentList.status === '2004' || this.appointmentList.status === '3003') {
+				// 	document.getElementsByTagName('input')[0].blur()
+				// 	document.getElementsByTagName('input')[1].blur()
+				// 	document.getElementsByTagName('input')[2].blur()
+				// 	document.getElementsByTagName('input')[3].blur()
+				// 	document.getElementsByTagName('input')[4].blur()
+				// }
+				Array.from(document.querySelectorAll("input[type='text']")).map(item => {
+					item.blur()
+				})
 			},
 			chooseName () {
 				if (this.$route.params.riskLevel) {
@@ -487,16 +497,29 @@ export default {
       //   this.showMoney = false
 			// },
 			showPopup (data) {
-        this.popupVisible = data
-      },
+				console.log('showpopup..............')
+				Array.from(document.querySelectorAll("input[type='text']")).map(item => {
+					item.blur()
+				})
+				this.timer1 = null
+                this.timer1 = setTimeout(() => {
+					this.popupVisible = data
+                }, 3000)
+			},
       hidePopup (data) {
         this.popupVisible = data
 			},
 			chooseBankName () {
+				Array.from(document.querySelectorAll("input[type='text']")).map(item => {
+					item.blur()
+				})
+				this.timer1 = null
 				if (this.alertMsg === true) {
 					// return
 				} else {
-					this.showBankCardName = true
+					this.timer1 = setTimeout(() => {
+						this.showBankCardName = true
+					}, 600)
 				}
 			},
 			onValuesChange (picker, values) {
@@ -1452,8 +1475,11 @@ export default {
 				font-weight: bold;
 			}
 			.weui-wepay-flow{
-				margin-left: 120px;
-				padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0 100px;
+				/*margin-left: 120px;*/
+				/*padding: 0;*/
 				.weui-wepay-flow__bd{
 					justify-content: start;
 					.weui-wepay-flow__li{
@@ -1513,7 +1539,8 @@ export default {
 						}
 					}
 					.weui-wepay-flow__line{
-						width: 224px;
+						/*width: 224px;*/
+            width: 44%;
 						height: 6px;
 						background: #9099A2;
 					}
@@ -1690,6 +1717,9 @@ export default {
 					}
 				}
 			}
+      .cont.last_cont {
+        margin-bottom: 0;
+      }
 			.submitBtn{
 				text-align: center;
 				.mint-button.mint-button--primary.mint-button--normal{
@@ -1711,7 +1741,8 @@ export default {
 				text-align: center;
 				padding: 10px 0 30px 0;
 				.mint-button.mint-button--primary.mint-button--normal{
-					width: 300px;
+					/*width: 300px;*/
+          width: 40%;
 					height: 72px;
 					background: #2672BA;
 					border-radius: 8px;
@@ -1772,6 +1803,7 @@ export default {
 							}
 							.mint-cell-value{
 								line-height: 40px;
+                position: relative;
 								.mint-field-core{
 									width: 580px;
 									height: 40px;
@@ -1783,13 +1815,25 @@ export default {
 								}
 								.mint-field-other{
 									top: 0;
-									right: 0;
+									/*right: 0;*/
 									position: absolute;
-									transform: rotateZ(90deg);
-									.iconfont{
-										font-size: 40px;
-    								color: #333;
-									}
+                  width: 100%;
+                  height: 100%;
+									/*transform: rotateZ(90deg);*/
+									.define_box {
+                    position: absolute;
+                    width:100%;
+                    height:100%;
+                    top:0;
+                    left:0;
+                    text-align: right;
+                    .iconfont{
+                      display: inline-block;
+                      transform: rotateZ(90deg);
+                      font-size: 40px;
+                      color: #333;
+                    }
+                  }
 								}
 							}
 						}
