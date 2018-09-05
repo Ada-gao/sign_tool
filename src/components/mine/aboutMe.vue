@@ -85,7 +85,6 @@ import { removeStore } from '@/config/mUtils'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
 import { getShare, getInfoList } from '@/service/api/aboutMe'
-//import { qscan } from '@/service/api/activity'
 
 export default {
   data () {
@@ -300,9 +299,6 @@ export default {
         },
         function (result) {
           console.log('result', result)// 二维码数据
-//          qscan().then(res => {
-//            console.log('res', res)
-//          })
         },
         function (error) {
           console.log(error)// 原因

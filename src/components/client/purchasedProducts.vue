@@ -4,7 +4,7 @@
               @on-click-back="toLink(id)">已购买产品
     </x-header>
     <div class="content wrapper">
-      <div style="overflow: hidden;">
+      <div style="overflow: hidden;overflow-x: auto;">
         <ul class="tabbar" :style="{'width': ulWidth}">
           <li v-for="(item,index) in tabBars"
               :key="index"
@@ -16,7 +16,7 @@
         </ul>
       </div>
       <div class="space"></div>
-      <selling-products :child-data="content[n]"
+      <selling-products :child-data="products[n]"
                         @cgPopup="cgPopup"
                         :popupVisible="popupVisible"></selling-products>
     </div>
@@ -40,9 +40,7 @@
         ulWidth: '100%',
         liWidth: '',
         tabBars: ['全部'],
-        content: {
-          '0': []
-        }
+        products: []
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -67,42 +65,20 @@
         checkSpecifiedPro(this.id).then(res => {
           res.data.forEach(item => {
             this.tabBars.push(item.name)
+            this.products.push([])
             if (item.product.length > 0) {
               item.product.map(ele => {
-                this.content['0'].push(ele)
+                this.products[0].push(ele)
               })
             }
-            item.product.map((el, idx) => {
-              this.content[idx + 1] = []
+          })
+          res.data.forEach((item, index) => {
+            item.product.map(ele => {
+              this.products[index + 1].push(ele)
             })
           })
-          console.log(this.content)
           let cnt = Math.ceil(this.tabBars.length / 5)
           this.ulWidth = cnt * 100 + '%'
-          // console.log(document.documentElement.offsetWidth)
-//          this.content['0'].forEach((value, index) => {
-//            /**
-//             * product_type_id
-//             * 1:固收
-//             * 2:理财
-//             * 3:二级市场
-//             * 4:另类
-//             */
-//            switch (value.product_type_id) {
-//              case 1:
-//                this.content['1'].push(value)
-//                break
-//              case 2:
-//                this.content['2'].push(value)
-//                break
-//              case 3:
-//                this.content['3'].push(value)
-//                break
-//              case 4:
-//                this.content['4'].push(value)
-//                break
-//            }
-//          })
         })
       },
       toLink (id) {
@@ -132,7 +108,6 @@
       font-size: 0;
       height: 80px;
       line-height: 80px;
-      overflow-x: auto;
       li {
         font-size: 30px;
         display: inline-block;
