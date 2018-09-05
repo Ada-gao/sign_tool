@@ -293,13 +293,9 @@ export default {
             position: relative;
             padding-right: 0px;
             white-space: nowrap;
-<<<<<<< HEAD
-            animation: kf-marque-animation 5s infinite linear;
-=======
             -o-animation: kf-marque-animation 0s infinite linear;
             -webkit-animation: kf-marque-animation 0s infinite linear;
             animation: kf-marque-animation 0s infinite linear;
->>>>>>> 4cb165730696f4d82a7f6ca59fbbfe2ab2b804b1
           }
           .content-space{
             display: inline-block;

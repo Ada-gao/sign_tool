@@ -40,7 +40,7 @@
         ulWidth: '100%',
         liWidth: '',
         tabBars: ['全部'],
-        products: []
+        products: [[]]
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -65,12 +65,12 @@
         checkSpecifiedPro(this.id).then(res => {
           res.data.forEach(item => {
             this.tabBars.push(item.name)
-            this.products.push([])
             if (item.product.length > 0) {
               item.product.map(ele => {
                 this.products[0].push(ele)
               })
             }
+            this.products.push([])
           })
           res.data.forEach((item, index) => {
             item.product.map(ele => {

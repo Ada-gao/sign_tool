@@ -1,5 +1,5 @@
 import axios from '../../config/axios'
-const baseUrl = 'http://10.9.70.232:9999'
+const baseUrl = 'http://10.9.70.231:9999'
 
 /**
  * 获取已报名列表
@@ -60,9 +60,9 @@ export function signedData (id) {
  * 理财师扫描客户二维码签到
  * @returns {AxiosPromise}
  */
-export function qscan () {
+export function qscan (link) {
   return axios({
-    url: baseUrl + '/activity/financial/activityClient/sign',
+    url: baseUrl + '/activity' + link,
     method: 'put'
   })
 }

@@ -106,7 +106,7 @@
             <cell style="color:#333"
                   :is-link="!clickArrowObj.cerObj.disabled"
                   :link="{name: 'Certified',params: {id: client_id}}"
-                  :title="'投资者类型：' + clickArrowObj.cerObj.type"
+                  :title="'投资者类型：' + clickArrowObj.cerObj.type + data.risk_level"
                   :value="clickArrowObj.cerObj.stat"
                   :disabled="clickArrowObj.cerObj.disabled"
             >
