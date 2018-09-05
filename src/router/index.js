@@ -28,7 +28,7 @@ const Index = r => require.ensure([], () => r(require('@/components/index')), 'i
 const Certified = r => require.ensure([], () => r(require('@/components/client/certified')), 'certified')
 const AutoTransfer = r => require.ensure([], () => r(require('@/components/client/autoTransfer')), 'autoTransfer')
 const PotentialCustomerList = r => require.ensure([], () => r(require('@/components/client/potentialCustomerList')), 'potentialCustomerList')
-const PurchasedProducts = r => require.ensure([], () => r(require('@/components/purchasedProducts')), 'purchasedProducts')
+const PurchasedProducts = r => require.ensure([], () => r(require('@/components/client/purchasedProducts')), 'purchasedProducts')
 const PerfectInfos = r => require.ensure([], () => r(require('@/components/client/perfectInfos')), 'perfectInfos')
 const Bankcard = r => require.ensure([], () => r(require('@/components/client/bankcard')), 'bankcard')
 const BankcardInfos = r => require.ensure([], () => r(require('@/components/client/bankcardInfos')), 'bankcardInfos')

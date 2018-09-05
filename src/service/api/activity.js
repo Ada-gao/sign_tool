@@ -43,3 +43,26 @@ export function signActivity (data) {
     method: 'post'
   })
 }
+
+/**
+ * 获取报名客户信息
+ * @param id: activityClientId
+ * @returns {AxiosPromise}
+ */
+export function signedData (id) {
+  return axios({
+    url: baseUrl + '/activity/financial/activityClient/' + id,
+    method: 'get'
+  })
+}
+
+/**
+ * 理财师扫描客户二维码签到
+ * @returns {AxiosPromise}
+ */
+export function qscan () {
+  return axios({
+    url: baseUrl + '/activity/financial/activityClient/sign',
+    method: 'put'
+  })
+}
