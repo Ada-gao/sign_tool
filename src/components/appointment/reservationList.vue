@@ -106,9 +106,9 @@ export default {
 				this.appoinmentList = res.data.filter(item => item.status.slice(0, 1) === '1')
 				let date = new Date()
 				this.appoinmentList.map((ele, index) => {
-					if (ele.status === '1003' && ele.timeliness * 60 * 60 > parseInt((date - new Date(ele.update_time)) / 1000)) {
+					if (ele.status === '1003' && ((ele.timeliness * 60 * 60) > (parseInt((date - new Date(ele.update_time.replace(/-/g, '/'))) / 1000)))) {
 						ele.flag = true
-						let ms = ele.timeliness * 60 * 60 - parseInt((date - new Date(ele.update_time)) / 1000)
+						let ms = ele.timeliness * 60 * 60 - parseInt((date - new Date(ele.update_time.replace(/-/g, '/'))) / 1000)
 						ele.timeout = ms
 					} else {
 						ele.flag = false
