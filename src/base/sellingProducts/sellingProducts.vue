@@ -94,7 +94,7 @@
           if (this.childDataFlag) {
             // console.log('come in')
             this.childDataTemp = this.childData
-            console.log(this.childDataTemp)
+            // console.log(this.childDataTemp)
             if (this.childDataTemp.length === 0) {
               this.flag = true
             } else {

@@ -85,7 +85,8 @@ import { removeStore } from '@/config/mUtils'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
 import { getShare, getInfoList } from '@/service/api/aboutMe'
-//import { qscan } from '@/service/api/activity'
+import { qscan } from '@/service/api/activity'
+import { activityUrl } from '@/config/env'
 
 export default {
   data () {
@@ -297,14 +298,12 @@ export default {
           // flashlight
           'flashlightEnable': 'true'
           // (支持手电筒, 默认false)
-        },
-        function (result) {
-          console.log('result', result)// 二维码数据
-//          qscan().then(res => {
-//            console.log('res', res)
-//          })
-        },
-        function (error) {
+        }, result => {
+          let url = window.decodeURI(JSON.parse(result).result).split(activityUrl)[1]
+          qscan(url).then(res => {
+            console.log('req', res)
+          })
+        }, error => {
           console.log(error)// 原因
         }
       )
@@ -314,7 +313,6 @@ export default {
     }
   },
   mounted () {
-    console.log('mounted')
     this.qheight = 'height:' + window.innerHeight + 'px'
     let data = JSON.parse(window.localStorage.data)
     this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
