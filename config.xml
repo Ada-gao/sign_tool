@@ -7,7 +7,7 @@
     <author email="zhuangyinping@shuyun365.com" href="http://www.techlab.ai/">
         Shuyun
     </author>
-    <!-- <preference name="StatusBarBackgroundColor" value="#ffffff" /> -->
+    <preference name="StatusBarBackgroundColor" value="#ffffff" />
     <preference name="DisallowOverscroll" value="true" />
     <preference name="target-device" value="handset" />
     <preference name="deployment-target" value="9.0" />
