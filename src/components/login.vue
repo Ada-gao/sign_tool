@@ -1,8 +1,27 @@
 <template>
-  <div class="loginPage" @touchmove.prevent>
-    <x-header :left-options="{showBack: false}">登录</x-header>
-    <div class="wrapper">
-      <group>
+  <div class="loginPage border-box" @touchmove.prevent>
+    <!-- <x-header :left-options="{showBack: false}">登录</x-header> -->
+    <!-- <div class="wrapper"> -->
+      <div class="title">
+        <div class="welcome">欢迎登录</div>
+        <div class="slogan">签单更轻松 工作更从容</div>
+      </div>
+      <div class="edit">
+        <div class="username">
+          <i class="iconfont verticalAlign">&#xe60b;</i>
+          <mt-field style="display: inline-block" class="verticalAlign" placeholder="请输入手机号或邮箱" :disableClear="clearAll" @blur.native.capture="userChange(username)" v-model="username"></mt-field>
+        </div>
+        <div class="userTip">{{msgTip}}</div>
+        <div class="num">
+          <i class="iconfont verticalAlign">&#xe612;</i>
+          <mt-field style="display: inline-block" class="verticalAlign" placeholder="请输入验证码" :disableClear="clearAll" v-model="num" @focus.native.capture="numChange"></mt-field>
+          <button class="send right textCenter" @click="getIdentifyingCode" v-show="show">发送验证码</button>
+          <span class="count right textCenter" v-show="!show">{{count}}s后重新发送</span>
+        </div>
+        <div class="error" >{{errorMsg}}</div>
+      </div>
+      <mt-button :disabled="logIn" class="login" @click.native="nextStep">登 录</mt-button>      
+      <!-- <group>
         <x-input
           class="borderB-1 user"
           placeholder="请您输入手机号"
@@ -27,12 +46,10 @@
         </div>
       </group>
       <div class="error" >{{errorMsg}}</div>
-      <!-- <div class="noError" v-show="!errorTip"></div> -->
-      <!-- <x-button class="btn" @click="commit">提交</x-button> -->
       <div class="btn_wrap">
         <x-button type="primary" :disabled="logIn" @click.native="nextStep">登录</x-button>
-      </div>
-    </div>
+      </div> -->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -64,7 +81,8 @@ export default {
       platform: '',
       device: '',
       disabledSend: true,
-      registrationId: ''
+      registrationId: '',
+      clearAll: true
       // telTip: false
       // start: false
     }
@@ -114,6 +132,7 @@ export default {
       // ^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$
     },
     numChange () {
+      console.log('dfkdf')
       this.numLog = true
       if (this.userLog === true && this.numLog === true) {
         this.logIn = false
@@ -174,6 +193,9 @@ export default {
         if (err) {
           this.errorTip = true
           this.errorMsg = '验证码错误，请重新发送！'
+          clearInterval(this.tiemr)
+          this.timer = null
+          this.show = true
           setTimeout(() => {
             this.errorMsg = ''
           }, 5000)
@@ -215,6 +237,9 @@ export default {
             clearInterval(this.tiemr)
             this.timer = null
             this.show = true
+            setTimeout(() => {
+              this.msgTip = ''
+            }, 3000)
           } else {
             console.log('数据库查看验证码')
           }
@@ -237,110 +262,178 @@ export default {
 </script>
 
 <style lang="less">
+@import "../common/style/variable.less";
+@import "../common/style/base.less";
 .loginPage{
   height: 100%;
-  font-family: PingFangSC-Regular;
-  background: #F5F5F5;
-  .spaceAll{
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    z-index: 101;
+  background: #fff;
+  padding-top: 155px;
+  .title{
+    padding-left: 99px;
+    margin-bottom: 199px;
+    .welcome{
+      font-family: @font-family-M;
+      font-size: 48px;/*px*/
+      color: #2D2D2B;
+      margin-bottom: 37px;
+      line-height: 67px;
+    }
+    .slogan{
+      font-family: @font-family-R;
+      font-size: @font-size-thirtyT;/*px*/
+      color: @font-color-999;
+      line-height: 45px;
+    }
   }
-  .wrapper {
-    .weui-cells{
-      background: #F5F5F5;
-    }
-    .weui-cells:after,.weui-cells:before{
-      border: none;
-    }
-    .borderB-1{
-      /*width: 650px;*/
-      width: 86.67%;
-      height: 80px;
-      color: #666666;
-      margin: 0 auto;
-      background: #FFFFFF;
-      border: 1px solid #AFAFAF;
-      border-radius: 8px;
-      font-size: 28px;
-      text-indent: 26px;
-      .weui-cell__hd{
-        i{
-          color: #666;
-          font-size: 28px;
-          margin-right: 0;
-        }
+  .edit{
+    width: 650px;
+    margin: 0 auto;
+    .username, .num{
+      border-bottom: 1px solid #DADADA;/*no*/
+      .iconfont{
+        color: #DADADA;
+        font-size: 33px;/*px*/
+      }
+      .right{
+        position: absolute;
+        right: 0;
+        border-radius: 4px;/*no*/
+        font-size: @font-size-twentyS;
+        font-family: @font-family-R;
+      }
+      .send{
+        width: 170px;
+        height: 54px;
+        border: 1px solid #BD9D62;/*no*/
+      }
+      .count{
+        width: 228px;
+        height: 54px;
+        line-height: 54px;
+        background: #FFFFFF;
+        border: 1px solid #B0B0B0;/*no*/
+        color: #B0B0B0;
       }
     }
-    .weui-cell{
-      padding: 0;
-    }
-    .user{
-      margin-top: 150px;
-      // margin-bottom: 50px;
-    }
-    .btn-gray {
-      background-color: #999;
-      padding: 0;
-    }
-    .group {
+    .num{
       position: relative;
-      .idt {
-        color: #F0F0F0;
-        font-size: 20px; /*px*/
-        border-radius: 10px;
-        width: 156px;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        right: 65px;
-        box-sizing: border-box;
-        outline: none;
-      }
+      margin-top: 50px;
     }
-    .error,.noError{
-      text-align: left;
+    .userTip, .error{
+      position: absolute;
+      // text-align: left;
       /*width: 650px;*/
-      width: 86.67%;
-      height: 33px;
-      line-height: 33px;
-      margin: 33px auto;
-      font-size: 24px;
-      color: #B30000;
-    }
-    .userTip{
-      text-align: left;
-      /*width: 650px;*/
-      width: 86.67%;
-      height: 33px;
-      line-height: 33px;
-      margin: 12px auto;
-      font-size: 24px;
-      color: #B30000;
-    }
-    .btn_wrap{
-      position: static;
-      text-align: center;
-      padding: 0;
-      margin: 0 auto;
-      margin-top: 0px;
-      width: 86.67%;
-      .weui-btn.weui-btn_primary{
-        /*width: 650px;*/
-        width: 100%;
-        height: 80px;
-        background: #2A7DC1;
-        border-radius: 10px;
-        font-size: 28px;
-        color: #F0F0F0;
-      }
-      .weui-btn.weui-btn_primary.weui-btn_disabled{
-        background: #999999;
-      }
+      // width: 86.67%;
+      // height: 33px;
+      line-height: 50px;
+      // margin: 12px auto;
+      font-size: 24px;/*px*/
+      color: @font-color-red;
     }
   }
+  .login{
+    margin-top: 150px;
+  }
+  // .spaceAll{
+  //   position: absolute;
+  //   top: 0;
+  //   width: 100%;
+  //   height: 100%;
+  //   background: transparent;
+  //   z-index: 101;
+  // }
+  // .wrapper {
+  //   .weui-cells{
+  //     background: #F5F5F5;
+  //   }
+  //   .weui-cells:after,.weui-cells:before{
+  //     border: none;
+  //   }
+  //   .borderB-1{
+  //     /*width: 650px;*/
+  //     width: 86.67%;
+  //     height: 80px;
+  //     color: #666666;
+  //     margin: 0 auto;
+  //     background: #FFFFFF;
+  //     border: 1px solid #AFAFAF;
+  //     border-radius: 8px;
+  //     font-size: 28px;
+  //     text-indent: 26px;
+  //     .weui-cell__hd{
+  //       i{
+  //         color: #666;
+  //         font-size: 28px;
+  //         margin-right: 0;
+  //       }
+  //     }
+  //   }
+  //   .weui-cell{
+  //     padding: 0;
+  //   }
+  //   .user{
+  //     margin-top: 150px;
+  //     // margin-bottom: 50px;
+  //   }
+  //   .btn-gray {
+  //     background-color: #999;
+  //     padding: 0;
+  //   }
+  //   .group {
+  //     position: relative;
+  //     .idt {
+  //       color: #F0F0F0;
+  //       font-size: 20px; /*px*/
+  //       border-radius: 10px;
+  //       width: 156px;
+  //       height: 50px;
+  //       line-height: 50px;
+  //       text-align: center;
+  //       right: 65px;
+  //       box-sizing: border-box;
+  //       outline: none;
+  //     }
+  //   }
+  //   .error,.noError{
+  //     text-align: left;
+  //     /*width: 650px;*/
+  //     width: 86.67%;
+  //     height: 33px;
+  //     line-height: 33px;
+  //     margin: 33px auto;
+  //     font-size: 24px;
+  //     color: #B30000;
+  //   }
+  //   .userTip{
+  //     text-align: left;
+  //     /*width: 650px;*/
+  //     width: 86.67%;
+  //     height: 33px;
+  //     line-height: 33px;
+  //     margin: 12px auto;
+  //     font-size: 24px;
+  //     color: #B30000;
+  //   }
+  //   .btn_wrap{
+  //     position: static;
+  //     text-align: center;
+  //     padding: 0;
+  //     margin: 0 auto;
+  //     margin-top: 0px;
+  //     width: 86.67%;
+  //     .weui-btn.weui-btn_primary{
+  //       /*width: 650px;*/
+  //       width: 100%;
+  //       height: 80px;
+  //       background: #2A7DC1;
+  //       border-radius: 10px;
+  //       font-size: 28px;
+  //       color: #F0F0F0;
+  //     }
+  //     .weui-btn.weui-btn_primary.weui-btn_disabled{
+  //       background: #999999;
+  //     }
+  //   }
+  // }
 }
 </style>
