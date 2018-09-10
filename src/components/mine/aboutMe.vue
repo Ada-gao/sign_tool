@@ -87,6 +87,7 @@ import Notifier from '@/common/js/Notifier'
 import { getShare, getInfoList } from '@/service/api/aboutMe'
 import { qscan } from '@/service/api/activity'
 import { activityUrl } from '@/config/env'
+import { toast } from '@/common/js/filter'
 
 export default {
   data () {
@@ -301,7 +302,10 @@ export default {
         }, result => {
           let url = window.decodeURI(JSON.parse(result).result).split(activityUrl)[1]
           qscan(url).then(res => {
-            console.log('req', res)
+            // console.log('req', res)
+            if (res.data.code === 0) {
+              toast('签到成功')
+            }
           })
         }, error => {
           console.log(error)// 原因

@@ -153,7 +153,7 @@
         <div class="add clearfix" @click="addNew">填写备注</div>
       </div>
       <x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>
-        <textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
+        <textarea id="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
       </x-dialog>
     </div>
@@ -287,7 +287,11 @@
       },
       addNew () {
         this.showHideOnBlur = true
-        this.$refs.textarea.focus()
+        // this.$refs.textarea.focus()
+        this.$nextTick(function () {
+//          this.$refs.textarea.focus()
+          document.getElementById('textarea').focus()
+        })
       },
       submitAddNew () {
         this.showHideOnBlur = false
