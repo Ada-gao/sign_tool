@@ -263,7 +263,7 @@ export default {
     display: block;
     border-bottom: 1px solid black;
     margin: 0 auto;
-    width: 100%;
+    width: 100% !important;
   }
 }
 .fixed-water-mark {

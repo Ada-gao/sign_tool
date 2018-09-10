@@ -1,7 +1,7 @@
 <template>
   <div class="flexbox-wrapper">
     <ul>
-      <li v-for="(item, index) in childDataTemp" :key="index" @click="toProductDetail(item.product_id,item)">
+      <li v-if="!((parseInt((new Date() - new Date(item.close_date)) / 1000) > item.cooling_period * 60 * 60) && (item.product_status === 3))" v-for="(item, index) in childDataTemp" :key="index" @click="toProductDetail(item.product_id,item)">
         <flexbox :gutter="2" wrap="wrap">
           <flexbox-item :span="4" class="item-left">
             <div class="flex-product">
@@ -94,7 +94,7 @@
           if (this.childDataFlag) {
             // console.log('come in')
             this.childDataTemp = this.childData
-            console.log(this.childDataTemp)
+            // console.log(this.childDataTemp)
             if (this.childDataTemp.length === 0) {
               this.flag = true
             } else {
@@ -120,6 +120,10 @@
         // console.log('homePage')
         // console.log(this.childData)
         this.childDataTemp = this.childData
+        this.childDataTemp.map(item => {
+          // console.log(item.product_status === 3)
+          // console.log(item.cooling_period, item.close_date)
+        })
       }
       //  console.log(new Date().getTime())
     }
