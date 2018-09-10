@@ -1,8 +1,9 @@
 <template>
   <div class="search" :class="{cancelSearch: isCancel}">
+    <span class="iconfont icon_search">&#xe609;</span>
 		<input class="ipt" type="text"
 			v-model.trim="searchKey"
-			placeholder="搜索  客户名 手机号码"
+			placeholder="输入客户姓名或手机号码搜索"
 			@click="clickEvent"
 			@input="searchEvent"/>
 		<button class="btn-cancel" @click="cancelSearchEvent">取消</button>
@@ -46,6 +47,7 @@ export default {
         isCancel: this.isCancel
       }
       this.$emit('searchHandler', data)
+      this.$emit('cancel', this.isCancel)
     },
     clickEvent () {
       this.isCancel = true
@@ -53,6 +55,7 @@ export default {
         _search: this.searchKey,
         isCancel: this.isCancel
       }
+      this.$emit('ensure', this.isCancel)
       this.$emit('searchHandler', data)
     }
   }
@@ -63,17 +66,31 @@ export default {
 .search {
   /*padding-top: 108px;*/
   text-align: center;
-  background-color: #fff;
-  height: 110px;
+  /*background-color: #fff;*/
+  /*height: 110px;*/
+  height: 60px;
+  line-height: 60px;
+  .icon_search {
+    font-size: 26px;
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    opacity: 0.4;
+  }
 	.ipt {
-		border: 1px solid #ccc; /*no*/
-    padding-left: 32px;
-		border-radius: 10px;
-		width: 88.7%;
-		height: 70px;
+		border: none; /*no*/
+    padding-left: 50px;
+		border-radius: 100px;
+		width: 100%;
+    height: 100%;
+		/*height: 70px;*/
 		box-sizing: border-box;
 		font-size: 28px; /*px*/
-    margin-top: 20px;
+    vertical-align: bottom;
+    background: rgba(255, 255, 255, .1);
+    /*margin-top: 20px;*/
 	}
 	.btn-cancel {
 		outline: none;
@@ -88,6 +105,8 @@ export default {
 .cancelSearch {
 	.ipt {
 		width: 70%;
+    color: #fff;
+    border: none;
 	}
 	.btn-cancel {
 		display: inline-block;
