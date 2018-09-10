@@ -1,4 +1,7 @@
 @import "./variable.less";
+a {
+  text-decoration: none;
+}
 //顶部样式
 .vux-header {
     background-color: @color-bg-header !important;
@@ -231,5 +234,40 @@
   //background-color: #F5F5F9;
   z-index:-100;
 }
+
+// 客户列表vux-header背景色重置
+.customerList {
+  .vux-header {
+    background-color: @header-bg!important;
+    padding: 30px 40px 0 20px;
+    .vux-header-title {
+      height: 84px;
+      line-height: 84px;
+      margin: 0;
+      width: 69.57%;
+    }
+    .vux-header-right {
+      height: 60px;
+      line-height: 60px;
+      top: 30px;
+    }
+  }
+  .vux-header.define_header {
+    .vux-header-title {
+      width: 100%;
+      .cancelSearch {
+        .ipt {
+          width: 85%;
+        }
+        .btn-cancel {
+          margin-left: 10px;
+          background-color: @header-bg;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
 
 

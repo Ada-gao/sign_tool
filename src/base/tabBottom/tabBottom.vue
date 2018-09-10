@@ -2,19 +2,19 @@
 	<div class="allBottom">
     <tabbar v-model="idx">
       <tabbar-item :link="{name: 'HomePage'}" @on-item-click="clickThis">
-        <i slot="icon" class="iconfont">&#xe63f;</i>
+        <i slot="icon" class="iconfont">&#xe608;</i>
         <span slot="label">产品</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'ReservationList'}" @on-item-click="clickThis">
-        <i slot="icon" class="iconfont">&#xe653;</i>
+        <i slot="icon" class="iconfont">&#xe60a;</i>
         <span slot="label">交易</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'CustomerList', params: {mark: 0}}" @on-item-click="clickThis">
-        <i slot="icon" class="iconfont">&#xe62c;</i>
+        <i slot="icon" class="iconfont">&#xe60d;</i>
         <span slot="label">客户</span>
       </tabbar-item>
       <tabbar-item :link="{name: 'AboutMe'}" @on-item-click="clickThis">
-        <i slot="icon" class="iconfont">&#xe639;</i>
+        <i slot="icon" class="iconfont">&#xe60f;</i>
         <span slot="label">我的</span>
       </tabbar-item>
     </tabbar>
