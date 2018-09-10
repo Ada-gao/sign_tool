@@ -5,6 +5,7 @@ const pluginsList = [
   'cordova-plugin-device',
   'jpush-phonegap-plugin',
   'cordova-plugin-qqsdk',
+  'cordova-plugin-statusbar',
   'cordova-plugin-wechatv2',
   'shuyunqrcodescanner'
 ]
