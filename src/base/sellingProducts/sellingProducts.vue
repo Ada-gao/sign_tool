@@ -2,6 +2,27 @@
   <div class="flexbox-wrapper">
     <ul>
       <li v-if="!((parseInt((new Date() - new Date(item.close_date)) / 1000) > item.cooling_period * 60 * 60) && (item.product_status === 3))" v-for="(item, index) in childDataTemp" :key="index" @click="toProductDetail(item.product_id,item)">
+      <div class="content">
+        <span class="tit verticalAlign">{{item.product_name}}&nbsp;&nbsp;</span>
+        <span v-if="item.product_status === 1" class="box red verticalAlign">预热中</span>
+        <span v-else-if="item.product_status === 2" class="box green verticalAlign">募集中</span>
+        <span v-else-if="item.product_status === 3" class="box gray verticalAlign">已关帐</span>
+        <div class="item">
+          <div :class="item.is_float === 0 ? 'textCenter left' : 'left'">
+            <span v-if="item.is_float === 0" class="number verticalAlign">-</span>
+            <span v-else>
+              <span class="number verticalAlign">{{item.annualized_return}}</span><span class="percent verticalAlign">%</span>
+            </span>
+            <div class="text">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</div>
+          </div>
+          <span class="borLine"></span>
+          <div class="textCenter right">
+            <p>产品期限：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
+            <p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
+            <p v-else>购买金额：{{item.amount}}万</p>
+      </div>
+        </div>
+      </div>
         <flexbox :gutter="2" wrap="wrap">
           <flexbox-item :span="4" class="item-left">
             <div class="flex-product">
@@ -131,6 +152,63 @@
 </script>
 
 <style scoped lang="less">
+@import "../../common/style/variable.less";
+.content{
+  padding: 40px;
+  height: 245px;
+  .tit{
+    font-family: @font-family-M;
+    font-size: @font-size-twentyE;/*px*/
+    color: @font-color-black;
+  }
+  .box{
+    display: inline-block;
+    font-family: @font-family-R;
+    font-size: @font-size-twenty;/*px*/
+    border-radius: 4px;/*no*/
+    padding: 0 5px;
+    height: 28px;
+    line-height: 28px;
+  }
+  .red{
+    color: @font-color-red;
+    background: rgba(240,93,89,0.10);
+  }
+  .green{
+    color: @font-color-green;
+    background: rgba(57,162,115,0.10);
+  }
+  .gray{
+    color: @font-color-9B;
+    background: rgba(155,155,155,0.10);
+  }
+  .item{
+    .left, .right{
+      display: inline-block;
+      font-family: @font-family-M;
+      .number{
+        font-size: 60px;/*px*/
+        color: #FF2E24;
+      }
+      .percent{
+        font-size: 34px;
+        color: #EE5250;
+      }
+      .text{
+        font-family: @font-family-R;
+        font-size: @font-size-twentyF;
+        color: @font-color-9B;
+      }
+    }
+    .borLine{
+      display: inline-block;
+      width: 3px;/*no*/
+      height: 87px;
+      background: #DADADA;
+      margin: 0 80px;
+    }
+  }
+}
   .vux-flexbox-item.item-left{
     width: 247px;
     .line{

@@ -1,5 +1,5 @@
 <template>
-  <div class="loginPage border-box" @touchmove.prevent>
+  <div class="loginPage" @touchmove="touchScreen">
     <!-- <x-header :left-options="{showBack: false}">登录</x-header> -->
     <!-- <div class="wrapper"> -->
       <div class="title">
@@ -20,7 +20,7 @@
         </div>
         <div class="error" >{{errorMsg}}</div>
       </div>
-      <mt-button :disabled="logIn" class="login" @click.native="nextStep">登 录</mt-button>      
+      <mt-button :disabled="logIn" class="login" @click.native="nextStep">登 录</mt-button>
       <!-- <group>
         <x-input
           class="borderB-1 user"
@@ -106,6 +106,11 @@ export default {
   methods: {
     registJPush () {
     },
+    touchScreen () {
+      Array.from(document.querySelectorAll("input[type='text']")).map(item => {
+        item.blur()
+      })
+    },
     userChange (username) {
       if (/^[0-9]*$/.test(username)) {
         if (!(/^(13[0-9]|14[579]|15[0-3,5-9]|16[6]|17[0135678]|18[0-9]|19[89])\d{8}$/.test(username))) {
@@ -132,7 +137,6 @@ export default {
       // ^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$
     },
     numChange () {
-      console.log('dfkdf')
       this.numLog = true
       if (this.userLog === true && this.numLog === true) {
         this.logIn = false
@@ -263,11 +267,11 @@ export default {
 
 <style lang="less">
 @import "../common/style/variable.less";
-@import "../common/style/base.less";
+// @import "../common/style/base.less";
 .loginPage{
   height: 100%;
   background: #fff;
-  padding-top: 155px;
+  padding-top: 185px;
   .title{
     padding-left: 99px;
     margin-bottom: 199px;
@@ -288,6 +292,7 @@ export default {
   .edit{
     width: 650px;
     margin: 0 auto;
+    margin-bottom: 150px;
     .username, .num{
       border-bottom: 1px solid #DADADA;/*no*/
       .iconfont{
@@ -298,7 +303,7 @@ export default {
         position: absolute;
         right: 0;
         border-radius: 4px;/*no*/
-        font-size: @font-size-twentyS;
+        font-size: @font-size-twentyS;/*px*/
         font-family: @font-family-R;
       }
       .send{
@@ -330,9 +335,6 @@ export default {
       font-size: 24px;/*px*/
       color: @font-color-red;
     }
-  }
-  .login{
-    margin-top: 150px;
   }
   // .spaceAll{
   //   position: absolute;

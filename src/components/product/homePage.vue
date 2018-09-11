@@ -1,12 +1,34 @@
 <template>
   <div class="homePage">
-    <x-header :left-options="{showBack: false}">首页</x-header>
-	<div>
-		<mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
-	</div>
+    <common-header title="产品"></common-header>
+		<div>
+			<mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
+		</div>
     <div class="wrapper">
-			<img src="static/img/banner.png" @click="handleRoute">
-			<!-- <div class="space"></div> -->
+			<div class="swipe">
+				<mt-swipe :auto="4000">
+					<mt-swipe-item><img src="static/img/banner.png" @click="handleRoute"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/banner.png" @click="handleRoute"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/banner.png" @click="handleRoute"></mt-swipe-item>
+				</mt-swipe>
+			</div>
+			<div class="announcement">
+				<i class="iconfont verticalAlign">&#xe62e;</i>
+				<span>点击查看更多活动…</span>
+				<span class="more">查看 <i class="iconfont verticalAlign">&#xe6d6;</i></span>
+			</div>
+			<div style="overflow: hidden; overflow-x: auto;">
+        <ul class="tabbar" :style="{'width': ulWidth}">
+          <li v-for="(item,index) in tabBars"
+              :key="index"
+              :style="{'width': liWidth}"
+              @click="switchTab(index)"
+              :class="n === index ? 'active' : ''"
+          >{{item}}
+          </li>
+        </ul>
+      </div>
+			<div class="space"></div>
 			<group class="group-list" :data="productsList"  v-for="(item,index) in productsList" :key="item.product_type_id">
 				<cell
 				:title="item.name"
@@ -20,7 +42,6 @@
 				<i slot="icon" v-else-if="item.name === '另类'" class="iconfont yellow">&#xe60b;</i>
 				<i slot="icon" v-else class="iconfont yellow">&#xe633;</i>
 				</cell>
-				 <!-- :email="email" :userId="userId" -->
 				<selling-products :child-data="item.products"
                           mark="homePage"
                           @cgPopup="cgPopup"
@@ -35,10 +56,11 @@
 <script>
 import { XHeader, Group, CellBox, Cell } from 'vux'
 import SellingProducts from '@/base/sellingProducts/sellingProducts'
+import commonHeader from '@/base/infoHeader/header'
 import { getProducts } from '@/service/api/products'
 import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
-import { getInfoList } from '@/service/api/aboutMe'
+// import { getInfoList } from '@/service/api/aboutMe'
 
 export default {
   name: 'HomePage',
@@ -47,9 +69,13 @@ export default {
   	Group,
 		CellBox,
 		Cell,
-  	SellingProducts
+		SellingProducts,
+		commonHeader
 	},
 	methods: {
+		switchTab (index) {
+			this.n = index
+		},
     handleRoute () {
       this.$router.push({name: 'activityList'})
     },
@@ -91,7 +117,11 @@ export default {
 			},
 			productsList: [],
 			spinner: true,
-      popupVisible: false
+			popupVisible: false,
+			tabBars: [],
+			ulWidth: '100%',
+			liWidth: '',
+			n: 0
 			// email: '',
 			// userId: ''
     }
@@ -99,47 +129,36 @@ export default {
 	mounted () {
 		// this.email = this.$route.params.email
 		// this.userId = this.$route.params.userId
+    this.liWidth = document.documentElement.offsetWidth / 4 + 'px'
 		getProducts().then(res => {
 			this.spinner = false
 			this.productsList = res.data
+			this.productsList.map(item => {
+				this.tabBars.push(item.name)
+			})
+			let cnt = Math.ceil(this.tabBars.length / 4)
+      this.ulWidth = cnt * 100 + '%'
 		}).catch(err => {
 			if (err) {
 				this.spinner = false
 			}
 		})
 		this.getTag()
-		getInfoList().then(res => {
-			console.log('Jpush...........777777')
-			// let noCheckInfo = res.data.filter(item => item.is_read === '0')
-			// window.JPush.setApplicationIconBadgeNumber(noCheckInfo.length)
-		})
+		// getInfoList().then(res => {
+		// 	console.log('Jpush...........777777')
+		// 	// let noCheckInfo = res.data.filter(item => item.is_read === '0')
+		// 	// window.JPush.setApplicationIconBadgeNumber(noCheckInfo.length)
+		// })
 	}
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
+@import "../../common/style/variable.less";
 .homePage{
 	height: 100%;
 	background: #F5F5F5;
-	// .vux-header{
-	// 	height: 128px;
-	// }
-	h1, h2 {
-		font-weight: normal;
-	}
-
-	ul {
-		list-style-type: none;
-		padding: 0;
-	}
-	li {
-		// display: inline-block;
-		margin: 0 10px;
-	}
-	a {
-		color: #42b983;
-	}
 	img {
 		width: 100%;
 		// padding-top: 126px;
@@ -158,6 +177,63 @@ export default {
 		margin-bottom: 116px;
 		background: #F5F5F5;
 		// height: calc(100% - 214px);
+		.swipe{
+			width: 100%;
+			height: 310px;
+		}
+		.announcement{
+			width: 100%;
+			height: 88px;
+			line-height: 88px;
+			background: @back-color-white;
+			padding: 0 30px;
+			color: @font-color-orange1;
+			font-family: @font-family-R;
+			font-size: @font-size-twentyF;/*px*/
+			i{
+				font-size: 35px;/*px*/
+			}
+			.more{
+				position: absolute;
+				right: 20px;
+				font-size: @font-size-twenty;/*px*/
+				i{
+					font-size: 22px;/*px*/
+				}
+			}
+		}
+		ul.tabbar {
+      font-size: 0;
+      height: 80px;
+      line-height: 80px;
+      li {
+        font-size: 30px;
+        display: inline-block;
+        /*width: 150px;*/
+        text-align: center;
+        color: #666;
+        position: relative;
+      }
+      li.active {
+        color: #2672ba;
+      }
+      li.active::after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 10px;
+        background-color: #2672ba;
+        bottom: -5px;
+      }
+    }
+
+
+
+
+
+
+
 		.weui-cells{
 			margin-top: 20px;
 		}
