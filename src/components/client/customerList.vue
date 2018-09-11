@@ -53,6 +53,11 @@
                 </div>
               </router-link>
             </li>
+            <li class="bottom_line" style="background-color: transparent;" v-if="idx === 0 && customers.length >= 5 && !this.isShowSpinner">
+              <span></span>
+              <span>我是有底线的</span>
+              <span></span>
+            </li>
           </ul>
           <ul v-show="idx === 1" :data="customers1">
             <li v-for="(item, index) in customers1" :key="index" v-if="item.name">
@@ -80,6 +85,11 @@
                 </div>
               </router-link>
             </li>
+            <li class="bottom_line" style="background-color: transparent;" v-if="idx === 1 && customers1.length >= 5 && !this.isShowSpinner">
+              <span></span>
+              <span>我是有底线的</span>
+              <span></span>
+            </li>
           </ul>
           <ul v-show="idx === 2" :data="customers2">
             <li v-for="(item, index) in customers2" :key="index" v-if="item.name">
@@ -97,6 +107,11 @@
                   </div>
                 </div>
               </router-link>
+            </li>
+            <li class="bottom_line" style="background-color: transparent;" v-if="idx === 2 && customers2.length >= 5 && !this.isShowSpinner">
+              <span></span>
+              <span>我是有底线的</span>
+              <span></span>
             </li>
           </ul>
           <div v-show="idx === 0 && customers.length === 0 && !this.isShowSpinner" class="no_data">
@@ -256,9 +271,9 @@
         position: absolute;
         display: inline-block;
         content: '';
-        left: 15%;
+        left: 7%;
         bottom: 0;
-        width: 70%;
+        width: 86%;
         height: 6px;
         background-color: @new-font-color;
       }
@@ -422,5 +437,24 @@
   }
   .list_name {
     font-size: 28px;
+  }
+  .bottom_line {
+    width: 100%;
+    font-size: 0;
+    text-align: center;
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    span:nth-of-type(odd) {
+      /*height: 1px;*/
+      border: 1px solid #D6D6D6;
+      width: 15.14%;
+    }
+    span:nth-of-type(2) {
+      font-size: 24px;
+      color: #D6D6D6;
+      margin: 0 20px;
+    }
   }
 </style>

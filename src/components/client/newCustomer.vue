@@ -1,13 +1,13 @@
 <template>
   <div class="newCustomer">
     <x-header :left-options="{backText: '', preventGoBack:true}"
-              @on-click-back="toLink">新增潜客</x-header>
+              @on-click-back="toLink">新增客户</x-header>
     <div class="wrapper">
       <group>
-
+        <div class="space"></div>
         <div class="add_tit">
-          <i class="iconfont">&#xe62c;</i>
-          <span style="color: #2672ba">客户信息</span>
+          <span class="border_left"></span>
+          <span class="text">客户信息</span>
         </div>
         <div class="space"></div>
         <mt-field disableClear
