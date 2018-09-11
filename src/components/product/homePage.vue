@@ -227,13 +227,6 @@ export default {
         bottom: -5px;
       }
     }
-
-
-
-
-
-
-
 		.weui-cells{
 			margin-top: 20px;
 		}
