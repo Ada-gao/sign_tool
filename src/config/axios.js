@@ -50,6 +50,9 @@ axios.interceptors.response.use(
           break
         case 400:
           // error.message = '手机号已被注册'
+          if (window.location.href.indexOf('login') !== -1) {
+            return
+          }
           res.data.message ? toast(res.data.message) : toast(res.data.msg)
           error.message = '请求错误'
           break

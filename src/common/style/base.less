@@ -24,9 +24,9 @@ body, html {
   user-select: none;
   -webkit-tap-highlight-color: transparent;
 //background: @color-background;
-  color: @color-text;
+  // color: @color-text;
   height: 100%;
-  background-color: #f5f5f5;
+  // background-color: #f5f5f5;
 }
 body {
   -webikit-overflow-scrolling: touch;
@@ -58,8 +58,8 @@ input {
 
 button {
   border: none;
-  background-color: #0083c5;
-  color: #fff;
+  color: @text-font-color;
+  background: #fff;
 }
 
 h1 {
@@ -92,6 +92,10 @@ b {
   padding-right: 60px;
 }
 
+.textCenter{
+  text-align: center;
+}
+
 .absolute-center-y {
   position: absolute;
   top: 50%;
@@ -101,6 +105,7 @@ b {
 
 .wrapper {
   padding-top: 134px;
+  // padding-top: 118px;
 }
 // 单行文本溢出
 .text-overflow-one {
@@ -148,4 +153,62 @@ b {
     display: inline-block;
     font-size: 26px;
   }
+}
+
+.border-box{
+  box-sizing: border-box;
+}
+
+.verticalAlign {
+  vertical-align: middle;
+}
+
+/*input输入框样式*/
+.mint-field{
+  .mint-cell-wrapper{
+    .mint-cell-value{
+      input.mint-field-core{
+        font-family: @font-family-L;
+        color: @font-color-4A;
+        font-size: @font-size-thirtyT;/*px*/
+      }
+      input::-webkit-input-placeholder {
+        font-family: @font-family-R;
+        color: @text-font-noEdit;
+      }
+      input:-moz-placeholder {
+        /* FF 4-18 */
+        font-family: @font-family-R;
+        color: @text-font-noEdit;
+      }
+      input::-moz-placeholder {
+        /* FF 19+ */
+        font-family: @font-family-R;
+        color: @text-font-noEdit;
+      }
+      input:-ms-input-placeholder {
+        /* IE 10+ */
+        font-family: @font-family-R;
+        color: @text-font-noEdit;
+      }
+    }
+  }
+}
+
+/*提交按钮样式*/
+.mint-button{
+  display: block;
+  margin: 0 auto;
+  width: 650px;
+  height: 88px;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 4px;
+  color: #FFFFFF;
+  font-family: @font-family-R;
+  font-size: @font-size-thirtyS;/*px*/
+  background: @back-color-linear;
+}
+.mint-button.is-disabled{
+  background: @back-color-disabled;
 }
