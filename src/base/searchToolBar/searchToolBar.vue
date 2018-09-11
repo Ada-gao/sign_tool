@@ -70,10 +70,11 @@ export default {
   /*height: 110px;*/
   height: 60px;
   line-height: 60px;
+  position: relative;
   .icon_search {
     font-size: 26px;
     position: absolute;
-    left: 30px;
+    left: 15px;
     top: 50%;
     transform: translateY(-50%);
     color: #fff;
