@@ -34,6 +34,10 @@ body {
 /** 重置列表元素 **/
 ul, ol { list-style: none; }
 
+div, span{
+  box-sizing: border-box;
+}
+
 /** 重置文本格式元素 **/
 a:link,
 a:visited,
@@ -96,6 +100,14 @@ b {
   text-align: center;
 }
 
+.border-box{
+  box-sizing: border-box;
+}
+
+.verticalAlign {
+  vertical-align: middle;
+}
+
 .absolute-center-y {
   position: absolute;
   top: 50%;
@@ -104,8 +116,7 @@ b {
 }
 
 .wrapper {
-  padding-top: 134px;
-  // padding-top: 118px;
+  padding-top: 118px;
 }
 // 单行文本溢出
 .text-overflow-one {
@@ -155,17 +166,10 @@ b {
   }
 }
 
-.border-box{
-  box-sizing: border-box;
-}
-
-.verticalAlign {
-  vertical-align: middle;
-}
-
 /*input输入框样式*/
 .mint-field{
   .mint-cell-wrapper{
+    background-image: none;
     .mint-cell-value{
       input.mint-field-core{
         font-family: @font-family-L;
@@ -196,7 +200,7 @@ b {
 }
 
 /*提交按钮样式*/
-.mint-button{
+.mint-button.mint-button--default{
   display: block;
   margin: 0 auto;
   width: 650px;
@@ -243,4 +247,7 @@ b {
   //  height: 60px;
   //  line-height: 60px;
   //}
+}
+.mint-button.mint-button--default.is-disabled{
+  background: @back-color-disabled;
 }
