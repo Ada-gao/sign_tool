@@ -269,6 +269,49 @@ a {
     }
   }
 }
-
-
-
+// 添加客户vux-header reset
+.newCustomer {
+  .weui-cell_access .weui-cell__ft:after {
+    border-color: #dadada;
+  }
+  .vux-cell-box:not(:first-child):before {
+    border-top: none;
+  }
+  .vux-header {
+    background-color: @header-bg!important;
+    .vux-header-title {
+      height: 84px;
+      color: #fff!important;
+    }
+    .vux-header-left .left-arrow::before {
+      border-color: @new-font-color!important;
+    }
+  }
+  .mint-cell {
+    .mint-cell-wrapper {
+      height: 110px;
+      line-height: 110px;
+      .mint-cell-text {
+        font-family: PingFangSC-Regular;
+        color: #4a4a4a;
+        vertical-align: top;
+      }
+    }
+  }
+  .weui-cells:before {
+    border-top: none;
+    height: 0;
+  }
+  .weui-cells:after {
+    border-bottom: none;
+    height: 0;
+  }
+}
+// 底部icon点击态
+.index-wrapper {
+  .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon,
+  .weui-tabbar__item.weui-bar__item_on .weui-tabbar__icon > i,
+  .weui-tabbar__item.weui-bar__item_on .weui-tabbar__label {
+    color: #1e1e1e;
+  }
+}

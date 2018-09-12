@@ -9,66 +9,85 @@
           <span class="border_left"></span>
           <span class="text">客户信息</span>
         </div>
-        <div class="space"></div>
-        <mt-field disableClear
-                  label="客户姓名："
-                  placeholder="输入客户姓名"
-                  v-model="name"
-                  class="new_field new_field_bb ipt"></mt-field>
-        <div class="radio_box new_field" style="border:0">
-          <mt-radio
-            class="radio_item"
-            title="国籍："
-            v-model="nationality"
-            @change="selectNation"
-            :options="[{label: '中国', value: '0'}, {label: '其他', value: '1'}]">
-          </mt-radio>
+        <div class="must_fill">
+          <i class="iconfont necessary_icon">&#xe8d4;</i>
+          <mt-field disableClear
+                    label="客户姓名："
+                    placeholder="请输入客户姓名"
+                    v-model="name"
+                    class="new_field ipt "></mt-field>
+          <div class="bb"></div>
         </div>
-        <x-address id="x_address"
-                   v-show="num === '0'"
-                   :title="title"
-                   v-model="value"
-                   raw-value
-                   :list="addressData"
-                   @on-shadow-change="onShadowChange"
-                   @on-hide="onHide"
-                   placeholder="请选择您的城市"></x-address>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <mt-radio
+              class="radio_item"
+              title="国籍："
+              v-model="nationality"
+              @change="selectNation"
+              :options="[{label: '中国', value: '0'}, {label: '其他', value: '1'}]">
+            </mt-radio>
+          </div>
+          <div class="bb"></div>
+        </div>
+        <div class="must_fill" v-if="num === '0'">
+          <i class="iconfont necessary_icon">&#xe8d4;</i>
+          <x-address id="x_address"
+                     :title="title"
+                     v-model="value"
+                     raw-value
+                     :list="addressData"
+                     @on-shadow-change="onShadowChange"
+                     @on-hide="onHide"
+                     placeholder="请选择城市"></x-address>
+          <div class="bb"></div>
+        </div>
         <mt-field disableClear
                   type="wechat"
-                  label="(选填)微信："
-                  placeholder="输入客户微信"
+                  label="微信："
+                  placeholder="请输入微信号"
                   v-model="wechat"
                   class="new_field ipt"></mt-field>
+        <div class="bb"></div>
         <mt-field disableClear
                   type="email"
-                  label="(选填)邮箱："
-                  placeholder="输入客户邮箱"
+                  label="邮箱："
+                  placeholder="请输入邮箱"
                   v-model="email"
                   class="new_field ipt"></mt-field>
       </group>
+      <div class="space"></div>
       <group>
         <mt-field disableClear
                   type="tel"
                   label="手机号码："
-                  placeholder="输入客户手机号码"
+                  placeholder="请输入手机号"
                   :attr="{ maxlength: 11 }"
                   v-model="mobile"
-                  class="new_field ipt">
-          <span class="verificate"
-                v-if="!verificate.isTimeout"
-                @click="sendVer">发送邀请码</span>
-          <span class="verificate"
-                v-else>{{verificate.num}}s</span>
+                  class="new_field ipt tal">
+          <!--<span class="verificate"-->
+                <!--v-if="!verificate.isTimeout"-->
+                <!--@click="sendVer">发送邀请码</span>-->
+          <!--<span class="verificate"-->
+                <!--v-else>{{verificate.num}}s</span>-->
         </mt-field>
+        <div class="bb"></div>
         <mt-field disableClear
                   type="tel"
                   label="客户邀请码："
+                  placeholder="请输入邀请码"
                   :attr="{ maxlength: 6 }"
                   v-model="verificate.code"
-                  class="new_field ipt">
+                  class="new_field ipt tal">
+          <span class="verificate"
+                v-if="!verificate.isTimeout"
+                @click="sendVer">发送邀请码</span>
+          <span class="verificate1"
+                v-else>{{verificate.num}}秒后重新发送</span>
         </mt-field>
       </group>
-      <button class="next" @click="submitCustomer">确 定</button>
+      <button class="next" @click="submitCustomer">提 交</button>
     </div>
     </div>
 </template>
@@ -247,41 +266,52 @@
 </script>
 
 <style lang="less">
+  @import '../../common/style/variable';
   .alert_message {
     color: #cd0000;
     margin-top: 10px;
     padding-left: 20px;
   }
   .newCustomer {
+    font-family: PingFangSC-Regular;
     .wrapper {
       height: auto;
       .weui-label {
         font-size: 30px;
-        color: #333;
+        color: #4a4a4a;
       }
       .weui-cell__bd {
         text-align: right;
       }
-      .new_field {
-        height: 82px;
-        padding: 0 20px;
-        border-top: 1px solid #d9d9d9;
-        .mint-cell-wrapper {
-          padding: 0;
+      .weui-cells {
+        .new_field {
+          height: 110px;
+          padding: 0 40px;
+          /*border-top: 1px solid #d9d9d9;*/
+          .mint-cell-wrapper {
+            padding: 0;
+          }
+          .mint-cell-title {
+            font-family: PingFangSC-Regular;
+            color: #333;
+            font-size: 30px;
+            width: auto;
+            height: 100%;
+          }
+          .mint-field-core {
+            font-family: PingFangSC-Medium;
+            text-align: right;
+            font-size: 30px;
+            color: #4a4a4a;
+          }
+          .mint-field-state {
+            display: none;
+          }
         }
-        .mint-cell-title {
-          font-family: PingFangSC-Medium;
-          color: #333;
-          font-size: 30px;
-          width: auto;
-        }
-        .mint-field-core {
-          text-align: right;
-          font-size: 30px;
-          color: #666;
-        }
-        .mint-field-state {
-          display: none;
+        .tal {
+          .mint-field-core {
+            text-align: left;
+          }
         }
       }
       .space {
@@ -289,57 +319,61 @@
         background-color: #f5f5f5;
       }
       .radio_box {
-          padding: 0 20px;
+          padding: 0 40px;
           background-color: #fff;
-          height: 82px;
+          height: 110px;
           .mint-radiolist.radio_item{
             height: 100%;
+            position: relative;
             .mint-radiolist-title{
               display: inline-block;
-              line-height: 81px;
+              line-height: 110px;
               vertical-align: top;
               padding: 0;
             }
             .mint-cell{
               display: inline-block;
               margin-top: 1px;
+              position: absolute;
+              /*float: right;*/
               .mint-radio-label {
                 font-size: 28px;
-                color: #666;
+                color: #4a4a4a;
+                font-family: PingFangSC-Medium;
               }
             }
           }
-          // .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
-          //   left: 197px;
-          // }
+          .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
+             right: 200px;
+          }
           .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
-            margin-left: 172px;
+            right: 0;
           }
           .radio_item.mint-radiolist .mint-cell:last-child {
             background-image: none;
           }
           .radio_item {
             .mint-radiolist-title {
-              font-family: PingFangSC-Medium;
               font-size: 30px;
               width: 150px;
               color: #333;
               line-height: 42px;
               padding: 18px 0 10px;
               margin: 0;
+              color: #4a4a4a;
+            }
+            .mint-radiolist-label {
+              margin-top: -6px;
             }
             .mint-radio-core {
               width: 28px;
               height: 28px;
-              border-radius: 8px;
-              border-color: #979797;
+              border-radius: 100%;
+              border: 1px solid #979797;/*no*/
             }
             .mint-radio-input:checked + .mint-radio-core {
               background-color: #fff;
               border-color: #2672BA;
-            }
-            .mint-radio-input:checked + .mint-radio-core::after {
-              background-color: #2672BA;
             }
             .mint-radio-core::after {
               width: 16px;
@@ -347,40 +381,34 @@
             }
           }
           .mint-cell-wrapper {
-            /*padding-top: 22px;*/
             background-image: none;
             -webkit-background-image: none;
           }
         }
         .add_tit {
-          padding-left: 20px;
+          padding-left: 24px;
           height: 80px;
           line-height: 80px;
-          i, span {
-            vertical-align: middle;
+          font-family: PingFangSC-Medium;
+          font-size: 0;
+          color: #4A4A4A;
+          span {
             display: inline-block;
+            font-size: 32px;
+            vertical-align: middle;
           }
-        }
-        #x_address {
-          border-top: 1px solid #d9d9d9;
-          .weui-cells {
-            .weui-cell {
-              padding: 0 20px;
-            }
+          span.border_left {
+            width: 6px;
+            height: 30px;
+            background: @new-font-color;
+            margin-right: 10px;
           }
-        }
-        .weui-cell {
-          padding-left: 20px;
-          padding-right: 20px;
         }
         .popup-picker .weui-cell {
-          height: 84px;
-          -webkit-box-sizing: border-box;
-          -moz-box-sizing: border-box;
-          box-sizing: border-box;
-          padding: 0 20px;
+          height: 110px;
+          padding: 0 40px;
           .weui-cell__hd{
-            font-family: PingFangSC-Medium;
+            /*font-family: PingFangSC-Regular;*/
           }
           .vux-cell-primary {
             font-size: 28px;
@@ -389,8 +417,12 @@
             color: #999;
             // right: -60px;
             .vux-popup-picker-select{
-              .vux-popup-picker-value.vux-cell-value, .vux-popup-picker-placeholder.vux-cell-placeholder{
-                color: #666;
+              .vux-popup-picker-value.vux-cell-value {
+                color: #4a4a4a;
+                font-family: PingFangSC-Medium;
+              }
+              .vux-popup-picker-placeholder.vux-cell-placeholder {
+                color: #dcdcdc;
               }
             }
           }
@@ -425,24 +457,27 @@
         font-size: 24px;
         border: none;
       }
-      .new_field_bb {
-        border-bottom:1px solid #d9d9d9;
-      }
     }
     .wrapper:nth-child(3) {
       padding-top: 20px;
     }
     .next {
       display: block;
-      width: 94.7%;
-      height: 72px;
-      line-height: 72px;
-      font-size: 28px;
+      width: 89.33%;
+      height: 88px;
+      line-height: 88px;
+      font-size: 36px;
       color: #fff;
-      border-radius: 10px;
-      background-color: #2672BA;
+      /*border-radius: 10px;*/
+      background: @back-color-linear;
       margin: 0 auto;
-      margin-top: 120px;
+      margin-top: 40px;
+    }
+    // 下边框
+    .bb {
+      height: 1px;/*no*/
+      background: #e9e9e9;
+      margin: 0 40px;
     }
   }
 </style>

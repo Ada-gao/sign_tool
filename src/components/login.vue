@@ -20,7 +20,7 @@
         </div>
         <div class="error" >{{errorMsg}}</div>
       </div>
-      <mt-button :disabled="logIn" class="login" @click.native="nextStep">登 录</mt-button>      
+      <mt-button :disabled="logIn" class="login" @click.native="nextStep">登 录</mt-button>
       <!-- <group>
         <x-input
           class="borderB-1 user"
