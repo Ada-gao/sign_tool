@@ -214,7 +214,7 @@ b {
   background: @back-color-linear;
 }
 .mint-button.is-disabled{
-  background: @back-color-no;
+  //background: @back-color-no;
 }
 // 必填项icon
 .must_fill {
@@ -249,5 +249,122 @@ b {
   //}
 }
 .mint-button.mint-button--default.is-disabled{
-  background: @back-color-disabled;
+  //background: @back-color-disabled;
+}
+// 每一大项左边的border
+.add_tit {
+  padding-left: 24px;
+  height: 80px;
+  line-height: 80px;
+  font-family: PingFangSC-Medium;
+  font-size: 0;
+  color: #4A4A4A;
+  span {
+    display: inline-block;
+    font-size: 32px;
+    vertical-align: middle;
+  }
+  span.border_left {
+    width: 6px;
+    height: 30px;
+    background: @new-font-color;
+    margin-right: 10px;
+  }
+}
+//.mint-msgbox-wrapper {
+//  .mint-msgbox {
+//    width: 74.67%;
+//    border-radius: 8px;
+//  }
+//}
+.mint-toast.is-placetop {
+  padding: 30px!important;
+  .mint-toast-text {
+    font-size: 28px;
+  }
+}
+/* 认证状态颜色组 */
+.no_certy {
+  color: #F05D59!important;
+}
+.wait_certy {
+  color: #F3B90F!important;
+}
+.success_certy {
+  color: #39A273!important;
+}
+.expire_certy {
+  color: #9E9E9E!important;
+}
+.fix_mobile {
+  position: fixed;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  background-color: @new-font-color;
+  bottom: 130px;
+  z-index: 999;
+  box-shadow: 0 2px 20px 0 #E3D5BD;
+  a {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: inline-block;
+  }
+  i {
+    font-size: 45px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #fff;
+  }
+}
+.wrapper {
+  .right_icon {
+    font-size: 40px!important;
+    vertical-align: bottom;
+    color: #dadada;
+    margin-right: 0;
+  }
+  // 下边框
+  .bb {
+    height: 1px;/*no*/
+    background: #e9e9e9;
+    margin: 0 40px;
+  }
+  .bl_box {
+    height: 85px;
+    line-height: 85px;
+    padding: 0 40px 0 24px!important;
+    font-family: PingFangSC-Medium;
+    font-size: 32px;
+    .border_left {
+      display: inline-block;
+      width: 6px;
+      height: 30px;
+      background: @new-font-color;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+  }
+  .cell_box {
+    height: 110px;
+    line-height: 110px;
+    padding: 0 40px;
+    position: relative;
+    .cell_left {
+      i {
+        font-size: 30px;
+      }
+    }
+    .cell_right {
+      position: absolute;
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: PingFangSC-Medium;
+    }
+  }
 }

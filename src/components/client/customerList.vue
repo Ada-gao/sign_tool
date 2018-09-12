@@ -422,19 +422,6 @@
       }
     }
   }
-  /* 认证状态颜色组 */
-  .no_certy {
-    color: #F05D59;
-  }
-  .wait_certy {
-    color: #F3B90F;
-  }
-  .success_certy {
-    color: #39A273;
-  }
-  .expire_certy {
-    color: #9E9E9E;
-  }
   .list_name {
     font-size: 28px;
   }

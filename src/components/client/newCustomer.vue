@@ -66,11 +66,6 @@
                   :attr="{ maxlength: 11 }"
                   v-model="mobile"
                   class="new_field ipt tal">
-          <!--<span class="verificate"-->
-                <!--v-if="!verificate.isTimeout"-->
-                <!--@click="sendVer">发送邀请码</span>-->
-          <!--<span class="verificate"-->
-                <!--v-else>{{verificate.num}}s</span>-->
         </mt-field>
         <div class="bb"></div>
         <mt-field disableClear
@@ -385,30 +380,10 @@
             -webkit-background-image: none;
           }
         }
-        .add_tit {
-          padding-left: 24px;
-          height: 80px;
-          line-height: 80px;
-          font-family: PingFangSC-Medium;
-          font-size: 0;
-          color: #4A4A4A;
-          span {
-            display: inline-block;
-            font-size: 32px;
-            vertical-align: middle;
-          }
-          span.border_left {
-            width: 6px;
-            height: 30px;
-            background: @new-font-color;
-            margin-right: 10px;
-          }
-        }
         .popup-picker .weui-cell {
           height: 110px;
           padding: 0 40px;
           .weui-cell__hd{
-            /*font-family: PingFangSC-Regular;*/
           }
           .vux-cell-primary {
             font-size: 28px;
@@ -472,12 +447,6 @@
       background: @back-color-linear;
       margin: 0 auto;
       margin-top: 40px;
-    }
-    // 下边框
-    .bb {
-      height: 1px;/*no*/
-      background: #e9e9e9;
-      margin: 0 40px;
     }
   }
 </style>

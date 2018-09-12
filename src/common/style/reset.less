@@ -240,7 +240,7 @@ a {
 .customerList {
   .vux-header {
     background-color: @header-bg!important;
-    padding: 50px 40px 0 20px;
+    padding: 34px 40px 0 20px;
     .vux-header-title {
       height: 84px;
       line-height: 84px;
@@ -270,14 +270,16 @@ a {
   }
 }
 // 添加客户vux-header reset
-.newCustomer {
+.newCustomer,
+.potentialPage {
   .weui-cell_access .weui-cell__ft:after {
-    border-color: #dadada;
+    border-color: #dadada!important;
   }
   .vux-cell-box:not(:first-child):before {
     border-top: none;
   }
   .vux-header {
+    padding: 34px 40px 0 20px;
     background-color: @header-bg!important;
     .vux-header-title {
       height: 84px;
