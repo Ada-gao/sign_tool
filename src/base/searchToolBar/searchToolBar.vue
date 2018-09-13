@@ -71,6 +71,7 @@ export default {
   height: 60px;
   line-height: 60px;
   position: relative;
+  margin-top: 12px;
   .icon_search {
     font-size: 26px;
     position: absolute;
