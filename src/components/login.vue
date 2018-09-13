@@ -1,5 +1,5 @@
 <template>
-  <div class="loginPage" @touchmove="touchScreen">
+  <div class="login-page" @touchmove="touchScreen">
     <!-- <x-header :left-options="{showBack: false}">登录</x-header> -->
     <!-- <div class="wrapper"> -->
       <div class="title">
@@ -8,15 +8,15 @@
       </div>
       <div class="edit">
         <div class="username">
-          <i class="iconfont verticalAlign">&#xe60b;</i>
-          <mt-field style="display: inline-block" class="verticalAlign" placeholder="请输入手机号或邮箱" :disableClear="clearAll" @blur.native.capture="userChange(username)" v-model="username"></mt-field>
+          <i class="iconfont vertical-align">&#xe60b;</i>
+          <mt-field style="display: inline-block" class="vertical-align" placeholder="请输入手机号或邮箱" :disableClear="clearAll" @blur.native.capture="userChange(username)" v-model="username"></mt-field>
         </div>
-        <div class="userTip">{{msgTip}}</div>
+        <div class="user-tip">{{msgTip}}</div>
         <div class="num">
-          <i class="iconfont verticalAlign">&#xe612;</i>
-          <mt-field style="display: inline-block" class="verticalAlign" placeholder="请输入验证码" :disableClear="clearAll" v-model="num" @focus.native.capture="numChange"></mt-field>
-          <button class="send right textCenter" @click="getIdentifyingCode" v-show="show">发送验证码</button>
-          <span class="count right textCenter" v-show="!show">{{count}}s后重新发送</span>
+          <i class="iconfont vertical-align">&#xe612;</i>
+          <mt-field style="display: inline-block" class="vertical-align" placeholder="请输入验证码" :disableClear="clearAll" v-model="num" @focus.native.capture="numChange"></mt-field>
+          <button class="send right text-center" @click="getIdentifyingCode" v-show="show">发送验证码</button>
+          <span class="count right text-center" v-show="!show">{{count}}s后重新发送</span>
         </div>
         <div class="error" >{{errorMsg}}</div>
       </div>
@@ -268,7 +268,7 @@ export default {
 <style lang="less">
 @import "../common/style/variable.less";
 // @import "../common/style/base.less";
-.loginPage{
+.login-page{
   height: 100%;
   background: #fff;
   padding-top: 185px;
@@ -324,7 +324,7 @@ export default {
       position: relative;
       margin-top: 50px;
     }
-    .userTip, .error{
+    .user-tip, .error{
       position: absolute;
       // text-align: left;
       /*width: 650px;*/

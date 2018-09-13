@@ -13,23 +13,23 @@
 				</mt-swipe>
 			</div>
 			<div class="announcement">
-				<i class="iconfont verticalAlign">&#xe62e;</i>
+				<i class="iconfont vertical-align">&#xe62e;</i>
 				<span>点击查看更多活动…</span>
-				<span class="more">查看 <i class="iconfont verticalAlign">&#xe6d6;</i></span>
+				<span class="more">查看 <i class="iconfont vertical-align">&#xe6d6;</i></span>
 			</div>
+			<div class="space"></div>
 			<div style="overflow: hidden; overflow-x: auto;">
         <ul class="tabbar" :style="{'width': ulWidth}">
           <li v-for="(item,index) in tabBars"
               :key="index"
-              :style="{'width': liWidth}"
+              :style="{'width': liWidth + 'px', 'left': liWidth * index + 'px'}"
               @click="switchTab(index)"
-              :class="n === index ? 'active' : ''"
+              :class="n === index ? 'active text-center' : 'text-center'"
           >{{item}}
           </li>
         </ul>
       </div>
-			<div class="space"></div>
-			<group class="group-list" :data="productsList"  v-for="(item,index) in productsList" :key="item.product_type_id">
+			<!-- <group class="group-list" :data="productsList"  v-for="(item,index) in productsList" :key="item.product_type_id">
 				<cell
 				:title="item.name"
 				is-link
@@ -41,14 +41,17 @@
 				<i slot="icon" v-else-if="item.name === '固收'" class="iconfont blue">&#xe607;</i>
 				<i slot="icon" v-else-if="item.name === '另类'" class="iconfont yellow">&#xe60b;</i>
 				<i slot="icon" v-else class="iconfont yellow">&#xe633;</i>
-				</cell>
-				<selling-products :child-data="item.products"
+				</cell> -->
+				<selling-products :child-data="products[n]"
                           mark="homePage"
                           @cgPopup="cgPopup"
-                          :popupVisible="popupVisible"
-                          v-show="showContentList[index]"></selling-products>
-        <div class="divide-line"></div>
-			</group>
+                          :popupVisible="popupVisible"></selling-products>
+        <!-- <div class="divide-line"></div>
+				v-show="showContentList[index]"
+			</group> -->
+			<div class="bottom-line text-center" v-if="this.choosePro.length >= 5">
+				<span class="bot">我是有底线的</span>
+			</div>
     </div>
   </div>
 </template>
@@ -75,6 +78,7 @@ export default {
 	methods: {
 		switchTab (index) {
 			this.n = index
+			this.choosePro = this.products[this.n]
 		},
     handleRoute () {
       this.$router.push({name: 'activityList'})
@@ -121,7 +125,9 @@ export default {
 			tabBars: [],
 			ulWidth: '100%',
 			liWidth: '',
-			n: 0
+			n: 0,
+			products: [],
+			choosePro: []
 			// email: '',
 			// userId: ''
     }
@@ -129,14 +135,17 @@ export default {
 	mounted () {
 		// this.email = this.$route.params.email
 		// this.userId = this.$route.params.userId
-    this.liWidth = document.documentElement.offsetWidth / 4 + 'px'
+		this.liWidth = document.documentElement.offsetWidth / 4
 		getProducts().then(res => {
 			this.spinner = false
 			this.productsList = res.data
 			this.productsList.map(item => {
 				this.tabBars.push(item.name)
+				this.products.push(item.products)
 			})
-			let cnt = Math.ceil(this.tabBars.length / 4)
+			this.choosePro = this.products[this.n]
+			// let cnt = Math.ceil(this.tabBars.length / 4)
+			let cnt = this.tabBars.length / 4
       this.ulWidth = cnt * 100 + '%'
 		}).catch(err => {
 			if (err) {
@@ -174,7 +183,7 @@ export default {
 		height: 80px !important;
 	}
 	.wrapper {
-		margin-bottom: 116px;
+		margin-bottom: 98px;
 		background: #F5F5F5;
 		// height: calc(100% - 214px);
 		.swipe{
@@ -205,71 +214,98 @@ export default {
 		ul.tabbar {
       font-size: 0;
       height: 80px;
-      line-height: 80px;
+			line-height: 80px;
+			position: relative;
+			background: @back-color-white;
       li {
-        font-size: 30px;
+				font-family: @font-family-M;
+        font-size: @font-size-thirty;/*px*/
         display: inline-block;
         /*width: 150px;*/
-        text-align: center;
-        color: #666;
-        position: relative;
+        color: @font-color-4A;
+        position: absolute;
       }
       li.active {
-        color: #2672ba;
+        color: @text-font-color;
       }
       li.active::after {
         content: '';
         position: absolute;
         display: block;
-        width: 100%;
-        height: 10px;
-        background-color: #2672ba;
-        bottom: -5px;
+        width: 60px;
+				height: 6px;
+				border-radius: 2px;/*no*/
+        background: @text-font-color;
+				bottom: -5px;
+				left: 50%;
+				transform: translate(-50%, 0);
       }
-    }
-		.weui-cells{
-			margin-top: 20px;
 		}
-		.weui-cells i{
-			margin-right: 35px;
-		}
-		.weui-cell{
-			height: 70px;
-			line-height: 70px;
-			padding-left: 20px;
-			.weui-cell__hd{
-				i{
-					vertical-align: middle;
-				}
-				.red{
-					color: #C61D1A;
-				}
-				.blue{
-					color: #597ac5;
-				}
-				.yellow{
-					color: #dea05b;
-				}
+		.bottom-line{
+			height: 73px;
+			line-height: 73px;
+			font-family: @font-family-R;
+			font-size: @font-size-twentyF;/*px*/
+			color: #D6D6D6;
+			.bot:before, .bot:after{
+				display: inline-block;
+				content: '';
+				width: 106px;
+				height: 3px;
+				background:#D6D6D6;
+				vertical-align: middle;
+				position: relative;
 			}
-			.vux-cell-bd.vux-cell-primary{
-				p{
-					label.vux-label{
-						font-family: PingFangSC-Semibold;
-						font-size: 32px;
-						color: #464646;
-					}
-				}
+			.bot:before{
+				right: 20px;
+			}
+			.bot:after{
+				left: 20px;
 			}
 		}
-		.group-list{
-			margin-bottom: 20px;
-		}
+		// .weui-cells{
+		// 	margin-top: 20px;
+		// }
+		// .weui-cells i{
+		// 	margin-right: 35px;
+		// }
+		// .weui-cell{
+		// 	height: 70px;
+		// 	line-height: 70px;
+		// 	padding-left: 20px;
+		// 	.weui-cell__hd{
+		// 		i{
+		// 			vertical-align: middle;
+		// 		}
+		// 		.red{
+		// 			color: #C61D1A;
+		// 		}
+		// 		.blue{
+		// 			color: #597ac5;
+		// 		}
+		// 		.yellow{
+		// 			color: #dea05b;
+		// 		}
+		// 	}
+		// 	.vux-cell-bd.vux-cell-primary{
+		// 		p{
+		// 			label.vux-label{
+		// 				font-family: PingFangSC-Semibold;
+		// 				font-size: 32px;
+		// 				color: #464646;
+		// 			}
+		// 		}
+		// 	}
+		// }
+		// .group-list{
+		// 	margin-bottom: 20px;
+		// }
 	}
-	.icon-finance-2-copy,.icon-finance-1{
-		color: #C61D1A;
-	}
-	.icon-finance-4{
-		color: orange;
-	}
+	// .icon-finance-2-copy,.icon-finance-1{
+	// 	color: #C61D1A;
+	// }
+	// .icon-finance-4{
+	// 	color: orange;
+	// }
 }
 </style>
