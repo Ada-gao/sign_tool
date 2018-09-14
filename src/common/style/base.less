@@ -216,6 +216,18 @@ b {
 .mint-button.is-disabled{
   //background: @back-color-no;
 }
+
+/*group cell 折叠*/
+.weui-cells.vux-no-group-title{
+  margin-top: 0px;
+  .weui-cell{
+    padding: 0;
+  }
+}
+.weui-cells.vux-no-group-title:before, .weui-cells.vux-no-group-title::after{
+  border: none;
+}
+
 // 必填项icon
 .must_fill {
   position: relative;
