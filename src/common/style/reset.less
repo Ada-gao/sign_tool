@@ -3,12 +3,12 @@ a {
   text-decoration: none;
 }
 //顶部样式
-.vux-header {
-    background-color: @color-bg-header !important;
+#app .vux-header {
+    background-color: @color-bg-header;
     // padding-top: 29px !important;
     // padding-bottom: 29px !important;
     // Stauts bar height on ios 10
-    padding-top: 50px;
+    padding-top: 40px;
     // Status bar height on ios 11+
     // padding-top: env(safe-area-inset-top);
     // height: 108px;
@@ -20,7 +20,7 @@ a {
     .vux-header-title {
         font-size: @font-size-thirtyS; /*px*/
         line-height: 88px;
-        color: #333333 !important;
+        color: #333333;
         // color: #fff;
         font-family: @font-family-R;
     }
@@ -28,7 +28,7 @@ a {
         bottom: 2px !important;
         left: 10px !important;
         &:before {
-            border-color: #333 !important;
+            border-color: #333;
             width: 20px !important;
             height: 20px !important;
         }
