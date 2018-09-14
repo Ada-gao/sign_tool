@@ -3,155 +3,203 @@
     <x-header :left-options="{backText: '', preventGoBack:true}"
               @on-click-back="toLink">客户详情</x-header>
     <div class="wrapper">
-      <div class="info">
-        <group>
-          <cell-box style="color: #2672ba;">
-            <i class="iconfont">&#xe62c;</i>客户信息
-            <!-- <span class="fr" style="color:#333;">{{investorType}}</span> -->
-          </cell-box>
-        </group>
+      <div class="fix_mobile">
+        <i class="iconfont">&#xe600;</i>
+        <a :href="'tel:'+data.mobile"></a>
+      </div>
+      <div class="client_info">
         <div class="space"></div>
-        <group>
-          <cell-box>
-            <label for="name">客户姓名：</label>
-            <span class="fr">{{data.name}}</span>
-          </cell-box>
-          <cell-box>
-            <label for="name">客户性别：</label>
-            <span class="fr">{{data.gender === '0' ? '男' : '女'}}</span>
-          </cell-box>
-          <cell-box>
-            <label for="name">客户编号：</label>
-            <span class="fr">{{data.client_no}}</span>
-          </cell-box>
-        </group>
+        <cell :arrow-direction="showCont1 ? 'down' : 'up'"
+              :border-intent="false"
+              title="客户信息"
+              class="bl_box"
+              @click.native="showCont1 = !showCont1"
+              is-link>
+          <i slot="icon" class="border_left"></i>
+        </cell>
+        <section v-if="showCont1">
+          <div class="cell_box">
+            <span class="cell_left">客户姓名：</span>
+            <span class="cell_right">{{data.name}}</span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box">
+            <span class="cell_left">国籍：</span>
+            <span class="cell_right"
+                  v-if="data.nationality === '0'">中国</span>
+            <span v-else class="cell_right">其他</span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box" v-if="data.nationality === '0'">
+            <span class="cell_left">常住中国城市：</span>
+            <span class="cell_right">{{data.city}}</span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box">
+            <span class="cell_left">微信号：</span>
+            <span class="cell_right">{{data.wechat}}</span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box">
+            <span class="cell_left">邮箱：</span>
+            <span class="cell_right">{{data.email}}</span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box">
+            <span class="cell_left">客户电话：</span>
+            <span class="cell_right">
+              <i>{{data.mobile}}</i>
+              <span class="success_certy">(已验证)</span>
+            </span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box">
+            <span class="cell_left">录入时间：</span>
+            <span class="cell_right">{{data.create_time}}</span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box">
+            <span class="cell_left">资产管理规模：</span>
+            <span class="cell_right">{{data.asset_amount ? data.asset_amount + '万' : ''}}</span>
+          </div>
+        </section>
+      </div>
+      <group class="certify_info" v-if="data.realname_status !== '0'">
         <div class="space"></div>
-        <group class="no_bbottom">
-          <cell-box>
-            <label for="phone">国籍：</label>
-            <span
-              class="fr"
-              v-if="data.nationality === '0'"
-            >中国</span>
-            <span
-              class="fr"
-              v-else
-            >其他</span>
-          </cell-box>
-          <!-- <cell-box v-show="data.nationality === '中国'">
-            <label for="email">常住中国城市：</label>
-            <span class="fr">{{data.city}}</span>
-          </cell-box> -->
-          <cell-box>
-            <label for="name">常住城市：</label>
-            <span class="fr">{{data.city}}</span>
-          </cell-box>
-          <cell-box>
-            <label for="name">微信：</label>
-            <span class="fr">{{data.wechat}}</span>
-          </cell-box>
-          <cell-box>
-            <label for="name">邮箱：</label>
-            <span class="fr">{{data.email}}</span>
-          </cell-box>
-          <cell-box>
-            <label for="name">手机号码：</label>
-            <span class="fr">{{data.mobile}}</span>
-          </cell-box>
+        <cell :arrow-direction="showCont2 ? 'down' : 'up'"
+              :border-intent="false"
+              title="证件信息"
+              class="bl_box"
+              @click.native="showCont2 = !showCont2"
+              is-link>
+          <i slot="icon" class="border_left"></i>
+        </cell>
+        <section v-if="!showCont2">
+
+          <div v-if="data.realname_status === '2'">
+            <div class="cell_box">
+              <span class="cell_left">证件类型：</span>
+              <span class="cell_right">{{data.id_type}}</span>
+            </div>
+            <div class="bb"></div>
+            <div class="cell_box">
+              <span class="cell_left">证件号码：</span>
+              <span class="cell_right">{{data.id_no}}</span>
+            </div>
+            <div class="bb"></div>
+            <div class="cell_box">
+              <span class="cell_left">证件有效起始时间：</span>
+              <span class="cell_right">{{data.id_start_date}}</span>
+            </div>
+            <div class="bb"></div>
+            <div class="cell_box">
+              <span class="cell_left">证件有效结束时间：</span>
+              <span class="cell_right">{{data.id_expiration}}</span>
+            </div>
+            <div class="bb"></div>
+            <div class="cell_box">
+              <span class="cell_left">出生日期：</span>
+              <span class="cell_right">{{data.birthday}}</span>
+            </div>
+            <div class="bb"></div>
+            <div class="cell_box">
+              <span class="cell_left">地址：</span>
+              <span class="cell_right">{{data.address}}</span>
+            </div>
+          </div>
           <div class="space"></div>
-          <cell-box>
-            <label style="color:#333">证件类型：</label>
-            <span class="fr">{{data.id_type}}</span>
-          </cell-box>
-          <cell-box>
-            <label>证件号码：</label>
-            <span class="fr">{{data.id_no}}</span>
-          </cell-box>
-          <cell-box>
-            <label>证件有效期：</label>
-            <span class="fr">{{data.id_start_date}} 至 {{data.id_expiration}}</span>
-          </cell-box>
-          <cell-box>
-            <label>出生日期：</label>
-            <span class="fr">{{data.birthday}}</span>
-          </cell-box>
-          <cell-box>
-            <label>地址：</label>
-            <span class="fr">{{data.address}}</span>
-          </cell-box>
-          <cell-box>
-            <label>录入时间：</label>
-            <span class="fr">{{data.create_time}}</span>
-          </cell-box>
-          <cell-box>
-            <label>资产管理规模：</label>
-            <span class="fr">{{data.asset_amount}}万</span>
-          </cell-box>
-        </group>
-        <div class="call-btn">
-          <a :href="'tel:'+data.mobile" class="callout">拨打客户电话</a>
+          <div class="cell_box">
+            <span class="cell_left">实名认证：</span>
+            <span class="cell_right" @click="handlerPerfect">
+                <i v-if="data.realname_status === '3'"
+                   class="no_certy">{{clickArrowObj.realnameObj.stat}}</i>
+                <i v-if="data.realname_status === '1'"
+                   class="wait_certy">{{clickArrowObj.realnameObj.stat}}</i>
+                <i v-if="data.realname_status === '2'"
+                   class="success_certy">{{clickArrowObj.realnameObj.stat}}</i>
+                <i v-if="data.realname_status === '4'"
+                   class="expire_certy">{{clickArrowObj.realnameObj.stat}}</i>
+                <i class="iconfont right_icon"
+                   v-if="!clickArrowObj.realnameObj.disabled">&#xe8d5;</i>
+              </span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box" @click="handlerCerty">
+              <span class="cell_left">
+                投资者类型：
+                <i v-if="data.certification_status === '0'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
+                <i v-if="data.certification_status === '1'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
+                <i v-if="data.certification_status === '2'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
+                <i v-if="data.certification_status === '3'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
+              </span>
+            <span class="cell_right">
+                <i v-if="data.certification_status === '0'"
+                   class="no_certy">{{clickArrowObj.cerObj.stat}}</i>
+                <i v-if="data.certification_status === '1'"
+                   class="wait_certy">{{clickArrowObj.cerObj.stat}}</i>
+                <i v-if="data.certification_status === '2'"
+                   class="success_certy">{{clickArrowObj.cerObj.stat}}</i>
+                <i v-if="data.certification_status === '3'"
+                   class="expire_certy">{{clickArrowObj.cerObj.stat}}</i>
+                <i class="iconfont right_icon"
+                   v-if="!clickArrowObj.cerObj.disabled">&#xe8d5;</i>
+              </span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box" @click="handlerBank">
+            <div class="cell_left">银行卡信息</div>
+            <div class="cell_right">
+              <span>查看</span>
+              <i class="iconfont right_icon">&#xe8d5;</i>
+            </div>
+          </div>
+        </section>
+      </group>
+      <group class="certify_info" v-else>
+        <div class="space"></div>
+        <div class="cell_box" @click="handlerPerfect">
+          <span class="cell_left">实名认证：</span>
+          <span class="cell_right">
+              <i v-if="data.realname_status === '0' || data.realname_status === '3'"
+                 class="no_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i v-if="data.realname_status === '1'"
+                 class="wait_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i v-if="data.realname_status === '2'"
+                 class="success_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i v-if="data.realname_status === '4'"
+                 class="expire_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i class="iconfont right_icon"
+                 v-if="!clickArrowObj.realnameObj.disabled">&#xe8d5;</i>
+            </span>
         </div>
-      </div>
-      <div class="space"></div>
-      <div class="product">
-        <group>
-          <!--<mt-cell title="实名认证："-->
-                   <!--to="/perfectInfos"-->
-                   <!--:value="clickArrowObj.realnameObj.stat"-->
-                   <!--:is-link="false">-->
-          <!--</mt-cell>-->
-          <cell style="color:#333"
-                :is-link="!clickArrowObj.realnameObj.disabled"
-                :link="{name: 'PerfectInfos'}"
-                title="实名认证："
-                :value="clickArrowObj.realnameObj.stat"
-                :disabled="clickArrowObj.realnameObj.disabled">
-          </cell>
-          <div class="space1"></div>
-          <group v-if="data.realname_status === '2'">
-            <cell style="color:#333"
-                  :is-link="!clickArrowObj.cerObj.disabled"
-                  :link="{name: 'Certified',params: {id: data.client_id}}"
-                  :title="'投资者类型：' + clickArrowObj.cerObj.type + data.risk_level"
-                  :value="clickArrowObj.cerObj.stat"
-                  :disabled="clickArrowObj.cerObj.disabled">
-            </cell>
-            <div class="space1"></div>
-            <cell is-link
-                  :link="{name: 'BankList', params: {id: data.client_id, addCard: '1'}}"
-                  title="银行卡信息："
-            ></cell>
-          </group>
-          <div class="space1"></div>
-          <cell
-            is-lilnk
-            :link="'/purchasedProducts/'+clientId"
-            value-align="left"
-            title="客户已购买产品"
-          >
-          </cell>
-          <div class="space"></div>
-        </group>
-      </div>
-      <div class="remark">
-        <group>
-          <cell-box>备注</cell-box>
-        </group>
-        <ul :class="{'no_padding' : remarkList.length === 0}">
-          <li v-for="(item, index) in remarkList" :key="index">
-            <div class="iText text-overflow-one">{{item.remark}}</div>
-            <span class="iTime">{{item.create_time}}</span>
-            <router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}">
-              <i class="iconfont" style="font-size:36px;vertical-align: middle;">&#xe624;</i>
-              <span class="font-size:26px;color:#2672ba;vertical-align: middle;">查看</span>
-            </router-link>
-          </li>
-        </ul>
+      </group>
+      <group class="remark">
         <div class="space"></div>
-      </div>
-      <div class="bottom-remark">
-        <div class="add clearfix" @click="addNew">填写备注</div>
-      </div>
+        <cell :arrow-direction="showCont3 ? 'down' : 'up'"
+              :border-intent="false"
+              title="备注"
+              class="bl_box"
+              @click.native="showCont3 = !showCont3"
+              is-link>
+          <i slot="icon" class="border_left"></i>
+        </cell>
+        <section v-if="showCont3">
+          <remark-list :list="remarkList"
+                       @handlerExpand="handlerExpand"
+                       @handlerFlag="handlerFlag"></remark-list>
+        </section>
+        <div class="add_remark">输入备注信息...</div>
+        <!--<input class="add_remark" placeholder="输入备注信息..." v-model="remarkInfo"/>-->
+        <!--<button @click="submitAddNew">添加备注</button>-->
+      </group>
       <x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>
         <textarea id="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
@@ -159,9 +207,9 @@
     </div>
     <x-dialog v-model="transformDialog" class="submitDialog">
       <div class="tip">客户当前资产规模已到达{{data.asset_standard}}万<br/>
-            是否自动转变为专业投资者？</div>
-			<x-button type="primary" @click.native="transform">转 变</x-button>
-			<x-button type="primary" @click.native="cancel">取 消</x-button>
+        是否自动转变为专业投资者？</div>
+      <x-button type="primary" @click.native="transform">转 变</x-button>
+      <x-button type="primary" @click.native="cancel">取 消</x-button>
     </x-dialog>
   </div>
 </template>
@@ -187,6 +235,7 @@
   } from '@/service/api/customers'
   import {tfCtypeToText, tfCerIdToText, tfIdtype} from '@/common/js/filter'
   import {setStore, removeStore} from '@/config/mUtils'
+  import RemarkList from '@/base/remarkList/index'
 
   export default {
     name: 'CustomerManagement',
@@ -203,10 +252,14 @@
       XDialog,
       XTextarea,
       XButton,
-      CellFormPreview
+      CellFormPreview,
+      RemarkList
     },
     data () {
       return {
+        showCont1: false,
+        showCont2: false,
+        showCont3: false,
         data: {},
         investorType: '',
         clientId: '',
@@ -240,8 +293,14 @@
     mounted () {
       let clientId = this.$route.params.id
       checkCustomerRemarks(clientId).then(res => {
-        if (res.data.length > 0) {
-          this.remarkList = res.data
+        if (res.status === 200) {
+          if (res.data.length > 0) {
+            this.remarkList = JSON.parse(JSON.stringify(res.data))
+            this.remarkList.forEach((item, index) => {
+              item.flag = false
+              item.expand = false
+            })
+          }
         }
       })
       clientId === 0 ? (this.investorType = '普通投资者') : (this.investorType = '专业投资者')
@@ -251,6 +310,25 @@
       }
     },
     methods: {
+      handlerFlag (data) {
+        this.remarkList[data.index].flag = data.flag
+      },
+      handlerExpand (data) {
+        this.remarkList[data.index].expand = data.expand
+      },
+      handlerPerfect () {
+        if (!this.clickArrowObj.realnameObj.disabled) {
+          this.$router.push({name: 'PerfectInfos'})
+        }
+      },
+      handlerCerty () {
+        if (!this.clickArrowObj.cerObj.disabled) {
+          this.$router.push({name: 'Certified', params: {id: this.data.client_id}})
+        }
+      },
+      handlerBank () {
+        this.$router.push({name: 'BankList', params: {addCard: '1', id: this.data.client_id}})
+      },
       getList (id) {
         checkCusomersDetail(id).then(res => {
           this.data = Object.assign({}, res.data)
@@ -262,8 +340,8 @@
           this.clientName = res.data.name
           this.clientType = res.data.client_type
           if (this.data.asset_amount > this.data.asset_standard &&
-              this.data.client_type !== '1' &&
-              this.data.certification_status !== '1') {
+            this.data.client_type !== '1' &&
+            this.data.certification_status !== '1') {
             this.transformDialog = true
           }
           this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
@@ -289,7 +367,7 @@
         this.showHideOnBlur = true
         // this.$refs.textarea.focus()
         this.$nextTick(function () {
-//          this.$refs.textarea.focus()
+          //          this.$refs.textarea.focus()
           document.getElementById('textarea').focus()
         })
       },
@@ -346,261 +424,35 @@
 </script>
 
 <style lang="less">
-.customerManagement{
-  .wrapper {
-    .no_bbottom .weui-cells::after {
-      content: none;
-    }
-    .weui-cells.vux-no-group-title{
-      .vux-cell-box.weui-cell{
-        label{
-          font-family: PingFangSC-Medium;
-          font-size: 30px;
-          color: #333333;
-        }
-        .fr{
-          font-size: 28px;
-          color: #666;
-        }
+  @import '../../common/style/variable';
+  .customerManagement {
+    background: #fff;
+    font-family: PingFangSC-Regular;
+    font-size: 30px;
+    color: #4A4A4A;
+    .cell_right {
+      i {
+        font-size: 30px;
+        margin-right: 0;
       }
-    }
-    .info{
-      .vux-cell-box.weui-cell{
-        border-bottom: 1px solid #CCCCCC;
-        padding: 0;
-        padding-left: 20px;
-        height: 83px;
-      }
-    }
-    .id_right {
-      text-align: right;
-      position: absolute;
-      right: 27px;
-      span {
-        position: static;
-        display: inline-block;
-        right: 0;
-        top: 0;
-        transform: translateY(0);
-      }
-    }
-    .call-btn{
-      height: 132px;
-      background: #fff;
-      text-align: center;
-      line-height: 132px;
-      .callout {
-        display: inline-block;
-        width: 94.7%;
-        height: 72px;
-        text-align: center;
-        line-height: 72px;
-        background: #2672BA;
-        border-radius: 10px;
-        font-size: 28px;
-        color: #FFFFFF;
-        &:link,
-        &:visited,
-        &:hover,
-        &:active {
-          text-decoration: none;
-        }
-      }
-    }
-    .report {
-      .vux-tap-active {
-        padding-left: 45px;
-        padding-top: 20px;
-        padding-bottom: 20px;
-      }
-    }
-    .product {
-      .mint-cell{
-        .mint-cell-wrapper{
-          padding-left: 20px;
-          .mint-cell-text{
-            position: static;
-          }
-        }
-      }
-      .vux-cell-box.weui-cell{
-        padding: 0;
-        padding-left: 20px;
-      }
-      .weui-cell.vux-tap-active.weui-cell_access{
-        padding: 0 20px;
-        .vux-cell-bd{
-          p{
-            label{
-              font-family: PingFangSC-Medium;
-              font-size: 30px;
-              color: #333333;
-            }
-          }
-        }
-        .weui-cell__ft{
-          font-size: 28px;
-          color: #666;
-        }
-      }
-      .cell-form {
-        padding: 40px 34px 34px 40px;
-        font-size: 22px; /*px*/
-        border-bottom: 1px solid #eee; /*no*/
-        .cell-form-top {
-          margin-bottom: 16px;
-          label {
-            font-size: 28px; /*px*/
-          }
-          .grade {
-            background-color: #F76E61;
-            color: #fff;
-            padding: 6px 15px;
-          }
-        }
-        .cell-form-bottom {
-          font-size: 24px; /*px*/
-          .text-red {
-            color: #FF6A6A;
-          }
-        }
-      }
-    }
-    .risk-evaluation,
-    .asset-allocation {
-      .weui-cells .weui-cell {
-        height: 106px;
-        box-sizing: border-box;
-      }
-    }
-    .risk-evaluation i {
-      font-size: 40px; /*px*/
-    }
-    .asset-allocation i {
-      font-size: 48px; /*px*/
-      margin-right: 12px;
-      margin-left: -8px;
     }
     .remark {
-      padding-bottom: 120px;
-      background-color: #fff;
-      .vux-cell-box.weui-cell{
-        padding: 0;
-        padding-left: 20px;
-        font-family: PingFangSC-Medium;
-        font-size: 30px;
-        color: #333333;
-        border-bottom: 1px solid #ccc;
-      }
-      .weui-cells .weui-cell i {
-        font-size: 32px; /*px*/
-      }
-      .no_padding {
-        padding-bottom: 0;
-      }
-      ul {
-        padding-bottom: 20px;
-        max-height: 440px;
-        overflow-y: scroll;
-        li {
-          height: 110px;
-          padding: 0 120px 0 68px;
-          font-size: 26px;
-          color: #666;
-          -webkit-box-sizing: border-box;
-          -moz-box-sizing: border-box;
-          box-sizing: border-box;
-          .iText {
-            padding-top: 20px;
-            margin-bottom: 10px;
-            /*font-size: 28px;*/
-          }
-          .view {
-            color: #2672BA;
-            line-height: 30px;
-          }
-          .fr i {
-            font-size: 36px;
-            padding-right: 15px;
-            vertical-align: top;
-          }
-        }
-      }
-    }
-    .vux-x-dialog {
-      .img-box {
-        min-height: 200px;
-        padding: 30px 14px;
-        box-sizing: border-box;
-        textarea {
-          display: block;
-          width: 100%;
-          height: 100%;
-          outline: none;
-          border: 1px solid #ccc; /*no*/
-          border-radius: 10px;
-          padding: 10px;
-          box-sizing: border-box;
-        }
-      }
-    }
-    .weui-cells:after {
-      content: none;
-    }
-  }
-  .submitDialog {
-    .tip{
       font-family: PingFangSC-Regular;
-      font-size: 36px;
-      color: #333333;
-      margin-top: 50px;
-      margin-bottom: 35px;
-    }
-    .weui-btn.weui-btn_primary{
-      display: inline-block;
-      width: 190px;
-      height: 80px;
-      background: #2A7DC1;
-      border-radius: 10px;
-      font-family: PingFangSC-Medium;
-      font-size: 36px;
-      color: #F0F0F0;
-      margin-right: 43px;
-    }
-    .weui-btn.weui-btn_primary:last-child{
-      margin-left: 43px;
-      margin-right: 0px;
-    }
-  }
-  .weui-cells {
-    .weui-cell {
-      height: 80px;
-      line-height: 80px;
-      box-sizing: border-box;
-    }
-    span {
-      position: absolute;
-      right: 27px;
-      top: 50%;
-      transform: translateY(-50%);
-      -webkit-transform: translateY(-50%);
-      i {
-        margin-right: 12px;
-        color: #333;
+      color: #9B9B9B;
+      padding-bottom: 30px;
+      background: #fff;
+      .add_remark {
+        width: 89.33%;
+        margin: 0 auto;
+        box-sizing: border-box;
+        margin-top: 50px;
+        border: 1px solid #B8B8B8;
+        border-radius: 4px;
+        height: 73px;
+        line-height: 73px;
+        padding-left: 20px;
+        font-size: 24px;
       }
     }
   }
-
-  .space {
-    width: 100%;
-    height: 20px;
-    background-color: #f5f5f5;
-  }
-
-  .space1 {
-    width: 100%;
-    height: 10px;
-    background-color: #f5f5f5;
-  }
-}
 </style>
