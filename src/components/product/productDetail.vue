@@ -63,7 +63,13 @@
             <td v-if="item.buying_crowds === '2'">境外</td>
             </tr>
         </table>
-        <cell title="查看更多信息" is-link></cell>
+        <group class="info-detail">
+          <cell
+          title="查看更多信息"
+          is-link
+          :border-intent="false"
+				  arrow-direction="up"></cell>
+        </group>
       </div>
       <div class="product">
         <div class="title"><span class="line-blue"></span>产品信息</div>
@@ -320,7 +326,7 @@ export default {
         height: 305px;
         // .num-percent{
           .number, .percent{
-            font-family: @font-family-M;            
+            font-family: @font-family-M;
           }
           .number{
             font-size: 72px;/*px*/
@@ -433,6 +439,17 @@ export default {
             font-size: @font-size-twentyE;/*px*/
             color: @font-color-4A;
           }
+        }
+      }
+      .info-detail{
+        p{
+          font-family: @font-family-R;
+          font-size: @font-size-twentyE; /*px*/
+          line-height: 40px;
+        }
+        .weui-cell__ft.vux-cell-arrow-transition.vux-cell-arrow-down:after,
+        .weui-cell__ft.vux-cell-arrow-transition.vux-cell-arrow-up:after{
+          border-color: #DADADA;
         }
       }
     }
