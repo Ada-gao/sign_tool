@@ -61,31 +61,67 @@
             <td v-if="item.buying_crowds === '0'">大陆</td>
             <td v-if="item.buying_crowds === '1'">港澳台</td>
             <td v-if="item.buying_crowds === '2'">境外</td>
-            </tr>
+          </tr>
         </table>
         <group class="info-detail">
           <cell
           title="查看更多信息"
           is-link
           :border-intent="false"
-				  arrow-direction="up"></cell>
+				  :arrow-direction="show ? 'up' : 'down'"
+          @click.native="show = !show"></cell>
         </group>
+        <table border="0" cellspacing="0" cellpadding="0" v-if="show" style="margin-bottom: 0px;">
+          <tr>
+            <td>产品期限</td>
+            <td v-if="item.investment_horizon_unit === '0'">{{item.investment_horizon}}月</td>
+            <td v-if="item.investment_horizon_unit === '1'">{{item.investment_horizon}}年</td>
+            <td v-if="item.investment_horizon_unit === '2'">{{item.investment_horizon}}天</td>
+          </tr>
+          <tr><td>募集额度</td><td>{{item.collection_amount}}</td></tr>
+          <tr><td>募集人数</td><td>{{item.product_lp}}</td></tr>
+          <tr><td>起投金额</td><td>{{item.minimal_amount}}万</td></tr>
+          <tr><td>最低追加金额</td><td>{{item.minimal_add_amount}}万</td></tr>
+          <tr><td>收益分配方式</td><td>{{item.income_distribution}}</td></tr>
+          <tr><td>资产团队</td><td>{{item.asset_team}}</td></tr>
+          <tr><td>托管银行</td><td>{{item.custodian_bank}}</td></tr>
+          <tr><td>关联产品</td><td>{{item.relevance_name}}</td></tr>
+          <tr>
+            <td>付息方式</td>
+            <td v-if="item.interest_payment === '0'">无</td>
+            <td v-if="item.interest_payment === '1'">季度付息</td>
+            <td v-if="item.interest_payment === '2'">自然季度付息</td>
+            <td v-if="item.interest_payment === '3'">半年度付息</td>
+            <td v-if="item.interest_payment === '4'">按年付息</td>
+          </tr>
+          <tr>
+            <td>认购费</td>
+            <td v-if="item.subscribe === '0'">无需认购</td>
+            <td v-else-if="item.subscribe === '1'">价内认购</td>
+            <td v-else-if="item.subscribe === '2'">{{item.subscribe_rate}}%</td>
+          </tr>
+          <tr><td>账户名称</td><td>{{item.account_name}}</td></tr>
+          <tr><td>账号</td><td>{{item.card_no}}</td></tr>
+          <tr><td>支行名称</td><td>{{item.bank_name}}</td></tr>
+          <tr><td>大额支付行号</td><td>{{item.payment_number}}</td></tr>
+        </table>
       </div>
-      <div class="product">
-        <div class="title"><span class="line-blue"></span>产品信息</div>
+			<div class="space"></div>
+      <!-- <div class="product"> -->
+        <!-- <div class="title"><span class="line-blue"></span>产品信息</div>
         <div class="cont">
           <p class="cont-text firstName">产品名称 ：{{item.product_name}}
             <span class="important" v-if="this.$route.params.important">重点产品</span>
           </p>
           <p class="cont-text">产品结构类型 ：{{item.product_cons_name}}</p>
           <p class="cont-text">产品类型 ：{{item.product_type_name}}</p>
-          <p class="cont-text">产品风险级别 ：{{item.product_risk_level}}</p>
+          <p class="cont-text">产品风险级别 ：{{item.product_risk_level}}</p> -->
           <!-- <p class="cont-text" v-if="item.product_status === 1">产品状态 ：预热中</p>
           <p class="cont-text" v-else-if="item.product_status === 2">产品状态 ：募集中</p>
           <p class="cont-text" v-else-if="item.product_status === 3">产品状态 ：已关帐</p> -->
           <!-- <p class="cont-text">产品编号 ：{{item.product_code}}</p> -->
           <!-- <p class="cont-text">基金管理人 : {{item.manager}}</p> -->
-        </div>
+        <!-- </div>
         <div class="cont">
           <p class="cont-text">交易币种 : {{item.currency_id === 1 ? '人民币' : '美元' }}</p>
           <p class="cont-text" v-if="item.buying_crowds === '0'">购买人群 ：大陆</p>
@@ -93,17 +129,17 @@
           <p class="cont-text" v-if="item.buying_crowds === '2'">购买人群 ：境外</p>
           <p class="cont-text" v-if="item.investment_horizon_unit === '0'">产品期限 ：{{item.investment_horizon}}月</p>
           <p class="cont-text" v-if="item.investment_horizon_unit === '1'">产品期限 ：{{item.investment_horizon}}年</p>
-          <p class="cont-text" v-if="item.investment_horizon_unit === '2'">产品期限 ：{{item.investment_horizon}}天</p>
+          <p class="cont-text" v-if="item.investment_horizon_unit === '2'">产品期限 ：{{item.investment_horizon}}天</p> -->
           <!-- <p class="cont-text" v-if="item.is_float === 0">浮动收益 ：一</p> -->
           <!-- <p class="cont-text" v-else>收益对标基准 ：{{item.annualized_return}}%</p> -->
           <!-- <p class="cont-text">发行额度 ：{{item.collection_amount}}万</p> -->
-          <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p>
-          <p class="cont-text">募集人数 ：{{item.product_lp}}</p>
+          <!-- <p class="cont-text">募集额度 ：{{item.collection_amount}}万</p>
+          <p class="cont-text">募集人数 ：{{item.product_lp}}</p> -->
           <!-- <p class="cont-text">最低追加金额 ：{{item.minimal_add_amount}}万</p> -->
           <!-- <p class="cont-text">起投金额 : {{item.minimal_amount}}万</p> -->
           <!-- <p class="cont-text">投资门槛 : </p> -->
           <!-- <p class="cont-text">净值 : {{item.net_value}}</p> -->
-        </div>
+        <!-- </div>
         <div class="cont">
           <p class="cont-text">起投金额 : {{item.minimal_amount}}万</p>
           <p class="cont-text">最低追加金额 ：{{item.minimal_add_amount}}万</p>
@@ -121,14 +157,14 @@
           <p class="cont-text" v-else-if="item.subscribe === '2'">认购费 ：{{item.subscribe_rate}}%</p>
           <p class="cont-text">账户名称 ：{{item.account_name}}</p>
           <p class="cont-text">账号 ：{{item.card_no}}</p>
-          <p class="cont-text">支行名称 ：{{item.bank_name}}</p>
+          <p class="cont-text">支行名称 ：{{item.bank_name}}</p> -->
           <!-- <p class="cont-text">产品亮点 ：{{item.highlight}}</p> -->
-          <p class="cont-text">大额支付行号 ：{{item.payment_number}}</p>
-        </div>
+          <!-- <p class="cont-text">大额支付行号 ：{{item.payment_number}}</p>
+        </div> -->
         <div class="report-pdf">
-          <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toPptReport(id)">产品说明材料<span class="iconfont right">&#xe731;</span></div>
-          <div class="doc" @click="toUploadCustomer(id)">上传客户材料<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe8d5;</span></div>
+          <div class="doc" @click="toPptReport(id)">产品说明材料<span class="iconfont right">&#xe8d5;</span></div>
+          <div class="doc" @click="toUploadCustomer(id)">上传客户材料<span class="iconfont right">&#xe8d5;</span></div>
           <div class="doc" v-if="item.after_buy_file === '1'" @click="toProductReport(id)">投后报告<span class="iconfont right">&#xe731;</span></div>
         </div>
         <div class="reservation" v-if="showBtn">
@@ -137,7 +173,7 @@
         <div class="reservation reservationDisabled" v-if="item.product_status == 2 && item.is_pause === '1'">
           <mt-button type="primary">预约</mt-button>
         </div>
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -151,7 +187,8 @@ export default {
       item: [],
       id: '',
       prePath: '',
-      showBtn: true
+      showBtn: true,
+      show: false
       // ,
       // email: '',
       // userId: ''
@@ -225,7 +262,6 @@ export default {
     }
     window.scroll(0, 0)
     this.$nextTick(function () {
-      console.log(document.querySelector('.announcement-detail'))
       this.scrollAnnouncement()
     })
   }
@@ -453,6 +489,23 @@ export default {
         }
       }
     }
+    .report-pdf{
+      padding: 0 40px;
+      background:@back-color-white;
+      width: 100%;
+      .doc{
+        height: 104px;
+        line-height: 104px;
+        border-bottom: 1px solid #E9E9E9;
+        font-size: @font-size-thirty;/*px*/
+        color: #171A27;
+        .right{
+          float: right;
+          font-size: 60px;/*px*/
+          color: #DADADA;
+        }
+      }
+    }
     // .box{
     //   // display: -webkit-box;
     //   // overflow-x: auto;
@@ -461,71 +514,71 @@ export default {
     //   white-space: nowrap;
     //   background: #EB4F4C;
     // }
-    .title {
-      height: 90px;
-      margin: 26px 0 20px 0;
-      padding: 24px 0;
-      box-sizing: border-box;
-      position: relative;
-      background: #fff;
-      font-family: PingFangSC-Semibold;
-      font-size: 32px;
-      color: #333333;
-      .line-blue {
-        // width: 10px;
-        // height: 28px;
-        display: inline-block;
-        border-radius: 5px;
-        // background-color: #146AB2;
-        margin: 0 10px;
-        vertical-align: text-bottom;
-      }
-    }
-    .cont {
-      background: #fff;
-      margin-bottom: 22px;
-      font-family: PingFangSC-Regular;
-      font-size: 30px;
-      color: #333333;
-      .cont-text {
-        // font-size: 28px; /*px*/
-        padding: 20px 0 20px 20px;
-        .important{
-          padding: 1px 8px;
-          background: #AC1E1C;
-          border-radius: 5px;
-          font-family: PingFangSC-Medium;
-          font-size: 18px;
-          // vertical-align: middle;
-          margin-left: 20px;
-          color: #fff;
-          position: absolute;
-          top: 27px;
-        }
-      }
-      .firstName{
-        position: relative;
-      }
-    }
-    .report-pdf {
-        background-color: #F5F5F5;
-        font-family: PingFangSC-Regular;
-        font-size: 30px;
-        color: #333333;
-      .doc{
-        height: 80px;
-        line-height: 80px;
-        padding-left: 29px;
-        background: #fff;
-        margin-bottom: 7px;
-        .right{
-          right: 10px;
-          position: absolute;
-          font-size: 45px;
-          color: #999
-        }
-      }
-    }
+    // .title {
+    //   height: 90px;
+    //   margin: 26px 0 20px 0;
+    //   padding: 24px 0;
+    //   box-sizing: border-box;
+    //   position: relative;
+    //   background: #fff;
+    //   font-family: PingFangSC-Semibold;
+    //   font-size: 32px;
+    //   color: #333333;
+    //   .line-blue {
+    //     // width: 10px;
+    //     // height: 28px;
+    //     display: inline-block;
+    //     border-radius: 5px;
+    //     // background-color: #146AB2;
+    //     margin: 0 10px;
+    //     vertical-align: text-bottom;
+    //   }
+    // }
+    // .cont {
+    //   background: #fff;
+    //   margin-bottom: 22px;
+    //   font-family: PingFangSC-Regular;
+    //   font-size: 30px;
+    //   color: #333333;
+    //   .cont-text {
+    //     // font-size: 28px; /*px*/
+    //     padding: 20px 0 20px 20px;
+    //     .important{
+    //       padding: 1px 8px;
+    //       background: #AC1E1C;
+    //       border-radius: 5px;
+    //       font-family: PingFangSC-Medium;
+    //       font-size: 18px;
+    //       // vertical-align: middle;
+    //       margin-left: 20px;
+    //       color: #fff;
+    //       position: absolute;
+    //       top: 27px;
+    //     }
+    //   }
+    //   .firstName{
+    //     position: relative;
+    //   }
+    // }
+    // .report-pdf {
+    //     background-color: #F5F5F5;
+    //     font-family: PingFangSC-Regular;
+    //     font-size: 30px;
+    //     color: #333333;
+    //   .doc{
+    //     height: 80px;
+    //     line-height: 80px;
+    //     padding-left: 29px;
+    //     background: #fff;
+    //     margin-bottom: 7px;
+    //     .right{
+    //       right: 10px;
+    //       position: absolute;
+    //       font-size: 45px;
+    //       color: #999
+    //     }
+    //   }
+    // }
     .reservation{
       text-align: center;
       .mint-button.mint-button--primary.mint-button--normal{
