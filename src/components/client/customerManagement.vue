@@ -7,9 +7,9 @@
         <i class="iconfont">&#xe600;</i>
         <a :href="'tel:'+data.mobile"></a>
       </div>
-      <div class="client_info">
+      <group class="client_info">
         <div class="space"></div>
-        <cell :arrow-direction="showCont1 ? 'down' : 'up'"
+        <cell :arrow-direction="showCont1 ? 'up' : 'down'"
               :border-intent="false"
               title="客户信息"
               class="bl_box"
@@ -63,7 +63,7 @@
             <span class="cell_right">{{data.asset_amount ? data.asset_amount + '万' : ''}}</span>
           </div>
         </section>
-      </div>
+      </group>
       <group class="certify_info" v-if="data.realname_status !== '0'">
         <div class="space"></div>
         <cell :arrow-direction="showCont2 ? 'down' : 'up'"
@@ -183,7 +183,7 @@
       </group>
       <group class="remark">
         <div class="space"></div>
-        <cell :arrow-direction="showCont3 ? 'down' : 'up'"
+        <cell :arrow-direction="showCont3 ? 'up' : 'down'"
               :border-intent="false"
               title="备注"
               class="bl_box"
@@ -427,7 +427,7 @@
   @import '../../common/style/variable';
   .customerManagement {
     background: #fff;
-    font-family: PingFangSC-Regular;
+    font-family: @font-family-R;
     font-size: 30px;
     color: #4A4A4A;
     .cell_right {
@@ -437,7 +437,7 @@
       }
     }
     .remark {
-      font-family: PingFangSC-Regular;
+      font-family: @font-family-R;
       color: #9B9B9B;
       padding-bottom: 30px;
       background: #fff;

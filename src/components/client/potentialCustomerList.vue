@@ -32,7 +32,7 @@
         <i class="iconfont">&#xe600;</i>
         <a :href="'tel:'+data.mobile"></a>
       </div>
-      <div class="client_info">
+      <group class="client_info">
         <div class="space"></div>
         <cell :arrow-direction="showCont1 ? 'down' : 'up'"
               :border-intent="false"
@@ -89,7 +89,7 @@
             <span class="cell_right">{{data.create_time}}</span>
           </div>
         </section>
-      </div>
+      </group>
       <div v-if="data.mobile_validated === '0'">
         <group class="certify_info" v-if="data.realname_status !== '0'">
           <div class="space"></div>
@@ -210,7 +210,7 @@
         </group>
         <group class="remark">
           <div class="space"></div>
-          <cell :arrow-direction="showCont3 ? 'down' : 'up'"
+          <cell :arrow-direction="showCont3 ? 'up' : 'down'"
                 :border-intent="false"
                 title="备注"
                 class="bl_box"
@@ -500,7 +500,7 @@
   /*@import '~vux/src/styles/reset';*/
   .potential {
     background: #fff;
-    font-family: PingFangSC-Regular;
+    font-family: @font-family-R;
     font-size: 30px;
     color: #4A4A4A;
     .cell_right {
@@ -510,7 +510,7 @@
       }
     }
     .remark {
-      font-family: PingFangSC-Regular;
+      font-family: @font-family-R;
       color: #9B9B9B;
       padding-bottom: 30px;
       background: #fff;
@@ -532,14 +532,14 @@
     border-radius: 8px;
     width: 74.67%;
     padding-top: 34px;
-    font-family: PingFangSC-Regular;
+    font-family: @font-family-R;
     font-size: 26px;
     color: #4A4A4A;
     .pop_validate,
     .pop_mobile {
       padding: 0 30px;
       .pop_right {
-        font-family: PingFangSC-Medium;
+        font-family: @font-family-M;
       }
     }
     .pop_mobile {
