@@ -25,7 +25,8 @@
         <span class="ensure" @click="hideVerBox">确定</span>
       </div>
     </mt-popup>
-    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink">{{topTitle}}</x-header>
+    <x-header :left-options="{backText: '', preventGoBack:true}"
+              @on-click-back="toLink">{{topTitle}}</x-header>
     <div class="potential wrapper">
       <div class="fix_mobile">
         <i class="iconfont">&#xe600;</i>
@@ -82,6 +83,7 @@
               </span>
             </span>
           </div>
+          <div class="bb"></div>
           <div class="cell_box">
             <span class="cell_left">录入时间：</span>
             <span class="cell_right">{{data.create_time}}</span>
@@ -93,13 +95,46 @@
           <div class="space"></div>
           <cell :arrow-direction="showCont2 ? 'down' : 'up'"
                 :border-intent="false"
-                title="客户信息"
+                title="证件信息"
                 class="bl_box"
                 @click.native="showCont2 = !showCont2"
                 is-link>
             <i slot="icon" class="border_left"></i>
           </cell>
           <section v-if="!showCont2">
+
+            <div v-if="data.realname_status === '2'">
+              <div class="cell_box">
+                <span class="cell_left">证件类型：</span>
+                <span class="cell_right">{{data.id_type}}</span>
+              </div>
+              <div class="bb"></div>
+              <div class="cell_box">
+                <span class="cell_left">证件号码：</span>
+                <span class="cell_right">{{data.id_no}}</span>
+              </div>
+              <div class="bb"></div>
+              <div class="cell_box">
+                <span class="cell_left">证件有效起始时间：</span>
+                <span class="cell_right">{{data.id_start_date}}</span>
+              </div>
+              <div class="bb"></div>
+              <div class="cell_box">
+                <span class="cell_left">证件有效结束时间：</span>
+                <span class="cell_right">{{data.id_expiration}}</span>
+              </div>
+              <div class="bb"></div>
+              <div class="cell_box">
+                <span class="cell_left">出生日期：</span>
+                <span class="cell_right">{{data.birthday}}</span>
+              </div>
+              <div class="bb"></div>
+              <div class="cell_box">
+                <span class="cell_left">地址：</span>
+                <span class="cell_right">{{data.address}}</span>
+              </div>
+            </div>
+            <div class="space"></div>
             <div class="cell_box">
               <span class="cell_left">实名认证：</span>
               <span class="cell_right" @click="handlerPerfect">
@@ -119,14 +154,18 @@
             <div class="cell_box" @click="handlerCerty">
               <span class="cell_left">
                 投资者类型：
-                <i v-if="data.certification_status === '0'"
-                   class="no_certy">{{clickArrowObj.cerObj.type}} {{data.risk_level}}</i>
-                <i v-if="data.certification_status === '1'"
-                   class="wait_certy">{{clickArrowObj.cerObj.type}} {{data.risk_level}}</i>
-                <i v-if="data.certification_status === '2'"
-                   class="success_certy">{{clickArrowObj.cerObj.type}} {{data.risk_level}}</i>
-                <i v-if="data.certification_status === '3'"
-                   class="expire_certy">{{clickArrowObj.cerObj.type}} {{data.risk_level}}</i>
+                <i v-if="data.certification_status === '0'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
+                <i v-if="data.certification_status === '1'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
+                <i v-if="data.certification_status === '2'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
+                <i v-if="data.certification_status === '3'">
+                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+                </i>
               </span>
               <span class="cell_right">
                 <i v-if="data.certification_status === '0'"
@@ -143,8 +182,9 @@
             </div>
             <div class="bb"></div>
             <div class="cell_box" @click="handlerBank">
-              <div class="cell_left">银行卡信息：</div>
+              <div class="cell_left">银行卡信息</div>
               <div class="cell_right">
+                <span>查看</span>
                 <i class="iconfont right_icon">&#xe8d5;</i>
               </div>
             </div>
@@ -170,90 +210,24 @@
         </group>
         <group class="remark">
           <div class="space"></div>
-          <div class="add_tit">
-            <span class="border_left"></span>
-            <span class="text">备注</span>
-          </div>
+          <cell :arrow-direction="showCont3 ? 'down' : 'up'"
+                :border-intent="false"
+                title="备注"
+                class="bl_box"
+                @click.native="showCont3 = !showCont3"
+                is-link>
+            <i slot="icon" class="border_left"></i>
+          </cell>
+          <section v-if="showCont3">
+            <remark-list :list="remarkList"
+                         @handlerExpand="handlerExpand"
+                         @handlerFlag="handlerFlag"></remark-list>
+          </section>
           <div class="add_remark">输入备注信息...</div>
+          <!--<input class="add_remark" placeholder="输入备注信息..." v-model="remarkInfo"/>-->
+          <!--<button @click="submitAddNew">添加备注</button>-->
         </group>
       </div>
-      <!--<div v-if="data.mobile_validated === '0'">-->
-        <!--<div class="space"></div>-->
-        <!--<div class="product">-->
-          <!--<group>-->
-          <!--<cell style="color:#333"-->
-                <!--:is-link="!clickArrowObj.realnameObj.disabled"-->
-                <!--:link="{name: 'PerfectInfos'}"-->
-                <!--title="实名认证："-->
-                <!--:value="clickArrowObj.realnameObj.stat"-->
-                <!--:disabled="clickArrowObj.realnameObj.disabled">-->
-          <!--</cell>-->
-          <!--<div class="space1" v-if="data.realname_status === '2'"></div>-->
-          <!--<group v-if="data.realname_status === '2'">-->
-            <!--<cell style="color:#333"-->
-                  <!--:is-link="!clickArrowObj.cerObj.disabled"-->
-                  <!--:link="{name: 'Certified',params: {id: client_id}}"-->
-                  <!--:title="'投资者类型：' + clickArrowObj.cerObj.type + data.risk_level"-->
-                  <!--:value="clickArrowObj.cerObj.stat"-->
-                  <!--:disabled="clickArrowObj.cerObj.disabled"-->
-            <!--&gt;-->
-            <!--</cell>-->
-            <!--<div class="space1"></div>-->
-            <!--<cell is-link-->
-                  <!--:link="{name: 'BankList', params: {addCard: '0'}}"-->
-                  <!--title="银行卡信息："-->
-            <!--&gt;</cell>-->
-          <!--</group>-->
-        <!--<div class="space"></div>-->
-          <!--</group>-->
-        <!--</div>-->
-        <!--<div class="remark">-->
-          <!--<group>-->
-            <!--<cell-box>备注</cell-box>-->
-          <!--</group>-->
-          <!--<ul :class="{'no_padding' : remarkList.length === 0}">-->
-            <!--<li v-for="(item, index) in remarkList" :key="index">-->
-              <!--<div class="iText text-overflow-one">{{item.remark}}</div>-->
-              <!--<span class="iTime">{{item.create_time}}</span>-->
-              <!--<router-link class="view fr" :to="{name: 'WriteNotes', params: {remark: item.remark}}">-->
-                <!--<i class="iconfont" style="font-size:36px;vertical-align: middle;">&#xe624;</i>-->
-                <!--<span class="font-size:26px;color:#2672ba;vertical-align: middle;">查看</span>-->
-              <!--</router-link>-->
-            <!--</li>-->
-          <!--</ul>-->
-        <!--</div>-->
-        <!--<div class="bottom-remark">-->
-          <!--<div class="add clearfix" @click="addNew">新增备注</div>-->
-        <!--</div>-->
-      <!--</div>-->
-      <!--<x-dialog v-model="showHideOnBlur" class="add_remark_x" hide-on-blur>-->
-        <!--<textarea ref="textarea" class="add_remark_t" v-model="remarkInfo"></textarea>-->
-        <!--<button @click="submitAddNew" class="add_remark_btn">新增备注</button>-->
-      <!--</x-dialog>-->
-      <!--<x-dialog v-model="validatePop" class="dialog-demo msg_dialog">-->
-        <!--<div class="msg_title" style="text-align:center">提示</div>-->
-        <!--<span class="msg_ipt" style="width:100%;display: block;text-align:center">{{validateCont}}</span>-->
-        <!--<x-button type="primary" @click.native="hideValPop">确 定</x-button>-->
-      <!--</x-dialog>-->
-      <!--<x-dialog v-model="verificate.isShow"-->
-                <!--:hide-on-blur="true"-->
-                <!--class="dialog-demo msg_dialog">-->
-        <!--<div class="msg_title">-->
-          <!--<span>手机号：</span>-->
-          <!--<span>{{data.mobile}}</span>-->
-        <!--</div>-->
-        <!--<div class="msg_cont">-->
-          <!--<span>邀请码：</span>-->
-          <!--<input type="text" class="msg_ipt" v-model="verificate.code">-->
-          <!--<span class="verificate_code"-->
-                <!--v-if="!verificate.isTimeout"-->
-                <!--@click="sendVerCode">发送邀请码</span>-->
-          <!--<span class="verificate_code"-->
-                <!--v-else>{{verificate.num}}s</span>-->
-        <!--</div>-->
-        <!--<div class="alert_msg" v-if="alertCont">{{alertCont}}</div>-->
-        <!--<x-button type="primary" @click.native="hideVerBox">确 定</x-button>-->
-      <!--</x-dialog>-->
     </div>
   </div>
 </template>
@@ -278,16 +252,16 @@
     confirmVercode,
     sendVerCode
   } from '@/service/api/customers'
-
   import {setStore, removeStore} from '@/config/mUtils'
   import {tfCtypeToText, tfCerIdToText, tfIdtype} from '@/common/js/filter'
-
+  import RemarkList from '@/base/remarkList/index'
   export default {
     name: 'PotentialCustomerList',
     directives: {
       TransferDom
     },
     components: {
+      RemarkList,
       XHeader,
       Group,
       Cell,
@@ -339,7 +313,11 @@
       checkCustomerRemarks(this.client_id).then(res => {
         if (res.status === 200) {
           if (res.data.length > 0) {
-            this.remarkList = res.data
+            this.remarkList = JSON.parse(JSON.stringify(res.data))
+            this.remarkList.forEach((item, index) => {
+              item.flag = false
+              item.expand = false
+            })
           }
         }
       })
@@ -348,7 +326,6 @@
         setStore('selfInfos', selfInfos)
         this.data = Object.assign({}, res.data)
         this.data.id_type = tfIdtype(this.data.id_type)
-        console.log(this.data)
         this.topTitle = this.data.mobile_validated === '0' ? '潜客信息' : '手机未验证'
         this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
         this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
@@ -359,13 +336,18 @@
         }
         this.clickArrowObj.realnameObj.stat = tfCerIdToText(this.data.realname_status).flag
         this.clickArrowObj.realnameObj.disabled = tfCerIdToText(this.data.realname_status).disabled
-        console.log(this.clickArrowObj)
       })
       window.onpopstate = () => {
         this.toLink()
       }
     },
     methods: {
+      handlerFlag (data) {
+        this.remarkList[data.index].flag = data.flag
+      },
+      handlerExpand (data) {
+        this.remarkList[data.index].expand = data.expand
+      },
       handlerPerfect () {
         if (!this.clickArrowObj.realnameObj.disabled) {
           this.$router.push({name: 'PerfectInfos'})
@@ -531,6 +513,7 @@
       font-family: PingFangSC-Regular;
       color: #9B9B9B;
       padding-bottom: 30px;
+      background: #fff;
       .add_remark {
         width: 89.33%;
         margin: 0 auto;
@@ -613,267 +596,4 @@
       }
     }
   }
-  /*.v-transfer-dom .vux-x-dialog .weui-dialog {*/
-    /*width: 100%;*/
-    /*bottom: 0;*/
-    /*margin-bottom: 0;*/
-    /*height: auto;*/
-  /*}*/
-
-  /*.potential {*/
-    /*.no_bbottom .weui-cells::after {*/
-      /*content: none;*/
-    /*}*/
-    /*.weui-cells.vux-no-group-title{*/
-      /*.vux-cell-box.weui-cell{*/
-        /*border-bottom: 1px solid #ccc;*/
-        /*label{*/
-          /*font-family: PingFangSC-Medium;*/
-          /*font-size: 30px;*/
-          /*color: #333333;*/
-        /*}*/
-        /*.fr{*/
-          /*font-size: 28px;*/
-          /*color: #666;*/
-        /*}*/
-      /*}*/
-    /*}*/
-    /*.ver_box{*/
-      /*border-bottom: 1px solid #ccc;*/
-      /*.mobile_box.limit_width{*/
-        /*.mobile_title{*/
-          /*font-family: PingFangSC-Medium;*/
-          /*font-size: 30px;*/
-          /*color: #333333;*/
-        /*}*/
-        /*.mobile_number.limit_width{*/
-          /*font-size: 28px;*/
-          /*color: #666;*/
-        /*}*/
-      /*}*/
-      /*.verificate{*/
-        /*height: 42px;*/
-        /*line-height: 42px;*/
-        /*background: #2672BA;*/
-        /*color: #fff;*/
-        /*font-size: 22px;*/
-        /*width: 100px;*/
-        /*text-align: center;*/
-        /*border-radius: 10px;*/
-      /*}*/
-    /*}*/
-    /*.id_right {*/
-      /*text-align: right;*/
-      /*position: absolute;*/
-      /*right: 27px;*/
-      /*span {*/
-        /*position: static;*/
-        /*display: inline-block;*/
-        /*right: 0;*/
-        /*top: 0;*/
-        /*transform: translateY(0);*/
-      /*}*/
-    /*}*/
-    /*.call-btn{*/
-      /*height: 132px;*/
-      /*background: #fff;*/
-      /*text-align: center;*/
-      /*line-height: 132px;*/
-      /*.callout {*/
-        /*display: inline-block;*/
-        /*width: 94.7%;*/
-        /*height: 72px;*/
-        /*text-align: center;*/
-        /*line-height: 72px;*/
-        /*background: #2672BA;*/
-        /*border-radius: 10px;*/
-        /*font-size: 28px;*/
-        /*color: #FFFFFF;*/
-        /*&:link,*/
-        /*&:visited,*/
-        /*&:hover,*/
-        /*&:active {*/
-          /*text-decoration: none;*/
-        /*}*/
-      /*}*/
-    /*}*/
-    /*.report {*/
-      /*.vux-tap-active {*/
-        /*padding-left: 45px;*/
-        /*padding-top: 20px;*/
-        /*padding-bottom: 20px;*/
-      /*}*/
-    /*}*/
-    /*.product {*/
-      /*.cell-form {*/
-        /*padding: 40px 34px 34px 40px;*/
-        /*font-size: 22px; !*px*!*/
-        /*border-bottom: 1px solid #eee; !*no*!*/
-        /*.cell-form-top {*/
-          /*margin-bottom: 16px;*/
-          /*label {*/
-            /*font-size: 28px; !*px*!*/
-          /*}*/
-          /*.grade {*/
-            /*background-color: #F76E61;*/
-            /*color: #fff;*/
-            /*padding: 6px 15px;*/
-          /*}*/
-        /*}*/
-        /*.cell-form-bottom {*/
-          /*font-size: 24px; !*px*!*/
-          /*.text-red {*/
-            /*color: #FF6A6A;*/
-          /*}*/
-        /*}*/
-      /*}*/
-      /*.weui-cells.vux-no-group-title{*/
-        /*.vux-cell-box.weui-cell{*/
-          /*border: none;*/
-        /*}*/
-      /*}*/
-      /*.weui-cells:before{*/
-        /*border: none;*/
-      /*}*/
-    /*}*/
-    /*.risk-evaluation,*/
-    /*.asset-allocation {*/
-      /*.weui-cells .weui-cell {*/
-        /*height: 106px;*/
-        /*box-sizing: border-box;*/
-      /*}*/
-    /*}*/
-    /*.risk-evaluation i {*/
-      /*font-size: 40px; !*px*!*/
-    /*}*/
-    /*.asset-allocation i {*/
-      /*font-size: 48px; !*px*!*/
-      /*margin-right: 12px;*/
-      /*margin-left: -8px;*/
-    /*}*/
-    /*.remark {*/
-      /*padding-bottom: 120px;*/
-      /*background-color: #fff;*/
-      /*.vux-cell-box.weui-cell{*/
-        /*padding: 0;*/
-        /*padding-left: 20px;*/
-        /*font-family: PingFangSC-Medium;*/
-        /*font-size: 30px;*/
-        /*color: #333333;*/
-        /*border-bottom: 1px solid #ccc;*/
-      /*}*/
-      /*.weui-cells .weui-cell {*/
-        /*border-bottom: 1px solid #979797;*/
-      /*}*/
-      /*.weui-cells .weui-cell i {*/
-        /*font-size: 32px; !*px*!*/
-      /*}*/
-      /*.no_padding {*/
-        /*padding-bottom: 0;*/
-      /*}*/
-      /*ul {*/
-        /*padding-bottom: 20px;*/
-        /*max-height: 440px;*/
-        /*overflow-y: scroll;*/
-        /*li {*/
-          /*height: 110px;*/
-          /*padding: 0 120px 0 68px;*/
-          /*font-size: 26px;*/
-          /*color: #666;*/
-          /*-webkit-box-sizing: border-box;*/
-          /*-moz-box-sizing: border-box;*/
-          /*box-sizing: border-box;*/
-          /*.iText {*/
-            /*padding-top: 20px;*/
-            /*margin-bottom: 10px;*/
-          /*}*/
-          /*.view {*/
-            /*color: #2672BA;*/
-            /*line-height: 30px;*/
-          /*}*/
-          /*.fr i {*/
-            /*font-size: 36px;*/
-            /*padding-right: 15px;*/
-            /*vertical-align: top;*/
-          /*}*/
-        /*}*/
-      /*}*/
-    /*}*/
-    /*.vux-x-dialog {*/
-      /*.img-box {*/
-        /*min-height: 200px;*/
-        /*padding: 30px 14px;*/
-        /*box-sizing: border-box;*/
-        /*textarea {*/
-          /*display: block;*/
-          /*width: 100%;*/
-          /*height: 100%;*/
-          /*outline: none;*/
-          /*border: 1px solid #ccc; !*no*!*/
-          /*border-radius: 10px;*/
-          /*padding: 10px;*/
-          /*box-sizing: border-box;*/
-        /*}*/
-      /*}*/
-    /*}*/
-
-    /*.ver_box {*/
-      /*height: 82px;*/
-      /*line-height: 82px;*/
-      /*border-top: 1px solid #D9D9D9;*/
-      /*padding: 0 20px;*/
-      /*-webkit-box-sizing: border-box;*/
-      /*-moz-box-sizing: border-box;*/
-      /*box-sizing: border-box;*/
-      /*position: relative;*/
-      /*.mobile_box {*/
-        /*span {*/
-          /*display: inline-block;*/
-          /*position: static;*/
-          /*right: 0;*/
-          /*top: 0;*/
-          /*-webkit-transform: translateY(0);*/
-          /*transform: translateY(0);*/
-        /*}*/
-        /*span.mobile_title {*/
-          /*width: 170px;*/
-          /*color: rgb(51, 51, 51);*/
-          /*font-family: PingFangSC-Medium;*/
-          /*font-size: 30px;*/
-        /*}*/
-        /*span.mobile_number {*/
-          /*width: calc(100% - 180px);*/
-          /*text-align: right;*/
-          /*color: #666;*/
-          /*font-size: 28px;*/
-        /*}*/
-      /*}*/
-      /*.mobile_box.limit_width {*/
-        /*display: inline-block;*/
-        /*width: 78.1%;*/
-      /*}*/
-    /*}*/
-  /*}*/
-
-  /*.weui-cells {*/
-    /*.weui-cell {*/
-      /*height: 85px;*/
-      /*line-height: 85px;*/
-      /*box-sizing: border-box;*/
-      /*padding: 0 40px;*/
-    /*}*/
-  /*}*/
-  /*.verificate_code {*/
-    /*display: inline-block;*/
-    /*width: 26.3%;*/
-    /*height: 40px;*/
-    /*line-height: 40px;*/
-    /*background: #2672ba;*/
-    /*color: #fff;*/
-    /*font-size: 22px;*/
-    /*text-align: center;*/
-    /*border-radius: 10px;*/
-    /*vertical-align: text-top;*/
-    /*margin-left: 10px;*/
-  /*}*/
 </style>
