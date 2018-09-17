@@ -645,24 +645,6 @@
           }
         }
       }
-      .submit_form {
-        background-color: #f5f5f5;
-        text-align: center;
-        /*padding: 30px 0;*/
-        margin-top: 181px;
-        .submit {
-          height: 82px;
-          line-height: 82px;
-          display: inline-block;
-          /*width: 710px;*/
-          width: 94.7%;
-          background-color: #2672BA;
-          text-align: center;
-          border-radius: 10px;
-          color: #fff;
-          font-size: 28px;
-        }
-      }
     }
   }
 </style>

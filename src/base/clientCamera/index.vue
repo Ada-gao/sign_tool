@@ -260,8 +260,8 @@
   .upload_cont {
     text-align: center;
     width: 270px;
-    height: 180px;
-    line-height: 180px;
+    /*height: 180px;*/
+    /*line-height: 180px;*/
     background-color: #ddd;
     border-radius: 8px;
     position: relative;
@@ -297,19 +297,19 @@
   .upload_small {
     width: 100%;
     background-color: #fff;
-    height: 150px;
+    /*height: 150px;*/
     text-align: left;
     padding-left: 40px;
     box-sizing: border-box;
     .ul {
       display: inline-block;
       height: 100%;
-      width: 150px;
+      /*width: 150px;*/
       li {
-        /*width: 132px;*/
-        /*height: 120px;*/
-        width: 100%;
-        height: 100%;
+        width: 150px;
+        height: 150px;
+        /*width: 100%;*/
+        /*height: 100%;*/
         position: relative;
         display: inline-block;
         img {
