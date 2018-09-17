@@ -287,7 +287,7 @@
         stat: '',
         remarkList: [],
         showHideOnBlur: false,
-        transformDialog: true,
+        transformDialog: false,
         remarkInfo: null,
         remarkInput: null,
         clickArrowObj: {
