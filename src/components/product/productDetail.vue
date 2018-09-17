@@ -165,14 +165,16 @@
           <div class="doc" @click="toPdfReport(id)">交易所需材料<span class="iconfont right">&#xe8d5;</span></div>
           <div class="doc" @click="toPptReport(id)">产品说明材料<span class="iconfont right">&#xe8d5;</span></div>
           <div class="doc" @click="toUploadCustomer(id)">上传客户材料<span class="iconfont right">&#xe8d5;</span></div>
-          <div class="doc" v-if="item.after_buy_file === '1'" @click="toProductReport(id)">投后报告<span class="iconfont right">&#xe731;</span></div>
+          <div class="doc" v-if="item.after_buy_file === '1'" @click="toProductReport(id)">投后报告<span class="iconfont right">&#xe8d5;</span></div>
         </div>
+			  <div class="space"></div>
         <div class="reservation" v-if="showBtn">
-          <mt-button type="primary" @click="toAppointment">预约</mt-button>
+          <mt-button @click="toAppointment">预约</mt-button>
         </div>
-        <div class="reservation reservationDisabled" v-if="item.product_status == 2 && item.is_pause === '1'">
-          <mt-button type="primary">预约</mt-button>
+        <div class="reservation" v-if="item.product_status == 2 && item.is_pause === '1'">
+          <mt-button disabled>预约</mt-button>
         </div>
+        <div class="space32"></div>
       <!-- </div> -->
     </div>
   </div>
@@ -506,6 +508,14 @@ export default {
         }
       }
     }
+    .reservation{
+      .mint-button.mint-button--default{
+        width: 670px;
+      }
+    }
+    .space32{
+      height: 32px;
+    }
     // .box{
     //   // display: -webkit-box;
     //   // overflow-x: auto;
@@ -579,29 +589,29 @@ export default {
     //     }
     //   }
     // }
-    .reservation{
-      text-align: center;
-      .mint-button.mint-button--primary.mint-button--normal{
-        /*width: 710px;*/
-        width: 94.67%;
-        height: 72px;
-        margin-top: 33px;
-        margin-bottom: 40px;
-        padding: 0;
-        background: #2672BA;
-        border-radius: 8px;
-        label{
-          font-family: PingFangSC-Regular;
-          font-size: 28px;
-          color: #FFFFFF;
-        }
-      }
-    }
-    .reservationDisabled{
-      .mint-button.mint-button--primary.mint-button--normal{
-        background: #ccc;
-      }
-    }
+    // .reservation{
+    //   text-align: center;
+    //   .mint-button.mint-button--primary.mint-button--normal{
+    //     /*width: 710px;*/
+    //     width: 94.67%;
+    //     height: 72px;
+    //     margin-top: 33px;
+    //     margin-bottom: 40px;
+    //     padding: 0;
+    //     background: #2672BA;
+    //     border-radius: 8px;
+    //     label{
+    //       font-family: PingFangSC-Regular;
+    //       font-size: 28px;
+    //       color: #FFFFFF;
+    //     }
+    //   }
+    // }
+    // .reservationDisabled{
+    //   .mint-button.mint-button--primary.mint-button--normal{
+    //     background: #ccc;
+    //   }
+    // }
     .btn-24 {
       font-size: 24px; /*px*/
       color: #ccc;

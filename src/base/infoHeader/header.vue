@@ -2,7 +2,7 @@
 	<x-header :left-options="{showBack: false}">{{title}}
 		<span slot="overwrite-left" @click="infoList" class="warn">
 			<i class="iconfont mes">&#xe607;</i>
-			<i class="textCenter num" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</i>
+			<i class="text-center num" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</i>
 		</span>
 		<i slot="right" class="iconfont mes" @click="barcodescanner">&#xe622;</i>
 	</x-header>
