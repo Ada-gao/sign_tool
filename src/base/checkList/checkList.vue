@@ -78,7 +78,7 @@ export default {
 </script>
 <style lang="less" scoped>
   .my_checklist{
-      margin-top: 10px;
+      // margin-top: 10px;
     .checkbox{
       display: flex;
       justify-content: space-between;

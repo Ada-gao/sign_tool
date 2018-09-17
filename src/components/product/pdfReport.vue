@@ -2,10 +2,11 @@
   <div class="pdfPage">
     <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
     <div class="wrapper">
+      <div class="space"></div>
       <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true" v-if="this.$route.params.mark !== 3">
         <template slot-scope="props">
             <div @click="get(props.item)">
-						<i class="eye iconfont">&#xe6ce;</i>
+						<i class="eye iconfont">&#xe628;</i>
             </div>
         </template>
       </check-list>
@@ -215,13 +216,25 @@ export default {
 }
 </script>
 <style lang="less">
+@import "../../common/style/variable.less";
 .pdfPage{
   height: 100%;
-  background: #F5F5F5;
+  background: @back-color-white;
+  .vux-header{
+    background: @header-bg;
+    .vux-header-left{
+      .left-arrow:before{
+        border-color: @back-color-white;
+      }
+    }
+    .vux-header-title{
+      color: @back-color-white;
+    }
+  }
   .wrapper{
     background: #F5F5F5;
-    padding-bottom: 8px;
-    margin-bottom: 82px;
+    // padding-bottom: 8px;
+    margin-bottom: 98px;
 		.eye{
 			font-size: 40px;
 			color: #2A7DC1;
