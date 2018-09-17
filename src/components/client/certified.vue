@@ -2,36 +2,47 @@
   <div class="certified">
     <x-header :left-options="{backText: ''}"
               left-options.preventGoBack="true"
-              on-click-back="toLink(id)">客户认证
+              on-click-back="toLink(id)">投资者身份认证
     </x-header>
     <div class="certified_cont wrapper">
+      <div class="space"></div>
       <div class="radio_box">
         <!--<div class="type">投资者类型：</div>-->
+        <div class="bl_box"><i class="border_left"></i>投资者类型：</div>
         <mt-radio
           class="radio_item"
-          title="投资者类型："
+          title=""
           v-model="radio"
           @change="changeRadio"
           :options="['普通投资者', '专业投资者']">
         </mt-radio>
       </div>
       <div class="space"></div>
-      <div class="email_box" @click="showPopup">附件发送给理财师邮箱<i class="iconfont">&#xe731;</i></div>
+      <div class="cell_box cell_box1"
+           @click="showPopup">
+        <span class="cell_left">附件发送到理财师邮箱：</span>
+        <span class="cell_right">
+              <span>发送</span>
+              <i class="iconfont right_icon">&#xe8d5;</i>
+            </span>
+      </div>
       <div class="space"></div>
       <div class="upload_file">
         <div class="upload">
-          <div class="upload_tit">上传认证资料</div>
+          <!--<div class="upload_tit">上传认证资料</div>-->
+          <div class="bl_box"><i class="border_left"></i>上传认证资料</div>
           <div class="time_box"
                v-if="showSelect"
                @click="showCode">
-              <span class="date_tit">请选择认证原因：</span>
+              <span class="date_tit">认证原因</span>
             <div class="date_box">
               <div class="date_cont">
                 <span class="date_time">{{reason}}</span>
-                <i class="iconfont rotate_i">&#xe731;</i>
+                <i class="iconfont right_icon">&#xe8d5;</i>
               </div>
             </div>
           </div>
+          <div class="bb"></div>
           <mt-popup v-model="showCerCode"
                     position="bottom"
                     class="cercode_box"
@@ -54,9 +65,10 @@
                 :cerId="uploadData.clientCertificationId"
                 @hidePopup="hideCamera"></camera>
       </div>
-      <div class="submit_form">
-        <button class="submit" @click="submitInfos">提交</button>
-      </div>
+      <!--<div class="submit_form">-->
+        <!--<button class="submit" @click="submitInfos">提交</button>-->
+      <!--</div>-->
+      <button class="next" @click="submitInfos">提 交</button>
     </div>
     <div class="popup_box">
 
@@ -135,7 +147,7 @@
         showSelect: false, // 是否显示'认证原因select框'
         flag: false, // 是否已经请求过专业投资者认证原因列表
         apply_reason: '',
-        reason: '',
+        reason: '请选择认证原因',
         apply_reason_id: null,
         reason_id: null,
         itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
@@ -340,6 +352,7 @@
 </script>
 <style lang="less">
   @import url("//unpkg.com/element-ui@2.3.9/lib/theme-chalk/index.css");
+  @import '../../common/style/variable';
 
   .popup_box {
     .confirm_box {
@@ -358,7 +371,7 @@
         color: #C61D1A;
       }
       .confirm_cont {
-        font-family: PingFangSC-Regular;
+        font-family: @font-family-R;
         font-size: 30px;
         color: #333333;
         margin: 0 auto;
@@ -378,7 +391,7 @@
         line-height: 80px;
         color: #f0f0f0;
         font-size: 36px;
-        font-family: PingFangSC-Regular;
+        font-family: @font-family-R;
       }
     }
   }
@@ -393,7 +406,6 @@
     height: 345px;
     text-align: center;
     -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
     .title {
       padding: 48px 0 31px;
@@ -443,6 +455,32 @@
   .certified {
     height: 100%;
     background-color: #f5f5f5;
+    .cell_box1 {
+      background: #fff;
+      font-size: 30px;
+      font-family: @font-family-R;
+      .cell_left {
+        color: #4a4a4a;
+      }
+      .cell_right {
+        span {
+          font-size: 30px;
+          color: #3377FF;
+        }
+      }
+    }
+    .next {
+      display: block;
+      width: 89.33%;
+      height: 88px;
+      line-height: 88px;
+      font-size: 36px;
+      color: #fff;
+      /*border-radius: 10px;*/
+      background: @back-color-linear;
+      margin: 0 auto;
+      margin-top: 40px;
+    }
     .vux-header .vux-header-left .left-arrow {
       width: 24px;
       height: 37px;
@@ -454,7 +492,7 @@
     .certified_cont {
       /*padding-top: 108px;*/
       .radio_box {
-        padding: 0 20px;
+        /*padding: 0 20px;*/
         background-color: #fff;
         height: 165px;
         .radio_item.mint-radiolist .mint-cell {
@@ -462,7 +500,8 @@
           position: absolute;
           .mint-radio-label {
             font-size: 28px;
-            color: #666;
+            color: #4a4a4a;
+            font-family: @font-family-M;
           }
         }
         .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
@@ -476,17 +515,12 @@
         }
         .radio_item {
           .mint-radiolist-title {
-            display: block;
-            font-size: 30px;
-            color: #333;
-            line-height: 42px;
-            padding: 18px 0 10px;
-            margin: 0;
+            display: none;
           }
           .mint-radio-core {
             width: 28px;
             height: 28px;
-            border-radius: 8px;
+            border-radius: 100%;
             border-color: #979797;
           }
           .mint-radio-input:checked + .mint-radio-core {
@@ -504,6 +538,8 @@
         .mint-cell-wrapper {
           background-image: none;
           -webkit-background-image: none;
+          line-height: 0;
+          height: auto;
         }
       }
       .email_box {
@@ -524,9 +560,9 @@
         background-color: #fff;
         padding-bottom: 47px;
         .upload {
-          font-size: 24px;
+          font-size: 30px;
           color: #666;
-          padding: 0 20px;
+          /*padding: 0 40px;*/
           margin-bottom: 30px;
           /*text-align: center;*/
           /*padding-top: 39px;*/
@@ -548,7 +584,6 @@
               .toolbar {
                 width: 100%;
                 -webkit-box-sizing: border-box;
-                -moz-box-sizing: border-box;
                 box-sizing: border-box;
                 height: 56px;
                 line-height: 56px;
@@ -574,8 +609,7 @@
             position: relative;
             height: 82px;
             line-height: 82px;
-            padding: 0 20px;
-            padding-left: 0;
+            padding: 0 40px;
             .date_box {
               width: 68.5%;
               position: absolute;
@@ -585,9 +619,9 @@
               .date_cont {
                 position: relative;
                 height: 40px;
-                border: 1px solid #CCCCCC;
-                border-radius: 8px;
-                background-color: #f3f3f3;
+                /*border: 1px solid #CCCCCC;*/
+                /*border-radius: 8px;*/
+                /*background-color: #f3f3f3;*/
               }
               span.date_time {
                 height: 40px;
@@ -598,14 +632,14 @@
                 text-overflow: ellipsis;
                 display: inline-block;
                 white-space: nowrap;
+                text-align: right;
+                font-size: 30px;
+                color: #DCDCDC;
               }
               i {
                 position: absolute;
-                right: 0;
-                top: -18px;
-                margin-right: 0;
-                font-size: 55px !important;
-                color: #C8C8CD;
+                right: 40px;
+                top: -20px;
               }
             }
           }

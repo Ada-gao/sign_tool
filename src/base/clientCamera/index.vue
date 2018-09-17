@@ -22,8 +22,9 @@
     </div>
     <div class="upload_cont" :class="{'upload_small': fromBank === 2}">
 
-      <div v-if="fromBank === 2" style="display: inline-block;height: 120px">
-        <ul class="ul">
+      <!--<div v-if="fromBank === 2" style="display: inline-block;height: 120px">-->
+      <div v-if="fromBank === 2" class="ul_box">
+        <ul class="ul" v-if="fileArr.length > 0">
           <li v-for="(item, index) in fileArr"
               :key="index"
               @click="showBigImg(index)"
@@ -35,7 +36,10 @@
           </li>
         </ul>
         <div class="addsmall_box" @click="selectcamera()">
-          <span class="iconfont icon_bg">+</span>
+          <span class="iconfont icon_bg">
+            <i>+</i>
+            <i>上传认证材料</i>
+          </span>
           <mt-spinner class="camera_spinner"
                       color="#aaa"
                       v-show="spinnerShow"
@@ -262,6 +266,12 @@
     border-radius: 8px;
     position: relative;
     margin: 0 auto;
+    .ul_box {
+      display: inline-block;
+      /*width: 150px;*/
+      height: 150px;
+      /*height: 120px;*/
+    }
     .icon_bg {
       font-size: 115px;
       color: #fff;
@@ -287,16 +297,19 @@
   .upload_small {
     width: 100%;
     background-color: #fff;
-    height: 120px;
+    height: 150px;
     text-align: left;
-    padding-left: 20px;
+    padding-left: 40px;
     box-sizing: border-box;
     .ul {
       display: inline-block;
-      height: 120px;
+      height: 100%;
+      width: 150px;
       li {
-        width: 132px;
-        height: 120px;
+        /*width: 132px;*/
+        /*height: 120px;*/
+        width: 100%;
+        height: 100%;
         position: relative;
         display: inline-block;
         img {
@@ -331,20 +344,30 @@
     .addsmall_box {
       display: inline-block;
       position: relative;
-      width: 132px;
-      height: 120px;
-      background-color: #ddd;
-      border-radius: 8px;
+      width: 150px;
+      height: 100%;
       text-align: center;
+      border: 1px dashed #e1e1e1;/*no*/
       .icon_bg {
-        font-size: 60px;
         display: inline-block;
         position: absolute;
         width: 100%;
         height: 100%;
-        left: 0;
-        top: 0;
-        line-height: 110px;
+        left: 50%;
+        top: 36%;
+        transform: translate(-50%, -50%);
+        i {
+          display: block;
+        }
+        i:nth-of-type(1) {
+          color: #e1e1e1;
+          font-size: 90px;
+        }
+        i:nth-of-type(2) {
+          font-size: 20px;
+          color: #dcdcdc;
+          line-height: 0px;
+        }
       }
       .spinner {
         position: absolute;

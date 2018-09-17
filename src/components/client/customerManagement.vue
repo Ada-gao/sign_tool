@@ -7,9 +7,9 @@
         <i class="iconfont">&#xe600;</i>
         <a :href="'tel:'+data.mobile"></a>
       </div>
-      <div class="client_info">
+      <group class="client_info">
         <div class="space"></div>
-        <cell :arrow-direction="showCont1 ? 'down' : 'up'"
+        <cell :arrow-direction="showCont1 ? 'up' : 'down'"
               :border-intent="false"
               title="客户信息"
               class="bl_box"
@@ -63,7 +63,7 @@
             <span class="cell_right">{{data.asset_amount ? data.asset_amount + '万' : ''}}</span>
           </div>
         </section>
-      </div>
+      </group>
       <group class="certify_info" v-if="data.realname_status !== '0'">
         <div class="space"></div>
         <cell :arrow-direction="showCont2 ? 'down' : 'up'"
@@ -161,6 +161,14 @@
               <i class="iconfont right_icon">&#xe8d5;</i>
             </div>
           </div>
+          <div class="bb"></div>
+          <div class="cell_box" @click="handlerPd">
+            <div class="cell_left">客户已购买产品</div>
+            <div class="cell_right">
+              <span>查看</span>
+              <i class="iconfont right_icon">&#xe8d5;</i>
+            </div>
+          </div>
         </section>
       </group>
       <group class="certify_info" v-else>
@@ -183,7 +191,7 @@
       </group>
       <group class="remark">
         <div class="space"></div>
-        <cell :arrow-direction="showCont3 ? 'down' : 'up'"
+        <cell :arrow-direction="showCont3 ? 'up' : 'down'"
               :border-intent="false"
               title="备注"
               class="bl_box"
@@ -329,6 +337,9 @@
       handlerBank () {
         this.$router.push({name: 'BankList', params: {addCard: '1', id: this.data.client_id}})
       },
+      handlerPd () {
+        this.$router.push({name: 'PurchasedProducts', params: {id: this.clientId}})
+      },
       getList (id) {
         checkCusomersDetail(id).then(res => {
           this.data = Object.assign({}, res.data)
@@ -427,7 +438,7 @@
   @import '../../common/style/variable';
   .customerManagement {
     background: #fff;
-    font-family: PingFangSC-Regular;
+    font-family: @font-family-R;
     font-size: 30px;
     color: #4A4A4A;
     .cell_right {
@@ -437,7 +448,7 @@
       }
     }
     .remark {
-      font-family: PingFangSC-Regular;
+      font-family: @font-family-R;
       color: #9B9B9B;
       padding-bottom: 30px;
       background: #fff;
