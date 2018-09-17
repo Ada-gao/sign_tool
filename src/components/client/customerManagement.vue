@@ -161,6 +161,14 @@
               <i class="iconfont right_icon">&#xe8d5;</i>
             </div>
           </div>
+          <div class="bb"></div>
+          <div class="cell_box" @click="handlerPd">
+            <div class="cell_left">客户已购买产品</div>
+            <div class="cell_right">
+              <span>查看</span>
+              <i class="iconfont right_icon">&#xe8d5;</i>
+            </div>
+          </div>
         </section>
       </group>
       <group class="certify_info" v-else>
@@ -328,6 +336,9 @@
       },
       handlerBank () {
         this.$router.push({name: 'BankList', params: {addCard: '1', id: this.data.client_id}})
+      },
+      handlerPd () {
+        this.$router.push({name: 'PurchasedProducts', params: {id: this.clientId}})
       },
       getList (id) {
         checkCusomersDetail(id).then(res => {
