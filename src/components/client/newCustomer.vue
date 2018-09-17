@@ -240,7 +240,11 @@
               this.verificate.code = ''
               addCusomer(params).then(res => {
                 if (res.status === 200) {
-                  this.$router.push({name: 'CustomerList', params: {mark: 1}})
+                  if (res.data.mobile_validated === '0') {
+                    this.$router.push({name: 'CustomerList', params: {mark: 1}})
+                  } else if (res.data.mobile_validated === '1') {
+                    this.$router.push({name: 'CustomerList', params: {mark: 2}})
+                  }
                 }
               })
             }
@@ -251,7 +255,11 @@
           delete params.client_class
           addCusomer(params).then(res => {
             if (res.status === 200) {
-              this.$router.push({name: 'CustomerList', params: {mark: 2}})
+              if (res.data.mobile_validated === '0') {
+                this.$router.push({name: 'CustomerList', params: {mark: 1}})
+              } else if (res.data.mobile_validated === '1') {
+                this.$router.push({name: 'CustomerList', params: {mark: 2}})
+              }
             }
           })
         }

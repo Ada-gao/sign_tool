@@ -167,31 +167,35 @@
         CancelToken: this.$axios.CancelToken
       }
     },
-    beforeRouteEnter (to, from, next) {
-      next(vm => {
-        if (!from.params.mark) {
-          vm.idx = 0
-        } else {
-          vm.idx = from.params.mark
-        }
-      })
-    },
+//    beforeRouteEnter (to, from, next) {
+//      next(vm => {
+//        if (!from.params.mark) {
+//          vm.idx = 0
+//        } else {
+//          vm.idx = from.params.mark
+//        }
+//      })
+//    },
     mounted () {
-      checkCusomersList().then(res => {
-        this.isShowSpinner = false
-        let data = res.data
-        data.forEach(item => {
-          if (item.client_class === 1) {
-            this.customers.push(item)
-          } else if (item.client_class === 0) {
-            this.customers1.push(item)
-          } else if (item.client_class === null && item.mobile_validated === '1') {
-            this.customers2.push(item)
-          }
-        })
-      })
+      this.idx = this.$route.params.mark ? this.$route.params.mark : 0
+      this.getList()
     },
     methods: {
+      getList () {
+        checkCusomersList().then(res => {
+          this.isShowSpinner = false
+          let data = res.data
+          data.forEach(item => {
+            if (item.client_class === 1) {
+              this.customers.push(item)
+            } else if (item.client_class === 0) {
+              this.customers1.push(item)
+            } else if (item.client_class === null && item.mobile_validated === '1') {
+              this.customers2.push(item)
+            }
+          })
+        })
+      },
       onItemClick (index) {
         this.idx = index
       },
