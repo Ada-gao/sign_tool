@@ -35,6 +35,8 @@ body {
 ul, ol { list-style: none; }
 
 div, span{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -125,15 +127,16 @@ b {
 	white-space: nowrap;
 }
 
+/*提醒框*/
 .mint-toast.is-placemiddle {
-  top: 20%!important;
-  width: 300px;
-  height: 80px;
+  // top: 20%!important;
+  // width: 300px;
+  // height: 80px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  line-height: 80px;
-  padding: 0!important;
+  // line-height: 80px;
+  padding: 20px!important;
   .mint-toast-text {
     font-family: @font-family-R;
     font-size: 30px;
@@ -215,6 +218,42 @@ b {
 }
 .mint-button.is-disabled{
   background: @back-color-E8;
+}
+
+/*弹出框*/
+.mint-msgbox-wrapper{
+  .mint-msgbox{
+    width: 560px;
+    height: 290px;
+    font-family: @font-family-R;
+    .mint-msgbox-header{
+      padding: 50px 0 18px 0;
+      .mint-msgbox-title{
+        font-size: @font-size-thirtyS;/*px*/
+        color: @font-color-333;
+        line-height: 50px;
+      }
+    }
+    .mint-msgbox-content{
+      padding: 0 0 30px 0;
+      .mint-msgbox-message{
+        font-size: @font-size-thirty;/*px*/
+        color: #888888;
+        line-height: 42px;
+      }
+    }
+    .mint-msgbox-btns{
+      height: 100px;
+      line-height: 100px;
+      .mint-msgbox-btn{
+        font-size: @font-size-thirtyS;/*px*/
+        color: @font-color-9B;
+      }
+      .mint-msgbox-confirm{
+        color: @text-font-color;
+      }
+    }
+  }
 }
 
 /*group cell 折叠*/

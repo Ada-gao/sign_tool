@@ -184,7 +184,7 @@ export default {
       })
     },
     paintFixedWaterMark (workId) { // 在Vue中可改为ES6写法
-     var material = document.querySelector('.material')
+     var material = document.querySelector('#material')
      var wrap = document.createElement('div') // 创建一个div
      wrap.className = 'fixed-water-mark' // 给div添加类名
      var wm = document.createElement('canvas') // 单个水印画布
@@ -243,7 +243,7 @@ export default {
     background: @header-bg;
     .vux-header-left{
       .left-arrow:before{
-        border-color: @back-color-white;
+        border-color: @text-font-color;
       }
     }
     .vux-header-title{
