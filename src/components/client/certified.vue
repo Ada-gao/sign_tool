@@ -72,29 +72,36 @@
     </div>
     <div class="popup_box">
 
-      <mt-popup v-model="showEmailBox" closeOnClickModal="false">
-        <div class="email_box1">
-          <div class="title">请确认您的邮箱</div>
-          <div class="email_address">{{userInfos.emailAddress}}</div>
-          <button @click="hidePopup">确定</button>
+      <mt-popup v-model="showEmailBox"
+                class="mobile_popup"
+                closeOnClickModal="false">
+        <div class="transfer_tit">附件材料发送到您的邮箱</div>
+        <div class="transfer_tip">邮箱：{{userInfos.emailAddress}}</div>
+        <div class="btns">
+          <span class="cancel" @click="showEmailBox = false">取消</span>
+          <span class="ensure" @click="hidePopup">确定</span>
         </div>
       </mt-popup>
-      <mt-popup v-model="showConvertBox" closeOnClickModel="false">
-        <div class="convert_box">
-          <div class="title"> 确定要变成{{radio}}吗？</div>
-          <div class="btn_box">
-            <button class="ensure" @click="ensure">确定</button>
-            <button class="cancel" @click="cancel">取消</button>
-          </div>
+      <mt-popup v-model="showConvertBox"
+                class="mobile_popup"
+                closeOnClickModel="false">
+        <div class="transfer_tit">确定要变成{{radio}}吗？</div>
+        <div class="btns">
+          <span class="cancel" @click="cancel">取消</span>
+          <span class="ensure" @click="ensure">确定</span>
         </div>
       </mt-popup>
-      <mt-popup v-model="showSubmit.isShow" closeOnclickModel="false">
+      <mt-popup v-model="showSubmit.isShow"
+                class="confirm_box"
+                closeOnclickModel="false">
         <div class="confirm_box">
+
           <i class="iconfont icon_success"
-             v-show="showSubmit.isSuccess != 2">&#xe60a;</i>
+             v-show="showSubmit.isSuccess !== 2">&#xe60a;</i>
           <i class="iconfont icon_fail"
              v-show="showSubmit.isSuccess === 2">&#xe626;</i>
-          <div class="confirm_cont" :class="{'fail': showSubmit.isSuccess === 2}">{{showSubmit.cont}}</div>
+          <div class="confirm_cont" :class="{'fail': showSubmit.isSuccess === 2}">您的认证已提交！<br>
+            请您耐心等待审核结果！</div>
           <span class="confirm_btn" @click="popupConfirm(toRoute(showSubmit.isSuccess))">确 定</span>
         </div>
       </mt-popup>
@@ -118,8 +125,7 @@
     data () {
       return {
         showSubmit: {
-          isShow: false,
-          cont: '您的资料已上传成功！',
+          isShow: true,
           isSuccess: 0
         },
         popupVisible: false,
@@ -353,103 +359,60 @@
 <style lang="less">
   @import url("//unpkg.com/element-ui@2.3.9/lib/theme-chalk/index.css");
   @import '../../common/style/variable';
-
-  .popup_box {
-    .confirm_box {
+  .mobile_popup {
+    top: 35%;
+    border-radius: 8px;
+    width: 74.67%;
+    padding-top: 34px;
+    font-family: @font-family-R;
+    font-size: 26px;
+    color: #4A4A4A;
+    text-align: center;
+    .transfer_tit {
+      font-family: @font-family-M;
+      font-size: 36px;
+      color: #000000;
+      margin-bottom: 15px;
+    }
+    .transfer_tip {
+      font-family: @font-family-M;
+      font-size: 30px;
+      color: #888888;
+    }
+    .btns {
+      height: 100px;
+      line-height: 100px;
+      width: 100%;
       font-size: 0;
-      width: 580px;
-      height: 345px;
-      box-sizing: border-box;
-      text-align: center;
-      padding-top: 20px;
-      .icon_success {
-        font-size: 70px;
-        color: #74BA3B;
-      }
-      .icon_fail {
-        font-size: 70px;
-        color: #C61D1A;
-      }
-      .confirm_cont {
-        font-family: @font-family-R;
-        font-size: 30px;
-        color: #333333;
-        margin: 0 auto;
-        margin-bottom: 50px;
-        margin-top: 26px;
-      }
-      .fail {
-        width: 270px;
-        margin-bottom: 40px;
-      }
-      .confirm_btn {
-        background: #2A7DC1;
-        border-radius: 10px;
+      border-top: 1px solid #D2D3D5;
+      margin-top: 30px;
+      span {
+        width: 50%;
+        text-align: center;
         display: inline-block;
-        width: 280px;
-        height: 80px;
-        line-height: 80px;
-        color: #f0f0f0;
-        font-size: 36px;
-        font-family: @font-family-R;
+        font-size: 32px;
+      }
+      span:nth-of-type(1) {
+        color: #9B9B9B;
+        border-right: 1px solid #9b9b9b;/*no*/
+        box-sizing: border-box;
+      }
+      span:nth-of-type(2) {
+        color: @new-font-color;
       }
     }
   }
 
+  .confirm_box {
+    border-radius: 8px;
+    width: 74.67%;
+    padding-top: 34px;
+    font-family: @font-family-R;
+    font-size: 26px;
+    color: #4A4A4A;
+  }
   .mint-popup {
     border-radius: 10px;
-  }
-
-  .email_box1,
-  .convert_box {
-    width: 580px;
-    height: 345px;
-    text-align: center;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    .title {
-      padding: 48px 0 31px;
-      font-size: 30px;
-      color: #666;
-      text-align: center;
-    }
-    .email_address {
-      width: 522px;
-      height: 76px;
-      box-sizing: border-box;
-      border: 1px solid #999;
-      margin: 0 auto;
-      text-align: center;
-      line-height: 76px;
-      font-size: 30px;
-      color: #666;
-    }
-    button {
-      width: 280px;
-      height: 80px;
-      text-align: center;
-      line-height: 80px;
-      background-color: #2A7DC1;
-      font-size: 36px;
-      color: #f0f0f0;
-      border-radius: 10px;
-      margin-top: 33px;
-    }
-  }
-
-  .convert_box {
-    .title {
-      padding: 91px 0 81px;
-      line-height: 46px;
-      color: #333;
-    }
-    button {
-      width: 190px;
-      margin: 0;
-    }
-    button.ensure {
-      margin-right: 80px;
-    }
   }
 
   .certified {
@@ -643,24 +606,6 @@
               }
             }
           }
-        }
-      }
-      .submit_form {
-        background-color: #f5f5f5;
-        text-align: center;
-        /*padding: 30px 0;*/
-        margin-top: 181px;
-        .submit {
-          height: 82px;
-          line-height: 82px;
-          display: inline-block;
-          /*width: 710px;*/
-          width: 94.7%;
-          background-color: #2672BA;
-          text-align: center;
-          border-radius: 10px;
-          color: #fff;
-          font-size: 28px;
         }
       }
     }

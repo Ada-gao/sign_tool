@@ -77,39 +77,43 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import "../../common/style/variable.less";
   .my_checklist{
-      // margin-top: 10px;
+    // margin-top: 10px;
+    padding: 0 30px;
+    background: @back-color-white;      
     .checkbox{
       display: flex;
       justify-content: space-between;
-      height: 80px;
-      line-height: 80px;
-      background: #fff;
-      margin-bottom: 8px;
-      padding: 0 20px;
+      height: 100px;
+      line-height: 100px;
+      background: @back-color-white;
+      border-bottom: 1px solid #E9E9E9;/*no*/
+      // margin-bottom: 8px;
+      // padding: 0 20px;
       .box{
-        width: 25px;
-        height: 25px;
-        border-radius: 20%;
-        border: 1px solid #666666;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #ccc;/*no*/
         position: relative;
         top: 50%;
         transform: translate(0, -50%);
         &.checked{
-          background-color: #fff;
-          border: 1px solid #2672BA;
+          background-color: @text-font-color;
+          border: 1px solid transparent;/*no*/
           &::before{
              transform: rotate(0deg) scale(1);
           }
         }
         &::before{
-          color: #2672BA;
-          font-size: 16px;
-          width: 25px;
-          height: 25px;
-        //   position: absolute;
-          left: 0;
-          top: 0;
+          color: @back-color-white;
+          font-size: 18px;/*px*/
+          width: 40px;
+          height: 40px;
+          // position: absolute;
+          // left: 0;
+          // top: 0;
           border-radius: 50%;
           display: flex;
           justify-content: center;
@@ -119,17 +123,17 @@ export default {
         }
       }
       .content{
-        width: 100%;
-        margin-left: 15px;
-        font-family: PingFangSC-Regular;
-        font-size: 28px;
-        color: #333333;
+        width: 70%;
+        margin-left: 28px;
+        font-family: @font-family-R;
+        font-size: @font-size-twentyE;/*px*/
+        color: @font-color-333;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
       .checked + .content{
-        color: #2672BA;
+        // color: @text-font-color;
       }
     }
   }

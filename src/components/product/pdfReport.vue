@@ -1,12 +1,12 @@
 <template>
-  <div class="pdfPage">
+  <div id="pdfPage">
     <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
     <div class="wrapper">
       <div class="space"></div>
       <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true" v-if="this.$route.params.mark !== 3">
         <template slot-scope="props">
-            <div @click="get(props.item)">
-						<i class="eye iconfont">&#xe628;</i>
+            <div class="eye" @click="get(props.item)">
+						<span class="vertical-align">查看</span><i class="iconfont vertical-align">&#xe8d5;</i>
             </div>
         </template>
       </check-list>
@@ -217,7 +217,7 @@ export default {
 </script>
 <style lang="less">
 @import "../../common/style/variable.less";
-.pdfPage{
+#pdfPage{
   height: 100%;
   background: @back-color-white;
   .vux-header{
@@ -235,15 +235,20 @@ export default {
     background: #F5F5F5;
     // padding-bottom: 8px;
     margin-bottom: 98px;
+    font-family: @font-family-R;
 		.eye{
-			font-size: 40px;
-			color: #2A7DC1;
+			font-size: @font-size-thirty;/*px*/
+      color: #3377FF;
+      i{
+        color: #DADADA;
+        font-size: 50px;/*px*/
+      }
     }
     li{
       height: 82px;
       line-height: 82px;
-      background: #fff;
-      font-family: PingFangSC-Regular;
+      background: @back-color-white;
+      // font-family: PingFangSC-Regular;
       font-size: 28px;
       color: #333333;
       margin-bottom: 8px;
@@ -252,11 +257,11 @@ export default {
 	}
 	.select{
 		width: 100%;
-		padding: 0 20px;
+		padding: 0 40px;
 		position: fixed;
 		bottom: 0;
-		background: #fff;
-		height: 82px;
+		background: @back-color-white;
+		height: 98px;
 		z-index: 55;
 		box-sizing: border-box;
 		.my_checkbox{
@@ -266,22 +271,22 @@ export default {
 			height: 100%;
 			line-height: 100%;
       .box{
-        width: 25px;
-        height: 25px;
-        border-radius: 20%;
-        border: 1px solid #666;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid #ccc;/*no*/
 				position: absolute;
 				top: 50%;
         transform: translate(0, -50%);
         &::before{
-          color: #2672BA;
+          color: #fff;
           font-size: 16px;
-          width: 25px;
-          height: 25px;
-          position: absolute;
-          left: 0;
-          top: 0;
-          border-radius: 20%;
+          width: 40px;
+          height: 40px;
+          // position: absolute;
+          // left: 0;
+          // top: 0;
+          border-radius: 50%;
           display: flex;
           justify-content: center;
           align-items: center;

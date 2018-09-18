@@ -584,7 +584,7 @@
         width: 50%;
         text-align: center;
         display: inline-block;
-        font-size: 36px;
+        font-size: 32px;
       }
       span:nth-of-type(1) {
         color: #9B9B9B;

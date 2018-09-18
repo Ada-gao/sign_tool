@@ -213,12 +213,23 @@
         <button @click="submitAddNew" class="add_remark_btn">新增备注</button>
       </x-dialog>
     </div>
-    <x-dialog v-model="transformDialog" class="submitDialog">
-      <div class="tip">客户当前资产规模已到达{{data.asset_standard}}万<br/>
+    <!--<x-dialog v-model="transformDialog" class="submitDialog">-->
+      <!--<div class="tip">客户当前资产规模已到达{{data.asset_standard}}万<br/>-->
+        <!--是否自动转变为专业投资者？</div>-->
+      <!--<x-button type="primary" @click.native="transform">转 变</x-button>-->
+      <!--<x-button type="primary" @click.native="cancel">取 消</x-button>-->
+    <!--</x-dialog>-->
+    <mt-popup v-model="transformDialog"
+              class="mobile_popup"
+              popup-transition="popup-fade">
+      <div class="transfer_tit">转换确认</div>
+      <div class="transfer_tip">客户当前资产规模已到达{{data.asset_standard}}万<br/>
         是否自动转变为专业投资者？</div>
-      <x-button type="primary" @click.native="transform">转 变</x-button>
-      <x-button type="primary" @click.native="cancel">取 消</x-button>
-    </x-dialog>
+      <div class="btns">
+        <span class="cancel" @click="transformDialog = false">取消</span>
+        <span class="ensure" @click="transform">确定</span>
+      </div>
+    </mt-popup>
   </div>
 </template>
 
@@ -426,9 +437,6 @@
       },
       transform () {
         this.$router.push({name: 'AutoTransfer', params: {id: this.clientId}})
-      },
-      cancel () {
-        this.transformDialog = false
       }
     }
   }
@@ -436,6 +444,49 @@
 
 <style lang="less">
   @import '../../common/style/variable';
+  .mobile_popup {
+    top: 35%;
+    border-radius: 8px;
+    width: 74.67%;
+    padding-top: 34px;
+    font-family: @font-family-R;
+    font-size: 26px;
+    color: #4A4A4A;
+    text-align: center;
+    .transfer_tit {
+      font-family: @font-family-M;
+      font-size: 36px;
+      color: #000000;
+      margin-bottom: 15px;
+    }
+    .transfer_tip {
+      font-family: @font-family-M;
+      font-size: 30px;
+      color: #888888;
+    }
+    .btns {
+      height: 100px;
+      line-height: 100px;
+      width: 100%;
+      font-size: 0;
+      border-top: 1px solid #D2D3D5;
+      margin-top: 30px;
+      span {
+        width: 50%;
+        text-align: center;
+        display: inline-block;
+        font-size: 32px;
+      }
+      span:nth-of-type(1) {
+        color: #9B9B9B;
+        border-right: 1px solid #9b9b9b;/*no*/
+        box-sizing: border-box;
+      }
+      span:nth-of-type(2) {
+        color: @new-font-color;
+      }
+    }
+  }
   .customerManagement {
     background: #fff;
     font-family: @font-family-R;
