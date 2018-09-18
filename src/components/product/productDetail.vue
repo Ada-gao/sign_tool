@@ -493,7 +493,7 @@ export default {
     }
     .report-pdf{
       padding: 0 40px;
-      background:@back-color-white;
+      background: @back-color-white;
       width: 100%;
       .doc{
         height: 104px;

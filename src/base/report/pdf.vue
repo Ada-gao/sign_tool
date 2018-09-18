@@ -1,5 +1,5 @@
 <template>
-    <div class="material">
+    <div id="material">
         <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
         <div class="spinner">
           <mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
@@ -237,7 +237,19 @@ export default {
 </script>
 
 <style lang="less">
-.material{
+@import "../../common/style/variable.less";
+#material{
+  .vux-header{
+    background: @header-bg;
+    .vux-header-left{
+      .left-arrow:before{
+        border-color: @back-color-white;
+      }
+    }
+    .vux-header-title{
+      color: @back-color-white;
+    }
+  }
   .spinner{
     position: absolute;
     z-index: 99;

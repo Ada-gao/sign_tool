@@ -11,7 +11,7 @@
         </template>
       </check-list>
       <ul v-if="this.$route.params.mark === 3">
-        <li v-for="(item, index) in documentList" :key="index">{{item.file_name}}</li>
+        <li v-for="(item, index) in documentList" :key="index">{{index + 1}}.{{item.file_name}}</li>
       </ul>
     </div>
     <div class="select" v-if="selectShow">
@@ -19,14 +19,15 @@
         <div :class="'box mint-toast-icon mintui mintui-success' + (this.flag ? ' checked' : '' )" @click="checkAll"></div>
         <div class="name">全选</div>
       </div>
-      <button class="button" @click="sendEmail">发送到邮箱</button>
+      <mt-button class="button" @click="sendEmail">发送到邮箱</mt-button>
       <x-dialog v-model="dialogTableVisible" class="dialog-demo pdfCloseDialog" hide-on-blur>
-          <div class="confirm">请确认您的邮箱</div>
+          <div class="confirm">附件材料发送到您的邮箱</div>
           <x-input
             :value="newEmail"
             readonly
             :show-clear="clear">
           </x-input>
+          <div>邮箱：{{this.newEmail}}</div>
           <x-button @click.native="sendMessage" type="primary">发 送</x-button>
       </x-dialog>
       <x-dialog v-model="successDialog" class="dialog-demo successDialog" hide-on-blur>
@@ -106,7 +107,7 @@ export default {
 			this.$router.push({name: 'ProductDetail', params: {id: id}})
     },
       sendEmail () {
-				this.dialogTableVisible = true
+				// this.dialogTableVisible = true
       },
       sendMessage () {
 				this.dialogTableVisible = false
@@ -244,15 +245,17 @@ export default {
         font-size: 50px;/*px*/
       }
     }
-    li{
-      height: 82px;
-      line-height: 82px;
+    ul{
+      padding: 0 40px;
       background: @back-color-white;
+    }
+    li{
+      height: 100px;
+      line-height: 100px;
       // font-family: PingFangSC-Regular;
-      font-size: 28px;
-      color: #333333;
-      margin-bottom: 8px;
-      padding-left: 20px;
+      font-size: @font-size-twentyE;/*px*/
+      color: @font-color-333;
+      border-bottom: 1px solid #E9E9E9;/*no*/      
     }
 	}
 	.select{
@@ -263,7 +266,7 @@ export default {
 		background: @back-color-white;
 		height: 98px;
 		z-index: 55;
-		box-sizing: border-box;
+    border-top: 1px solid #E9E9E9;
 		.my_checkbox{
    		display: flex;
       justify-content: space-between;
@@ -296,37 +299,36 @@ export default {
       }
       .name{
         flex-grow: 1;
-				margin-left: 40px;
-				font-family: PingFangSC-Regular;
-        font-size: 28px;
-        color: #333333;
+				margin-left: 50px;
+        font-size: @font-size-thirty;/*px*/
+        color: @font-color-333;
       }
       &.checked{
         .box{
-					background-color: #fff;
-          border: 1px solid #2672BA;
+					background-color: @text-font-color;
+          border: 1px solid transparent;
           &::before{
 						transform: rotate(0deg) scale(1);
           }
         }
-        .name{
-					color: #2672BA;
-        }
+        // .name{
+				// 	color: #2672BA;
+        // }
       }
 	}
-	.button{
-    width: 156px;
-    height: 50px;
+	.mint-button.mint-button--default{
+    width: 180px;
+    height: 60px;
     position: absolute;
-    right: 20px;
+    right: 40px;
 		top: 50%;
 		transform: translate(0, -50%);
-    background: #2A7DC1;
-    border-radius: 10px;
-    font-family: PingFangSC-Regular;
-    font-size: 20px;
-    color: #F0F0F0;
-    outline: none;
+    // background: #2A7DC1;
+    border-radius: 2px;
+    // font-family: PingFangSC-Regular;
+    font-size: @font-size-twentyE;/*px*/
+    color: @back-color-white;
+    // outline: none;
 	}
 	.vux-x-dialog.pdfCloseDialog{
     .weui-dialog{

@@ -81,7 +81,7 @@ export default {
   .my_checklist{
     // margin-top: 10px;
     padding: 0 30px;
-    background: @back-color-white;      
+    background: @back-color-white;
     .checkbox{
       display: flex;
       justify-content: space-between;
