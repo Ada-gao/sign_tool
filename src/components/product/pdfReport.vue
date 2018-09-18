@@ -3,15 +3,20 @@
     <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
     <div class="wrapper">
       <div class="space"></div>
-      <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true" v-if="this.$route.params.mark !== 3">
+      <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true" v-if="checkListShow">
         <template slot-scope="props">
             <div class="eye" @click="get(props.item)">
 						<span class="vertical-align">查看</span><i class="iconfont vertical-align">&#xe8d5;</i>
             </div>
         </template>
       </check-list>
-      <ul v-if="this.$route.params.mark === 3">
-        <li v-for="(item, index) in documentList" :key="index">{{index + 1}}.{{item.file_name}}</li>
+      <ul v-if="!checkListShow">
+        <li v-for="(item, index) in documentList" :key="index">
+          {{index + 1}}.{{item.file_name}}
+          <div class="eye" @click="get(props.item)" v-if="eyeShow">
+						<span class="vertical-align">查看</span><i class="iconfont vertical-align">&#xe8d5;</i>
+          </div>
+        </li>
       </ul>
     </div>
     <div class="select" v-if="selectShow">
@@ -81,7 +86,9 @@ export default {
       title: '',
       type: null,
       customerNameList: [],
-      selectShow: true
+      selectShow: true,
+      checkListShow: true,
+      eyeShow: false
     }
 	},
 	watch: {
@@ -200,12 +207,21 @@ export default {
           this.newList = list
           this.value = nameList
           this.newUrlList = urlList
+          console.log(this.documentList,'bcjdkbcdjkbcjdbc')
+          if (this.documentList.length !== 0) {
+            console.log(this.documentList,'bbbbbb')
+            this.checkListShow = false
+            this.eyeShow = true
+          }
         })
       } else if (this.$route.params.mark === 3) {
         this.title = '上传客户材料'
         this.selectShow = false
         getCustomerMaterials(this.id).then(res => {
           this.documentList = res.data.data
+          if (this.documentList.length !== 0) {
+            this.checkListShow = false
+          }
         })
       }
 		})
@@ -250,12 +266,16 @@ export default {
       background: @back-color-white;
     }
     li{
+      // width: 670px;
       height: 100px;
       line-height: 100px;
       // font-family: PingFangSC-Regular;
       font-size: @font-size-twentyE;/*px*/
       color: @font-color-333;
-      border-bottom: 1px solid #E9E9E9;/*no*/      
+      border-bottom: 1px solid #E9E9E9;/*no*/
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 	}
 	.select{
