@@ -234,9 +234,9 @@
     }
     .bor-line{
       display: inline-block;
-      width: 3px;
+      width: 1px;/*no*/
       height: 87px;
-      background: #DADADA;
+      background: #E9E9E9;
       margin-right: 80px;
     }
     .right-btn{

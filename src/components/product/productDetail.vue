@@ -503,6 +503,7 @@ export default {
         color: #171A27;
         .right{
           float: right;
+          margin-right: -20px;
           font-size: 60px;/*px*/
           color: #DADADA;
         }

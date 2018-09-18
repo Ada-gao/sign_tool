@@ -233,10 +233,10 @@ export default {
         position: absolute;
         display: block;
         width: 60px;
-				height: 6px;
+				height: 6px;/*no*/
 				border-radius: 2px;/*no*/
         background: @text-font-color;
-				bottom: -5px;
+				bottom: 1px;
 				left: 50%;
 				transform: translate(-50%, 0);
       }
