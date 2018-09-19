@@ -1,5 +1,5 @@
 <template>
-	<x-header :left-options="{showBack: false}">{{title}}
+	<x-header class="header-top" :left-options="{showBack: false}">{{title}}
 		<span slot="overwrite-left" @click="infoList" class="warn">
 			<i class="iconfont mes">&#xe607;</i>
 			<i class="text-center num" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</i>
@@ -107,8 +107,9 @@ export default {
 </script>
 <style lang="less">
 @import "../../common/style/variable.less";
-.vux-header{
+.vux-header.header-top{
 	.vux-header-left{
+		left: 20px;
 		.warn{
 			display: inline-block;
 			position: relative;
@@ -137,6 +138,7 @@ export default {
 		}
 	}
 	.vux-header-right{
+		right: 20px;
 		.mes{
 			font-size: 38px;/*px*/
 			color: @font-color-000;

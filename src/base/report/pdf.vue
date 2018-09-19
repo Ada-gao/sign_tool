@@ -1,5 +1,5 @@
 <template>
-    <div class="material">
+    <div id="material">
         <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
         <div class="spinner">
           <mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
@@ -184,7 +184,7 @@ export default {
       })
     },
     paintFixedWaterMark (workId) { // 在Vue中可改为ES6写法
-     var material = document.querySelector('.material')
+     var material = document.querySelector('#material')
      var wrap = document.createElement('div') // 创建一个div
      wrap.className = 'fixed-water-mark' // 给div添加类名
      var wm = document.createElement('canvas') // 单个水印画布
@@ -237,7 +237,19 @@ export default {
 </script>
 
 <style lang="less">
-.material{
+@import "../../common/style/variable.less";
+#material{
+  .vux-header{
+    background: @header-bg;
+    .vux-header-left{
+      .left-arrow:before{
+        border-color: @text-font-color;
+      }
+    }
+    .vux-header-title{
+      color: @back-color-white;
+    }
+  }
   .spinner{
     position: absolute;
     z-index: 99;

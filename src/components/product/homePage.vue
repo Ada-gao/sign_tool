@@ -18,7 +18,7 @@
 				<span class="more">查看 <i class="iconfont vertical-align">&#xe6d6;</i></span>
 			</div>
 			<div class="space"></div>
-			<div style="overflow: hidden; overflow-x: auto;">
+			<div style="overflow: hidden; overflow-x: auto;" v-if="!spinner">
         <ul class="tabbar" :style="{'width': ulWidth}">
           <li v-for="(item,index) in tabBars"
               :key="index"
@@ -233,10 +233,10 @@ export default {
         position: absolute;
         display: block;
         width: 60px;
-				height: 6px;
+				height: 6px;/*no*/
 				border-radius: 2px;/*no*/
         background: @text-font-color;
-				bottom: -5px;
+				bottom: 1px;
 				left: 50%;
 				transform: translate(-50%, 0);
       }

@@ -1,12 +1,13 @@
 <template>
-  <div class="mypage">
-    <x-header :left-options="{showBack: false}">我的
+  <div id="mypage">
+    <!-- <x-header :left-options="{showBack: false}">我的
       <span slot="overwrite-left" @click="infoList" class="warn">
         <i class="iconfont mes">&#xe641;</i>
         <i class="num" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</i>
       </span>
       <i slot="right" class="iconfont mes" @click="barcodescanner">&#xe661;</i>
-    </x-header>
+    </x-header> -->
+    <common-header title=""></common-header>
     <div class="wrapper">
       <div class="top">
         <div class="img"><img src="static/img/banner.png" alt=""></div>
@@ -88,6 +89,7 @@ import { getShare, getInfoList } from '@/service/api/aboutMe'
 import { qscan } from '@/service/api/activity'
 import { activityUrl } from '@/config/env'
 import { toast } from '@/common/js/filter'
+import commonHeader from '@/base/infoHeader/header'
 
 export default {
   data () {
@@ -118,7 +120,8 @@ export default {
     XSwitch,
     XDialog,
     XButton,
-    Qrcode
+    Qrcode,
+    commonHeader
   },
   methods: {
     logoutEvent (key) {
@@ -332,41 +335,17 @@ export default {
 </script>
 
 <style lang="less">
-.mypage{
-  .vux-header{
+@import "../../common/style/variable.less";
+#mypage{
+  .vux-header.header-top{
     .vux-header-left{
-      .warn{
-        display: inline-block;
-        position: relative;
-        width: 40px;
-        height: 40px;
-        .mes{
-          font-size: 40px;
-          color: #000;
-        }
-        .num{
-          display: inline-block;
-          width: 20px;
-          height: 20px;
-          background: #B68458;
-          border-radius: 50%;
-          position: absolute;
-          top: 0;
-          right: 0;
-          font-family: PingFangSC-Medium;
-          font-size: 14px;
-          color: #FFFFFF;
-          text-align: center;
-        }
-      }
-    }
-    .vux-header-title{
-      // color: #000;
+      left: 40px;
     }
     .vux-header-right{
+      right: 40px;
       .mes{
-        font-size: 35px;
-        color: #000;
+        font-size: 38px;/*px*/
+        color: @text-font-color;
       }
     }
   }
