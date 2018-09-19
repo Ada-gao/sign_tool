@@ -51,7 +51,6 @@
         </flexbox> -->
       </li>
     </ul>
-
     <!--<div class="no_product" v-show="childData.length === 0 && !mark">-->
     <!--<img src="static/img/purchasedIcon.png">-->
     <!--<span>亲，请您购买产品哦</span>-->
