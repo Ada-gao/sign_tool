@@ -153,7 +153,7 @@ export default {
           }
         })
       })
-    },
+    }
       // sendMessage () {
 			// 	this.dialogTableVisible = false
       //   this.checkedList = []

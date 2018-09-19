@@ -7,7 +7,7 @@
       </span>
       <i slot="right" class="iconfont mes" @click="barcodescanner">&#xe661;</i>
     </x-header> -->
-    <common-header title=""></common-header>    
+    <common-header title=""></common-header>
     <div class="wrapper">
       <div class="top">
         <div class="img"><img src="static/img/banner.png" alt=""></div>
