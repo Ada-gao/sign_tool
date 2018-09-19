@@ -19,3 +19,12 @@ export function getAuthToken (obj) {
         data: obj
     })
 }
+/**
+ * 获取数据字典
+ */
+export function getDict () {
+    return axios({
+        url: '/v1/common/dicts/',
+        method: 'get'
+    })
+}
