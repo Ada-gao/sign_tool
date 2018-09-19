@@ -36,11 +36,11 @@
 							<div class="flex-top">
 								<div class="flex-item">
 									<p class="content">{{item.client_name}}</p>
-									<span class="title">客户姓名</span>
+									<p class="title">客户姓名</p>
 								</div>
 								<div class="flex-item">
 									<p class="content">{{item.appointment_amount}}万</p>
-									<span class="title">预约金额</span>
+									<p class="title">预约金额</p>
 								</div>
 								<div class="flex-item">
 									<p class="content"
@@ -51,13 +51,13 @@
 										}">
 										{{item.status|turnText(appointmentStaus)}}
 									</p>
-									<span class="title">预约状态</span>
+									<p class="title">预约状态</p>
 								</div>
 							</div>
-							<div class="mt-10">产品名称：{{item.product_name}}</div>
-							<div class="mt-10">预约时间：{{item.appointment_date}}</div>
-							<div class="timeline" v-show="item.flag">
-								倒计时：<counter :timeCount='item.timeout'></counter>（请在规定时间内完成打款）
+							<div class="mt-20">产品名称：{{item.product_name}}</div>
+							<div class="mt-20">预约时间：{{item.appointment_date}}</div>
+							<div class="mt-20 timeline" v-show="item.flag">
+								倒计时：<counter :timeCount='item.timeout'></counter><span style="color: #9B9B9B">（请在规定时间内完成打款）</span>
 							</div>
 						</div>
 					</div>
@@ -86,11 +86,11 @@
 							<div class="flex-top">
 								<div class="flex-item">
 									<p class="content">{{item.client_name}}</p>
-									<span class="title">客户姓名</span>
+									<p class="title">客户姓名</p>
 								</div>
 								<div class="flex-item">
 									<p class="content">{{item.appointment_amount}}万</p>
-									<span class="title">预约金额</span>
+									<p class="title">预约金额</p>
 								</div>
 								<div class="flex-item">
 									<p class="content"
@@ -101,12 +101,12 @@
 										}">
 										{{item.status|turnText(appointmentStaus)}}
 									</p>
-									<span class="title">打款状态</span>
+									<p class="title">打款状态</p>
 								</div>
 							</div>
-							<div class="mt-10">产品名称：{{item.product_name}}</div>
-							<div class="mt-10">预约时间：{{item.appointment_date}}</div>
-							<div class="mt-10" v-show="item.status==='2003'">
+							<div class="mt-20">产品名称：{{item.product_name}}</div>
+							<div class="mt-20">预约时间：{{item.appointment_date}}</div>
+							<div class="mt-20" v-show="item.status==='2003'">
 								退款状态：
 								<span :class="{
 											'statusYellow':item.refund_status==='0'||item.refund_status==='1'||item.refund_status==='2',
@@ -135,11 +135,11 @@
 							<div class="flex-top">
 								<div class="flex-item">
 									<p class="content">{{item.client_name}}</p>
-									<span class="title">客户姓名</span>
+									<p class="title">客户姓名</p>
 								</div>
 								<div class="flex-item">
 									<p class="content">{{item.appointment_amount}}万</p>
-									<span class="title">预约金额</span>
+									<p class="title">预约金额</p>
 								</div>
 								<div class="flex-item">
 									<p class="content"
@@ -150,11 +150,11 @@
 										}">
 										{{item.status|turnText(appointmentStaus)}}
 									</p>
-									<span class="title">合同状态</span>
+									<p class="title">合同状态</p>
 								</div>
 							</div>
-							<div class="mt-10">产品名称：{{item.product_name}}</div>
-							<div class="mt-10">预约时间：{{item.appointment_date}}</div>
+							<div class="mt-20">产品名称：{{item.product_name}}</div>
+							<div class="mt-20">预约时间：{{item.appointment_date}}</div>
 						</div>
 					</div>
 				</mt-tab-container-item>
@@ -303,6 +303,7 @@ export default {
 						.title {
 							color: #9B9B9B;
 							font-size: 24px;
+							margin-top: 10px;
 						}
 						&:first-child {
 							text-align: left;
@@ -312,9 +313,12 @@ export default {
 						}
 					}
 				}
+				.mt-20 {
+					margin-top: 20px;
+					font-size: 26px;
+				}
 				.mt-10 {
 					margin-top: 10px;
-					font-size: 26px;
 				}
 				.timeline {
 					span {
@@ -329,7 +333,7 @@ export default {
 					.item1{
 						width: 697px;
 						// height: 181px;
-						padding: 25px;
+						padding: 30px;
 						font-size: 24px;
 						color: #303030;
 						position: relative;
