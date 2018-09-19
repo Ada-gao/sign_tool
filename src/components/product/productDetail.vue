@@ -63,15 +63,7 @@
             <td v-if="item.buying_crowds === '2'">境外</td>
           </tr>
         </table>
-        <group class="info-detail">
-          <cell
-          title="查看更多信息"
-          is-link
-          :border-intent="false"
-				  :arrow-direction="show ? 'up' : 'down'"
-          @click.native="show = !show"></cell>
-        </group>
-        <table border="0" cellspacing="0" cellpadding="0" v-if="show" style="margin-bottom: 0px;">
+        <table border="0" cellspacing="0" cellpadding="0" v-if="show">
           <tr>
             <td>产品期限</td>
             <td v-if="item.investment_horizon_unit === '0'">{{item.investment_horizon}}月</td>
@@ -105,6 +97,14 @@
           <tr><td>支行名称</td><td>{{item.bank_name}}</td></tr>
           <tr><td>大额支付行号</td><td>{{item.payment_number}}</td></tr>
         </table>
+        <group class="info-detail">
+          <cell
+          title="查看更多信息"
+          is-link
+          :border-intent="false"
+				  :arrow-direction="show ? 'up' : 'down'"
+          @click.native="show = !show"></cell>
+        </group>
       </div>
 			<div class="space"></div>
       <!-- <div class="product"> -->
@@ -453,12 +453,14 @@ export default {
         font-size: @font-size-thirtyT;/*px*/
         color: @font-color-black;
         line-height: 45px;
+        margin-bottom: 20px;
       }
       table{
         border-right:1px solid #DADADA;/*no*/
         border-bottom:1px solid #DADADA;/*no*/
-        margin: 20px 0 40px 0;
+        // margin: 20px 0 40px 0;
         tr{
+          width: 671px;
           height: 70px;
           line-height: 70px;
           td{
@@ -467,7 +469,7 @@ export default {
             padding-left: 20px;
           }
           td:first-child{
-            width: 196px;
+            width: 29%;
             background: #FFFCF9;
             font-size: @font-size-twentyS;/*px*/
             color: #5F616B;
@@ -480,6 +482,7 @@ export default {
         }
       }
       .info-detail{
+        margin-top: 40px;
         p{
           font-family: @font-family-R;
           font-size: @font-size-twentyE; /*px*/
@@ -613,16 +616,16 @@ export default {
     //     background: #ccc;
     //   }
     // }
-    .btn-24 {
-      font-size: 24px; /*px*/
-      color: #ccc;
-      padding: 6px 16px;
-      border: 1px solid #eee;
-      position: absolute;
-      right: 27px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
+    // .btn-24 {
+    //   font-size: 24px; /*px*/
+    //   color: #ccc;
+    //   padding: 6px 16px;
+    //   border: 1px solid #eee;
+    //   position: absolute;
+    //   right: 27px;
+    //   top: 50%;
+    //   transform: translateY(-50%);
+    // }
   }
 }
 </style>
