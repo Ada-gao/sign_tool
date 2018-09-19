@@ -14,7 +14,6 @@
 <script>
 import { XHeader } from 'vux'
 import { infoDetail } from '@/service/api/aboutMe'
-// import RemarkList from 'base/remarkList/remarkList'
 
 export default {
   components: {

@@ -53,7 +53,7 @@
 
 <script>
 import { XHeader, ButtonTab, ButtonTabItem, Datetime, Group, Calendar, XDialog, XButton } from 'vux'
-import RemarkList from '../../base/remarkList/index'
+import RemarkList from '@/base/remarkList/index'
 import { formatDate } from '@/common/js/date'
 import { checkAllCustomerRemarks } from '@/service/api/customers'
 

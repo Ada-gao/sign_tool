@@ -132,6 +132,7 @@ export default {
     logoutEvent (key) {
       if (key === 'men1') {
         removeStore('token')
+        localStorage.clear()
         this.$router.replace({name: 'Login'})
         // window.JPush.cleanTags({ sequence: 1 }, (result) => {
         //   var sequence = result.sequence
