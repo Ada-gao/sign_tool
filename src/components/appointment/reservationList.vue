@@ -16,6 +16,10 @@
 			</mt-navbar> -->
 			<mt-tab-container v-model="selected">
 				<mt-tab-container-item id="1">
+					<div v-show="!appoinmentList.length" class="defaultPage">
+						<i class="iconfont icon-Null-data"></i>
+						<p>暂无预约</p>
+					</div>
 					<div :data="appoinmentList" v-for="item in appoinmentList" :key="item.appointment_id" @click="toDetail(item.appointment_id)">
 						<div class="item1">
 							<!-- <span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
@@ -63,6 +67,10 @@
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="2">
+					<div v-show="!remittanceList.length" class="defaultPage">
+						<i class="iconfont icon-Null-data"></i>
+						<p>暂无打款</p>
+					</div>
 					<div :data="remittanceList" v-for="item in remittanceList" :key="item.appointment_id" @click="toDetail(item.appointment_id)">
 						<div class="item1">
 							<!-- <span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
@@ -119,6 +127,10 @@
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="3">
+					<div v-show="!remittanceList.length" class="defaultPage">
+						<i class="iconfont icon-Null-data"></i>
+						<p>暂无合同</p>
+					</div>
 					<div :data="contractList" v-for="item in contractList" :key="item.appointment_id" @click="toDetail(item.appointment_id)">
 						<div class="item1">
 							<!-- <span class="tit">客户名称：<span class="cont">{{item.client_name}}</span></span>
@@ -324,6 +336,18 @@ export default {
 					span {
 						color: @font-color-orange2;
 					}
+				}
+			}
+			.defaultPage {
+				color: #E8E8E8;
+				text-align: center;
+				padding-top: 317px;
+				.iconfont {
+					display: block;
+					font-size: 152px;
+				}
+				p {
+					font-size: 26px;
 				}
 			}
 		}
