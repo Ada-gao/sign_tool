@@ -45,7 +45,14 @@
 				<selling-products :child-data="products[n]"
                           mark="homePage"
                           @cgPopup="cgPopup"
-                          :popupVisible="popupVisible"></selling-products>
+                          :popupVisible="popupVisible"
+													v-if="this.choosePro.length !== 0"></selling-products>
+				<div class="no-product text-center" v-if="this.choosePro.length === 0">
+					<div class="warn absolute-center-xy">
+						<i class="iconfont">&#xe869;</i>
+						<p>暂无产品</p>
+					</div>
+				</div>
         <!-- <div class="divide-line"></div>
 				v-show="showContentList[index]"
 			</group> -->
@@ -240,6 +247,22 @@ export default {
 				left: 50%;
 				transform: translate(-50%, 0);
       }
+		}
+		.no-product{
+			position: relative;
+			height: 610px;
+			.warn{
+				i{
+					font-size: 150px;/*px*/
+					color: @back-color-E8;
+				}
+				p{
+					font-family: @font-family-R;
+					font-size: @font-size-twentyS;
+					color: #ccc;
+					margin-top: -25px;
+				}
+			}
 		}
 		.bottom-line{
 			height: 73px;

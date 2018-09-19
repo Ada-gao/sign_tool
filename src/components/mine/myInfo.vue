@@ -1,10 +1,17 @@
 <template>
-  <div class="infoPage">
+  <div id="infoPage">
     <x-header :left-options="{backText: ''}">我的消息</x-header>
     <div class="wrapper">
-        <div class="info" :data="infoList" v-for="(item, index) in infoList" :key="index" @click="checkDetail(item.notification_id)">{{item.notification_title}}
-          <span class="noCheck" v-if="item.is_read === '0'"></span>
-          <span class="iconfont right">&#xe731;</span>
+        <div class="info" :data="infoList" v-for="(item, index) in infoList" :key="index" @click="checkDetail(item.notification_id)">
+          <span class="iconfont"></span>
+          <div class="right">
+            <div>
+              {{item.notification_title}}
+              <span class="noCheck" v-if="item.is_read === '0'"></span>
+              <span>{{item.send_time}}</span>
+            </div>
+            <div>{{item.notification_content}}</div><span class="iconfont right">&#xe8d5;</span>
+          </div>
         </div>
       <!-- <group>
         <cell title="姓名：" :value="name"></cell>
@@ -49,7 +56,19 @@ export default {
 </script>
 
 <style lang="less">
-.infoPage{
+@import "../../common/style/variable.less";
+#infoPage{
+  .vux-header{
+    background: @header-bg;
+    .vux-header-left{
+      .left-arrow:before{
+        border-color: @text-font-color;
+      }
+    }
+    .vux-header-title{
+      color: @back-color-white;
+    }
+  }
   .wrapper {
     .info {
       position: relative;

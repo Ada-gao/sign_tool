@@ -116,6 +116,19 @@ b {
   transform: translateY(-50%);
   -webkit-transform: translateY(-50%);
 }
+.absolute-center-x{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+}
+.absolute-center-xy{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
 
 .wrapper {
   padding-top: 128px;
@@ -265,6 +278,7 @@ b {
 }
 .weui-cells.vux-no-group-title:before, .weui-cells.vux-no-group-title::after{
   border: none;
+  height: 0;
 }
 
 // 必填项icon
