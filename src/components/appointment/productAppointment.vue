@@ -1,6 +1,6 @@
 <template>
     <div class="productAppointment" @touchmove="touchScreen">
-    	<x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{topBar}}</x-header>
+    	<x-header class="balck-header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{topBar}}</x-header>
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
 			<div class="wrapper">
 				<div class="topBar">
