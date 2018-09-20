@@ -53,7 +53,12 @@ a {
 }
 #app .balck-header {
   background-color: @balck-bg-header;
-  color: #fff;
+  .vux-header-left .left-arrow::before {
+    border-color: @font-color-orange1!important;
+  }
+  .vux-header-title {
+    color: #fff;
+  }
 }
 #app .reservation .vux-header-title {
   margin: 0;
@@ -202,6 +207,14 @@ a {
       font-family: PingFangSC-Medium;
       font-size: 30px;
       color: #333;
+      position: relative;
+      // &::before {
+      //   position: absolute;
+      //   width: 6px;
+      //   height: 30px;
+      //   background-color: @font-color-orange1;
+      //   content: '';
+      // }
     }
     .mint-cell-value {
       span {

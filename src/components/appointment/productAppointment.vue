@@ -2,15 +2,15 @@
     <div class="productAppointment" @touchmove="touchScreen">
     	<x-header class="balck-header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{topBar}}</x-header>
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
-			<div class="wrapper">
+			<div class="wrapper" style="padding-bottom: 80px;">
 				<div class="topBar">
 					<div class="title">{{topTitle}}</div>
 					<flow>
-						<flow-state state="1" title="预约" is-done></flow-state>
+						<flow-state title="预约" is-done></flow-state>
 						<flow-line line-span=224 tip="ing" :is-done="appointmentDone"></flow-line>
-						<flow-state state="2" title="打款" :is-done="giveMoneyDone"></flow-state>
+						<flow-state title="打款" :is-done="giveMoneyDone"></flow-state>
 						<flow-line line-span=224 :is-done="giveMoneyIng"></flow-line>
-						<flow-state state="3" title="合同管理" :is-done="contractManage"></flow-state>
+						<flow-state title="合同管理" :is-done="contractManage"></flow-state>
 					</flow>
 				</div>
 				<div class="emailReason"  v-if="uploadContract">
@@ -22,7 +22,7 @@
 				</div>
 				<div class="info">
 					<mt-cell title="预约信息" class="tit">
-						<i slot="icon" class="iconfont">&#xe650;</i>
+						<!-- <i slot="icon" class="iconfont">&#xe650;</i> -->
 					</mt-cell>
 					<div class="cont">
 						<mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell>
@@ -52,19 +52,19 @@
 						<mt-cell title="已打款审核通过时间：" v-if="alreadyPass">{{alreadyPassTime}}</mt-cell>
 					</div>
 					<mt-cell title="产品信息" class="tit">
-						<i slot="icon" class="iconfont">&#xe693;</i>
+						<!-- <i slot="icon" class="iconfont">&#xe693;</i> -->
 					</mt-cell>
 					<div class="cont">
 						<mt-cell title="产品名称：">{{product_name}}</mt-cell>
-						<mt-cell title="产品信息：" is-link @click.native="returnProductInfo"></mt-cell>
+						<mt-cell title="产品信息：" value="查看" is-link @click.native="returnProductInfo"></mt-cell>
 					</div>
 					<div class="uploadCustomer" v-if="uploadShow">
 						<mt-cell title="相关材料" class="tit">
-							<i slot="icon" class="iconfont">&#xe632;</i>
+							<!-- <i slot="icon" class="iconfont">&#xe632;</i> -->
 						</mt-cell>
 						<div class="cont">
 							<div class="fightMoney">
-								<mt-cell title="银行卡信息"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
+								<mt-cell title="银行卡信息" class="tit"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
 									<div class="warn" v-if="chooseSelectedBank">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
 									<div class="card" v-if="uploadCard">
 										<mt-field label="银行卡号:" v-model="cardnum" ref="cardInput" @change="cardNumChange"></mt-field>
@@ -112,7 +112,7 @@
 									</div>
 							</div>
 							<div class="evidence" v-if="evidenceShow">
-								<mt-cell title="打款凭证">
+								<mt-cell title="打款凭证" class="tit">
 									<mt-field class="remitAmount" label="打款金额:" v-model="remitAmount" ref="remitAmountInput"></mt-field>万
 								</mt-cell>
 								<div class="camera">
@@ -127,14 +127,17 @@
 								</div>
 							</div>
 							<div class="evidence" v-if="!evidenceShow">
-								<mt-cell class="remitAmount" title="打款凭证"><mt-cell title="打款金额:" :value="  remitAmount + '万'"></mt-cell></mt-cell>
+								<mt-cell class="remitAmount tit" title="打款凭证">
+									<span>打款金额：{{remitAmount}}万</span>
+									<!-- <mt-cell title="打款金额:" :value="  remitAmount + '万'"></mt-cell> -->
+								</mt-cell>
 								<div class="camera" v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)">
 									<img :src="item">
         							<!-- <thumbnails v-if="showImg" :imgTotal="evidenceUrl" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
 								</div>
 							</div>
 							<div class="materialsNeeded" v-if="uploadCardMaterials">
-								<mt-cell title="交易所需材料"></mt-cell>
+								<mt-cell title="交易所需材料" class="tit"></mt-cell>
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
@@ -147,7 +150,7 @@
 								</div>
 							</div>
 							<div class="materialsNeeded" v-if="!uploadCardMaterials">
-								<mt-cell title="交易所需材料"></mt-cell>
+								<mt-cell title="交易所需材料" class="tit"></mt-cell>
 								<div class="camera" v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)">
 									<img :src="item">
 								</div>
@@ -156,7 +159,7 @@
 					</div>
 					<div class="refund" v-if="uploadRefund">
 						<div class="cont">
-							<mt-cell title="提交退款申请书"></mt-cell>
+							<mt-cell title="提交退款申请书" class="tit"></mt-cell>
 							<div class="camera">
 								<camera :popupVisible="popupVisible"
 									@imgHandler="imageHandler3"
@@ -179,7 +182,7 @@
 					</div>
 					<div class="mailingContract" v-if="sendEmail">
 						<mt-cell title="邮寄合同" class="tit">
-							<i slot="icon" class="iconfont">&#xe6ac;</i>
+							<!-- <i slot="icon" class="iconfont">&#xe6ac;</i> -->
 						</mt-cell>
 						<div class="cont last_cont">
 							<mt-cell title="合同编号：" :value="contractNumW"></mt-cell>
@@ -190,7 +193,7 @@
 					</div>
 					<div class="mailingContract" v-if="sendEmailW">
 						<mt-cell title="邮寄合同" class="tit">
-							<i slot="icon" class="iconfont">&#xe6ac;</i>
+							<!-- <i slot="icon" class="iconfont">&#xe6ac;</i> -->
 						</mt-cell>
 						<div class="cont">
 							<mt-field label="合同编号：" v-model="cantractNum"></mt-field>
@@ -1450,6 +1453,7 @@ export default {
 }
 </script>
 <style lang="less">
+@import '../../common/style/variable.less';
 .productAppointment{
 	font-family: PingFangSC-Regular;
 		.spaceBack{
@@ -1464,14 +1468,14 @@ export default {
 		}
 	.wrapper{
 		.topBar{
-			height: 317px;
+			height: 221px;
 			background: #fff;
 			margin-top: 20px;
 			text-align: center;
 			.title{
-				font-size: 32px;
-				color: #2672BA;
-				padding: 75px 0;
+				font-size: 36px;
+				color: @font-color-orange1;
+				padding: 30px 0;
 				font-weight: bold;
 			}
 			.weui-wepay-flow{
@@ -1509,15 +1513,15 @@ export default {
 							padding: 0 18px;
 							height: 33px;
 							line-height: 33px;
-							border: 2px solid #2672BA;
-							border-radius: 8px;
+							// border: 2px solid #2672BA;
+							// border-radius: 8px;
 							font-size: 24px;
-							color: #2672BA;
+							color: @text-font-noEdit;
 						}
 					}
 					.weui-wepay-flow__li.weui-wepay-flow__li_done{
 						.weui-wepay-flow__state{
-							background: #2672BA;
+							background: @font-color-orange1;
 							width: 18px;
 							height: 18px;
 							line-height: 18px;
@@ -1533,9 +1537,12 @@ export default {
 							width: 30px;
 							height: 30px;
 							background: #fff;
-							border: 3px solid #2672BA;
+							border: 3px solid @font-color-orange1;
 							border-radius: 50%;
 							z-index: -1;
+						}
+						.weui-wepay-flow__title-bottom {
+							color: @font-color-orange1;
 						}
 					}
 					.weui-wepay-flow__line{
@@ -1545,14 +1552,14 @@ export default {
 						background: #9099A2;
 					}
 					.weui-wepay-flow__line.weui-wepay-flow__line_done{
-						background: #2672BA;
+						background: @font-color-orange1;
 						.weui-wepay-flow__process{
 							background: transparent;
 						}
 					}
 					.weui-wepay-flow__line.weui-wepay-flow__line_ing{
 						.weui-wepay-flow__process{
-							background: #2672BA;
+							background: @font-color-orange1;
 							height: 6px;
 						}
 						.weui-wepay-flow__info-top{
@@ -1603,6 +1610,22 @@ export default {
 					font-weight: bold;
 					padding: 0 20px;
 					background-image: none;
+					.mint-cell-text {
+						font-family: PingFangSC-Medium;
+						font-size: 32px;
+						color: #4A4A4A;
+						position: relative;
+						padding-left: 15px;
+						&::before {
+							position: absolute;
+							width: 6px;
+							height: 30px;
+							background-color: @font-color-orange1;
+							content: '';
+							top: 8px;
+							left: 0;
+						}
+					}
 				}
 			}
 			.cont{
@@ -1661,12 +1684,12 @@ export default {
 							}
 						}
 						.mint-cell-value{
-							color: #666;
+							color: #4A4A4A;
 						}
 						.mint-cell-allow-right::after{
 							width: 18px;
 							height: 18px;
-							color: #999;
+							color: @text-font-noEdit;
 							border-width: 3px;
 							border-bottom-width: 0;
 							border-left-width: 0;
@@ -1723,16 +1746,16 @@ export default {
 			.submitBtn{
 				text-align: center;
 				.mint-button.mint-button--primary.mint-button--normal{
-					width: 710px;
-					height: 72px;
+					width: 670px;
+					height: 88px;
 					margin-top: 10px;
 					margin-bottom: 30px;
 					padding: 0;
-					background: #2672BA;
-					border-radius: 8px;
+					background: linear-gradient(to right, #DFC189, #BD9D62);
+					border-radius: 4px;
 					label{
 						font-family: PingFangSC-Regular;
-						font-size: 28px;
+						font-size: 36px;
 						color: #FFFFFF;
 					}
 				}
