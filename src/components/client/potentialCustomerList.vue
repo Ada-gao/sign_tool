@@ -223,9 +223,9 @@
                          @handlerExpand="handlerExpand"
                          @handlerFlag="handlerFlag"></remark-list>
           </section>
-          <div class="add_remark">输入备注信息...</div>
-          <!--<input class="add_remark" placeholder="输入备注信息..." v-model="remarkInfo"/>-->
-          <!--<button @click="submitAddNew">添加备注</button>-->
+          <!-- <div class="add_remark">输入备注信息...</div> -->
+          <input class="add_remark" placeholder="输入备注信息..." v-model="remarkInfo"/>
+          <button @click="submitAddNew">添加备注</button>
         </group>
       </div>
     </div>
@@ -473,6 +473,7 @@
           }
           return fmt
         }
+        console.log('ggggg....')
         if (!this.remarkInfo || this.remarkInfo.trim().length === 0) return
 
         let params = {

@@ -1,11 +1,11 @@
 <template>
-	<div class="remarkPage">
+	<div id="remark-page">
 		<x-header :left-options="{backText: ''}">备注列表</x-header>
 		<div class="wrapper">
 			<div class="search">
 				<div class="toggle-button">
-					<button class="btn btn-no-radius" :class="{'btn-checked': isChecked}" @click="checkIndex(1)" style="border-right: none;">时间</button>
-					<button class="btn btn-no-radius" :class="{'btn-checked': !isChecked}" @click="checkIndex(2)">搜索</button>
+					<span class="btn-time" :class="{'btn-checked': isChecked}" @click="checkIndex(1)">时间</span>
+					<span class="btn-search" :class="{'btn-checked': !isChecked}" @click="checkIndex(2)">搜索</span>
 				</div>
 				<div class="toggle-item">
 					<div class="item01" v-show="isChecked">
@@ -33,20 +33,26 @@
 					</div>
 					<div class="item02" v-show="!isChecked">
 						<input type="text" class="text-search" v-model="keyValue" placeholder="搜索 关键字"/>
-						<i class="iconfont" @click="search()">&#xe64e;</i>
+						<i class="iconfont absolute-center-y" @click="search()">&#xe609;</i>
 					</div>
 				</div>
 			</div>
-			<remark-list :list="remarkList" v-if="show"></remark-list>
-      <div class="noRemark" v-if="!show">
-        <img src="static/img/remarkInfo.png" alt="">
-        <div>暂时没有备注信息</div>
+      <div class="white-space"></div>
+			<remark-list :list="remarkList"
+                   @handlerExpand="handlerExpand"
+                   @handlerFlag="handlerFlag"
+                   v-if="show"></remark-list>
+      <div class="no-remark text-center" v-if="!show">
+        <div class="warn absolute-center-xy">
+          <i class="iconfont">&#xe869;</i>
+          <p>暂无备注</p>
+        </div>
       </div>
-      <x-dialog v-model="stopDialog" class="dialog-demo errDialog" hide-on-blur>
+      <!-- <x-dialog v-model="stopDialog" class="dialog-demo errDialog" hide-on-blur>
           <i class="iconfont noS">&#xe626;</i>
           <div class="err">{{errTip}}</div>
           <x-button @click.native="noSelectSure" type="primary">确 定</x-button>
-      </x-dialog>
+      </x-dialog> -->
 		</div>
 	</div>
 </template>
@@ -56,6 +62,7 @@ import { XHeader, ButtonTab, ButtonTabItem, Datetime, Group, Calendar, XDialog, 
 import RemarkList from '@/base/remarkList/index'
 import { formatDate } from '@/common/js/date'
 import { checkAllCustomerRemarks } from '@/service/api/customers'
+import { Toast } from 'mint-ui'
 
 export default {
   components: {
@@ -81,8 +88,8 @@ export default {
       remarkList: [],
       startList: [],
       keyValue: '',
-      stopDialog: false,
-      errTip: '',
+      // stopDialog: false,
+      // errTip: '',
       show: true
   	}
 	},
@@ -111,8 +118,11 @@ export default {
           this.remarkList = res.data
         })
       } else {
-        this.stopDialog = true
-        this.errTip = '开始时间不能大于结束时间'
+        // this.stopDialog = true
+        Toast({
+          message: '开始时间不能大于结束时间'
+        })
+        // this.errTip = '开始时间不能大于结束时间'
       }
 		},
 		handleConfirm2 (val) {
@@ -126,13 +136,16 @@ export default {
           this.remarkList = res.data
         })
       } else {
-        this.stopDialog = true
-        this.errTip = '结束时间不能小于开始时间'
+        Toast({
+          message: '结束时间不能小于开始时间'
+        })
+        // this.stopDialog = true
+        // this.errTip = '结束时间不能小于开始时间'
       }
     },
-    noSelectSure () {
-      this.stopDialog = false
-    },
+    // noSelectSure () {
+    //   this.stopDialog = false
+    // },
     search () {
       let obj = {
         q: this.keyValue
@@ -140,6 +153,12 @@ export default {
       checkAllCustomerRemarks(obj).then(res => {
         this.remarkList = res.data
 		  })
+    },
+    handlerFlag (data) {
+      this.remarkList[data.index].flag = data.flag
+    },
+    handlerExpand (data) {
+      this.remarkList[data.index].expand = data.expand
     }
   },
   mounted () {
@@ -157,46 +176,53 @@ export default {
 </script>
 
 <style lang="less">
-.remarkPage{
+@import "../../common/style/variable.less";
+#remark-page{
   height: 100%;
-	// .vux-header{
-  //   	height: 128px;
-  //   .vux-header-title{
-  //     height: 100%;
-  //     line-height: 128px;
-  //     font-size: 36px;
-  //   }
-  // }
+	.vux-header{
+    background: @header-bg;
+    .vux-header-left{
+      .left-arrow:before{
+        border-color: @text-font-color;
+      }
+    }
+    .vux-header-title{
+      color: @back-color-white;
+    }
+  }
   .wrapper{
-    // padding-top: 128px;
-    height: calc(100% - 118px);
-    background-color: #F5F5F5;
+    background: @back-color-white;
     .search {
         text-align: center;
-        height: 237px;
-        margin-bottom: 19px;
+        height: 247px;
+        // margin-bottom: 19px;
         background: #fff;
         .toggle-button {
           display: inline-block;
-          margin-top: 40px;
-          margin-bottom: 50px;
-          font-size: 0px;
-          .btn.btn-no-radius{
-            width: 193px;
-            font-family: PingFangSC-Regular;
-            font-size: 30px;
-            color: #666666;
-            border-radius: 0;
-            border: 1px solid #979797;
+          margin-top: 36px;
+          margin-bottom: 51px;
+          // width: 385px;
+          height: 59px;
+          line-height: 59px;
+          border: 1px solid @font-color-9E;/*no*/
+          border-radius: 5px;/*no*/
+          overflow: hidden;
+          font-family: @font-family-R;
+          font-size: @font-size-thirty;/*px*/
+          color: #666666;
+          .btn-time, .btn-search{
+            display: inline-block;
+            width: 192px;
+            height: 58px;
+            border-radius: 5px;/*no*/
           }
-          .btn.btn-no-radius.btn-checked{
-            background-color: #0083c5;
-            color: #fff;
+          .btn-checked{
+            background: @text-font-color;
+            color: @back-color-white;
           }
         }
         .toggle-item {
-          margin-bottom: 40px;
-          height: 60px;
+          height: 70px;
           .item01,.item02 {
             width: 100%;
             height: 100%;
@@ -206,27 +232,24 @@ export default {
               margin: 0 43px;
             }
             .text-search {
-              width: 660px;
+              width: 665px;
               height: 70px;
-              text-indent: 30px;
+              text-indent: 20px;
+              font-family: @font-family-R;
               font-size: 26px;
-              color: #999999;
-              border: 1px solid #999999;
-              border-radius: 10px;
+              color: @font-color-999;
+              border: 1px solid #999999;/*no*/
+              border-radius: 10px;/*no*/
             }
             i {
-                position: absolute;
-                top: 50%;
                 right: 70px;
-                transform: translateY(-50%);
-                -webkit-transform: translateY(-50%);
-                font-size: 45px; /*px*/
+                font-size: 35px; /*px*/
                 color: #D8D8D8;
               }
             .time-search1,
             .time-search2 {
               width: 240px;
-              height: 60px;
+              height: 70px;
               display: inline-block;
               position: relative;
               background-color: #fff;
@@ -241,87 +264,73 @@ export default {
           .item02{
             height: 70px;
           }
-          // .item02 {
-          // 	.weui-cells {
-          // 		height: 60px;
-          // 	}
-          // }
           .mint-popup.mint-datetime.mint-popup-bottom{
             .picker.mint-datetime-picker{
               .picker-toolbar{
                 height: 44px;
                 .mint-datetime-action.mint-datetime-cancel,.mint-datetime-action.mint-datetime-confirm{
                   line-height: 44px;
-                  font-size: 28px;
-                  color: #2672BA;
+                  font-size: 28px;/*px*/
+                  color: @text-font-color;
                 }
               }
-              // .picker-items{
-              //   .picker-item{
-              //     height: 44px !important;
-              //     line-height: 44px !important;
-              //   }
-              //   .picker-center-highlight{
-              //     height: 44px !important;
-              //     margin-top: -16px !important;
-              //   }
-              // }
             }
           }
         }
       }
-      // .vux-no-group-title {
-      //   height: 100%!important;
-      // }
-      .noRemark{
-        height: calc(100% - 256px);
-        text-align: center;
-        padding-top: 190px;
-        img{
-          width: 550px;
-          margin-bottom: 90px;
-        }
-        div{
-          font-family: PingFangSC-Regular;
-          font-size: 32px;
-          color: #888888;
+      .white-space{
+        height: 30px;
+        background: @back-color-white;
+      }
+      .no-remark{
+        .warn{
+          i{
+            font-size: 150px;/*px*/
+            color: @back-color-E8;
+          }
+          p{
+            font-family: @font-family-R;
+            font-size: @font-size-twentyS;
+            color: #ccc;
+            margin-top: -25px;
+          }
         }
       }
-      .vux-x-dialog.errDialog{
-        .weui-dialog{
-        width: 580px;
-        height: 345px;
-        background: #FFFFFF;
-        border-radius: 10px;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%,-50%);
-        padding: 0;
-        text-align: center;
-        .noS{
-          display: inline-block;
-          font-size: 100px;
-          color: #C61D1A;
-          margin: 40px 0;
-        }
-        .err{
-          // margin-top: 30px;
-          margin-bottom: 40px;
-          font-family: PingFangSC-Regular;
-          font-size: 30px;
-          color: #333333;
-        }
-        .weui-btn.weui-btn_primary{
-          background: #2A7DC1;
-          border-radius: 10px;
-          width: 280px;
-          height: 80px;
-          font-family: PingFangSC-Medium;
-          font-size: 36px;
-          color: #F0F0F0;
-        }
-      }
-    }
+    //   .vux-x-dialog.errDialog{
+    //     .weui-dialog{
+    //     width: 580px;
+    //     height: 345px;
+    //     background: #FFFFFF;
+    //     border-radius: 10px;
+    //     top: 50% !important;
+    //     left: 50% !important;
+    //     transform: translate(-50%,-50%);
+    //     padding: 0;
+    //     text-align: center;
+    //     .noS{
+    //       display: inline-block;
+    //       font-size: 100px;
+    //       color: #C61D1A;
+    //       margin: 40px 0;
+    //     }
+    //     .err{
+    //       // margin-top: 30px;
+    //       margin-bottom: 40px;
+    //       font-family: PingFangSC-Regular;
+    //       font-size: 30px;
+    //       color: #333333;
+    //     }
+    //     .weui-btn.weui-btn_primary{
+    //       background: #2A7DC1;
+    //       border-radius: 10px;
+    //       width: 280px;
+    //       height: 80px;
+    //       font-family: PingFangSC-Medium;
+    //       font-size: 36px;
+    //       color: #F0F0F0;
+    //     }
+    //   }
+    // }
   }
 }
 </style>
