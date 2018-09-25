@@ -39,8 +39,8 @@
         <span class="left">
           产品期限
           <p v-if="item.investment_horizon_unit === '0'">{{item.investment_horizon}}月</p>
-          <p v-if="item.investment_horizon_unit === '1'">{{item.investment_horizon}}年</p>
-          <p v-if="item.investment_horizon_unit === '2'">{{item.investment_horizon}}天</p>
+          <p v-else-if="item.investment_horizon_unit === '1'">{{item.investment_horizon}}年</p>
+          <p v-else-if="item.investment_horizon_unit === '2'">{{item.investment_horizon}}天</p>
         </span>
         <span class="right">
           起投金额
@@ -59,16 +59,16 @@
           <tr>
             <td>购买人群</td>
             <td v-if="item.buying_crowds === '0'">大陆</td>
-            <td v-if="item.buying_crowds === '1'">港澳台</td>
-            <td v-if="item.buying_crowds === '2'">境外</td>
+            <td v-else-if="item.buying_crowds === '1'">港澳台</td>
+            <td v-else-if="item.buying_crowds === '2'">境外</td>
           </tr>
         </table>
         <table border="0" cellspacing="0" cellpadding="0" v-if="show">
           <tr>
             <td>产品期限</td>
             <td v-if="item.investment_horizon_unit === '0'">{{item.investment_horizon}}月</td>
-            <td v-if="item.investment_horizon_unit === '1'">{{item.investment_horizon}}年</td>
-            <td v-if="item.investment_horizon_unit === '2'">{{item.investment_horizon}}天</td>
+            <td v-else-if="item.investment_horizon_unit === '1'">{{item.investment_horizon}}年</td>
+            <td v-else-if="item.investment_horizon_unit === '2'">{{item.investment_horizon}}天</td>
           </tr>
           <tr><td>募集额度</td><td>{{item.collection_amount}}</td></tr>
           <tr><td>募集人数</td><td>{{item.product_lp}}</td></tr>
@@ -81,10 +81,10 @@
           <tr>
             <td>付息方式</td>
             <td v-if="item.interest_payment === '0'">无</td>
-            <td v-if="item.interest_payment === '1'">季度付息</td>
-            <td v-if="item.interest_payment === '2'">自然季度付息</td>
-            <td v-if="item.interest_payment === '3'">半年度付息</td>
-            <td v-if="item.interest_payment === '4'">按年付息</td>
+            <td v-else-if="item.interest_payment === '1'">季度付息</td>
+            <td v-else-if="item.interest_payment === '2'">自然季度付息</td>
+            <td v-else-if="item.interest_payment === '3'">半年度付息</td>
+            <td v-else-if="item.interest_payment === '4'">按年付息</td>
           </tr>
           <tr>
             <td>认购费</td>

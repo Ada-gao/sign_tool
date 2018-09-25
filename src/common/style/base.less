@@ -215,6 +215,26 @@ b {
   }
 }
 
+input::-webkit-input-placeholder {
+  font-family: @font-family-R;
+  color: @text-font-noEdit;
+}
+input:-moz-placeholder {
+  /* FF 4-18 */
+  font-family: @font-family-R;
+  color: @text-font-noEdit;
+}
+input::-moz-placeholder {
+  /* FF 19+ */
+  font-family: @font-family-R;
+  color: @text-font-noEdit;
+}
+input:-ms-input-placeholder {
+  /* IE 10+ */
+  font-family: @font-family-R;
+  color: @text-font-noEdit;
+}
+
 /*提交按钮样式*/
 .mint-button.mint-button--default{
   display: block;
@@ -284,6 +304,30 @@ b {
 // 必填项icon
 .must_fill {
   position: relative;
+  .new_field {
+    height: 110px;
+    padding: 0 40px;
+    /*border-top: 1px solid #d9d9d9;*/
+    .mint-cell-wrapper {
+      padding: 0;
+    }
+    .mint-cell-title {
+      font-family: PingFangSC-Regular;
+      color: #333;
+      font-size: 30px;
+      width: auto;
+      height: 100%;
+    }
+    .mint-field-core {
+      font-family: PingFangSC-Medium;
+      text-align: right;
+      font-size: 30px;
+      color: #4a4a4a;
+    }
+    .mint-field-state {
+      display: none;
+    }
+  }
   .necessary_icon,
   .weui-cells i {
     position: absolute;
@@ -295,10 +339,77 @@ b {
     font-size: 26px!important;
   }
   .radio_box {
+    padding: 0 40px;
+    background-color: #fff;
+    height: 110px;
+    .mint-radiolist.radio_item{
+      height: 100%;
+      position: relative;
+      .mint-radiolist-title{
+        display: inline-block;
+        line-height: 110px;
+        vertical-align: top;
+        padding: 0;
+      }
+      .mint-cell{
+        display: inline-block;
+        margin-top: 1px;
+        position: absolute;
+        /*float: right;*/
+        .mint-radio-label {
+          font-size: 28px;
+          color: #4a4a4a;
+          font-family: PingFangSC-Medium;
+        }
+      }
+    }
+    .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
+       right: 200px;
+    }
+    .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
+      right: 0;
+    }
+    .radio_item.mint-radiolist .mint-cell:last-child {
+      background-image: none;
+    }
+    .radio_item {
+      .mint-radiolist-title {
+        font-size: 30px;
+        width: 150px;
+        color: #333;
+        line-height: 42px;
+        padding: 18px 0 10px;
+        margin: 0;
+        color: #4a4a4a;
+      }
+      .mint-radiolist-label {
+        margin-top: -6px;
+      }
+      .mint-radio-core {
+        width: 28px;
+        height: 28px;
+        border-radius: 100%;
+        border: 1px solid #979797;/*no*/
+      }
+      .mint-radio-input:checked + .mint-radio-core {
+        background-color: #fff;
+        border-color: #2672BA;
+      }
+      .mint-radio-core::after {
+        width: 16px;
+        height: 16px;
+      }
+    }
+    .mint-cell-wrapper {
+      background-image: none;
+      -webkit-background-image: none;
+    }
+  }
+  .radio_box {
     .mint-cell {
       .mint-cell-wrapper {
         .mint-cell-title {
-          height: 0;
+          // height: 0;
         }
       }
     }

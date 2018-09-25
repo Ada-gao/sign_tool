@@ -1,11 +1,105 @@
 <template>
   <div class="perfect_infos activity_list" @touchmove="touchScreen">
     <!--<x-header :left-options="{backText: ''}">实名认证</x-header>-->
-    <mt-header fixed title="实名认证" class="header">
+    <!-- <mt-header fixed title="实名认证" class="header">
       <router-link :to="{name: 'PotentialCustomerList'}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
+    <x-header :left-options="{backText: '', preventGoBack:true}"
+              @on-click-back="toLinkPrevent">实名认证</x-header>
+    <div class="perfect_group wrapper">
+      <group>
+        <div class="space"></div>
+        <cell :arrow-direction="showCont1 ? 'down' : 'up'"
+              :border-intent="false"
+              title="客户信息"
+              class="bl_box"
+              @click.native="showCont1 = !showCont1"
+              is-link>
+          <i slot="icon" class="border_left"></i>
+        </cell>
+        <section v-if="!showCont1">
+          <div class="cell_box">
+            <span class="cell_left">客户姓名：</span>
+            <span class="cell_right">{{form.name}}</span>
+          </div>
+          <div class="bb"></div>
+          <div class="must_fill">
+            <div class="radio_box new_field" style="border:0">
+              <i class="iconfont necessary_icon">&#xe8d4;</i>
+              <mt-radio
+                class="radio_item"
+                title="客户性别："
+                v-model="form.gender"
+                @change="radioChange"
+                :options="['女', '男']">
+              </mt-radio>
+            </div>
+            <div class="bb"></div>
+          </div>
+          <div class="cell_box">
+            <span class="cell_left">客户编号：</span>
+            <span class="cell_right">{{form.client_no}}</span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box">
+            <span class="cell_left">手机号码：</span>
+            <span class="cell_right">{{form.mobile}}(已认证)</span>
+          </div>
+          <div class="bb"></div>
+        </section>
+      </group>
+      <div class="space"></div>
+      <group>
+        <div class="add_tit">
+          <span class="border_left"></span>
+          <span class="text">证件信息</span>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <div class="time_box" @click="showCode">
+              <span class="date_tit">证件类型：</span>
+              <span class="date_time">{{form.id_type === '' ? form.id_type : '请选择证件类型'}}</span>
+              <i class="iconfont">&#xe8d5;</i>
+            </div>
+            <div @touchmove.prevent v-if="showCerCode">
+              <mt-popup v-model="showCerCode"
+                        position="bottom"
+                        class="cercode_box"
+                        popup-transition="popup-fade">
+                <mt-picker :slots="slots"
+                          :showToolbar="true"
+                          :itemHeight="itemHeight"
+                          :visibleItemCount="3"
+                          @change="onValuesChange">
+                  <div class="toolbar">
+                    <span class="cancel" @click="cancelCerCode">取消</span>
+                    <span class="ensure" @click="ensureCerCode">确定</span>
+                  </div>
+                </mt-picker>
+              </mt-popup>
+            </div>
+          </div>
+          <div class="bb"></div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <x-input title="证件号码："
+                     placeholder="请输入证件号码"
+                     class="cell_id"
+                     v-model="form.id_no"
+                     ref="certificateCode"
+                     :show-clear="false"
+                     :max="50"
+            ></x-input>
+          </div>
+          <div class="bb"></div>
+        </div>
+      </group>
+    </div>
     <group class="perfect_group wrapper">
       <div class="add_tit">
         <i class="iconfont">&#xe62c;</i>
@@ -28,7 +122,7 @@
       <div class="time_box" @click="showCode">
         <span class="date_tit">证件类型：</span>
         <span class="date_time">{{form.id_type}}</span>
-        <i class="iconfont">&#xe731;</i>
+        <i class="iconfont">&#xe8d5;</i>
       </div>
       <div @touchmove.prevent v-if="showCerCode">
         <mt-popup v-model="showCerCode"
@@ -224,7 +318,8 @@
             textAlign: 'center'
           }
         ],
-        idType: ''
+        idType: '',
+        showCont1: false
       }
     },
     beforeRouteEnter (to, from, next) {
@@ -288,6 +383,9 @@
     methods: {
       touchScreen () {
         document.getElementById('ipt').blur()
+      },
+      toLinkPrevent () {
+        this.$router.push({name: 'PotentialCustomerList'})
       },
       radioChange (value) {
         this.gender = value
@@ -449,6 +547,13 @@
 </script>
 
 <style lang="less">
+@import '../../common/style/variable';
+.perfect_group{
+  background: #fff;
+  font-family: @font-family-R;
+  font-size: 30px;
+  color: #4A4A4A;
+}
   a:hover {
     text-decoration: none;
   }
@@ -463,76 +568,76 @@
       border-bottom: 1px solid #ccc;
     }
   }
-  .radio_box {
-    padding: 0 20px;
-    background-color: #fff;
-    height: 82px;
-    line-height: 82px;
-    border-bottom: 1px solid #ccc;
-    .radio_item.mint-radiolist .mint-cell {
-      display: inline-block;
-      position: absolute;
-      height: 80px;
-      // padding: 20px 0;
-      .mint-cell-wrapper{
-        height: 100%;
-        line-height: 100%;
-      }
-      .mint-radio-label {
-        font-size: 28px;
-        color: #666;
-      }
-    }
-    // .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
-    //   left: 80px;
-    // }
-    .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
-      // right: 135px;
-      margin-left: 200px;
-    }
-    .radio_item.mint-radiolist .mint-cell:last-child {
-      background-image: none;
-    }
-    .radio_item {
-      .mint-radiolist-title {
-        font-size: 30px;
-        color: #333;
-        line-height: 42px;
-        // padding: 20px 0 20px;
-        margin: 0;
-        display: inline-block;
-      }
-      .mint-radio-core {
-        width: 28px;
-        height: 28px;
-        border-radius: 8px;
-        border-color: #979797;
-        border-width: 2px;
-      }
-      .mint-radio-input:checked + .mint-radio-core {
-        background-color: #fff;
-        border-color: #2672BA;
-      }
-      .mint-radio-input:checked + .mint-radio-core::after {
-        background-color: #2672BA;
-      }
-      .mint-radio-core::after {
-        width: 16px;
-        height: 16px;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        margin: auto;
-        /*width: 14px;*/
-        /*height: 14px;*/
-      }
-    }
-    .mint-cell-wrapper {
-      background-image: none;
-      -webkit-background-image: none;
-    }
-  }
+  // .radio_box {
+  //   padding: 0 20px;
+  //   background-color: #fff;
+  //   height: 82px;
+  //   line-height: 82px;
+  //   border-bottom: 1px solid #ccc;
+  //   .radio_item.mint-radiolist .mint-cell {
+  //     display: inline-block;
+  //     position: absolute;
+  //     height: 80px;
+  //     // padding: 20px 0;
+  //     .mint-cell-wrapper{
+  //       height: 100%;
+  //       line-height: 100%;
+  //     }
+  //     .mint-radio-label {
+  //       font-size: 28px;
+  //       color: #666;
+  //     }
+  //   }
+  //   // .radio_item.mint-radiolist .mint-cell:nth-of-type(1) {
+  //   //   left: 80px;
+  //   // }
+  //   .radio_item.mint-radiolist .mint-cell:nth-of-type(2) {
+  //     // right: 135px;
+  //     margin-left: 200px;
+  //   }
+  //   .radio_item.mint-radiolist .mint-cell:last-child {
+  //     background-image: none;
+  //   }
+  //   .radio_item {
+  //     .mint-radiolist-title {
+  //       font-size: 30px;
+  //       color: #333;
+  //       line-height: 42px;
+  //       // padding: 20px 0 20px;
+  //       margin: 0;
+  //       display: inline-block;
+  //     }
+  //     .mint-radio-core {
+  //       width: 28px;
+  //       height: 28px;
+  //       border-radius: 8px;
+  //       border-color: #979797;
+  //       border-width: 2px;
+  //     }
+  //     .mint-radio-input:checked + .mint-radio-core {
+  //       background-color: #fff;
+  //       border-color: #2672BA;
+  //     }
+  //     .mint-radio-input:checked + .mint-radio-core::after {
+  //       background-color: #2672BA;
+  //     }
+  //     .mint-radio-core::after {
+  //       width: 16px;
+  //       height: 16px;
+  //       left: 0;
+  //       top: 0;
+  //       bottom: 0;
+  //       right: 0;
+  //       margin: auto;
+  //       /*width: 14px;*/
+  //       /*height: 14px;*/
+  //     }
+  //   }
+  //   .mint-cell-wrapper {
+  //     background-image: none;
+  //     -webkit-background-image: none;
+  //   }
+  // }
   .perfect_infos {
     .mint-header.header {
       height: 98px;
@@ -558,7 +663,8 @@
           height: 56px;
           line-height: 56px;
           padding: 0 30px;
-          color: #2672ba;
+          // color: #2672ba;
+          color: @text-font-color;
           font-size: 34px;
           position: absolute;
           border-bottom: 1px solid #ddd;
@@ -577,27 +683,31 @@
     }
     .time_box {
       position: relative;
-      height: 82px;
-      line-height: 82px;
-      padding: 0 20px;
-      border-bottom: 1px solid #ddd;
+      height: 100%;
+      // height: 110px;
+      // line-height: 110px;
+      // padding: 0 20px;
+      // border-bottom: 1px solid #ddd;
       span {
-        font-size: 32px;
+        font-size: @font-size-thirty;/*px*/
       }
       span.date_tit {
-        color: #333;
+        color: @font-color-4A;
+        line-height: 110px;
       }
       span.date_time {
-        color: #999;
+        color: #DCDCDC;
         right: 56px;
         position: absolute;
+        line-height: 110px;
       }
       i {
+        line-height: 110px;
         position: absolute;
         right: 0;
-        margin-right: 0;
+        margin-right: -15px;
         font-size: 55px !important;
-        color: #C8C8CD;
+        color: #DADADA;
       }
     }
     .datetime_picker {
@@ -736,25 +846,25 @@
       padding-left: 20px;
     }
     .weui-cells .weui-cell {
-      padding: 0 20px;
-      line-height: 82px;
-      height: 82px;
-      color: #333;
-      border-bottom: 1px solid #ddd;
+      // padding: 0 20px;
+      // line-height: 82px;
+      // height: 82px;
+      // color: #333;
+      // border-bottom: 1px solid #ddd;
     }
-    .weui-cells .weui-cell.address {
-      height: 130px;
-      align-items: flex-start;
-      .weui-cell__ft {
-        display: none;
-      }
-      .vux-label {
-        color: #333;
-      }
-    }
-    .weui-cells:after {
-      border-bottom: none;
-    }
+    // .weui-cells .weui-cell.address {
+    //   height: 130px;
+    //   align-items: flex-start;
+    //   .weui-cell__ft {
+    //     display: none;
+    //   }
+    //   .vux-label {
+    //     color: #333;
+    //   }
+    // }
+    // .weui-cells:after {
+    //   border-bottom: none;
+    // }
     .upload div {
       line-height: 82px;
       padding-left: 20px;
@@ -847,9 +957,11 @@
     .cell_certificate {
     }
     .cell_id {
+      height: 110px;
       .weui-input {
-        color: #999;
+        color: #DCDCDC;
         text-align: right;
+        font-size: @font-size-thirty;/*px*/
       }
     }
   }
