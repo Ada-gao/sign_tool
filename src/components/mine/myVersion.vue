@@ -1,14 +1,15 @@
 <template>
-  <div class="vpage">
+  <div id="v-page">
     <x-header :left-options="{backText: ''}">关于我们</x-header>
     <div class="wrapper">
-      <div class="logo">
-			  <img src="static/img/logo.png">
+      <div class="logo text-center absolute-center-x">
+			  <img src="static/img/shitu-logo.png">
+        <p class="tit">侍 徒</p>
+        <p>客户端版本号： 1.0</p>
       </div>
-      <div class="tips">
-        <p class="info">客户端版本号： 1.0</p>
-        <p class="info">版权所有：上海数赟科技有限公司</p>
-        <p class="copyRight">Copyright © 2018 suxiang.All Rights Reserved</p>
+      <div class="tips text-center absolute-center-x">
+        <p>版权所有：上海数赟科技有限公司</p>
+        <p class="copyRight">Copyright © 2018 shuyun.All Rights Reserved</p>
       </div>
     </div>
   </div>
@@ -30,46 +31,44 @@ export default {
 </script>
 
 <style lang="less">
-.vpage{
+@import "../../common/style/variable.less";
+#v-page{
   height: 100%;
-  // .vux-header{
-  //   height: 128px;
-  //   .vux-header-title{
-  //     height: 100%;
-  //     line-height: 128px;
-  //     font-size: 36px;
-  //   }
-  // }
+  .vux-header{
+    background: @header-bg;
+    .vux-header-left{
+      .left-arrow:before{
+        border-color: @text-font-color;
+      }
+    }
+    .vux-header-title{
+      color: @back-color-white;
+    }
+  }
   .wrapper {
     // padding-top: 128px;
-    background: #fff;
-    height: calc(100% - 118px);
+    height: 100%;
+    background: @back-color-white;
+    color: @font-color-9B;
+    font-size: @font-size-twentyE;/*px*/
     .logo{
-      margin: 352px auto 166px;
-      width: 157px;
-      height: 161px;
+      font-family: @font-family-R;
+      margin-top: 294px;
       img{
-        width: 100%;
-        height: 100%;
+        width: 128px;
+      }
+      .tit{
+        font-size: 44px;/*px*/
+        color: #393939;
       }
     }
     .tips {
-      font-family: PingFangSC-Regular;
-      margin-top: 60px;
-      text-align: center;
-      line-height: 60px;
-      font-size: 30px; /*px*/
-      color: #333;
-      p{
-        height: 50px;
-      }
-      .info{
-        font-size: 36px;
-        color: #333333;
-      }
+      width: 505px;
+      position: absolute;
+      bottom: 40px;
       .copyRight{
-        font-size: 28px;
-        color: #999999;
+        margin-top: 15px;
+        font-size: @font-size-twentyF;/*px*/
       }
     }
   }
