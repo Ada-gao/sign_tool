@@ -63,7 +63,7 @@
       </div>
       <div class="sao">扫一扫二维码，关注理财师</div> -->
       <div class="info absolute-center-x">
-        <i class="iconfont cancle" @click="hideQrcode">&#xe7dd;</i>        
+        <i class="iconfont cancle" @click="hideQrcode">&#xe7dd;</i>
         <div class="top"></div>
         <div class="img absolute-center-x"><img class="absolute-center-xy" src="static/img/男.png" alt=""></div>
         <div class="cont text-center">
