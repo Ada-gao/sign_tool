@@ -29,7 +29,7 @@
 						<mt-cell title="客户姓名：" is-link @click.native="chooseName" v-if="showNameClick">{{name}}</mt-cell>
 						<mt-cell title="客户姓名：" v-if="!showNameClick" :value="name"></mt-cell>
 						<mt-cell title="手机号码：" :value="cMob"></mt-cell>
-						<mt-field label="预约金额：" class="inputMoney" placeholder="" v-model="money" v-if="showMoneyClick">万</mt-field>
+						<mt-field label="预约金额(万)：" class="inputMoney" placeholder="请选择预约金额" v-model="money" v-if="showMoneyClick"></mt-field>
 						<!-- <mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell> -->
 						<mt-cell title="预约金额：" v-if="!showMoneyClick">{{money}}万</mt-cell>
 						<!-- <mt-popup v-model="showMoney"
@@ -1703,7 +1703,7 @@ export default {
 						line-height: 80px;
 						background-image: none;
 						.mint-cell-title{
-							width: 150px;
+							width: 170px;
 						}
 						.mint-cell-value{
 							.mint-field-core{
@@ -1725,11 +1725,11 @@ export default {
 					.mint-cell-wrapper{
 						border-bottom: 0.013333rem solid #ccc;
 						.mint-cell-title{
-							width: 155px;
+							width: 200px;
 						}
 						.mint-cell-value{
 							padding-right: 20px;
-							width: 580px;
+							width: 530px;
 							box-sizing: border-box;
 							.mint-field-core{
 								border: none;
