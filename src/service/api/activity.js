@@ -1,5 +1,6 @@
 import axios from '../../config/axios'
-const baseUrl = 'http://10.9.70.231:9999'
+import { activityUrl } from '@/config/env'
+// const baseUrl = 'http://10.9.70.231:9999'
 
 /**
  * 获取已报名列表
@@ -8,7 +9,7 @@ const baseUrl = 'http://10.9.70.231:9999'
  */
 export function getSignedClientList (activityId) {
   return axios({
-    url: baseUrl + '/activity/financial/activityClient?activityId=' + activityId,
+    url: activityUrl + 'financial/activityClient?activityId=' + activityId,
     method: 'get'
   })
 }
@@ -20,7 +21,7 @@ export function getSignedClientList (activityId) {
  */
 export function getActivityDet (id) {
   return axios({
-    url: baseUrl + '/activity/financial/activity/' + id,
+    url: activityUrl + 'financial/activity/' + id,
     method: 'get'
   })
 }
@@ -31,14 +32,14 @@ export function getActivityDet (id) {
  */
 export function getActivityList () {
   return axios({
-    url: baseUrl + '/activity/financial/activity',
+    url: activityUrl + 'financial/activity',
     method: 'get'
   })
 }
 
 export function signActivity (data) {
   return axios({
-    url: baseUrl + '/activity/financial/activityClient',
+    url: activityUrl + 'financial/activityClient',
     data,
     method: 'post'
   })
@@ -51,7 +52,7 @@ export function signActivity (data) {
  */
 export function signedData (id) {
   return axios({
-    url: baseUrl + '/activity/financial/activityClient/' + id,
+    url: activityUrl + 'financial/activityClient/' + id,
     method: 'get'
   })
 }
@@ -62,7 +63,7 @@ export function signedData (id) {
  */
 export function qscan (link) {
   return axios({
-    url: baseUrl + '/activity' + link,
+    url: activityUrl + link,
     method: 'put'
   })
 }
