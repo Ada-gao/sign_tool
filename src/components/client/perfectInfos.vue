@@ -98,6 +98,30 @@
           </div>
           <div class="bb"></div>
         </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <div class="time_box" @click="open('pickerStart')">
+              <span class="date_tit">证件有效期起始时间：</span>
+              <span class="date_time">{{id_start_date === '' ? '请选择有效起始时间' : id_start_date}}</span>
+              <i class="iconfont">&#xe8d5;</i>
+            </div>
+            <div @touchmove.prevent>
+              <mt-datetime-picker ref="pickerStart"
+                                  type="date"
+                                  :endDate="endDate"
+                                  :startDate="startDate"
+                                  :itemHeight="itemHeight"
+                                  class="datetime_picker"
+                                  year-format="{value} 年"
+                                  month-format="{value} 月"
+                                  date-format="{value} 日"
+                                  @confirm="dateConfirm1"
+                                  :value="id_start_date"></mt-datetime-picker>
+            </div>
+          </div>
+          <div class="bb"></div>
+        </div>
       </group>
     </div>
     <group class="perfect_group wrapper">
@@ -718,6 +742,7 @@
           height: 66px;
           line-height: 66px;
           font-size: 34px;
+          color: @text-font-color;
         }
         .mint-datetime-cancel {
           text-align: left;
