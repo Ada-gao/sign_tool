@@ -237,8 +237,8 @@ export default {
           registration_id: this.device.uuid
         }
         getVerificationCode(obj).then(res => {
-          if (res.data.message === '用户不存在') {
-            this.msgTip = '用户不存在'
+          if (res.data.code === 404) {
+            this.msgTip = res.data.message
             clearInterval(this.tiemr)
             this.timer = null
             this.show = true

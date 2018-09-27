@@ -61,7 +61,8 @@
             <i class="iconfont necessary_icon">&#xe8d4;</i>
             <div class="time_box" @click="showCode">
               <span class="date_tit">证件类型：</span>
-              <span class="date_time">{{form.id_type === '' ? form.id_type : '请选择证件类型'}}</span>
+              <span class="date_edit" v-if="form.id_type !== null">{{form.id_type}}</span>
+              <span class="date_time" v-else>请选择证件类型</span>
               <i class="iconfont">&#xe8d5;</i>
             </div>
             <div @touchmove.prevent v-if="showCerCode">
@@ -103,7 +104,8 @@
             <i class="iconfont necessary_icon">&#xe8d4;</i>
             <div class="time_box" @click="open('pickerStart')">
               <span class="date_tit">证件有效期起始时间：</span>
-              <span class="date_time">{{id_start_date === '' ? '请选择有效起始时间' : id_start_date}}</span>
+              <span class="date_edit" v-if="id_start_date !== ''">{{id_start_date}}</span>
+              <span class="date_time" v-else>请选择有效起始时间</span>
               <i class="iconfont">&#xe8d5;</i>
             </div>
             <div @touchmove.prevent>
@@ -122,9 +124,130 @@
           </div>
           <div class="bb"></div>
         </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <div class="time_box" @click="open('pickerEnd')">
+              <span class="date_tit">证件有效期结束时间：</span>
+              <span class="date_edit" v-if="id_expiration !== ''">{{id_expiration}}</span>
+              <span class="date_time" v-else>请选择有效结束时间</span>
+              <i class="iconfont">&#xe8d5;</i>
+            </div>
+            <div @touchmove.prevent>
+              <mt-datetime-picker ref="pickerEnd"
+                                  type="date"
+                                  :endDate="endDate"
+                                  :startDate="startDate"
+                                  :itemHeight="itemHeight"
+                                  class="datetime_picker"
+                                  year-format="{value} 年"
+                                  month-format="{value} 月"
+                                  date-format="{value} 日"
+                                  @confirm="dateConfirm2"
+                                  :value="id_expiration"></mt-datetime-picker>
+            </div>
+            <div class="bb"></div>
+          </div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <div class="time_box" @click="open('pickerDate')">
+              <span class="date_tit">出生日期：</span>
+              <span class="date_edit" v-if="birthday !== ''">{{birthday}}</span>
+              <span class="date_time" v-else>请选择出生日期</span>
+              <i class="iconfont">&#xe8d5;</i>
+            </div>
+            <div @touchmove.prevent>
+              <mt-datetime-picker ref="pickerDate"
+                                  type="date"
+                                  :endDate="endDate"
+                                  :startDate="startDate"
+                                  :itemHeight="itemHeight"
+                                  class="datetime_picker"
+                                  year-format="{value} 年"
+                                  month-format="{value} 月"
+                                  date-format="{value} 日"
+                                  @confirm="dateConfirm"
+                                  :value="birthday"></mt-datetime-picker>
+            </div>
+            <div class="bb"></div>
+          </div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <x-input title="地址："
+                     v-model="form.address"
+                     ref="address"
+                     :show-clear="false"
+                     class="address"
+                     id="ipt"
+            ></x-input>
+            <div class="bb"></div>
+          </div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field camera-box" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <div class="upload">
+              <div>上传证件照<span>（请上传清晰的原件或复印件）</span></div>
+            </div>
+            <div v-if="this.idSymbol === 0" class="upload_box one_upd_box">
+              <camera class="upload_cont1"
+                      :popupVisible="popupVisible1"
+                      :imageSrc="form.id_front_url"
+                      :isFromBank="fromBank"
+                      :cerId="cerId"
+                      @showPopup="showPopup1"
+                      @imgHandler="imageHandler1"
+                      @hidePopup="hidePopup1"></camera>
+            </div>
+            <div class="upload_box" v-else-if="this.idSymbol === 1">
+              <camera class="upload_cont1"
+                      :popupVisible="popupVisible1"
+                      :imageSrc="form.id_front_url"
+                      :isFromBank="fromBank"
+                      :cerId="cerId"
+                      @showPopup="showPopup1"
+                      @imgHandler="imageHandler1"
+                      @hidePopup="hidePopup1"></camera>
+              <camera class="upload_cont2"
+                      :popupVisible="popupVisible2"
+                      :imageSrc="form.id_back_url"
+                      :isFromBank="fromBank"
+                      :cerId="cerId"
+                      @imgHandler="imageHandler2"
+                      @showPopup="showPopup2"
+                      @hidePopup="hidePopup2"></camera>
+              <span class="front_class">正面</span>
+              <span class="back_class">反面</span>
+            </div>
+            <div class="bb"></div>
+          </div>
+        </div>
       </group>
+      <div class="space"></div>
+      <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
+        <span>银行卡信息</span>
+        <span class="click">
+          未认证<i class="iconfont">&#xe8d5;</i>
+        </span>
+      </div>
+      <div class="space"></div>
+      <!-- <div class="submit_form">
+        <button class="submit" @click="submitInfos">提交</button>
+      </div> -->
+      <mt-button @click.native="submitInfos">提交</mt-button>
+      <div class="space"></div>
+      <x-dialog v-model="submitDialog" class="dialog-demo quitDialog" hide-on-blur>
+        <img src="static/img/certify_right.png" alt="">
+        <div class="submit_cont">{{submitCont}}</div>
+        <!-- <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button> -->
+        <button @click="routerPush">返回潜客详情</button>
+      </x-dialog>
     </div>
-    <group class="perfect_group wrapper">
+    <!-- <group class="perfect_group wrapper">
       <div class="add_tit">
         <i class="iconfont">&#xe62c;</i>
         <span style="color: #2672ba">客户信息</span>
@@ -280,7 +403,7 @@
         <div class="submit_cont">{{submitCont}}</div>
         <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button>
       </x-dialog>
-    </group>
+    </group> -->
   </div>
 </template>
 
@@ -311,7 +434,7 @@
         submitDialog: false,
         idSymbol: 1,
         idFlag: false,
-        submitCont: '认证提交待审核中…',
+        submitCont: '认证材料已提交，审核中…',
         form: {},
         id_start_date: '',
         id_expiration: '',
@@ -392,6 +515,7 @@
       this.isSubmit = this.$route.params.isSubmit
       let perInfos = JSON.parse(getStore('perInfos'))
       if (perInfos) {
+        console.log('cvbjdcfbdjbcndk')
         this.form.gender = perInfos.gender
         this.birthday = perInfos.birthday
         this.id_start_date = perInfos.id_start_date
@@ -403,6 +527,7 @@
         this.form.id_type = this.slots[0].values[perInfos.id_type + 1]
         this.idSymbol = perInfos.id_symbol
       }
+      console.log('this.form.id_type', this.form.id_type)
     },
     methods: {
       touchScreen () {
@@ -442,8 +567,9 @@
       },
       ensureCerCode (val) {
         this.form.id_type = this.idType
+        console.log(this.form.id_type)
         if (this.idFlag) {
-          // console.log('come in')
+          console.log('come in')
           if (this.idType === '身份证') {
             this.idSymbol = 1
           } else {
@@ -523,7 +649,7 @@
           id_front_url: this.form.id_front_url,
           id_back_url: this.form.id_back_url
         }
-        console.log(params)
+        console.log(params, !params.gender)
 //        if (params.id_no) {
 //          if (params.id_type === '0' && !idcardValidate(params.id_no).stat) {
 //            this.alertCont = '请输入有效的证件号码'
@@ -663,13 +789,13 @@
   //   }
   // }
   .perfect_infos {
-    .mint-header.header {
-      height: 98px;
-      background-color: #fff;
-      font-size: 36px;
-      color: #333;
-      padding-top: 30px;
-    }
+    // .mint-header.header {
+    //   height: 98px;
+    //   background-color: #fff;
+    //   font-size: 36px;
+    //   color: #333;
+    //   padding-top: 30px;
+    // }
     .cercode_box {
       width: 100%;
       height: 300px;
@@ -719,6 +845,13 @@
         color: @font-color-4A;
         line-height: 110px;
       }
+      span.date_edit {
+        color: @font-color-4A;
+        right: 56px;
+        position: absolute;
+        line-height: 110px;
+        font-family: @font-family-M;
+      }
       span.date_time {
         color: #DCDCDC;
         right: 56px;
@@ -764,61 +897,61 @@
       border-radius: 10px;
       vertical-align: middle;
     }
-    .quitDialog,
-    .msg_dialog {
-      .weui-dialog {
-        width: 580px;
-        height: 345px;
-        background: #FFFFFF;
-        border-radius: 10px;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%);
-        padding: 0;
-        text-align: center;
-        font-family: PingFangSC-Regular;
-        .quit {
-          margin-top: 85px;
-          margin-bottom: 75px;
-          font-size: 36px;
-          color: #333333;
-        }
-        .weui-btn.weui-btn_primary {
-          display: inline-block;
-          background: #2A7DC1;
-          border-radius: 10px;
-          width: 190px;
-          height: 80px;
-          line-height: 80px;
-          font-size: 36px;
-          color: #F0F0F0;
-        }
-        .submit_i,
-        .submit_cont,
-        .weui-btn.weui-btn_primary.submit_btn {
-          position: absolute;
-          left: 50%;
-          transform: translateX(-50%);
-        }
-        .submit_i {
-          font-size: 63px;
-          top: 40px;
+    // .quitDialog,
+    // .msg_dialog {
+    //   .weui-dialog {
+    //     width: 580px;
+    //     height: 345px;
+    //     background: #FFFFFF;
+    //     border-radius: 10px;
+    //     top: 50% !important;
+    //     left: 50% !important;
+    //     transform: translate(-50%, -50%);
+    //     padding: 0;
+    //     text-align: center;
+    //     font-family: PingFangSC-Regular;
+    //     .quit {
+    //       margin-top: 85px;
+    //       margin-bottom: 75px;
+    //       font-size: 36px;
+    //       color: #333333;
+    //     }
+    //     .weui-btn.weui-btn_primary {
+    //       display: inline-block;
+    //       background: #2A7DC1;
+    //       border-radius: 10px;
+    //       width: 190px;
+    //       height: 80px;
+    //       line-height: 80px;
+    //       font-size: 36px;
+    //       color: #F0F0F0;
+    //     }
+    //     .submit_i,
+    //     .submit_cont,
+    //     .weui-btn.weui-btn_primary.submit_btn {
+    //       position: absolute;
+    //       left: 50%;
+    //       transform: translateX(-50%);
+    //     }
+    //     .submit_i {
+    //       font-size: 63px;
+    //       top: 40px;
 
-        }
-        .submit_cont {
-          font-size: 30px;
-          color: #333333;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 100%;
-          left: 0;
-        }
-        .weui-btn.weui-btn_primary.submit_btn {
-          width: 280px;
-          bottom: 32px;
-        }
-      }
-    }
+    //     }
+    //     // .submit_cont {
+    //     //   font-size: 30px;
+    //     //   color: #333333;
+    //     //   top: 50%;
+    //     //   transform: translateY(-50%);
+    //     //   width: 100%;
+    //     //   left: 0;
+    //     // }
+    //     .weui-btn.weui-btn_primary.submit_btn {
+    //       width: 280px;
+    //       bottom: 32px;
+    //     }
+    //   }
+    // }
     .msg_dialog {
       .weui-dialog {
         height: 330px;
@@ -843,17 +976,22 @@
 
     .myBank {
       background-color: #fff;
-      height: 82px;
-      line-height: 82px;
-      padding: 0 20px;
+      height: 103px;
+      line-height: 103px;
+      padding: 0 40px;
       font-size: 32px;
       color: #333;
       position: relative;
+      .click{
+        float: right;
+        padding-right: 40px;
+        color: #F05D59;
+      }
       i {
         position: absolute;
-        right: 0;
+        right: 20px;
         font-size: 66px;
-        color: #C8C8CD;
+        color: #DADADA;
       }
     }
     .grayMyBank {
@@ -890,19 +1028,25 @@
     // .weui-cells:after {
     //   border-bottom: none;
     // }
+    .camera-box{
+      height: 350px;
+      .necessary_icon{
+        top: 15%;
+      }
+    }
     .upload div {
-      line-height: 82px;
-      padding-left: 20px;
+      line-height: 110px;
+      // padding-left: 20px;
       color: #333;
-      border-bottom: 1px solid #D9D9D9;
+      // border-bottom: 1px solid #D9D9D9;
       span {
         color: #999;
       }
     }
     .upload_box {
       background-color: #fff;
-      height: 333px;
-      padding: 51px 60px;
+      height: 250px;
+      // padding: 51px 60px;
       padding-bottom: 0;
       position: relative;
       -webkit-box-sizing: border-box;
@@ -914,7 +1058,7 @@
         display: inline-block;
         position: relative;
         /*width: 270px;*/
-        width: 42%;
+        width: 280px;
         height: 180px;
         background-color: #ddd;
         line-height: 180px;
@@ -923,27 +1067,31 @@
           font-size: 115px;
           color: #fff;
         }
+        .upload_cont{
+          width: 280px;
+          height: 180px;
+        }
       }
       .upload_cont1:first-child,
       .upload_cont2:first-child {
-        margin-right: 80px;
+        margin-right: 110px;
       }
       .front_class {
-        font-size: 30px;
-        color: #333;
+        font-size: @font-size-twentyF;/*px*/
+        color: #B0B0B0;
         position: absolute;
         /*left: 165px;*/
-        left: calc(29% - 60px);
-        top: 240px;
+        left: calc(50% - 215px);
+        top: 190px;
       }
       .back_class {
-        top: 240px;
-        font-size: 30px;
-        color: #333;
+        top: 190px;
+        font-size: @font-size-twentyF;/*px*/
+        color: #B0B0B0;
         position: absolute;
         /*right: 165px;*/
         /*right: 180px;*/
-        right: calc(29% - 60px);
+        right: calc(50% - 215px);
       }
     }
     .one_upd_box {
@@ -952,39 +1100,44 @@
         margin-right: 0;
       }
     }
-    .submit_form {
-      background-color: #f5f5f5;
-      text-align: center;
-      padding: 30px 0;
-      .submit {
-        height: 82px;
-        line-height: 82px;
-        display: inline-block;
-        /*width: 710px;*/
-        width: 94.7%;
-        background-color: #2672BA;
-        text-align: center;
-        border-radius: 10px;
-        color: #fff;
-        font-size: 28px;
-      }
+    // .submit_form {
+    //   background-color: #f5f5f5;
+    //   text-align: center;
+    //   // padding: 30px 0;
+    //   .submit {
+    //     height: 82px;
+    //     line-height: 82px;
+    //     display: inline-block;
+    //     /*width: 710px;*/
+    //     width: 94.7%;
+    //     background-color: #2672BA;
+    //     text-align: center;
+    //     border-radius: 10px;
+    //     color: #fff;
+    //     font-size: 28px;
+    //   }
+    // }
+    .mint-button.mint-button--default{
+      width: 670px;
+      height: 88px;
     }
-
-    .cell_mobile {
-      a {
-        color: #999;
-      }
-    }
+    // .cell_mobile {
+    //   a {
+    //     color: #999;
+    //   }
+    // }
     .address input.weui-input {
-      color: #999;
+      color: @font-color-4A;
       text-align: right;
+      height: 110px;
+      line-height: 110px;
     }
-    .cell_certificate {
-    }
+    // .cell_certificate {
+    // }
     .cell_id {
       height: 110px;
       .weui-input {
-        color: #DCDCDC;
+        color: @font-color-4A;
         text-align: right;
         font-size: @font-size-thirty;/*px*/
       }

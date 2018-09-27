@@ -92,14 +92,14 @@
         </div>
       </mt-popup>
       <mt-popup v-model="showSubmit.isShow"
-                class="confirm_box"
                 closeOnclickModel="false">
-        <div class="confirm_box">
-
-          <i class="iconfont icon_success"
-             v-show="showSubmit.isSuccess !== 2">&#xe60a;</i>
-          <i class="iconfont icon_fail"
-             v-show="showSubmit.isSuccess === 2">&#xe626;</i>
+        <div class="confirm_box text-center">
+          <img src="static/img/certify_right.png" v-show="showSubmit.isSuccess !== 2" alt="">
+          <!-- <i class="iconfont icon_success"
+             v-show="showSubmit.isSuccess !== 2">&#xe60a;</i> -->
+          <img src="static/img/certify_wrong.png" v-show="showSubmit.isSuccess === 2" alt="">
+          <!-- <i class="iconfont icon_fail"
+             v-show="showSubmit.isSuccess === 2">&#xe626;</i> -->
           <div class="confirm_cont" :class="{'fail': showSubmit.isSuccess === 2}">您的认证已提交！<br>
             请您耐心等待审核结果！</div>
           <span class="confirm_btn" @click="popupConfirm(toRoute(showSubmit.isSuccess))">确 定</span>
@@ -125,7 +125,7 @@
     data () {
       return {
         showSubmit: {
-          isShow: true,
+          isShow: false,
           isSuccess: 0
         },
         popupVisible: false,
@@ -405,11 +405,23 @@
 
   .confirm_box {
     border-radius: 8px;
-    width: 74.67%;
-    padding-top: 34px;
+    width: 560px;
+    height: 593px;
+    padding-top: 40px;
     font-family: @font-family-R;
-    font-size: 26px;
+    font-size: @font-size-thirtyT;/*px*/
     color: #4A4A4A;
+    .confirm_cont{
+      margin: 25px 0;
+    }
+    .confirm_btn{
+      border-top: 1px solid #D2D3D5;
+      display: inline-block;
+      width: 100%;
+      font-size: @font-size-thirtyS;/*px*/
+      color: @text-font-color;
+      line-height: 100px;
+    }
   }
   .mint-popup {
     border-radius: 10px;
