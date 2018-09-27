@@ -11,7 +11,8 @@ module.exports = {
     assetsPublicPath: '',
     proxyTable: {
       '/activity': {
-        target: 'http://10.9.70.231:9999',
+        // target: 'http://10.9.70.231:9999',
+        target: 'http://203.156.231.251:9999',
         changeOrigin: true,
         pathRewrite: {
           '^/activity': '/activity'
