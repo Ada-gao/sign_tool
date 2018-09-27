@@ -1,24 +1,102 @@
 <template>
   <div class="bankcard">
-    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="back">客户认证</x-header>
+    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="back">新增银行卡</x-header>
     <div class="wrapper">
       <!--<x-dialog v-model="alertMsg" class="dialog-demo quitDialog" hide-on-blur>-->
         <!--<div class="quit">{{alertCont}}</div>-->
         <!--<x-button type="primary" @click.native="hideAlert">确 定</x-button>-->
       <!--</x-dialog>-->
-
+      <div class="space"></div>
       <group class="bankcard_cont">
+        <div class="add_tit">
+          <span class="border_left"></span>
+          <span class="text">银行卡信息</span>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <div class="time_box" @click="showCode">
+              <span class="date_tit">开户银行：</span>
+              <span class="date_edit" v-if="personInfo.bankName !== ''">{{personInfo.bankName}}</span>
+              <span class="date_time" v-else>请选择开户银行</span>
+              <i class="iconfont">&#xe8d5;</i>
+            </div>
+            <mt-popup v-model="showCerCode"
+                      position="bottom"
+                      class="cercode_box"
+                      popup-transition="popup-fade">
+              <mt-picker :slots="slots"
+                        :showToolbar="true"
+                        :itemHeight="itemHeight"
+                        :visibleItemCount="3"
+                        @change="onValuesChange">
+                <div class="toolbar">
+                  <span class="cancel" @click="cancelCerCode">取消</span>
+                  <span class="ensure" @click="ensureCerCode">确定</span>
+                </div>
+              </mt-picker>
+            </mt-popup>
+          <div class="bb"></div>
+          </div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <x-input title="支行名称："
+                     class="x_branch ipt"
+                     ref="bankBranch"
+                     v-model="personInfo.branchBank"
+                     :show-clear="false"
+            ></x-input>
+          <div class="bb"></div>
+          </div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+             <x-input title="银行卡号："
+                      ref="cardNum"
+                      class="x_cardnumber ipt"
+                      v-model="personInfo.bankCardNumber"
+                      :show-clear="false"
+              ></x-input>
+          <div class="bb"></div>
+          </div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <x-input title="持卡人姓名："
+                     ref="cardOwner"
+                     v-model="personInfo.cardOwner"
+                     :show-clear="false"
+                     class="x_iptname ipt"
+            ></x-input>
+          <div class="bb"></div>
+          </div>
+        </div>
+        <div class="must_fill">
+          <div class="radio_box new_field camera-box" style="border:0">
+            <i class="iconfont necessary_icon">&#xe8d4;</i>
+            <div class="upload">上传银行卡照片：&nbsp;<span>（请上传清晰照片）</span></div>
+            <div class="upload_box">
+              <camera :popupVisible="popupVisible"
+                      @showPopup="showPopup"
+                      :cerId="client_certification_id"
+                      :isFromBank="fromBank"
+                      @hidePopup="hidePopup"></camera>
+            </div>
+          <div class="bb"></div>
+          </div>
+        </div>
+      </group>
+      <!-- <group class="bankcard_cont">
         <x-input title="持卡人："
                  ref="cardOwner"
                  v-model="personInfo.cardOwner"
                  :show-clear="false"
                  class="x_iptname ipt"
         ></x-input>
-        <!--<popup-picker title="开户银行："-->
-                      <!--:data="bankList"-->
-                      <!--class="x_bank"-->
-                      <!--v-model="personInfo.bankName"-->
-        <!--&gt;</popup-picker>-->
         <div class="time_box" @click="showCode">
           <span class="date_tit">开户银行：</span>
           <span class="date_time">{{personInfo.bankName}}</span>
@@ -51,19 +129,22 @@
                  v-model="personInfo.bankCardNumber"
                  :show-clear="false"
         ></x-input>
-      </group>
-      <div class="space"></div>
-      <div class="upload">银行卡信息：&nbsp;<span>（请上传清晰的原件或复印件）</span></div>
+      </group> -->
+      <!-- <div class="space"></div>
+      <div class="upload">上传银行卡照片：&nbsp;<span>（请上传清晰照片）</span></div>
       <div class="upload_box">
         <camera :popupVisible="popupVisible"
                 @showPopup="showPopup"
                 :cerId="client_certification_id"
                 :isFromBank="fromBank"
                 @hidePopup="hidePopup"></camera>
-      </div>
-      <div class="submit_form">
+      </div> -->
+      <!-- <div class="submit_form">
         <button class="submit" @click="submitBankInfos">提交</button>
-      </div>
+      </div> -->
+      <div class="space"></div>
+      <div class="space"></div>
+      <mt-button @click.native="submitBankInfos">提交</mt-button>
     </div>
   </div>
 </template>
@@ -93,7 +174,7 @@
         popupVisible: false,
         personInfo: {
           cardOwner: '',
-          bankName: '请选择银行',
+          bankName: '',
           branchBank: '',
           bankCardNumber: ''
         },
@@ -224,6 +305,7 @@
   }
 </script>
 <style lang="less">
+  @import '../../common/style/variable';
   .camera_pop {
     width: 100%;
     font-size: 30px;
@@ -249,7 +331,7 @@
           height: 56px;
           line-height: 56px;
           padding: 0 30px;
-          color: #2672ba;
+          color: @text-font-color;
           font-size: 34px;
           position: absolute;
           border-bottom: 1px solid #ddd;
@@ -268,18 +350,25 @@
     }
     .time_box {
       position: relative;
-      height: 82px;
-      line-height: 82px;
-      padding: 0 20px;
-      border-bottom: 1px solid #ddd;
+      height: 110px;
+      line-height: 110px;
+      // padding: 0 20px;
+      // border-bottom: 1px solid #ddd;
       span {
-        font-size: 32px;
+        font-size: @font-size-thirty;/*px*/
+        font-family: @font-family-R;
       }
       span.date_tit {
-        color: #333;
+        color: @font-color-4A;
+      }
+      span.date_edit {
+        position: absolute;
+        right: 56px;
+        color: @font-color-4A;
+        font-family: @font-family-M;
       }
       span.date_time {
-        color: #999;
+        color: #DCDCDC;
         right: 56px;
         position: absolute;
       }
@@ -288,7 +377,7 @@
         right: 0;
         margin-right: 0;
         font-size: 55px !important;
-        color: #C8C8CD;
+        color: #DADADA;
       }
     }
     .quitDialog {
@@ -319,33 +408,25 @@
     .bankcard_cont {
       /*padding-top: 108px;*/
       .weui-cells .weui-cell {
-        line-height: 82px;
-        color: #333;
-        height: 82px;
-        padding: 0 20px;
-        border-bottom: 1px solid #ddd;
+        font-size: @font-size-thirty;/*px*/
+        line-height: 110px;
+        color: @font-color-4A;
+        height: 110px;
+        // padding: 0 20px;
+        // border-bottom: 1px solid #ddd;
       }
       .x_iptname,
       .x_branch,
       .x_cardnumber {
+        // height: 110px;
         .weui-cell__ft {
           display: none;
         }
         .weui-input {
           text-align: right;
-          color: #999;
+          color: @font-color-4A;
+          font-family: @font-family-M;
         }
-      }
-    }
-    .upload {
-      line-height: 82px;
-      padding-left: 20px;
-      font-size: 30px;
-      color: #333;
-      border-bottom: 1px solid #D9D9D9;
-      background-color: #fff;
-      span {
-        color: #999;
       }
     }
     .space {
@@ -369,15 +450,36 @@
         font-size: 28px;
       }
     }
-    .upload_box {
-      background-color: #fff;
-      /*height: 333px;*/
-      padding: 51px 60px;
-      /*padding-bottom: 0;*/
-      position: relative;
-       -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-      box-sizing: border-box;
+    .camera-box{
+      height: 320px;
+      .necessary_icon{
+        top: 13%;
+      }
+      .upload {
+        line-height: 110px;
+        // padding-left: 20px;
+        font-size: 30px;
+        color: @font-color-4A;
+        // border-bottom: 1px solid #D9D9D9;
+        background-color: #fff;
+        span {
+          color: #999;
+        }
+      }
+      .upload_box {
+        background-color: #fff;
+        /*height: 333px;*/
+        // padding: 51px 60px;
+        /*padding-bottom: 0;*/
+        position: relative;
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+    }
+    .mint-button.mint-button--default{
+      width: 670px;
+      height: 88px;
     }
   }
 </style>
