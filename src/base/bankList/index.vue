@@ -56,6 +56,9 @@
       }
     },
     beforeRouteEnter (to, from, next) {
+      console.log(to)
+      console.log(from)
+      console.log(next)
       next(vm => {
 //        if (from.name === 'Bankcard' || from.name === 'PotentialCustomerList') {
 //          vm.addCard = '0'
@@ -95,7 +98,7 @@
       selected (item) {
         this.mark = 'selected'
         this.selectedItem = item
-        console.log(this.mark, item)
+        // console.log(this.mark, item)
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, mark: this.mark, item: this.selectedItem}})
       },
       getList () {

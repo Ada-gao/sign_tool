@@ -25,11 +25,12 @@
 						<!-- <i slot="icon" class="iconfont">&#xe650;</i> -->
 					</mt-cell>
 					<div class="cont">
-						<mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell>
+						<!-- <mt-field label="用户名: " placeholder="请输入用户名" v-model="name" readonly></mt-field> -->
+						<!-- <mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell> -->
 						<mt-cell title="客户姓名：" is-link @click.native="chooseName" v-if="showNameClick">{{name}}</mt-cell>
 						<mt-cell title="客户姓名：" v-if="!showNameClick" :value="name"></mt-cell>
 						<mt-cell title="手机号码：" :value="cMob"></mt-cell>
-						<mt-field label="预约金额(万)：" class="inputMoney" placeholder="请选择预约金额" v-model="money" v-if="showMoneyClick"></mt-field>
+						<mt-field label="预约金额(万)：" class="inputMoney" placeholder="请输入预约金额" v-model="money" v-if="showMoneyClick"></mt-field>
 						<!-- <mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell> -->
 						<mt-cell title="预约金额：" v-if="!showMoneyClick">{{money}}万</mt-cell>
 						<!-- <mt-popup v-model="showMoney"
@@ -59,19 +60,22 @@
 						<mt-cell title="产品信息：" value="查看" is-link @click.native="returnProductInfo"></mt-cell>
 					</div>
 					<div class="uploadCustomer" v-if="uploadShow">
-						<mt-cell title="相关材料" class="tit">
-							<!-- <i slot="icon" class="iconfont">&#xe632;</i> -->
-						</mt-cell>
+						<!-- <mt-cell title="相关材料" class="tit"></mt-cell> -->
 						<div class="cont">
 							<div class="fightMoney">
-								<mt-cell title="银行卡信息" class="tit"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
-									<div class="warn" v-if="chooseSelectedBank">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
-									<div class="card" v-if="uploadCard">
-										<mt-field label="银行卡号:" v-model="cardnum" ref="cardInput" @change="cardNumChange"></mt-field>
-										<mt-field label="银行名称:" disabled v-model="bankname">
+								<mt-cell title="银行卡信息" class="tit border-b-0" to="/bankList" is-link>
+									<span class="cardSelected" v-if="chooseSelectedBank">选择已绑定银行卡</span>
+									<!-- <span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span> -->
+								</mt-cell>
+								<div class="warn" v-if="chooseSelectedBank">
+									<i class="iconfont icon-alert-warning" style=""></i>
+									为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核!
+								</div>
+								<div class="card" v-if="uploadCard">
+										<mt-field label="银行卡号:" v-model="cardnum" placeholder="请输入银行卡号"></mt-field>
+										<mt-field class="click-block" label="银行名称:" v-model="bankname" readonly placeholder="请选择银行">
                       <div class="define_box"
                            @click="chooseBankName">
-                        <i class="iconfont">&#xe731;</i>
                       </div>
 										</mt-field>
 										<mt-popup v-model="showBankCardName"
@@ -92,8 +96,9 @@
                         </mt-picker>
                       </div>
 										</mt-popup>
-										<mt-field label="支行名称:" v-model="bankname1"></mt-field>
-										<camera :popupVisible="popupVisible"
+										<mt-field label="支行名称:" v-model="bankname1" placeholder="请输入支行名称"></mt-field>
+										<div class="camera">
+											<camera :popupVisible="popupVisible"
 											@imgHandler="imageHandler1"
 											:imageSrc="cardUrl"
 											:isFromAppointment="fromAppointment"
@@ -102,19 +107,19 @@
 											@hidePopup="hidePopup"
 											v-if="cameraShow">
 										</camera>
-									</div>
-									<div class="card1" v-if="uploadCardS">
-										<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
-										<mt-cell title="银行名称:" :value="cardName"></mt-cell>
-										<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
-										<img class="camera" :src="cardUrl" @click="showBigImg('bank')">
-        								<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
-									</div>
+										</div>
+								</div>
+								<div class="card1" v-if="uploadCardS">
+									<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
+									<mt-cell title="银行名称:" :value="cardName"></mt-cell>
+									<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
+									<img class="camera" :src="cardUrl" @click="showBigImg('bank')">
+        						<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
+								</div>
 							</div>
 							<div class="evidence" v-if="evidenceShow">
-								<mt-cell title="打款凭证" class="tit">
-									<mt-field class="remitAmount" label="打款金额:" v-model="remitAmount" ref="remitAmountInput"></mt-field>万
-								</mt-cell>
+								<mt-cell title="打款凭证" class="tit border-b-0"></mt-cell>
+								<mt-field class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler4"
@@ -131,15 +136,14 @@
 									<span>打款金额：{{remitAmount}}万</span>
 									<!-- <mt-cell title="打款金额:" :value="  remitAmount + '万'"></mt-cell> -->
 								</mt-cell>
-								<div class="camera" v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)">
-									<img :src="item">
-        							<!-- <thumbnails v-if="showImg" :imgTotal="evidenceUrl" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
+								<div class="camera">
+									<img v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)" :src="item">
 								</div>
 							</div>
-							<div class="materialsNeeded" v-if="uploadCardMaterials">
-								<mt-cell title="交易所需材料" class="tit"></mt-cell>
+							<div class="materialsNeeded">
+								<mt-cell title="交易所需材料" class="tit border-b-0"></mt-cell>
 								<div class="camera">
-									<camera :popupVisible="popupVisible"
+									<camera v-if="uploadCardMaterials" :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
               							:imageArr="materialsUrls"
 										:isFromAppointment="fromAppointment"
@@ -147,14 +151,15 @@
 										@showPopup="showPopup"
 										@hidePopup="hidePopup">
 									</camera>
+									<img v-else v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)" :src="item">
 								</div>
 							</div>
-							<div class="materialsNeeded" v-if="!uploadCardMaterials">
+							<!-- <div class="materialsNeeded" v-if="!uploadCardMaterials">
 								<mt-cell title="交易所需材料" class="tit"></mt-cell>
 								<div class="camera" v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)">
 									<img :src="item">
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="refund" v-if="uploadRefund">
@@ -211,8 +216,8 @@
           	<mt-button type="primary" @click.native="refund">{{refundLan}}</mt-button>
 					</div>
 					<div class="successBtn" v-if="sucBtn">
+          	<mt-button plain type="default" @click.native="cancleAppointment">取消预约</mt-button>
           	<mt-button type="primary" @click.native="submitPayMaterials">提交打款材料</mt-button>
-          	<mt-button type="primary" @click.native="cancleAppointment">预约取消</mt-button>
 					</div>
 					<div class="submitBtn" v-if="repeatPayMaterials">
           	<mt-button type="primary" @click.native="repeatSubmitPayMaterials">重新提交打款材料</mt-button>
@@ -1394,6 +1399,7 @@ export default {
 			}
 	},
 	beforeRouteEnter (to, from, next) {
+		console.log(from)
 		next(vm => {
 			vm.prePath = from.path
 			// vm.getList()
@@ -1595,8 +1601,11 @@ export default {
 		}
 		.info{
 			margin-top: 20px;
+			.mint-cell.border-b-0 {
+				border-bottom: none!important;
+			}
 			.mint-cell.tit{
-				margin-bottom: 20px;
+				// margin-bottom: 20px;
 				height: 80px;
 				i.iconfont{
 					font-size: 38px;
@@ -1679,8 +1688,8 @@ export default {
 						background-image: none;
 						.mint-cell-title{
 							.mint-cell-text{
-								color: #333;
-								font-weight: bold;
+								color: #4A4A4A;
+								font-size: 30px;
 							}
 						}
 						.mint-cell-value{
@@ -1702,18 +1711,20 @@ export default {
 						height: 80px;
 						line-height: 80px;
 						background-image: none;
-						.mint-cell-title{
-							width: 170px;
+						.mint-cell-title .mint-cell-text{
+							// width: 170px;
+							white-space: nowrap;
 						}
 						.mint-cell-value{
 							.mint-field-core{
 								width: 570px;
 								height: 40px;
 								line-height: 40px;
-								border: 1px solid #ccc;
+								// border: 1px solid #ccc;
 								border-radius: 5px;
 								box-sizing: border-box;
 								text-indent: 20px;
+								text-align: right;
 							}
 						  .mint-field-clear{
 								display: none;
@@ -1763,12 +1774,20 @@ export default {
 			.successBtn,.mailBtn{
 				text-align: center;
 				padding: 10px 0 30px 0;
+				.mint-button.mint-button--default {
+					border: 1px solid #C4902D;
+					color: #C4902D;
+					background: #fff;
+					display: inline-block;
+					width: 40%;
+					height: 88px;
+				}
 				.mint-button.mint-button--primary.mint-button--normal{
 					/*width: 300px;*/
           width: 40%;
-					height: 72px;
-					background: #2672BA;
-					border-radius: 8px;
+					height: 88px;
+					background: linear-gradient(to right, #DFC189, #BD9D62);
+					// border-radius: 8px;
 					label{
 						font-family: PingFangSC-Regular;
 						font-size: 28px;
@@ -1788,30 +1807,37 @@ export default {
 					margin-bottom: 20px;
 				}
 				.cardSelected{
-					background: #2672BA;
-					border: 1px solid #2672BA;
-					border-radius: 8px;
-					font-size: 24px;
-					color: #FFFFFF;
+					// background: #2672BA;
+					// border: 1px solid #2672BA;
+					// border-radius: 8px;
+					font-size: 30px;
+					color: #3377FF;
 					height: 50px;
 					line-height: 50px;
-					padding: 0 15px;
+					// padding: 0 15px;
 				}
 				.warn{
-					padding: 20px;
+					padding: 0 70px;
 					background: #fff;
-					border-bottom: 1px solid #ccc;
-					color: #2672BA;
+					// border-bottom: 1px solid #ccc;
+					color: #A0A0A0;
 					font-size: 24px;
+					position: relative;
+					.iconfont {
+						position: absolute;
+						left: 40px;
+						color: #FFBE00;
+						font-size: 22px;
+					}
 				}
 				.card{
 					background: #fff;
 					padding: 30px 20px;
 					.mint-field{
-						height: 40px;
-						line-height: 40px;
-						border: none;
-						margin-bottom: 20px;
+						// height: 40px;
+						// line-height: 40px;
+						// border: none;
+						// margin-bottom: 20px;
 						.mint-cell-wrapper{
 							height: 100%;
 							line-height: 100%;
@@ -1831,40 +1857,60 @@ export default {
 									width: 580px;
 									height: 40px;
 									line-height: 40px;
-									border: 1px solid #ccc;
+									// border: 1px solid #ccc;
 									border-radius: 5px;
 									box-sizing: border-box;
 									text-indent: 20px;
 								}
-								.mint-field-other{
-									top: 0;
-									/*right: 0;*/
-									position: absolute;
-                  width: 100%;
-                  height: 100%;
-									/*transform: rotateZ(90deg);*/
-									.define_box {
-                    position: absolute;
-                    width:100%;
-                    height:100%;
-                    top:0;
-                    left:0;
-                    text-align: right;
-                    .iconfont{
-                      display: inline-block;
-                      transform: rotateZ(90deg);
-                      font-size: 40px;
-                      color: #333;
-                    }
-                  }
-								}
+								// .mint-field-other{
+								// 	top: 0;
+								// 	position: absolute;
+                //   width: 100%;
+                //   height: 100%;
+								// 	.define_box {
+                //     position: absolute;
+                //     width:100%;
+                //     height:100%;
+                //     top:0;
+                //     left:0;
+                //     text-align: right;
+                //     .iconfont{
+                //       display: inline-block;
+                //       transform: rotateZ(90deg);
+                //       font-size: 40px;
+                //       color: #333;
+                //     }
+                //   }
+								// }
 							}
 						}
 					}
-					.mint-field:nth-child(2){
-						.mint-field-core{
-							background: #f5f5f5;
+					.mint-field.click-block{
+						.mint-field-other{
+							top: 0;
+							/*right: 0;*/
+							position: absolute;
+              width: 100%;
+              height: 100%;
+							/*transform: rotateZ(90deg);*/
+							.define_box {
+                position: absolute;
+                width:100%;
+                height:100%;
+                top:0;
+                left:0;
+                text-align: right;
+                .iconfont{
+                  display: inline-block;
+                  transform: rotateZ(90deg);
+                  font-size: 40px;
+                  color: #333;
+                }
+              }
 						}
+						// .mint-field-core{
+						// 	background: #f5f5f5;
+						// }
 					}
 					.upload_cont{
 						width: 132px;
@@ -1920,10 +1966,23 @@ export default {
 						margin-right: 20px;
 					}
 				}
-				.materialsNeeded, .evidence{
+				.materialsNeeded,
+				.evidence,
+				.card{
 					background-color: #fff;
 					.camera{
 						padding: 20px;
+						img{
+							width: 132px;
+							height: 120px;
+							margin-right: 20px;
+						}
+					}
+				}
+				.card{
+					background-color: #fff;
+					.camera{
+						padding: 20px 20px 20px 0;
 						img{
 							width: 132px;
 							height: 120px;

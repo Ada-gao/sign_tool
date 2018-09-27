@@ -3,7 +3,7 @@
     <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{item.product_name}}</x-header>
     <div class="wrapper">
       <div class="rate-top">
-        <div class="announcement">
+        <div class="announcement" v-show="item.announcement">
           <span class="announcement-tit iconfont">&#xe603;</span>
           <span class="announcement-detail">
             <span class="detail-text">
@@ -274,7 +274,7 @@ export default {
 @import "../../common/style/variable.less";
 #detailPage{
   .vux-header{
-    background: #D4B67F;
+    background: #D4B67F!important;
     .vux-header-left{
       .left-arrow:before{
         border-color: @back-color-white;
