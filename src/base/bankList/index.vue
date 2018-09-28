@@ -3,7 +3,7 @@
     <mt-popup v-model="popupVisible">
       <mt-spinner type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
     </mt-popup>
-    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡</x-header>
+    <x-header :left-options="{backText: '', preventGoBack: true}" @on-click-back="back()">银行卡</x-header>
     <div class="wrapper">
       <div class="top">
         <mt-cell title="银行卡信息">
@@ -17,7 +17,7 @@
         <!--</div>-->
       </div>
       <div class="list">
-        <div class="item" :data="bankList" v-for="item in bankList" :key="item.bank_id" @click="selected(item)">
+        <div class="item" :data="bankList" v-for="(item, index) in bankList" :key="index" @click="selected(item)">
           <div class="tip">
             <span class="tit">银行卡号：</span>
             <span class="detail">{{item.card_no}}</span>
@@ -50,16 +50,17 @@
         mark: '',
         selectedItem: [],
         popupVisible: true,
-        timer: null
+        timer: null,
+        fromPath: ''
 //        addCard: null
 //        stat: null
       }
     },
     beforeRouteEnter (to, from, next) {
-      console.log(to)
-      console.log(from)
-      console.log(next)
       next(vm => {
+        // console.log(from)
+        vm.fromPath = from.path
+        // console.log(vm.fromPath)
 //        if (from.name === 'Bankcard' || from.name === 'PotentialCustomerList') {
 //          vm.addCard = '0'
 //        } else if (from.name === 'CustomerManagement') {
@@ -111,9 +112,10 @@
       }
     },
     mounted () {
+      console.log(this.$route.params)
       this.addCard = this.$route.params.addCard
-      let selfInfos = JSON.parse(getStore('selfInfos'))
-      this.clientId = this.$route.params.id || selfInfos.client_id
+      // let selfInfos = JSON.parse(getStore('selfInfos'))
+      this.clientId = this.$route.params.id || JSON.parse(getStore('selfInfos')).client_id
       this.getList()
     }
   }

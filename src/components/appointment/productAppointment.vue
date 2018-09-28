@@ -63,7 +63,8 @@
 						<!-- <mt-cell title="相关材料" class="tit"></mt-cell> -->
 						<div class="cont">
 							<div class="fightMoney">
-								<mt-cell title="银行卡信息" class="tit border-b-0" to="/bankList" is-link>
+								<!-- <mt-cell title="银行卡信息" class="tit border-b-0"> -->
+								<mt-cell title="银行卡信息" class="tit border-b-0" :to="{name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}}" is-link>
 									<span class="cardSelected" v-if="chooseSelectedBank">选择已绑定银行卡</span>
 									<!-- <span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span> -->
 								</mt-cell>
@@ -230,10 +231,12 @@
           	<mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button>
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
-						<i class="iconfont noS returnIcon">&#xe617;</i>
-						<div class="returnDetailCss">{{submitAppointDetail}}</div>
-						<div class="returnDetailCss">{{count}}秒后将自动返回产品详情</div>
-						<x-button @click.native="returnDetail" type="primary">返回产品详情</x-button>
+						<!-- <i class="iconfont noS returnIcon">&#xe617;</i> -->
+						<img :src="submitAppointImg" alt="">
+						<div v-if="!submitFailStatus" class="returnDetailCss">{{submitAppointDetail}}...{{count}}s</div>
+						<div v-else class="returnDetailCss">{{submitAppointDetail}}</div>
+						<div v-if="!submitFailStatus" class="bottomBack" @click="returnDetail">返回产品详情</div>
+						<div v-else class="bottomBack" @click="submitDialog=false">确定</div>
 					</x-dialog>
 					<x-dialog v-model="orderCloseSuc" class="dialog-demo submitDialog">
 						<i class="iconfont suc">&#xe60a;</i>
@@ -257,17 +260,17 @@
 						<div class="quit">确定关闭订单吗</div>
 						<x-button @click.native="sendMessage" type="primary">确 定</x-button>
 					</x-dialog>
-					<x-dialog v-model="sureCancleA" class="dialog-demo submitDialog" hide-on-blur>
+					<!-- <x-dialog v-model="sureCancleA" class="dialog-demo submitDialog" hide-on-blur>
 						<div class="quit">确定取消预约吗</div>
 						<x-button @click.native="sureCancle" type="primary">确 定</x-button>
-					</x-dialog>
+					</x-dialog> -->
 					<!-- <x-dialog v-model="submitSucDialog" class="dialog-demo submitDialog" hide-on-blur>
 						<i class="iconfont suc">&#xe60a;</i>
 						<div class="success">您的提交已成功</div>
 						<x-button @click.native="sucMakeSure" type="primary">返回产品详情</x-button>
 					</x-dialog> -->
 					<x-dialog v-model="failSubmit" class="dialog-demo submitDialog" hide-on-blur>
-						<i class="iconfont noS fail">&#xe626;</i>
+						<!-- <i class="iconfont noS fail">&#xe626;</i> -->
 						<div class="success sorry">对不起！申请提交未成功</div>
 						<div class="success">请您重新申请提交</div>
 						<x-button @click.native="failMakeSure" type="primary">确 定</x-button>
@@ -280,11 +283,12 @@
 <script type="text/ecmascript-6">
 import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput } from 'vux'
 import camera from '@/base/camera/camera'
-import { appointmentList, submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
+import { submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
 import { getProducts } from '@/service/api/products'
 import { checkBankDetail } from '@/service/api/customers'
 import { formatDate } from '@/common/js/date'
 import thumbnails from '@/base/camera/thumbnails'
+import { MessageBox, Toast } from 'mint-ui'
 
 export default {
 	data () {
@@ -426,7 +430,10 @@ export default {
           className: 'slot8',
 					textAlign: 'center'
         }
-			]
+			],
+			selectClientObj: null,
+			submitFailStatus: false,
+			submitAppointImg: ''
 		}
 	},
 	computed: {
@@ -437,7 +444,7 @@ export default {
 	components: {
 		XHeader,
 		Flow,
-    	FlowState,
+    FlowState,
 		FlowLine,
 		XDialog,
 		XButton,
@@ -560,59 +567,89 @@ export default {
 			},
 			submitAppointmentBtn () {
 				if (this.name === '' || this.money === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				if (this.money < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
 				if (this.money > this.collectionAmount) {
 					this.msgDetail = '预约金额大于募集金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
-				let selectObj = this.appointmentList.find(item => item.mobile === this.cMob)
+				// let selectObj = this.appointmentList.find(item => item.mobile === this.cMob)
 				let obj = {
-					'client_id': selectObj.client_id,
+					'client_id': this.selectClientObj.client_id,
 					'client_mobile': this.cMob,
-					'client_no': selectObj.client_no,
+					'client_no': this.selectClientObj.client_no,
 					'client_name': this.name,
-					'client_type': selectObj.client_type,
-					'risk_level': selectObj.risk_level,
+					'client_type': this.selectClientObj.client_type,
+					'risk_level': this.selectClientObj.risk_level,
 					'product_id': this.product_id,
 					'product_name': this.product_name,
 					'appointment_amount': parseInt(this.money),
 					'appointment_date': this.nowTime
 				}
 				submitAppointment(obj).then(res => {
+					this.submitDialog = true
 					if (res.status === 200) {
-						this.submitDialog = true
+						this.submitFailStatus = false
 						this.autoReturnDetail()
+						this.submitAppointImg = 'static/img/certify_right.png'
 						if (res.data.message === '预约成功') {
 							this.submitAppointDetail = '您的预约已提交成功'
 						} else {
 							this.submitAppointDetail = '已提交待审核中…'
 						}
+					} else {
+						this.submitFailStatus = true
+						this.submitAppointDetail = '提交失败请重新提交！'
+						this.submitAppointImg = 'static/img/certify_wrong.png'
 					}
 				})
 			},
 			repeatAppointmentBtn () {
 				if (this.name === '' || this.money === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				if (this.money < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
 				if (this.money > this.collectionAmount) {
 					this.msgDetail = '预约金额大于募集金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
 				let obj = {
@@ -636,6 +673,9 @@ export default {
 						} else {
 							this.submitAppointDetail = '已提交待审核中…'
 						}
+					} else {
+						this.submitDialog = true
+						this.submitAppointDetail = '提交失败请重新提交！'
 					}
 				})
 			},
@@ -663,15 +703,23 @@ export default {
 			cardNumChange () {
 			},
 			submitPayMaterials () {
-				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
-					this.alertMsg = true
-					this.msgDetail = '银行卡输入有误'
+				// console.log(this.materialSrc)
+				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+					// this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
-				console.log(this.materialSrc)
-				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
-					this.alertMsg = true
-					this.msgDetail = '还有信息没填写哦～'
+				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
+					// this.alertMsg = true
+					this.msgDetail = '银行卡输入有误'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {
@@ -684,23 +732,48 @@ export default {
 					'card_no': this.cardnum || this.cardNum,
 					'remit_amount': parseInt(this.remitAmount)
 				}
-				submitMaterials(this.appointmentId, obj).then(res => {
-					if (res.status === 200) {
-						this.submitDialog = true
-						this.autoReturnDetail()
-						this.submitAppointDetail = '已提交待审核中…'
-					}
-				})
+				MessageBox({
+					title: '提交确认',
+					message: '提交后不可修改，确认提交吗?',
+					showCancelButton: true
+					}).then(action => {
+						if (action === 'cancel') {
+							MessageBox.close(false)
+							return
+						}
+						submitMaterials(this.appointmentId, obj).then(res => {
+							if (res.status === 200) {
+								this.submitDialog = true
+								this.autoReturnDetail()
+								this.submitAppointDetail = '已提交待审核中…'
+							}
+						})
+					})
+				// submitMaterials(this.appointmentId, obj).then(res => {
+				// 	if (res.status === 200) {
+				// 		this.submitDialog = true
+				// 		this.autoReturnDetail()
+				// 		this.submitAppointDetail = '已提交待审核中…'
+				// 	}
+				// })
 			},
 			repeatSubmitPayMaterials () {
 				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '银行卡输入有误'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {
@@ -714,13 +787,23 @@ export default {
 					'remit_amount': parseInt(this.remitAmount),
 					'flag': '1'
 				}
-				submitMaterials(this.appointmentId, obj).then(res => {
-					if (res.status === 200) {
-						this.submitDialog = true
-						this.autoReturnDetail()
-						this.submitAppointDetail = '已提交待审核中…'
-					}
-				})
+				MessageBox({
+					title: '提交确认',
+					message: '提交后不可修改，确认提交吗?',
+					showCancelButton: true
+					}).then(action => {
+						if (action === 'cancel') {
+							MessageBox.close(false)
+							return
+						}
+						submitMaterials(this.appointmentId, obj).then(res => {
+							if (res.status === 200) {
+								this.submitDialog = true
+								this.autoReturnDetail()
+								this.submitAppointDetail = '已提交待审核中…'
+							}
+						})
+					})
 			},
 			imageHandler1 (data) {
 				this.cardUrl = data
@@ -737,8 +820,12 @@ export default {
 			},
 			refund () {
 				if (this.refundSrc.length === 0) {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {}
@@ -760,7 +847,18 @@ export default {
 				})
 			},
 			cancleAppointment () {
-				this.sureCancleA = true
+				// this.sureCancleA = true
+				MessageBox({
+					title: '取消预约',
+					message: '确定取消预约吗?',
+					showCancelButton: true
+					}).then(action => {
+						if (action === 'cancel') {
+							MessageBox.close(false)
+							return
+						}
+						this.sureCancle()
+					})
 			},
 			sureCancle () {
 				cancelAppointment(this.appointmentId).then(res => {
@@ -774,8 +872,12 @@ export default {
 			},
 			emailContract () {
 				if (this.cantractNum === '' || this.expressCompany === '' || this.expressNum === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {
@@ -849,9 +951,9 @@ export default {
 					this.giveMoneyDone = false
 					this.giveMoneyIng = false
 					this.contractManage = false
-					appointmentList(this.$route.params.riskLevel).then(res => {
-						this.appointmentList = res.data
-					})
+					// appointmentList(this.$route.params.riskLevel).then(res => {
+					// 	this.appointmentList = res.data
+					// })
 			},
 			getList () {
 				this.appointmentId = this.$route.params.appointmentId
@@ -1399,7 +1501,7 @@ export default {
 			}
 	},
 	beforeRouteEnter (to, from, next) {
-		console.log(from)
+		// console.log(from)
 		next(vm => {
 			vm.prePath = from.path
 			// vm.getList()
@@ -1423,6 +1525,7 @@ export default {
 	activated () {
 		if (this.$route.params.fromUrl === 'productDetail') {
 			this.writeAppointment()
+			// this.getList()
 		} else if (this.$route.params.fromUrl === 'reservationList') {
 			this.refundUrls = []
 			this.materialsUrls = []
@@ -1447,6 +1550,8 @@ export default {
 		} else if (this.$route.params.selectFlag === 'selectFlag') {
 			this.name = this.$route.params.nameItem.name
 			this.cMob = this.$route.params.nameItem.mobile
+			this.selectClientObj = this.$route.params.nameItem
+			// console.log(this.$route.params.nameItem)
 		}
 	},
 	// deactivated () {
@@ -1454,7 +1559,9 @@ export default {
 	// },
 	created () {
 		window.scroll(0, 0)
-		// console.log(this.$route.params.fromUrl)
+		console.log('this.appointmentList.client_id')
+		// console.log(this.appointmentList.client_id)
+		console.log(this.$route.params)
 	}
 }
 </script>
@@ -2076,8 +2183,8 @@ export default {
 			}
 			.vux-x-dialog.submitDialog{
 				.weui-dialog{
-					width: 580px;
-					height: 345px;
+					width: 560px;
+					height: 549px;
 					background: #FFFFFF;
 					border-radius: 10px;
 					top: 50% !important;
@@ -2085,17 +2192,21 @@ export default {
 					transform: translate(-50%,-50%);
 					padding: 0;
 					text-align: center;
-					.noS{
-						display: inline-block;
-						font-size: 64px;
-						color: #8B8B8B;
-						margin: 30px 0;
-						line-height: 100px;
+					img {
+						width: 283px;
+						margin-top: 40px;
 					}
-					.returnIcon{
-						font-size: 70px;
-						margin: 20px 0;
-					}
+					// .noS{
+					// 	display: inline-block;
+					// 	font-size: 64px;
+					// 	color: #8B8B8B;
+					// 	margin: 30px 0;
+					// 	line-height: 100px;
+					// }
+					// .returnIcon{
+					// 	font-size: 70px;
+					// 	margin: 20px 0;
+					// }
 					.suc{
 						display: inline-block;
 						font-size: 100px;
@@ -2121,11 +2232,18 @@ export default {
 						line-height: 1;
 					}
 					.returnDetailCss{
-						margin-bottom: 20px;
+						margin: 34px 0;
 						font-family: PingFangSC-Regular;
 						font-size: 30px;
 						color: #333333;
 						line-height: 1;
+					}
+					.bottomBack {
+						border-top: 1px solid #ccc;
+						color: #BD9D62;
+						height: 100px;
+						line-height: 100px;
+						font-size: 36px;
 					}
 					.sorry{
 						line-height: inherit;
