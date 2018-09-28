@@ -25,11 +25,12 @@
 						<!-- <i slot="icon" class="iconfont">&#xe650;</i> -->
 					</mt-cell>
 					<div class="cont">
-						<mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell>
+						<!-- <mt-field label="用户名: " placeholder="请输入用户名" v-model="name" readonly></mt-field> -->
+						<!-- <mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell> -->
 						<mt-cell title="客户姓名：" is-link @click.native="chooseName" v-if="showNameClick">{{name}}</mt-cell>
 						<mt-cell title="客户姓名：" v-if="!showNameClick" :value="name"></mt-cell>
 						<mt-cell title="手机号码：" :value="cMob"></mt-cell>
-						<mt-field label="预约金额(万)：" class="inputMoney" placeholder="请选择预约金额" v-model="money" v-if="showMoneyClick"></mt-field>
+						<mt-field label="预约金额(万)：" class="inputMoney" placeholder="请输入预约金额" v-model="money" v-if="showMoneyClick"></mt-field>
 						<!-- <mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell> -->
 						<mt-cell title="预约金额：" v-if="!showMoneyClick">{{money}}万</mt-cell>
 						<!-- <mt-popup v-model="showMoney"
@@ -59,9 +60,7 @@
 						<mt-cell title="产品信息：" value="查看" is-link @click.native="returnProductInfo"></mt-cell>
 					</div>
 					<div class="uploadCustomer" v-if="uploadShow">
-						<mt-cell title="相关材料" class="tit">
-							<!-- <i slot="icon" class="iconfont">&#xe632;</i> -->
-						</mt-cell>
+						<!-- <mt-cell title="相关材料" class="tit"></mt-cell> -->
 						<div class="cont">
 							<div class="fightMoney">
 								<mt-cell title="银行卡信息" class="tit"><span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span></mt-cell>
@@ -71,7 +70,6 @@
 										<mt-field label="银行名称:" class="bankname" disabled v-model="bankname">
                       <div class="define_box"
                            @click="chooseBankName">
-                        <i class="iconfont">&#xe731;</i>
                       </div>
 										</mt-field>
 										<mt-popup v-model="showBankCardName"
@@ -92,8 +90,9 @@
                         </mt-picker>
                       </div>
 										</mt-popup>
-										<mt-field label="支行名称:" v-model="bankname1"></mt-field>
-										<camera :popupVisible="popupVisible"
+										<mt-field label="支行名称:" v-model="bankname1" placeholder="请输入支行名称"></mt-field>
+										<div class="camera">
+											<camera :popupVisible="popupVisible"
 											@imgHandler="imageHandler1"
 											:imageSrc="cardUrl"
 											:isFromAppointment="fromAppointment"
@@ -102,19 +101,19 @@
 											@hidePopup="hidePopup"
 											v-if="cameraShow">
 										</camera>
-									</div>
-									<div class="card1" v-if="uploadCardS">
-										<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
-										<mt-cell title="银行名称:" :value="cardName"></mt-cell>
-										<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
-										<img class="camera" :src="cardUrl" @click="showBigImg('bank')">
-        								<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
-									</div>
+										</div>
+								</div>
+								<div class="card1" v-if="uploadCardS">
+									<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
+									<mt-cell title="银行名称:" :value="cardName"></mt-cell>
+									<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
+									<img class="camera" :src="cardUrl" @click="showBigImg('bank')">
+        						<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
+								</div>
 							</div>
 							<div class="evidence" v-if="evidenceShow">
-								<mt-cell title="打款凭证" class="tit">
-									<mt-field class="remitAmount" label="打款金额:" v-model="remitAmount" ref="remitAmountInput"></mt-field>万
-								</mt-cell>
+								<mt-cell title="打款凭证" class="tit border-b-0"></mt-cell>
+								<mt-field class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
 								<div class="camera">
 									<camera :popupVisible="popupVisible"
 										@imgHandler="imageHandler4"
@@ -131,15 +130,14 @@
 									<span>打款金额：{{remitAmount}}万</span>
 									<!-- <mt-cell title="打款金额:" :value="  remitAmount + '万'"></mt-cell> -->
 								</mt-cell>
-								<div class="camera" v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)">
-									<img :src="item">
-        							<!-- <thumbnails v-if="showImg" :imgTotal="evidenceUrl" :imgKey="index" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
+								<div class="camera">
+									<img v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)" :src="item">
 								</div>
 							</div>
-							<div class="materialsNeeded" v-if="uploadCardMaterials">
-								<mt-cell title="交易所需材料" class="tit"></mt-cell>
+							<div class="materialsNeeded">
+								<mt-cell title="交易所需材料" class="tit border-b-0"></mt-cell>
 								<div class="camera">
-									<camera :popupVisible="popupVisible"
+									<camera v-if="uploadCardMaterials" :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
               							:imageArr="materialsUrls"
 										:isFromAppointment="fromAppointment"
@@ -147,14 +145,15 @@
 										@showPopup="showPopup"
 										@hidePopup="hidePopup">
 									</camera>
+									<img v-else v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)" :src="item">
 								</div>
 							</div>
-							<div class="materialsNeeded" v-if="!uploadCardMaterials">
+							<!-- <div class="materialsNeeded" v-if="!uploadCardMaterials">
 								<mt-cell title="交易所需材料" class="tit"></mt-cell>
 								<div class="camera" v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)">
 									<img :src="item">
 								</div>
-							</div>
+							</div> -->
 						</div>
 					</div>
 					<div class="refund" v-if="uploadRefund">
@@ -211,8 +210,8 @@
           	<mt-button type="primary" @click.native="refund">{{refundLan}}</mt-button>
 					</div>
 					<div class="successBtn" v-if="sucBtn">
+          	<mt-button plain type="default" @click.native="cancleAppointment">取消预约</mt-button>
           	<mt-button type="primary" @click.native="submitPayMaterials">提交打款材料</mt-button>
-          	<mt-button type="primary" @click.native="cancleAppointment">预约取消</mt-button>
 					</div>
 					<div class="submitBtn" v-if="repeatPayMaterials">
           	<mt-button type="primary" @click.native="repeatSubmitPayMaterials">重新提交打款材料</mt-button>
@@ -225,10 +224,12 @@
           	<mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button>
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
-						<i class="iconfont noS returnIcon">&#xe617;</i>
-						<div class="returnDetailCss">{{submitAppointDetail}}</div>
-						<div class="returnDetailCss">{{count}}秒后将自动返回产品详情</div>
-						<x-button @click.native="returnDetail" type="primary">返回产品详情</x-button>
+						<!-- <i class="iconfont noS returnIcon">&#xe617;</i> -->
+						<img :src="submitAppointImg" alt="">
+						<div v-if="!submitFailStatus" class="returnDetailCss">{{submitAppointDetail}}...{{count}}s</div>
+						<div v-else class="returnDetailCss">{{submitAppointDetail}}</div>
+						<div v-if="!submitFailStatus" class="bottomBack" @click="returnDetail">返回产品详情</div>
+						<div v-else class="bottomBack" @click="submitDialog=false">确定</div>
 					</x-dialog>
 					<x-dialog v-model="orderCloseSuc" class="dialog-demo submitDialog">
 						<i class="iconfont suc">&#xe60a;</i>
@@ -252,17 +253,17 @@
 						<div class="quit">确定关闭订单吗</div>
 						<x-button @click.native="sendMessage" type="primary">确 定</x-button>
 					</x-dialog>
-					<x-dialog v-model="sureCancleA" class="dialog-demo submitDialog" hide-on-blur>
+					<!-- <x-dialog v-model="sureCancleA" class="dialog-demo submitDialog" hide-on-blur>
 						<div class="quit">确定取消预约吗</div>
 						<x-button @click.native="sureCancle" type="primary">确 定</x-button>
-					</x-dialog>
+					</x-dialog> -->
 					<!-- <x-dialog v-model="submitSucDialog" class="dialog-demo submitDialog" hide-on-blur>
 						<i class="iconfont suc">&#xe60a;</i>
 						<div class="success">您的提交已成功</div>
 						<x-button @click.native="sucMakeSure" type="primary">返回产品详情</x-button>
 					</x-dialog> -->
 					<x-dialog v-model="failSubmit" class="dialog-demo submitDialog" hide-on-blur>
-						<i class="iconfont noS fail">&#xe626;</i>
+						<!-- <i class="iconfont noS fail">&#xe626;</i> -->
 						<div class="success sorry">对不起！申请提交未成功</div>
 						<div class="success">请您重新申请提交</div>
 						<x-button @click.native="failMakeSure" type="primary">确 定</x-button>
@@ -275,11 +276,12 @@
 <script type="text/ecmascript-6">
 import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput } from 'vux'
 import camera from '@/base/camera/camera'
-import { appointmentList, submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
+import { submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
 import { getProducts } from '@/service/api/products'
 import { checkBankDetail } from '@/service/api/customers'
 import { formatDate } from '@/common/js/date'
 import thumbnails from '@/base/camera/thumbnails'
+import { MessageBox, Toast } from 'mint-ui'
 
 export default {
 	data () {
@@ -421,7 +423,10 @@ export default {
           className: 'slot8',
 					textAlign: 'center'
         }
-			]
+			],
+			selectClientObj: null,
+			submitFailStatus: false,
+			submitAppointImg: ''
 		}
 	},
 	computed: {
@@ -432,7 +437,7 @@ export default {
 	components: {
 		XHeader,
 		Flow,
-    	FlowState,
+    FlowState,
 		FlowLine,
 		XDialog,
 		XButton,
@@ -555,59 +560,89 @@ export default {
 			},
 			submitAppointmentBtn () {
 				if (this.name === '' || this.money === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				if (this.money < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
 				if (this.money > this.collectionAmount) {
 					this.msgDetail = '预约金额大于募集金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
-				let selectObj = this.appointmentList.find(item => item.mobile === this.cMob)
+				// let selectObj = this.appointmentList.find(item => item.mobile === this.cMob)
 				let obj = {
-					'client_id': selectObj.client_id,
+					'client_id': this.selectClientObj.client_id,
 					'client_mobile': this.cMob,
-					'client_no': selectObj.client_no,
+					'client_no': this.selectClientObj.client_no,
 					'client_name': this.name,
-					'client_type': selectObj.client_type,
-					'risk_level': selectObj.risk_level,
+					'client_type': this.selectClientObj.client_type,
+					'risk_level': this.selectClientObj.risk_level,
 					'product_id': this.product_id,
 					'product_name': this.product_name,
 					'appointment_amount': parseInt(this.money),
 					'appointment_date': this.nowTime
 				}
 				submitAppointment(obj).then(res => {
+					this.submitDialog = true
 					if (res.status === 200) {
-						this.submitDialog = true
+						this.submitFailStatus = false
 						this.autoReturnDetail()
+						this.submitAppointImg = 'static/img/certify_right.png'
 						if (res.data.message === '预约成功') {
 							this.submitAppointDetail = '您的预约已提交成功'
 						} else {
 							this.submitAppointDetail = '已提交待审核中…'
 						}
+					} else {
+						this.submitFailStatus = true
+						this.submitAppointDetail = '提交失败请重新提交！'
+						this.submitAppointImg = 'static/img/certify_wrong.png'
 					}
 				})
 			},
 			repeatAppointmentBtn () {
 				if (this.name === '' || this.money === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				if (this.money < this.minimalAmount) {
 					this.msgDetail = '预约金额小于起投金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
 				if (this.money > this.collectionAmount) {
 					this.msgDetail = '预约金额大于募集金额，不可预约'
-					this.alertMsg = true
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
+					// this.alertMsg = true
 					return
 				}
 				let obj = {
@@ -631,6 +666,9 @@ export default {
 						} else {
 							this.submitAppointDetail = '已提交待审核中…'
 						}
+					} else {
+						this.submitDialog = true
+						this.submitAppointDetail = '提交失败请重新提交！'
 					}
 				})
 			},
@@ -658,15 +696,23 @@ export default {
 			cardNumChange () {
 			},
 			submitPayMaterials () {
-				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
-					this.alertMsg = true
-					this.msgDetail = '银行卡输入有误'
+				// console.log(this.materialSrc)
+				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+					// this.alertMsg = true
+					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
-				console.log(this.materialSrc)
-				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
-					this.alertMsg = true
-					this.msgDetail = '还有信息没填写哦～'
+				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
+					// this.alertMsg = true
+					this.msgDetail = '银行卡输入有误'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {
@@ -679,23 +725,48 @@ export default {
 					'card_no': this.cardnum || this.cardNum,
 					'remit_amount': parseInt(this.remitAmount)
 				}
-				submitMaterials(this.appointmentId, obj).then(res => {
-					if (res.status === 200) {
-						this.submitDialog = true
-						this.autoReturnDetail()
-						this.submitAppointDetail = '已提交待审核中…'
-					}
-				})
+				MessageBox({
+					title: '提交确认',
+					message: '提交后不可修改，确认提交吗?',
+					showCancelButton: true
+					}).then(action => {
+						if (action === 'cancel') {
+							MessageBox.close(false)
+							return
+						}
+						submitMaterials(this.appointmentId, obj).then(res => {
+							if (res.status === 200) {
+								this.submitDialog = true
+								this.autoReturnDetail()
+								this.submitAppointDetail = '已提交待审核中…'
+							}
+						})
+					})
+				// submitMaterials(this.appointmentId, obj).then(res => {
+				// 	if (res.status === 200) {
+				// 		this.submitDialog = true
+				// 		this.autoReturnDetail()
+				// 		this.submitAppointDetail = '已提交待审核中…'
+				// 	}
+				// })
 			},
 			repeatSubmitPayMaterials () {
 				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '银行卡输入有误'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {
@@ -709,13 +780,23 @@ export default {
 					'remit_amount': parseInt(this.remitAmount),
 					'flag': '1'
 				}
-				submitMaterials(this.appointmentId, obj).then(res => {
-					if (res.status === 200) {
-						this.submitDialog = true
-						this.autoReturnDetail()
-						this.submitAppointDetail = '已提交待审核中…'
-					}
-				})
+				MessageBox({
+					title: '提交确认',
+					message: '提交后不可修改，确认提交吗?',
+					showCancelButton: true
+					}).then(action => {
+						if (action === 'cancel') {
+							MessageBox.close(false)
+							return
+						}
+						submitMaterials(this.appointmentId, obj).then(res => {
+							if (res.status === 200) {
+								this.submitDialog = true
+								this.autoReturnDetail()
+								this.submitAppointDetail = '已提交待审核中…'
+							}
+						})
+					})
 			},
 			imageHandler1 (data) {
 				this.cardUrl = data
@@ -732,8 +813,12 @@ export default {
 			},
 			refund () {
 				if (this.refundSrc.length === 0) {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {}
@@ -755,7 +840,18 @@ export default {
 				})
 			},
 			cancleAppointment () {
-				this.sureCancleA = true
+				// this.sureCancleA = true
+				MessageBox({
+					title: '取消预约',
+					message: '确定取消预约吗?',
+					showCancelButton: true
+					}).then(action => {
+						if (action === 'cancel') {
+							MessageBox.close(false)
+							return
+						}
+						this.sureCancle()
+					})
 			},
 			sureCancle () {
 				cancelAppointment(this.appointmentId).then(res => {
@@ -769,8 +865,12 @@ export default {
 			},
 			emailContract () {
 				if (this.cantractNum === '' || this.expressCompany === '' || this.expressNum === '') {
-					this.alertMsg = true
+					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
+					Toast({
+						message: this.msgDetail,
+						duration: 3000
+					})
 					return
 				}
 				let obj = {
@@ -844,9 +944,9 @@ export default {
 					this.giveMoneyDone = false
 					this.giveMoneyIng = false
 					this.contractManage = false
-					appointmentList(this.$route.params.riskLevel).then(res => {
-						this.appointmentList = res.data
-					})
+					// appointmentList(this.$route.params.riskLevel).then(res => {
+					// 	this.appointmentList = res.data
+					// })
 			},
 			getList () {
 				this.appointmentId = this.$route.params.appointmentId
@@ -1394,6 +1494,7 @@ export default {
 			}
 	},
 	beforeRouteEnter (to, from, next) {
+		// console.log(from)
 		next(vm => {
 			vm.prePath = from.path
 			// vm.getList()
@@ -1417,6 +1518,7 @@ export default {
 	activated () {
 		if (this.$route.params.fromUrl === 'productDetail') {
 			this.writeAppointment()
+			// this.getList()
 		} else if (this.$route.params.fromUrl === 'reservationList') {
 			this.refundUrls = []
 			this.materialsUrls = []
@@ -1441,6 +1543,8 @@ export default {
 		} else if (this.$route.params.selectFlag === 'selectFlag') {
 			this.name = this.$route.params.nameItem.name
 			this.cMob = this.$route.params.nameItem.mobile
+			this.selectClientObj = this.$route.params.nameItem
+			// console.log(this.$route.params.nameItem)
 		}
 	},
 	// deactivated () {
@@ -1448,7 +1552,9 @@ export default {
 	// },
 	created () {
 		window.scroll(0, 0)
-		// console.log(this.$route.params.fromUrl)
+		console.log('this.appointmentList.client_id')
+		// console.log(this.appointmentList.client_id)
+		console.log(this.$route.params)
 	}
 }
 </script>
@@ -1595,8 +1701,11 @@ export default {
 		}
 		.info{
 			margin-top: 20px;
+			.mint-cell.border-b-0 {
+				border-bottom: none!important;
+			}
 			.mint-cell.tit{
-				margin-bottom: 20px;
+				// margin-bottom: 20px;
 				height: 80px;
 				i.iconfont{
 					font-size: 38px;
@@ -1679,8 +1788,8 @@ export default {
 						background-image: none;
 						.mint-cell-title{
 							.mint-cell-text{
-								color: #333;
-								font-weight: bold;
+								color: #4A4A4A;
+								font-size: 30px;
 							}
 						}
 						.mint-cell-value{
@@ -1702,18 +1811,20 @@ export default {
 						height: 80px;
 						line-height: 80px;
 						background-image: none;
-						.mint-cell-title{
-							width: 170px;
+						.mint-cell-title .mint-cell-text{
+							// width: 170px;
+							white-space: nowrap;
 						}
 						.mint-cell-value{
 							.mint-field-core{
 								width: 570px;
 								height: 40px;
 								line-height: 40px;
-								border: 1px solid #ccc;
+								// border: 1px solid #ccc;
 								border-radius: 5px;
 								box-sizing: border-box;
 								text-indent: 20px;
+								text-align: right;
 							}
 						  .mint-field-clear{
 								display: none;
@@ -1763,12 +1874,20 @@ export default {
 			.successBtn,.mailBtn{
 				text-align: center;
 				padding: 10px 0 30px 0;
+				.mint-button.mint-button--default {
+					border: 1px solid #C4902D;
+					color: #C4902D;
+					background: #fff;
+					display: inline-block;
+					width: 40%;
+					height: 88px;
+				}
 				.mint-button.mint-button--primary.mint-button--normal{
 					/*width: 300px;*/
           width: 40%;
-					height: 72px;
-					background: #2672BA;
-					border-radius: 8px;
+					height: 88px;
+					background: linear-gradient(to right, #DFC189, #BD9D62);
+					// border-radius: 8px;
 					label{
 						font-family: PingFangSC-Regular;
 						font-size: 28px;
@@ -1788,21 +1907,28 @@ export default {
 					margin-bottom: 20px;
 				}
 				.cardSelected{
-					background: #2672BA;
-					border: 1px solid #2672BA;
-					border-radius: 8px;
-					font-size: 24px;
-					color: #FFFFFF;
+					// background: #2672BA;
+					// border: 1px solid #2672BA;
+					// border-radius: 8px;
+					font-size: 30px;
+					color: #3377FF;
 					height: 50px;
 					line-height: 50px;
-					padding: 0 15px;
+					// padding: 0 15px;
 				}
 				.warn{
-					padding: 20px;
+					padding: 0 70px;
 					background: #fff;
-					border-bottom: 1px solid #ccc;
-					color: #2672BA;
+					// border-bottom: 1px solid #ccc;
+					color: #A0A0A0;
 					font-size: 24px;
+					position: relative;
+					.iconfont {
+						position: absolute;
+						left: 40px;
+						color: #FFBE00;
+						font-size: 22px;
+					}
 				}
 				.card{
 					background: #fff;
@@ -1817,10 +1943,10 @@ export default {
 						}
 					}
 					.mint-field{
-						height: 40px;
-						line-height: 40px;
-						border: none;
-						margin-bottom: 20px;
+						// height: 40px;
+						// line-height: 40px;
+						// border: none;
+						// margin-bottom: 20px;
 						.mint-cell-wrapper{
 							height: 100%;
 							line-height: 100%;
@@ -1840,7 +1966,7 @@ export default {
 									width: 580px;
 									height: 40px;
 									line-height: 40px;
-									border: 1px solid #ccc;
+									// border: 1px solid #ccc;
 									border-radius: 5px;
 									box-sizing: border-box;
 									text-indent: 20px;
@@ -1870,10 +1996,32 @@ export default {
 							}
 						}
 					}
-					.mint-field:nth-child(2){
-						.mint-field-core{
-							background: #f5f5f5;
+					.mint-field.click-block{
+						.mint-field-other{
+							top: 0;
+							/*right: 0;*/
+							position: absolute;
+              width: 100%;
+              height: 100%;
+							/*transform: rotateZ(90deg);*/
+							.define_box {
+                position: absolute;
+                width:100%;
+                height:100%;
+                top:0;
+                left:0;
+                text-align: right;
+                .iconfont{
+                  display: inline-block;
+                  transform: rotateZ(90deg);
+                  font-size: 40px;
+                  color: #333;
+                }
+              }
 						}
+						// .mint-field-core{
+						// 	background: #f5f5f5;
+						// }
 					}
 					.upload_cont{
 						width: 132px;
@@ -1929,10 +2077,23 @@ export default {
 						margin-right: 20px;
 					}
 				}
-				.materialsNeeded, .evidence{
+				.materialsNeeded,
+				.evidence,
+				.card{
 					background-color: #fff;
 					.camera{
 						padding: 20px;
+						img{
+							width: 132px;
+							height: 120px;
+							margin-right: 20px;
+						}
+					}
+				}
+				.card{
+					background-color: #fff;
+					.camera{
+						padding: 20px 20px 20px 0;
 						img{
 							width: 132px;
 							height: 120px;
@@ -2026,8 +2187,8 @@ export default {
 			}
 			.vux-x-dialog.submitDialog{
 				.weui-dialog{
-					width: 580px;
-					height: 345px;
+					width: 560px;
+					height: 549px;
 					background: #FFFFFF;
 					border-radius: 10px;
 					top: 50% !important;
@@ -2035,17 +2196,21 @@ export default {
 					transform: translate(-50%,-50%);
 					padding: 0;
 					text-align: center;
-					.noS{
-						display: inline-block;
-						font-size: 64px;
-						color: #8B8B8B;
-						margin: 30px 0;
-						line-height: 100px;
+					img {
+						width: 283px;
+						margin-top: 40px;
 					}
-					.returnIcon{
-						font-size: 70px;
-						margin: 20px 0;
-					}
+					// .noS{
+					// 	display: inline-block;
+					// 	font-size: 64px;
+					// 	color: #8B8B8B;
+					// 	margin: 30px 0;
+					// 	line-height: 100px;
+					// }
+					// .returnIcon{
+					// 	font-size: 70px;
+					// 	margin: 20px 0;
+					// }
 					.suc{
 						display: inline-block;
 						font-size: 100px;
@@ -2071,11 +2236,18 @@ export default {
 						line-height: 1;
 					}
 					.returnDetailCss{
-						margin-bottom: 20px;
+						margin: 34px 0;
 						font-family: PingFangSC-Regular;
 						font-size: 30px;
 						color: #333333;
 						line-height: 1;
+					}
+					.bottomBack {
+						border-top: 1px solid #ccc;
+						color: #BD9D62;
+						height: 100px;
+						line-height: 100px;
+						font-size: 36px;
 					}
 					.sorry{
 						line-height: inherit;

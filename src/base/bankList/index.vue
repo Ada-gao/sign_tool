@@ -66,6 +66,9 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
+        // console.log(from)
+        vm.fromPath = from.path
+        // console.log(vm.fromPath)
 //        if (from.name === 'Bankcard' || from.name === 'PotentialCustomerList') {
 //          vm.addCard = '0'
 //        } else if (from.name === 'CustomerManagement') {
@@ -104,7 +107,7 @@
       selected (item) {
         this.mark = 'selected'
         this.selectedItem = item
-        console.log(this.mark, item)
+        // console.log(this.mark, item)
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag, mark: this.mark, item: this.selectedItem}})
       },
       getList () {
@@ -117,9 +120,10 @@
       }
     },
     mounted () {
+      console.log(this.$route.params)
       this.addCard = this.$route.params.addCard
-      let selfInfos = JSON.parse(getStore('selfInfos'))
-      this.clientId = this.$route.params.id || selfInfos.client_id
+      // let selfInfos = JSON.parse(getStore('selfInfos'))
+      this.clientId = this.$route.params.id || JSON.parse(getStore('selfInfos')).client_id
       this.getList()
     }
   }
