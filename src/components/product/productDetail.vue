@@ -383,11 +383,12 @@ export default {
           margin-top: 40px;
           span{
             display: inline-block;
-            width: 138px;
+            // width: 138px;
             height: 46px;
             line-height: 46px;
             border: 1px solid #FFFFFF;
             border-radius: 100px;/*px*/
+            padding: 0 30px;
           }
           .twice{
             margin: 0 38px;

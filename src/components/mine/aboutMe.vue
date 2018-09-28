@@ -10,7 +10,10 @@
     <common-header title=""></common-header>
     <div class="wrapper">
       <div class="top">
-        <div class="img"><img src="static/img/banner.png" alt=""></div>
+        <div class="img text-center">
+          <img src="static/img/男.png" alt="" v-if="this.gender === '0'">
+          <img src="static/img/女.png" alt="" v-else>
+        </div>
         <div class="right">
           <p>{{this.name}}</p>
           <p class="phone">{{this.phone}}</p>
@@ -65,7 +68,10 @@
       <div class="info absolute-center-x">
         <i class="iconfont cancle" @click="hideQrcode">&#xe7dd;</i>
         <div class="top"></div>
-        <div class="img absolute-center-x"><img class="absolute-center-xy" src="static/img/男.png" alt=""></div>
+        <div class="img absolute-center-x">
+          <img class="absolute-center-xy" src="static/img/男.png" alt="" v-if="this.gender === '0'">
+          <img class="absolute-center-xy" src="static/img/女.png" alt="" v-else>
+        </div>
         <div class="cont text-center">
           <p class="name">{{this.name}}</p>
           <p class="phone">{{this.phone}}</p>
@@ -130,7 +136,8 @@ export default {
       noCheckNum: 0,
       name: '',
       phone: '',
-      key: 'men1'
+      key: 'men1',
+      gender: ''
     }
   },
   components: {
@@ -360,6 +367,7 @@ export default {
   mounted () {
     this.qheight = 'height:' + window.innerHeight + 'px'
     let data = JSON.parse(window.localStorage.data)
+    this.gender = data.gender
     this.name = data.name
     this.phone = data.mobile
     this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
@@ -418,9 +426,9 @@ export default {
         height: 110px;
         overflow: hidden;
         display: inline-block;
+        background: #444;
         img{
-          width: 100%;
-          height: 100%;
+          // width: 100%;
         }
       }
       .right{

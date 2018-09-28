@@ -102,7 +102,6 @@
             <i slot="icon" class="border_left"></i>
           </cell>
           <section v-if="!showCont2">
-
             <div v-if="data.realname_status === '2'">
               <div class="cell_box">
                 <span class="cell_left">证件类型：</span>
@@ -134,61 +133,63 @@
                 <span class="cell_right">{{data.address}}</span>
               </div>
             </div>
-            <div class="space"></div>
-            <div class="cell_box">
-              <span class="cell_left">实名认证：</span>
-              <span class="cell_right" @click="handlerPerfect">
-                <i v-if="data.realname_status === '3'"
-                   class="no_certy">{{clickArrowObj.realnameObj.stat}}</i>
-                <i v-if="data.realname_status === '1'"
-                   class="wait_certy">{{clickArrowObj.realnameObj.stat}}</i>
-                <i v-if="data.realname_status === '2'"
-                   class="success_certy">{{clickArrowObj.realnameObj.stat}}</i>
-                <i v-if="data.realname_status === '4'"
-                   class="expire_certy">{{clickArrowObj.realnameObj.stat}}</i>
-                <i class="iconfont right_icon"
-                   v-if="!clickArrowObj.realnameObj.disabled">&#xe8d5;</i>
-              </span>
-            </div>
-            <div class="bb"></div>
-            <div class="cell_box" @click="handlerCerty">
-              <span class="cell_left">
-                投资者类型：
-                <i v-if="data.certification_status === '0'">
-                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-                </i>
-                <i v-if="data.certification_status === '1'">
-                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-                </i>
-                <i v-if="data.certification_status === '2'">
-                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-                </i>
-                <i v-if="data.certification_status === '3'">
-                  {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-                </i>
-              </span>
-              <span class="cell_right">
-                <i v-if="data.certification_status === '0'"
-                   class="no_certy">{{clickArrowObj.cerObj.stat}}</i>
-                <i v-if="data.certification_status === '1'"
-                   class="wait_certy">{{clickArrowObj.cerObj.stat}}</i>
-                <i v-if="data.certification_status === '2'"
-                   class="success_certy">{{clickArrowObj.cerObj.stat}}</i>
-                <i v-if="data.certification_status === '3'"
-                   class="expire_certy">{{clickArrowObj.cerObj.stat}}</i>
-                <i class="iconfont right_icon"
-                   v-if="!clickArrowObj.cerObj.disabled">&#xe8d5;</i>
-              </span>
-            </div>
-            <div class="bb"></div>
-            <div class="cell_box" @click="handlerBank">
-              <div class="cell_left">银行卡信息</div>
-              <div class="cell_right">
-                <span>查看</span>
-                <i class="iconfont right_icon">&#xe8d5;</i>
-              </div>
-            </div>
           </section>
+        </group>
+        <group v-if="data.mobile_validated === '0' && data.realname_status !== '0'">
+          <div class="space"></div>
+            <div class="cell_box">
+            <span class="cell_left">实名认证：</span>
+            <span class="cell_right" @click="handlerPerfect">
+              <i v-if="data.realname_status === '3'"
+                  class="no_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i v-if="data.realname_status === '1'"
+                  class="wait_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i v-if="data.realname_status === '2'"
+                  class="success_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i v-if="data.realname_status === '4'"
+                  class="expire_certy">{{clickArrowObj.realnameObj.stat}}</i>
+              <i class="iconfont right_icon"
+                  v-if="!clickArrowObj.realnameObj.disabled">&#xe8d5;</i>
+            </span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box" @click="handlerCerty">
+            <span class="cell_left">
+              投资者类型：
+              <i v-if="data.certification_status === '0'">
+                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+              </i>
+              <i v-if="data.certification_status === '1'">
+                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+              </i>
+              <i v-if="data.certification_status === '2'">
+                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+              </i>
+              <i v-if="data.certification_status === '3'">
+                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
+              </i>
+            </span>
+            <span class="cell_right">
+              <i v-if="data.certification_status === '0'"
+                  class="no_certy">{{clickArrowObj.cerObj.stat}}</i>
+              <i v-if="data.certification_status === '1'"
+                  class="wait_certy">{{clickArrowObj.cerObj.stat}}</i>
+              <i v-if="data.certification_status === '2'"
+                  class="success_certy">{{clickArrowObj.cerObj.stat}}</i>
+              <i v-if="data.certification_status === '3'"
+                  class="expire_certy">{{clickArrowObj.cerObj.stat}}</i>
+              <i class="iconfont right_icon"
+                  v-if="!clickArrowObj.cerObj.disabled">&#xe8d5;</i>
+            </span>
+          </div>
+          <div class="bb"></div>
+          <div class="cell_box" @click="handlerBank">
+            <div class="cell_left">银行卡信息</div>
+            <div class="cell_right">
+              <span>查看</span>
+              <i class="iconfont right_icon">&#xe8d5;</i>
+            </div>
+          </div>
         </group>
         <group class="certify_info" v-else>
           <div class="space"></div>
@@ -224,8 +225,12 @@
                          @handlerFlag="handlerFlag"></remark-list>
           </section>
           <!-- <div class="add_remark">输入备注信息...</div> -->
-          <input class="add_remark" placeholder="输入备注信息..." v-model="remarkInfo"/>
-          <button @click="submitAddNew">添加备注</button>
+          <!-- <input class="add_remark" placeholder="输入备注信息..." v-model="remarkInfo"/>
+          <button @click="submitAddNew">添加备注</button> -->
+          <div class="edit-remark">
+            <input class="add_remark" placeholder="输入备注信息..." v-model="remarkInfo"/>
+            <span @click="submitAddNew" class="submit-remark">提交</span>
+          </div>
         </group>
       </div>
     </div>
@@ -515,17 +520,25 @@
       color: #9B9B9B;
       padding-bottom: 30px;
       background: #fff;
+      .edit-remark{
+        margin: 0 40px;
+        border-top: 1px solid #E9E9E9;/*no*/
+      }
       .add_remark {
-        width: 89.33%;
+        width: 590px;
         margin: 0 auto;
         box-sizing: border-box;
-        margin-top: 50px;
-        border: 1px solid #B8B8B8;
-        border-radius: 4px;
+        margin-top: 30px;
+        border: 1px solid #B8B8B8;/*no*/
+        border-radius: 4px;/*no*/
         height: 73px;
         line-height: 73px;
         padding-left: 20px;
         font-size: 24px;
+      }
+      .submit-remark{
+        font-size: @font-size-thirty;/*px*/
+        color: @font-color-blue;
       }
     }
   }

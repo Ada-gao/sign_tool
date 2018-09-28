@@ -175,7 +175,8 @@ export default {
             'email': res.data.email,
             'userId': res.data.user_id,
             'mobile': res.data.mobile,
-            'name': res.data.name
+            'name': res.data.name,
+            'gender': res.data.gender
           }
           window.localStorage.setItem('data', JSON.stringify(data))
 //          this.$router.push({path: decodeURIComponent(url)})

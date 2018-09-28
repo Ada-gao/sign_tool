@@ -220,8 +220,8 @@
                       @imgHandler="imageHandler2"
                       @showPopup="showPopup2"
                       @hidePopup="hidePopup2"></camera>
-              <span class="front_class">正面</span>
-              <span class="back_class">反面</span>
+              <span class="front_class">上传身份证正面</span>
+              <span class="back_class">上传身份证反面</span>
             </div>
             <div class="bb"></div>
           </div>
@@ -814,7 +814,7 @@
           line-height: 56px;
           padding: 0 30px;
           // color: #2672ba;
-          color: @text-font-color;
+          color: @font-color-blue;
           font-size: 34px;
           position: absolute;
           border-bottom: 1px solid #ddd;
@@ -824,6 +824,7 @@
           }
           span.cancel {
             left: 30px;
+            color: @font-color-4A;
           }
           span.ensure {
             right: 30px;
@@ -875,10 +876,11 @@
           height: 66px;
           line-height: 66px;
           font-size: 34px;
-          color: @text-font-color;
+          color: @font-color-blue;
         }
         .mint-datetime-cancel {
           text-align: left;
+          color: @font-color-4A;
         }
         .mint-datetime-confirm {
           text-align: right;
@@ -1060,16 +1062,20 @@
         /*width: 270px;*/
         width: 280px;
         height: 180px;
-        background-color: #ddd;
+        background-color: #fff;
         line-height: 180px;
         text-align: center;
         .icon_bg {
-          font-size: 115px;
-          color: #fff;
+          font-size: 100px;
+          color: #E1E1E1;
+          line-height: 110px;
         }
         .upload_cont{
           width: 280px;
           height: 180px;
+          background: #fff;
+          border: 1px dashed #E1E1E1;/*no*/
+          border-radius: 0;
         }
       }
       .upload_cont1:first-child,
@@ -1077,21 +1083,21 @@
         margin-right: 110px;
       }
       .front_class {
-        font-size: @font-size-twentyF;/*px*/
+        font-size: @font-size-twenty;/*px*/
         color: #B0B0B0;
         position: absolute;
         /*left: 165px;*/
-        left: calc(50% - 215px);
-        top: 190px;
+        left: calc(50% - 260px);
+        top: 120px;
       }
       .back_class {
-        top: 190px;
-        font-size: @font-size-twentyF;/*px*/
+        top: 120px;
+        font-size: @font-size-twenty;/*px*/
         color: #B0B0B0;
         position: absolute;
         /*right: 165px;*/
         /*right: 180px;*/
-        right: calc(50% - 215px);
+        right: calc(50% - 260px);
       }
     }
     .one_upd_box {

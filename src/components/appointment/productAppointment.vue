@@ -68,7 +68,7 @@
 									<div class="warn" v-if="chooseSelectedBank">为保证正常到账和汇款，请确保银行信息完整准确，如果是新输入银行卡信息，需要上传银行卡照片进行审核</div>
 									<div class="card" v-if="uploadCard">
 										<mt-field label="银行卡号:" v-model="cardnum" ref="cardInput" @change="cardNumChange"></mt-field>
-										<mt-field label="银行名称:" disabled v-model="bankname">
+										<mt-field label="银行名称:" class="bankname" disabled v-model="bankname">
                       <div class="define_box"
                            @click="chooseBankName">
                         <i class="iconfont">&#xe731;</i>
@@ -1807,6 +1807,15 @@ export default {
 				.card{
 					background: #fff;
 					padding: 30px 20px;
+					.mint-cell.mint-field.bankname{
+						.mint-field-other{
+							top: 0;
+							/*right: 0;*/
+							position: absolute;
+							width: 100%;
+							height: 100%;
+						}
+					}
 					.mint-field{
 						height: 40px;
 						line-height: 40px;
@@ -1840,8 +1849,8 @@ export default {
 									top: 0;
 									/*right: 0;*/
 									position: absolute;
-                  width: 100%;
-                  height: 100%;
+									// width: 100%;
+									// height: 100%;
 									/*transform: rotateZ(90deg);*/
 									.define_box {
                     position: absolute;

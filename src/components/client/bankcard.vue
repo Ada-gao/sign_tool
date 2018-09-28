@@ -85,8 +85,8 @@
                       :cerId="client_certification_id"
                       :isFromBank="fromBank"
                       @hidePopup="hidePopup"></camera>
+              <span class="front_class">上传银行卡正面</span>
             </div>
-          <div class="bb"></div>
           </div>
         </div>
       </group>
@@ -453,7 +453,7 @@
     .camera-box{
       height: 320px;
       .necessary_icon{
-        top: 13%;
+        top: 16%;
       }
       .upload {
         line-height: 110px;
@@ -475,6 +475,25 @@
         -webkit-box-sizing: border-box;
         -moz-box-sizing: border-box;
         box-sizing: border-box;
+        .icon_bg {
+          font-size: 100px;
+          color: #E1E1E1;
+          line-height: 110px;
+        }
+        .upload_cont{
+          background: #fff;
+          border: 1px dashed #E1E1E1;/*no*/
+          border-radius: 0;
+        }
+        .front_class {
+          font-size: @font-size-twenty;/*px*/
+          color: #B0B0B0;
+          position: absolute;
+          /*left: 165px;*/
+          left: 50%;
+          top: 120px;
+          transform: translate(-50%, 0);
+        }
       }
     }
     .mint-button.mint-button--default{

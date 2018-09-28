@@ -8,7 +8,7 @@
         <ul class="tabbar" :style="{'width': ulWidth}">
           <li v-for="(item,index) in tabBars"
               :key="index"
-              :style="{'width': liWidth}"
+              :style="{'width': liWidth + 'px', 'left': liWidth * index + 'px'}"
               @click="switchTab(index)"
               :class="n === index ? 'active' : ''"
           >{{item}}
@@ -57,7 +57,7 @@
     },
     mounted () {
       this.id = this.$route.params.id
-      this.liWidth = document.documentElement.offsetWidth / 5 + 'px'
+      this.liWidth = document.documentElement.offsetWidth / 5
       this.getList()
     },
     methods: {
@@ -94,6 +94,7 @@
   }
 </script>
 <style lang="less">
+@import "../../common/style/variable.less";
   .purchased {
     .space {
       height: 20px;
@@ -108,25 +109,30 @@
       font-size: 0;
       height: 80px;
       line-height: 80px;
+			position: relative;
+			background: @back-color-white;
       li {
-        font-size: 30px;
+				font-family: @font-family-M;
+        font-size: @font-size-thirty;/*px*/;
         display: inline-block;
         /*width: 150px;*/
         text-align: center;
-        color: #666;
-        position: relative;
+        color: @font-color-4A;
+        position: absolute;
       }
       li.active {
-        color: #2672ba;
+        color: @text-font-color;
       }
       li.active::after {
         content: '';
         position: absolute;
         display: block;
-        width: 100%;
-        height: 10px;
-        background-color: #2672ba;
-        bottom: -5px;
+        width: 60px;
+        height: 6px;
+        background-color: @text-font-color;
+				bottom: 0px;
+				left: 50%;
+				transform: translate(-50%, 0);
       }
     }
   }
