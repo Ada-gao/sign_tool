@@ -1,6 +1,6 @@
 <template>
   <div id="infoPage">
-    <x-header :left-options="{backText: ''}">我的消息</x-header>
+    <x-header class="header" :left-options="{backText: ''}">我的消息</x-header>
     <div class="wrapper">
         <div class="no-info text-center" v-if="this.infoList.length === 0">
           <div class="warn absolute-center-xy">
@@ -71,7 +71,7 @@ export default {
 <style lang="less">
 @import "../../common/style/variable.less";
 #infoPage{
-  .vux-header{
+  .vux-header.header{
     background: @header-bg;
     .vux-header-left{
       .left-arrow:before{
@@ -94,7 +94,7 @@ export default {
 					font-family: @font-family-R;
 					font-size: @font-size-twentyS;
 					color: #ccc;
-					margin-top: -25px;
+					margin-top: 25px;
 				}
 			}
     }

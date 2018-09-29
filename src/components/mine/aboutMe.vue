@@ -428,7 +428,7 @@ export default {
         display: inline-block;
         background: #444;
         img{
-          // width: 100%;
+          height: 100%;
         }
       }
       .right{
@@ -492,6 +492,7 @@ export default {
           border-color: #DADADA;
           border-width: 2px 2px 0 0;
           margin-top: -12px;
+          right: 4px;
         }
       }
     }

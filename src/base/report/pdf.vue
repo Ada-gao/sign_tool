@@ -1,6 +1,6 @@
 <template>
     <div id="material">
-        <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
+        <x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
         <div class="spinner">
           <mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
         </div>
@@ -239,7 +239,7 @@ export default {
 <style lang="less">
 @import "../../common/style/variable.less";
 #material{
-  .vux-header{
+  .vux-header.header{
     background: @header-bg;
     .vux-header-left{
       .left-arrow:before{

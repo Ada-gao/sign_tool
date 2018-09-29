@@ -1,6 +1,6 @@
 <template>
 	<div id="write-page">
-		<x-header :left-options="{backText: ''}">消息详情</x-header>
+		<x-header class="header" :left-options="{backText: ''}">消息详情</x-header>
 		<div class="wrapper">
 			<!--<input type="text" v-focus v-model="msg"/>-->
 			<!-- <textarea class="inputing" v-focus v-model="msg" name="" rows="" cols=""></textarea> -->
@@ -35,7 +35,7 @@ export default {
 <style lang="less">
 @import "../../common/style/variable.less";
 #write-page{
-	.vux-header{
+	.vux-header.header{
     background: @header-bg;
     .vux-header-left{
       .left-arrow:before{

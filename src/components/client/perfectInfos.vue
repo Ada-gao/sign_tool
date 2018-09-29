@@ -1030,7 +1030,7 @@
     // .weui-cells:after {
     //   border-bottom: none;
     // }
-    .camera-box{
+    .camera-box.new_field{
       height: 350px;
       .necessary_icon{
         top: 15%;

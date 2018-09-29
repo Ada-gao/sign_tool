@@ -1,6 +1,6 @@
 <template>
   <div id="pdfPage">
-    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
+    <x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back(id)">{{title}}</x-header>
     <div class="wrapper">
       <div class="space"></div>
       <check-list ref="checkList" v-model="value" :options="documentList" :multiple="true" v-if="checkListShow">
@@ -273,7 +273,7 @@ export default {
 #pdfPage{
   height: 100%;
   background: @back-color-white;
-  .vux-header{
+  .vux-header.header{
     background: @header-bg;
     .vux-header-left{
       .left-arrow:before{

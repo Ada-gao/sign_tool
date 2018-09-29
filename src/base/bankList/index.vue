@@ -3,7 +3,7 @@
     <mt-popup v-model="popupVisible">
       <mt-spinner type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
     </mt-popup>
-    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡
+    <x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡
       <div slot="right" class="add_card_btn"
              v-if="addCard !== '2'"
              @click="routerPush">
@@ -132,7 +132,7 @@
   @import "../../common/style/variable.less";
   .bankList{
     font-family: @font-family-R;
-    .vux-header{
+    .vux-header.header{
       .vux-header-right{
         width: 170px;
         height: 42px;

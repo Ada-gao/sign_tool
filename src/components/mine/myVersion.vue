@@ -1,6 +1,6 @@
 <template>
   <div id="v-page">
-    <x-header :left-options="{backText: ''}">关于我们</x-header>
+    <x-header class="header" :left-options="{backText: ''}">关于我们</x-header>
     <div class="wrapper">
       <div class="logo text-center absolute-center-x">
 			  <img src="static/img/shitu-logo.png">
@@ -34,7 +34,7 @@ export default {
 @import "../../common/style/variable.less";
 #v-page{
   height: 100%;
-  .vux-header{
+  .vux-header.header{
     background: @header-bg;
     .vux-header-left{
       .left-arrow:before{
@@ -60,6 +60,7 @@ export default {
       .tit{
         font-size: 44px;/*px*/
         color: #393939;
+        line-height: 97px;
       }
     }
     .tips {

@@ -426,7 +426,7 @@
             font-family: @font-family-R;
             font-size: @font-size-twentyS;
             color: #ccc;
-            margin-top: -25px;
+            margin-top: 25px;
           }
         }
       }

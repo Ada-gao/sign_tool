@@ -1,6 +1,6 @@
 <template>
 	<div id="remark-page">
-		<x-header :left-options="{backText: ''}">备注列表</x-header>
+		<x-header class="header" :left-options="{backText: ''}">备注列表</x-header>
 		<div class="wrapper">
 			<div class="search">
 				<div class="toggle-button">
@@ -179,7 +179,7 @@ export default {
 @import "../../common/style/variable.less";
 #remark-page{
   height: 100%;
-	.vux-header{
+	.vux-header.header{
     background: @header-bg;
     .vux-header-left{
       .left-arrow:before{
@@ -292,7 +292,7 @@ export default {
             font-family: @font-family-R;
             font-size: @font-size-twentyS;
             color: #ccc;
-            margin-top: -25px;
+            margin-top: 25px;
           }
         }
       }

@@ -450,7 +450,7 @@
         font-size: 28px;
       }
     }
-    .camera-box{
+    .camera-box.new_field{
       height: 320px;
       .necessary_icon{
         top: 16%;
