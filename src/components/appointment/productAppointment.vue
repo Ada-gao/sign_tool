@@ -22,9 +22,9 @@
 				</div>
 				<div class="info">
 					<mt-cell title="预约信息" class="tit">
-						<!-- <i slot="icon" class="iconfont">&#xe650;</i> -->
+						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[appointInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('appointInfo')"></i>
 					</mt-cell>
-					<div class="cont">
+					<div class="cont" v-show="appointInfoShow">
 						<!-- <mt-field label="用户名: " placeholder="请输入用户名" v-model="name" readonly></mt-field> -->
 						<!-- <mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell> -->
 						<mt-cell title="客户姓名：" is-link @click.native="chooseName" v-if="showNameClick">{{name}}</mt-cell>
@@ -52,21 +52,23 @@
 						<mt-cell title="预约时间：">{{nowTime}}</mt-cell>
 						<mt-cell title="已打款审核通过时间：" v-if="alreadyPass">{{alreadyPassTime}}</mt-cell>
 					</div>
+					<div class="mb20"></div>
 					<mt-cell title="产品信息" class="tit">
-						<!-- <i slot="icon" class="iconfont">&#xe693;</i> -->
+						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[productInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('appointInfo')"></i>
 					</mt-cell>
-					<div class="cont">
+					<div class="cont" v-show="productInfoShow">
 						<mt-cell title="产品名称：">{{product_name}}</mt-cell>
 						<mt-cell title="产品信息：" value="查看" is-link @click.native="returnProductInfo"></mt-cell>
 					</div>
+					<div class="mb20"></div>
 					<div class="uploadCustomer" v-if="uploadShow">
-						<!-- <mt-cell title="相关材料" class="tit"></mt-cell> -->
 						<div class="cont">
 							<div class="fightMoney">
-								<!-- <mt-cell title="银行卡信息" class="tit border-b-0"> -->
-								<mt-cell title="银行卡信息" class="tit border-b-0" :to="{name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}}" is-link>
-									<span class="cardSelected" v-if="chooseSelectedBank">选择已绑定银行卡</span>
-									<!-- <span class="cardSelected" @click="chooseBankCard" v-if="chooseSelectedBank">选择已绑定银行卡</span> -->
+								<mt-cell v-if="chooseSelectedBank" title="银行卡信息" class="tit border-b-0" :to="{name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}}" is-link>
+									<span class="cardSelected">选择已绑定银行卡</span>
+								</mt-cell>
+								<mt-cell v-else title="银行卡信息" class="tit border-b-0">
+									<i class="iconfont" :class="[bankInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('bankInfo')"></i>
 								</mt-cell>
 								<div class="warn" v-if="chooseSelectedBank">
 									<i class="iconfont icon-alert-warning" style=""></i>
@@ -110,7 +112,7 @@
 										</camera>
 										</div>
 								</div>
-								<div class="card1" v-if="uploadCardS">
+								<div class="card1" v-show="uploadCardS && bankInfoShow">
 									<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
 									<mt-cell title="银行名称:" :value="cardName"></mt-cell>
 									<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
@@ -118,11 +120,15 @@
         						<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
 								</div>
 							</div>
-							<div class="evidence" v-if="evidenceShow">
-								<mt-cell title="打款凭证" class="tit border-b-0"></mt-cell>
-								<mt-field class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
-								<div class="camera">
-									<camera :popupVisible="popupVisible"
+							<div class="evidence">
+								<mt-cell title="打款凭证" class="tit border-b-0">
+									<i class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('remitInfo')"></i>
+								</mt-cell>
+								<mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
+								<div class="camera" v-show="remitInfoShow">
+									<camera
+										 v-if="evidenceShow"
+										:popupVisible="popupVisible"
 										@imgHandler="imageHandler4"
 										:imageArr='evidenceUrls'
 										:isFromAppointment="fromAppointment"
@@ -130,20 +136,23 @@
 										@showPopup="showPopup"
 										@hidePopup="hidePopup">
 									</camera>
+									<img v-else v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)" :src="item">
 								</div>
 							</div>
-							<div class="evidence" v-if="!evidenceShow">
-								<mt-cell class="remitAmount tit" title="打款凭证">
-									<span>打款金额：{{remitAmount}}万</span>
-									<!-- <mt-cell title="打款金额:" :value="  remitAmount + '万'"></mt-cell> -->
+							<!-- <div class="evidence" v-if="!evidenceShow">
+								<mt-cell class="remitAmount tit border-b-0" title="打款凭证">
+									<i class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1"></i>
 								</mt-cell>
+								<mt-field class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
 								<div class="camera">
 									<img v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)" :src="item">
 								</div>
-							</div>
+							</div> -->
 							<div class="materialsNeeded">
-								<mt-cell title="交易所需材料" class="tit border-b-0"></mt-cell>
-								<div class="camera">
+								<mt-cell title="交易所需材料" class="tit border-b-0">
+									<i class="iconfont" :class="[transcInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('transcInfo')"></i>
+								</mt-cell>
+								<div class="camera" v-show="transcInfoShow">
 									<camera v-if="uploadCardMaterials" :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
               							:imageArr="materialsUrls"
@@ -162,12 +171,17 @@
 								</div>
 							</div> -->
 						</div>
+						<div class="mb20"></div>
 					</div>
-					<div class="refund" v-if="uploadRefund">
-						<div class="cont">
-							<mt-cell title="提交退款申请书" class="tit"></mt-cell>
+					<div class="refund" v-if="uploadRefund||repeatUploadRefund">
+						<mt-cell title="退款申请书" class="tit">
+							<i class="iconfont" :class="[refundInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('refundInfo')"></i>
+						</mt-cell>
+						<div class="cont" v-show="refundInfoShow">
 							<div class="camera">
-								<camera :popupVisible="popupVisible"
+								<camera
+									v-if="uploadRefund"
+									:popupVisible="popupVisible"
 									@imgHandler="imageHandler3"
 									:imageArr="refundUrls"
 									:isFromAppointment="fromAppointment"
@@ -175,38 +189,50 @@
 									@showPopup="showPopup"
 									@hidePopup="hidePopup">
 								</camera>
+								<img
+									v-if="repeatUploadRefund"
+									v-for="(item, index) in refundUrl"
+									:key="index"
+									@click="showBigImg('refund', index)"
+									:src="item">
 							</div>
 						</div>
+						<div class="mb20"></div>
 					</div>
-					<div class="refund" v-if="repeatUploadRefund">
+					<!-- <div class="mb20"></div> -->
+					<!-- <div class="refund" v-if="repeatUploadRefund">
 						<div class="cont">
 							<mt-cell title="提交退款申请书"></mt-cell>
-							<div class="camera" v-for="(item, index) in refundUrl" :key="index" @click="showBigImg('refund', index)">
-								<img :src="item">
+							<div class="camera">
+								<img v-for="(item, index) in refundUrl" :key="index" @click="showBigImg('refund', index)" :src="item">
 							</div>
 						</div>
-					</div>
-					<div class="mailingContract" v-if="sendEmail">
+					</div> -->
+					<div class="mailingContract" v-if="sendEmail||sendEmailW">
 						<mt-cell title="邮寄合同" class="tit">
-							<!-- <i slot="icon" class="iconfont">&#xe6ac;</i> -->
+							<i class="iconfont" :class="[contractInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('contractInfo')"></i>
 						</mt-cell>
-						<div class="cont last_cont">
+						<div class="cont last_cont" v-if="sendEmail && contractInfoShow">
 							<mt-cell title="合同编号：" :value="contractNumW"></mt-cell>
 							<mt-cell title="快递公司：" :value="expresszCom"></mt-cell>
 							<mt-cell title="快递编号：" :value="expressNums"></mt-cell>
               <div class="space"></div>
 						</div>
+						<div class="cont" v-if="sendEmailW">
+							<mt-field label="合同编号：" v-model="cantractNum"></mt-field>
+							<mt-field label="快递公司：" v-model="expressCompany"></mt-field>
+							<mt-field label="快递编号：" v-model="expressNum"></mt-field>
+						</div>
 					</div>
-					<div class="mailingContract" v-if="sendEmailW">
+					<!-- <div class="mailingContract" v-if="sendEmailW">
 						<mt-cell title="邮寄合同" class="tit">
-							<!-- <i slot="icon" class="iconfont">&#xe6ac;</i> -->
 						</mt-cell>
 						<div class="cont">
 							<mt-field label="合同编号：" v-model="cantractNum"></mt-field>
 							<mt-field label="快递公司：" v-model="expressCompany"></mt-field>
 							<mt-field label="快递编号：" v-model="expressNum"></mt-field>
 						</div>
-					</div>
+					</div> -->
 					<div class="submitBtn" v-if="submitAppointmentBtnShow">
           	<mt-button type="primary" @click.native="submitAppointmentBtn">提交预约</mt-button>
 					</div>
@@ -231,7 +257,6 @@
           	<mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button>
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
-						<!-- <i class="iconfont noS returnIcon">&#xe617;</i> -->
 						<img :src="submitAppointImg" alt="">
 						<div v-if="!submitFailStatus" class="returnDetailCss">{{submitAppointDetail}}...{{count}}s</div>
 						<div v-else class="returnDetailCss">{{submitAppointDetail}}</div>
@@ -247,15 +272,6 @@
 						<div class="quit">{{msgDetail}}</div>
 						<x-button type="primary" @click.native="hideAlert">确 定</x-button>
 					</x-dialog>
-					<!-- <x-dialog v-model="closeOrderR" class="dialog-demo submitDialog" hide-on-blur>
-						<div class="tit">请填写订单关闭原因</div>
-						<x-input
-							v-model="reason"
-							:show-clear="clear">
-						</x-input>
-						<div class="inputReason">{{noReasonShow}}</div>
-						<x-button @click.native="sendMessage" type="primary">发 送</x-button>
-					</x-dialog> -->
 					<x-dialog v-model="closeOrderR" class="dialog-demo submitDialog" hide-on-blur>
 						<div class="quit">确定关闭订单吗</div>
 						<x-button @click.native="sendMessage" type="primary">确 定</x-button>
@@ -275,7 +291,7 @@
 						<div class="success">请您重新申请提交</div>
 						<x-button @click.native="failMakeSure" type="primary">确 定</x-button>
 					</x-dialog>
-        			<thumbnails v-if="showImg" :imgTotal="imgTotal" :imgKey="imgIndex" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
+        	<thumbnails v-if="showImg" :imgTotal="imgTotal" :imgKey="imgIndex" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
 				</div>
 			</div>
 		</div>
@@ -384,6 +400,7 @@ export default {
 			minimalAmount: '',
 			collectionAmount: '',
 			refundUrls: '',
+			refundUrl: '',
 			materialsUrls: '',
 			evidenceUrls: [],
 			showSpace: false,
@@ -433,7 +450,14 @@ export default {
 			],
 			selectClientObj: null,
 			submitFailStatus: false,
-			submitAppointImg: ''
+			submitAppointImg: 'static/img/certify_right.png',
+			appointInfoShow: true,
+			productInfoShow: true,
+			bankInfoShow: true,
+			remitInfoShow: true,
+			transcInfoShow: true,
+			refundInfoShow: true,
+			contractInfoShow: true
 		}
 	},
 	computed: {
@@ -453,6 +477,25 @@ export default {
 		thumbnails
 	},
 	methods: {
+			toggleShow1 (type) {
+				if (type === 'remitInfo') {
+					this.remitInfoShow = !this.remitInfoShow
+				} else if (type === 'productInfo') {
+					this.productInfoShow = !this.productInfoShow
+				} else if (type === 'appointInfo') {
+					this.appointInfoShow = !this.appointInfoShow
+				} else if (type === 'bankInfo') {
+					this.bankInfoShow = !this.bankInfoShow
+				} else if (type === 'remitInfo') {
+					this.remitInfoShow = !this.remitInfoShow
+				} else if (type === 'transcInfo') {
+					this.transcInfoShow = !this.transcInfoShow
+				} else if (type === 'refundInfo') {
+					this.refundInfoShow = !this.refundInfoShow
+				} else if (type === 'contractInfo') {
+					this.contractInfoShow = !this.contractInfoShow
+				}
+			},
 			back () {
 				if (this.$route.params.flag === 'productDetail') {
 					this.returnDetail()
@@ -668,6 +711,7 @@ export default {
 					if (res.status === 200) {
 						this.submitDialog = true
 						this.autoReturnDetail()
+						this.submitAppointImg = 'static/img/certify_right.png'
 						if (res.message === '预约成功') {
 							this.submitAppointDetail = '您的预约已提交成功'
 						} else {
@@ -676,6 +720,7 @@ export default {
 					} else {
 						this.submitDialog = true
 						this.submitAppointDetail = '提交失败请重新提交！'
+						this.submitAppointImg = 'static/img/certify_wrong.png'
 					}
 				})
 			},
@@ -746,6 +791,7 @@ export default {
 								this.submitDialog = true
 								this.autoReturnDetail()
 								this.submitAppointDetail = '已提交待审核中…'
+								this.submitAppointImg = 'static/img/certify_right.png'
 							}
 						})
 					})
@@ -801,6 +847,7 @@ export default {
 								this.submitDialog = true
 								this.autoReturnDetail()
 								this.submitAppointDetail = '已提交待审核中…'
+								this.submitAppointImg = 'static/img/certify_right.png'
 							}
 						})
 					})
@@ -989,6 +1036,18 @@ export default {
 						this.emailType = '自取'
 					} else if (this.appointmentList.audit_contract_express === '1') {
 						this.emailType = '快递寄出'
+					}
+					if (this.appointmentList.status.includes('100')) { // 控制信息展开/收起
+						this.appointInfoShow = true
+						this.productInfoShow = true
+					} else {
+						this.appointInfoShow = false
+						this.productInfoShow = false
+					}
+					if (this.appointmentList.status.includes('2003')||this.appointmentList.status.includes('2004')||this.appointmentList.status.includes('300')) { // 订单关闭
+						this.transcInfoShow = false
+						this.bankInfoShow = false
+						this.remitInfoShow = false
 					}
 					if (this.appointmentList.status === '1001') {
 						this.topBar = '预约'
@@ -1205,6 +1264,7 @@ export default {
 						this.popupVisible = false
 						this.sureCancleA = false
 						this.selected = '2'
+						this.appointInfoShow = false
 					} else if (this.appointmentList.status === '2002') {
 						this.topBar = '打款'
 						this.topTitle = '已到账待补全材料'
@@ -1294,6 +1354,7 @@ export default {
 						} else if (this.appointmentList.refund_status === '2') {
 							this.topTitle = '退款申请中'
 							this.repeatUploadRefund = true
+							this.refundInfoShow = false // 数据收起
 						} else if (this.appointmentList.refund_status === '3') {
 							this.topTitle = '退款驳回'
 							this.failTitle = '退款驳回原因：'
@@ -1304,6 +1365,7 @@ export default {
 						} else if (this.appointmentList.refund_status === '4') {
 							this.topTitle = '已退款'
 							this.repeatUploadRefund = true
+							this.refundInfoShow = false // 数据收起
 						}
 					} else if (this.appointmentList.status === '2004') {
 						this.topBar = '打款'
@@ -1340,6 +1402,9 @@ export default {
 						this.popupVisible = false
 						this.sureCancleA = false
 						this.selected = '2'
+						// this.transcInfoShow = false // 数据收起
+						// this.bankInfoShow = false // 数据收起
+						// this.remitInfoShow = false // 数据收起
 					} else if (this.appointmentList.status === '3001') {
 						this.topBar = '合同管理'
 						this.topTitle = '待收到合同'
@@ -1472,6 +1537,7 @@ export default {
 						this.popupVisible = false
 						this.sureCancleA = false
 						this.selected = '3'
+						this.contractInfoShow = false
 					}
 				})
 			},
@@ -1683,9 +1749,9 @@ export default {
 			}
 		}
 		.closeReason,.emailReason{
-			border-bottom: 1px solid #CCC;
+			// border-bottom: 1px solid #CCC;
 			.mint-cell{
-				border-top: 1px solid #CCC;
+				// border-top: 1px solid #CCC;
 				height: 80px;
 				.mint-cell-wrapper{
 					padding: 0 20px;
@@ -1695,7 +1761,8 @@ export default {
 					.mint-cell-text,.mint-cell-value{
 						font-family: PingFangSC-Medium;
 						font-size: 28px;
-						color: #2672BA;
+						// color: #2672BA;
+						color: #4A4A4A;
 					}
 					.mint-cell-text{
 						font-size: 30px;
@@ -1745,17 +1812,17 @@ export default {
 				}
 			}
 			.cont{
-				margin-bottom: 20px;
+				// margin-bottom: 20px;
 				.cercode_box {
 					width: 100%;
 					height: 350px;
-					.picker-items {
+					// .picker-items {
 						/*height: 244px;*/
 						// .picker-item,.picker-item.picker-selected{
 						// 	height: 70px !important;
     				// 	line-height: 70px !important;
 						// }
-					}
+					// }
 					.picker-toolbar {
 						height: 56px;
 						line-height: 56px;
@@ -1857,6 +1924,9 @@ export default {
 						}
 					}
 				}
+			}
+			.mb20 {
+				height: 20px;
 			}
       .cont.last_cont {
         margin-bottom: 0;
@@ -2142,7 +2212,7 @@ export default {
 				.mint-cell-wrapper{
 					background-image: none;
 					.mint-cell-title{
-						flex: none;
+						// flex: none;
 						i{
 							font-size: 47px;
 						}
@@ -2244,6 +2314,9 @@ export default {
 						height: 100px;
 						line-height: 100px;
 						font-size: 36px;
+						position: absolute;
+						width: 100%;
+						bottom: 0;
 					}
 					.sorry{
 						line-height: inherit;
