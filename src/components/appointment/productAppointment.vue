@@ -4,7 +4,15 @@
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
 			<div class="wrapper" style="padding-bottom: 80px;">
 				<div class="topBar">
-					<div class="title">{{topTitle}}</div>
+					<!-- <div class="title">{{topTitle}}</div> -->
+					<div class="title"
+						:class="{
+							'statusYellow':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||appointmentList.refund_status==='0'||appointmentList.refund_status==='1'||appointmentList.refund_status==='2'||appointmentList.status==='3001'||appointmentList.status==='3002',
+							'statusRed':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
+							'statusGreen':appointmentList.status==='1003'||appointmentList.status==='2004'||appointmentList.refund_status==='4'||appointmentList.status==='3004'
+						}">
+						{{appointmentList.status|turnText(appointmentStatus)}}
+					</div>
 					<flow>
 						<flow-state title="预约" is-done></flow-state>
 						<flow-line line-span=224 tip="ing" :is-done="appointmentDone"></flow-line>
@@ -457,7 +465,8 @@ export default {
 			remitInfoShow: true,
 			transcInfoShow: true,
 			refundInfoShow: true,
-			contractInfoShow: true
+			contractInfoShow: true,
+			appointmentStatus: JSON.parse(localStorage.getItem('appointmentStatus'))
 		}
 	},
 	computed: {
@@ -862,7 +871,7 @@ export default {
 				this.refundSrc = data
 			},
 			imageHandler4 (data) {
-				console.log(data)
+				// console.log(data)
 				this.evidenceUrl = data
 			},
 			refund () {
@@ -1633,6 +1642,15 @@ export default {
 </script>
 <style lang="less">
 @import '../../common/style/variable.less';
+.statusYellow {
+	color: @font-color-orange2!important;
+}
+.statusRed {
+	color: @font-color-red!important;
+}
+.statusGreen {
+	color: @font-color-green!important;
+}
 .productAppointment{
 	font-family: PingFangSC-Regular;
 		.spaceBack{
@@ -1653,7 +1671,7 @@ export default {
 			text-align: center;
 			.title{
 				font-size: 36px;
-				color: @font-color-orange1;
+				color: @font-color-4A;
 				padding: 30px 0;
 				font-weight: bold;
 			}
