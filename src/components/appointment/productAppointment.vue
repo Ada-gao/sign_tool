@@ -1044,7 +1044,7 @@ export default {
 						this.appointInfoShow = false
 						this.productInfoShow = false
 					}
-					if (this.appointmentList.status.includes('2003')||this.appointmentList.status.includes('2004')||this.appointmentList.status.includes('300')) { // 订单关闭
+					if (this.appointmentList.status.includes('2003') || this.appointmentList.status.includes('2004') || this.appointmentList.status.includes('300')) { // 订单关闭
 						this.transcInfoShow = false
 						this.bankInfoShow = false
 						this.remitInfoShow = false
