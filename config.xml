@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.shuyun365" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>SignTool</name>
+<widget id="com.suxianginvestment.crm01" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>财智滙</name>
     <description>
         An App
     </description>
@@ -24,11 +24,12 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="mdpi" src="res/icon/android/mipmap-mdpi/icon-48-mdpi.png" />
-        <icon density="hdpi" src="res/icon/android/mipmap-hdpi/icon-72-hdpi.png" />
-        <icon density="xhdpi" src="res/icon/android/mipmap-xhdpi/icon-96-xhdpi.png" />
-        <icon density="xxhdpi" src="res/icon/android/mipmap-xxhdpi/icon-144-xxhdpi.png" />
-        <icon density="xxxhdpi" src="res/icon/android/mipmap-xxxhdpi/icon-192-xxxhdpi.png" />
+        <icon density="mdpi" src="res/icon/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icon/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icon/android/icon-36-ldpi.png" />
+        <icon density="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
+        <icon density="xxhdpi" src="res/icon/android/icon-144-xxhdpi.png" />
+        <icon density="xxxhdpi" src="res/icon/android/icon-192-xxxhdpi.png" />
         <splash density="port-xxxhdpi" src="res/screen/android/screen-xxxhdpi-portrait.png" />
     </platform>
     <platform name="ios">
@@ -54,7 +55,6 @@
         <icon height="1024" src="res/icon/ios/icon-1024.png" width="1024" />
         <splash src="res/screen/ios/Default@2x~universal~anyany.png" />
     </platform>
-    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
         <string>need camera access to take pictures</string>
     </edit-config>
@@ -86,7 +86,8 @@
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="This app needs photo library access" />
     </plugin>
     <plugin name="cordova-plugin-statusbar" spec="^2.4.2" />
-    <engine name="ios" spec="^4.5.5" />
-    <engine name="browser" spec="^5.0.3" />
+    <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <engine name="android" spec="^7.1.0" />
+    <engine name="ios" spec="^4.5.4" />
+    <engine name="browser" spec="^5.0.3" />
 </widget>
