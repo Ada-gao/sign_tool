@@ -114,17 +114,29 @@
               <span></span>
             </li>
           </ul>
-          <div v-show="idx === 0 && customers.length === 0 && !this.isShowSpinner" class="no_data">
-            <img src="static/img/customerIcon.png">
-            <span>亲，暂时没有客户哦</span>
+          <div v-show="idx === 0 && customers.length === 0 && !this.isShowSpinner" class="no_data  text-center">
+            <!-- <img src="static/img/customerIcon.png">
+            <span>亲，暂时没有客户哦</span> -->
+            <div class="warn absolute-center-xy">
+              <i class="iconfont">&#xe869;</i>
+              <p>暂无客户</p>
+            </div>
           </div>
           <div v-show="idx === 1 && customers1.length === 0 && !this.isShowSpinner"  class="no_data">
-            <img src="static/img/customerIcon.png">
-            <span>亲，暂时没有潜客哦</span>
+            <!-- <img src="static/img/customerIcon.png">
+            <span>亲，暂时没有潜客哦</span> -->
+            <div class="warn absolute-center-xy">
+              <i class="iconfont">&#xe869;</i>
+              <p>暂无潜客</p>
+            </div>
           </div>
           <div v-show="idx === 2 && customers2.length === 0 && !this.isShowSpinner"  class="no_data">
-            <img src="static/img/customerIcon.png">
-            <span>亲，暂时没有手机未验证客户哦</span>
+            <!-- <img src="static/img/customerIcon.png">
+            <span>亲，暂时没有手机未验证客户哦</span> -->
+            <div class="warn absolute-center-xy">
+              <i class="iconfont">&#xe869;</i>
+              <p>暂无未验证</p>
+            </div>
           </div>
         </div>
       </div>
@@ -388,21 +400,34 @@
         }
       }
       .no_data {
-        img,
-        span {
-          display: block;
-          text-align: center;
-          margin: 0 auto;
-        }
-        img {
-          width: 556px;
-          height: 379px;
-        }
-        span {
-          margin-top: 88px;
-          font-family: PingFangSC-Regular;
-          font-size: 32px;
-          color: #888888;
+        margin-top: 600px;
+        // img,
+        // span {
+        //   display: block;
+        //   text-align: center;
+        //   margin: 0 auto;
+        // }
+        // img {
+        //   width: 556px;
+        //   height: 379px;
+        // }
+        // span {
+        //   margin-top: 88px;
+        //   font-family: PingFangSC-Regular;
+        //   font-size: 32px;
+        //   color: #888888;
+        // }
+        .warn{
+          i{
+            font-size: 150px;/*px*/
+            color: @back-color-E8;
+          }
+          p{
+            font-family: @font-family-R;
+            font-size: @font-size-twentyS;
+            color: #ccc;
+            margin-top: -25px;
+          }
         }
       }
     }

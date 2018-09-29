@@ -55,9 +55,11 @@
     <!--<img src="static/img/purchasedIcon.png">-->
     <!--<span>亲，请您购买产品哦</span>-->
     <!--</div>-->
-    <div class="no_product" v-show="flag && !mark">
-      <img src="static/img/purchasedIcon.png">
-      <span>亲，请您购买产品哦</span>
+    <div class="no_product text-center" v-show="flag && !mark">
+      <div class="warn absolute-center-xy">
+        <i class="iconfont">&#xe869;</i>
+        <p>暂无产品</p>
+      </div>
     </div>
     <mt-popup v-model="popupVisible">
       <mt-spinner type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
@@ -244,6 +246,20 @@
       top: 50%;
       font-size: 60px;/*px*/
       color: #F2F2F2;
+    }
+  }
+}
+.no_product{
+  .warn{
+    i{
+      font-size: 150px;/*px*/
+      color: @back-color-E8;
+    }
+    p{
+      font-family: @font-family-R;
+      font-size: @font-size-twentyS;
+      color: #ccc;
+      margin-top: -25px;
     }
   }
 }

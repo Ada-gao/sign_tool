@@ -2010,6 +2010,15 @@ export default {
 				.card{
 					background: #fff;
 					padding: 30px 20px;
+					.mint-cell.mint-field.bankname{
+						.mint-field-other{
+							top: 0;
+							/*right: 0;*/
+							position: absolute;
+							width: 100%;
+							height: 100%;
+						}
+					}
 					.mint-field{
 						// height: 40px;
 						// line-height: 40px;
@@ -2039,26 +2048,28 @@ export default {
 									box-sizing: border-box;
 									text-indent: 20px;
 								}
-								// .mint-field-other{
-								// 	top: 0;
-								// 	position: absolute;
-                //   width: 100%;
-                //   height: 100%;
-								// 	.define_box {
-                //     position: absolute;
-                //     width:100%;
-                //     height:100%;
-                //     top:0;
-                //     left:0;
-                //     text-align: right;
-                //     .iconfont{
-                //       display: inline-block;
-                //       transform: rotateZ(90deg);
-                //       font-size: 40px;
-                //       color: #333;
-                //     }
-                //   }
-								// }
+								.mint-field-other{
+									top: 0;
+									/*right: 0;*/
+									position: absolute;
+									// width: 100%;
+									// height: 100%;
+									/*transform: rotateZ(90deg);*/
+									.define_box {
+                    position: absolute;
+                    width:100%;
+                    height:100%;
+                    top:0;
+                    left:0;
+                    text-align: right;
+                    .iconfont{
+                      display: inline-block;
+                      transform: rotateZ(90deg);
+                      font-size: 40px;
+                      color: #333;
+                    }
+                  }
+								}
 							}
 						}
 					}

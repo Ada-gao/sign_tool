@@ -30,7 +30,7 @@
       <div class="upload_file">
         <div class="upload">
           <!--<div class="upload_tit">上传认证资料</div>-->
-          <div class="bl_box"><i class="border_left"></i>上传认证资料</div>
+          <div class="bl_box"><i class="border_left"></i>{{this.showSelect ? "上传认证资料" : "上传风险测评问卷"}}</div>
           <div class="time_box"
                v-if="showSelect"
                @click="showCode">
