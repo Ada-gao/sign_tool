@@ -24,11 +24,12 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <icon density="mdpi" src="res/icon/android/mipmap-mdpi/icon-48-mdpi.png" />
-        <icon density="hdpi" src="res/icon/android/mipmap-hdpi/icon-72-hdpi.png" />
-        <icon density="xhdpi" src="res/icon/android/mipmap-xhdpi/icon-96-xhdpi.png" />
-        <icon density="xxhdpi" src="res/icon/android/mipmap-xxhdpi/icon-144-xxhdpi.png" />
-        <icon density="xxxhdpi" src="res/icon/android/mipmap-xxxhdpi/icon-192-xxxhdpi.png" />
+        <icon density="mdpi" src="res/icon/android/icon-48-mdpi.png" />
+        <icon density="hdpi" src="res/icon/android/icon-72-hdpi.png" />
+        <icon density="xhdpi" src="res/icon/android/icon-36-ldpi.png" />
+        <icon density="xhdpi" src="res/icon/android/icon-96-xhdpi.png" />
+        <icon density="xxhdpi" src="res/icon/android/icon-144-xxhdpi.png" />
+        <icon density="xxxhdpi" src="res/icon/android/icon-192-xxxhdpi.png" />
         <splash density="port-xxxhdpi" src="res/screen/android/screen-xxxhdpi-portrait.png" />
     </platform>
     <platform name="ios">
