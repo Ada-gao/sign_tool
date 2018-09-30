@@ -57,20 +57,20 @@
         <splash src="res/screen/ios/Default@2x~universal~anyany.png" />
     </platform>
     <edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
-        <string>need camera access to take pictures</string>
+      <string>如果不允许，你将无法拍摄照片和视频。</string>
     </edit-config>
     <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
-        <string>need photo library access to get pictures from there</string>
-    </edit-config>
-    <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
-        <string>need photo library access to get pictures from there</string>
+      <string>如果不允许，你将无法从相册中选择照片。</string>
     </edit-config>
     <edit-config file="*-Info.plist" mode="merge" target="NSLocationWhenInUseUsageDescription">
-        <string>need location access to find things nearby</string>
+      <string>如果不允许，你将无法使用基于位置的服务，我们无法使用这些位置信息在你注册或登录时保障你的账户安全。</string>
     </edit-config>
     <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
-        <string>need photo library access to save pictures there</string>
+      <string>如果不允许，你将无法保存照片到相册。</string>
     </edit-config>
+    <config-file overwrite="true" parent="CFBundleDevelopmentRegion" platform="ios" target="*-Info.plist">
+      <string>China</string>
+    </config-file>
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="jpush-phonegap-plugin" spec="^3.4.3">
