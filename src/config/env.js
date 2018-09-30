@@ -25,3 +25,8 @@ if (process.env.NODE_ENV === 'development') {
     // imgBaseUrl = 'http://203.156.231.251:5000/api/'
     // activityUrl = 'http://203.156.231.251:9999/activity/'
 }
+
+console.log('baseUrl:' + baseUrl)
+console.log('activityUrl:' + activityUrl)
+console.log('routerMode:' + routerMode)
+console.log('imgBaseUrl:' + imgBaseUrl)
