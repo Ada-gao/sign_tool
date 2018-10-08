@@ -287,6 +287,7 @@ export default {
   .wrapper {
     // background: #F5F5F5;
     padding-bottom: 0px;
+    padding-top: 126px;
     .rate-top {
       // text-align: center;
       // height: 365px;

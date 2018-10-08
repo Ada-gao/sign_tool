@@ -117,17 +117,20 @@ export default {
         background: @text-font-color;
         border-radius: 50%;
         margin-right: 15px;
+        margin-top: -19px;
         i{
           font-size: 50px;/*px*/
           color: @back-color-white;
         }
       }
       .right{
-        width: 569px;
+        // width: 569px;
+        width: 84%;
         .up{
           font-family: @font-family-M;
           font-size: @font-size-thirty;/*px*/
           color: @font-color-4A;
+          margin-bottom: 8px;
           .noCheck{
           //   right: 70px;
           //   top: 50%;

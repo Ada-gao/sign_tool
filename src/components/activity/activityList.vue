@@ -1,10 +1,11 @@
 <template>
   <div class="activity_list">
-    <mt-header fixed title="活动列表" class="header">
+    <!-- <mt-header fixed title="活动列表" class="header">
       <router-link to="/" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
+    <x-header class="header" :left-options="{backText: ''}">活动列表</x-header>    
     <div class="activity_cont">
       <ul>
         <li v-for="(item, index) in list" :key="index" @click="handleRouter(item.activityId)">
