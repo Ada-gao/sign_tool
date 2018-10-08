@@ -27,6 +27,8 @@ if (process.env.NODE_ENV === 'development') {
     // activityUrl = 'http://203.156.231.251:9999/activity/'
 }
 
+export { baseUrl, routerMode, imgBaseUrl, activityUrl }
+
 console.log('baseUrl:' + baseUrl)
 console.log('activityUrl:' + activityUrl)
 console.log('routerMode:' + routerMode)
