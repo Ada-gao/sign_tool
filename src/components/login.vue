@@ -230,12 +230,16 @@ export default {
         }
         // let domain = document.domain === 'localhost' ? '10.60.2.141' : document.domain
         this.device = Vue.cordova.device
+
+        // 浏览器环境拿不到设备号处理。
+        let uuid = ''
+        if (this.device) uuid = this.device.uuid
         let obj = {
           username: this.username,
           platform: this.platform,
           app_version: 'v1.0',
           code_flag: 0,
-          registration_id: this.device.uuid
+          registration_id: uuid
         }
         getVerificationCode(obj).then(res => {
           if (res.data.code === 404) {
