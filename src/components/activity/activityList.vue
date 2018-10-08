@@ -5,7 +5,7 @@
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
     </mt-header> -->
-    <x-header class="header" :left-options="{backText: ''}">活动列表</x-header>    
+    <x-header class="header" :left-options="{backText: ''}">活动列表</x-header>
     <div class="activity_cont">
       <ul>
         <li v-for="(item, index) in list" :key="index" @click="handleRouter(item.activityId)">
