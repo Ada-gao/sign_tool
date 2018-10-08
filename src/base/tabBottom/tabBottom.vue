@@ -79,6 +79,9 @@ export default {
         this.icon3 = true
       }
     }
+  },
+  mounted () {
+    this.clickThis(this.idx)
   }
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div id="detailPage">
-    <x-header :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{item.product_name}}</x-header>
+    <x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{item.product_name}}</x-header>
     <div class="wrapper">
       <div class="rate-top">
         <div class="announcement" v-show="item.announcement">
@@ -273,8 +273,8 @@ export default {
 <style lang="less">
 @import "../../common/style/variable.less";
 #detailPage{
-  .vux-header{
-    background: #D4B67F!important;
+  .vux-header.header{
+    background: #D4B67F;
     .vux-header-left{
       .left-arrow:before{
         border-color: @back-color-white;
