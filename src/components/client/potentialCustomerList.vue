@@ -525,14 +525,14 @@
         border-top: 1px solid #E9E9E9;/*no*/
       }
       .add_remark {
-        width: 590px;
+        width: 87%;
         margin: 0 auto;
         box-sizing: border-box;
         margin-top: 30px;
         border: 1px solid #B8B8B8;/*no*/
         border-radius: 4px;/*no*/
-        height: 73px;
-        line-height: 73px;
+        height: 75px;
+        line-height: 75px;
         padding-left: 20px;
         font-size: 24px;
       }

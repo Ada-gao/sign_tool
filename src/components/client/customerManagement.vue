@@ -511,7 +511,7 @@
         border-top: 1px solid #E9E9E9;/*no*/
       }
       .add_remark {
-        width: 590px;
+        width: 87%;
         margin: 0 auto;
         box-sizing: border-box;
         margin-top: 30px;

@@ -7,15 +7,15 @@
     <div class="wrapper">
 			<div class="swipe">
 				<mt-swipe :auto="4000">
-					<mt-swipe-item><img src="static/img/banner.png" @click="handleRoute"></mt-swipe-item>
-					<mt-swipe-item><img src="static/img/banner.png" @click="handleRoute"></mt-swipe-item>
-					<mt-swipe-item><img src="static/img/banner.png" @click="handleRoute"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/测试banner.jpg" @click="handleRoute"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/测试banner.jpg" @click="handleRoute"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/测试banner.jpg" @click="handleRoute"></mt-swipe-item>
 				</mt-swipe>
 			</div>
 			<div class="announcement">
 				<i class="iconfont vertical-align">&#xe62e;</i>
 				<span>点击查看更多活动…</span>
-				<span class="more">查看 <i class="iconfont vertical-align">&#xe6d6;</i></span>
+				<span class="more" @click="handleRoute">查看 <i class="iconfont vertical-align">&#xe6d6;</i></span>
 			</div>
 			<div class="space"></div>
 			<div style="overflow: hidden; overflow-x: auto;" v-if="!spinner">
@@ -89,7 +89,7 @@ export default {
 		},
     handleRoute () {
       this.$router.push({name: 'activityList'})
-    },
+		},
     showContent (status, index) {
 		  this.showContentList[index] = !status
     },

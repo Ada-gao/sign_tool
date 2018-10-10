@@ -1,6 +1,6 @@
 <template>
-  <div class="activity_list">
-    <mt-header fixed title="活动详情" class="header">
+  <div id="activity_list">
+    <!-- <mt-header fixed title="活动详情" class="header">
       <router-link :to="{name: 'activityList'}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
@@ -9,63 +9,71 @@
           <mt-button class="right_btn"><span>分享</span><i class="iconfont">&#xea31;</i></mt-button>
         </div>
       </mt-button>
-    </mt-header>
+    </mt-header> -->
+    <x-header class="header" :left-options="{backText: ''}">活动详情
+      <i slot="right" class="iconfont mes" @click="showShareBtn">&#xe606;</i>
+    </x-header>
     <div class="detail">
-      <div class="space"></div>
-      <div class="tit">
+      <img :src="src" alt="">
+      <!-- <div class="tit">
         <div class="left">{{detail.activityName}}</div>
         <div class="right">
           <span>编号：</span>
           <span>{{detail.activityCode}}</span>
         </div>
-      </div>
+      </div> -->
       <main class="cont">
-        <img :src="src" alt="">
+        <p>{{detail.activityName}}</p>
         <section class="detail_item">
-          <span>活动开始：</span>
-          <span>{{detail.activityStart}}</span>
+          <span class="tit">活动编号：</span>
+          <span>{{detail.activityCode}}</span>
         </section>
         <section class="detail_item">
-          <span>活动结束：</span>
-          <span>{{detail.activityEnd}}</span>
+          <span class="tit">活动时间：</span>
+          <span>{{detail.activityStart}}-{{detail.activityEnd}}</span>
         </section>
         <section class="detail_item">
-          <span>报名开始：</span>
-          <span>{{detail.registrationStart}}</span>
+          <span class="tit">报名时间：</span>
+          <span>{{detail.registrationStart}}-{{detail.registrationEnd}}</span>
         </section>
         <section class="detail_item">
-          <span>报名结束：</span>
-          <span>{{detail.registrationEnd}}</span>
-        </section>
-        <section class="detail_item">
-          <span>活动人数：</span>
+          <span class="tit">活动人数：</span>
           <span>{{detail.activityActivitiesNumber}}人</span>
         </section>
         <section class="detail_item">
-          <span>活动负责人：</span>
+          <span class="tit">活动负责人：</span>
           <span>{{detail.activityPrincipal}}</span>
         </section>
         <section class="detail_item">
-          <span>活动所属部门：</span>
+          <span class="tit">活动所属部门：</span>
           <span>{{detail.activityDept}}</span>
         </section>
-        <section class="detail_item def_item">
-          <i class="iconfont">&#xe637;</i>
+        <section class="detail_item">
+          <span class="tit">活动地点：</span>
           <span>{{detail.activitySite}}</span>
         </section>
-        <div class="space"></div>
-        <section class="brief_info">
-          <div>活动简介：</div>
-          <div class="brief_cont">
-            {{detail.activityIntroduction}}
-          </div>
-        </section>
-        <div class="space"></div>
-        <section class="activity_poster">
-          <span class="left def_left">活动海报</span>
-          <span class="right" @click="handleShare">查看</span>
-        </section>
-        <mt-cell
+        <!-- <section class="detail_item def_item">
+          <i class="iconfont">&#xe637;</i>
+          <span>{{detail.activitySite}}</span>
+        </section> -->
+      </main>
+      <div class="space"></div>
+      <section class="brief_info">
+        <div class="info">活动简介：</div>
+        <div class="brief_cont">
+          {{detail.activityIntroduction}}
+        </div>
+      </section>
+      <div class="space"></div>
+      <section class="activity_poster">
+        <span class="left def_left">活动海报</span>
+        <span class="right" @click="handleShare">查看<i class="iconfont vertical-align">&#xe8d5;</i></span>
+      </section>
+      <div class="button">
+        <mt-button class="def_mtcell def_mtcell_left" @click.native="toSigned">代客户报名</mt-button>
+        <mt-button class="def_mtcell" @click.native="toList">查看报名列表</mt-button>
+      </div>   
+        <!-- <mt-cell
           title="代客户报名"
           class="def_mtcell"
           :to="{name: 'clientList'}"
@@ -76,8 +84,7 @@
           class="def_mtcell"
           :to="{name: 'clientSignedList'}"
           is-link>
-        </mt-cell>
-      </main>
+        </mt-cell> -->
     </div>
     <div class="popup_banner" v-if="showShare">
       <img :src="posterBanner"
@@ -104,16 +111,19 @@
   </div>
 </template>
 <script>
+  import { XHeader } from 'vux'
   import { getShare } from '@/service/api/aboutMe'
   import { getActivityDet } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
   import Vue from 'vue'
   export default {
-    components: {},
+    components: {
+      XHeader
+    },
     data () {
       return {
-        src: 'static/img/banner.jpg',
+        src: 'static/img/测试banner.jpg',
         posterBanner: 'static/img/banner.jpg',
         showShare: false,
         shareUrl: '',
@@ -150,6 +160,12 @@
       },
       hideShareBtn () {
         this.showShare = false
+      },
+      toSigned () {
+        this.$router.push({name: 'clientList'})
+      },
+      toList () {
+        this.$router.push({name: 'clientSignedList'})
       },
       wachatShare () {
         let Wechat = Vue.cordova.Wechat
@@ -257,7 +273,7 @@
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @import '../../common/style/variable.less';
   .popup_banner {
     width: 86.67%;
@@ -348,80 +364,149 @@
       border-top: 1px solid #C9C9C9;
     }
   }
-  .activity_list {
-    font-family: PingFangSC-Regular;
-    .mint-header.header {
-      height: 88px;
-      background-color: @new-header-color;
-      font-size: 36px;
-      color: #333;
-      padding-top: 40px;
+  #activity_list {
+    font-family: @font-family-R;
+    // .mint-header.header {
+    //   height: 88px;
+    //   background-color: @new-header-color;
+    //   font-size: 36px;
+    //   color: #333;
+    //   padding-top: 40px;
+    // }
+    .vux-header.header{
+      background: @header-bg;
+      .vux-header-left{
+        .left-arrow:before{
+          border-color: @text-font-color;
+        }
+      }
+      .vux-header-title{
+        color: @back-color-white;
+      }
+      .vux-header-right{
+        .mes{
+          font-size: 38px;/*px*/
+          margin-right: 30px;
+          color: @text-font-color;
+        }
+      }
     }
     .detail {
-      padding-top: 88px;
-      background-color: #fff;
-      .left, .right {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+      padding-top: 126px;
+      line-height: 0;
+      img{
+        width: 100%;
       }
-      .left {
-        left: 20px;
-        font-size: 30px;
-        color: @new-font-color;
-      }
-      .right {
-        right: 20px;
-        font-size: 28px;
-        color: #333;
-      }
-      .tit {
-        position: relative;
-        height: 75px;
-        line-height: 75px;
-      }
+      // .left, .right {
+      //   position: absolute;
+      //   top: 50%;
+      //   transform: translateY(-50%);
+      // }
+      // .left {
+      //   left: 20px;
+      //   font-size: 30px;
+      //   color: @new-font-color;
+      // }
+      // .right {
+      //   right: 20px;
+      //   font-size: 28px;
+      //   color: #333;
+      // }
+      // .tit {
+      //   position: relative;
+      //   height: 75px;
+      //   line-height: 75px;
+      // }
       .cont {
-        font-size: 26px;
-        color: #626161;
-        img {
-          display: block;
-          width: 100%;
-          height: 370px;
+        font-family: @font-family-M;
+        font-size: @font-size-twentyS;/*px*/
+        color: @font-color-4A;
+        padding: 30px;
+        background: @back-color-white;
+        p{
+          line-height: 45px;
+          font-size: @font-size-thirtyT;/*px*/
+          color: #2E2E2E;
         }
+        // img {
+        //   display: block;
+        //   width: 100%;
+        //   height: 370px;
+        // }
         .detail_item {
-          height: 37px;
-          line-height: 37px;
-          margin-bottom: 15px;
-          padding-left: 20px;
+          // height: 42px;
+          line-height: 42px;
+          margin-bottom: 20px;
+          // padding-left: 20px;
+          span{
+            width: 68%;
+            display: inline-block;
+          }
+          .tit{
+            font-family: @font-family-R;
+            width: 30.5%;
+            display: inline-block;
+            vertical-align: top;
+          }
         }
         .detail_item:nth-of-type(1) {
-          margin-top: 15px;
+          margin-top: 30px;
         }
-        .def_item {
-          i, span {
-            vertical-align: baseline;
-          }
-          i {
-            font-size: 22px;
+        .detail_item:last-child {
+          margin-bottom: 0px;
+        }
+        // .def_item {
+        //   i, span {
+        //     vertical-align: baseline;
+        //   }
+        //   i {
+        //     font-size: 22px;
+        //   }
+        // }
+      }
+      .brief_info {
+        padding: 30px;
+        line-height: 42px;
+        font-size: @font-size-thirty;
+        color: @font-color-4A;
+        background: @back-color-white;
+        .info{
+          margin-bottom: 20px;
+          font-family: @font-family-M;
+        }
+        .brief_cont {
+        }
+      }
+      .activity_poster {
+        position: relative;
+        padding: 30px;
+        line-height: 42px;
+        font-size: @font-size-thirty;/*px*/
+        color: @font-color-4A;
+        background: @back-color-white;
+        .right {
+          color: @font-color-blue;
+          float: right;
+          margin-right: -18px;
+          i{
+            color: #DADADA;
+            font-size: 50px;
           }
         }
-        .brief_info {
-          padding: 12px 20px;
-          .brief_cont {
-            word-break: break-all;
-          }
+      }
+      .button{
+        padding: 40px 30px;
+        .def_mtcell{
+          width: 320px;
+          height: 88px;
+          line-height: 88px;
+          display: inline-block;
         }
-        .activity_poster {
-          height: 79px;
-          line-height: 79px;
-          position: relative;
-          span {
-            color: #626161;
-          }
-        }
-        .def_mtcell:nth-of-type(1) {
-          border-top: 1px solid #eee;
-          border-bottom: 1px solid #eee;
+        .def_mtcell_left{
+          background: @back-color-white;
+          border: 1px solid #BD9D62;
+          color: @text-font-color;
+          margin-right: 40px;
         }
       }
     }

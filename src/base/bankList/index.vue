@@ -134,7 +134,7 @@
     font-family: @font-family-R;
     .vux-header.header{
       .vux-header-right{
-        width: 170px;
+        width: 23%;
         height: 42px;
         right: 30px;
         top: 66px;
