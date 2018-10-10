@@ -43,7 +43,7 @@
     data () {
       return {
         src: 'static/img/测试banner.jpg',
-        list: null
+        list: []
       }
     },
     methods: {
