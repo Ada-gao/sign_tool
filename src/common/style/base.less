@@ -66,6 +66,7 @@ button {
   outline: none;
   color: @text-font-color;
   background: #fff;
+  border: none;
 }
 
 h1 {
@@ -216,21 +217,25 @@ b {
 }
 
 input::-webkit-input-placeholder {
+  font-size: @font-size-twentyS;/*px*/
   font-family: @font-family-R;
   color: @text-font-noEdit;
 }
 input:-moz-placeholder {
   /* FF 4-18 */
+  font-size: @font-size-twentyS;/*px*/
   font-family: @font-family-R;
   color: @text-font-noEdit;
 }
 input::-moz-placeholder {
   /* FF 19+ */
+  font-size: @font-size-twentyS;/*px*/
   font-family: @font-family-R;
   color: @text-font-noEdit;
 }
 input:-ms-input-placeholder {
   /* IE 10+ */
+  font-size: @font-size-twentyS;/*px*/
   font-family: @font-family-R;
   color: @text-font-noEdit;
 }
@@ -452,4 +457,9 @@ input:-ms-input-placeholder {
 }
 .mint-button.mint-button--default.is-disabled{
   //background: @back-color-disabled;
+}
+
+.vux-popup-header.vux-1px-b{
+  height: 90px;
+  line-height: 90px;
 }

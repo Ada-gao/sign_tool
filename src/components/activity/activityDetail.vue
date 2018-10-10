@@ -1,6 +1,6 @@
 <template>
-  <div class="activity_list">
-    <mt-header fixed title="活动详情" class="header">
+  <div id="activity_list">
+    <!-- <mt-header fixed title="活动详情" class="header">
       <router-link :to="{name: 'activityList'}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
@@ -9,18 +9,25 @@
           <mt-button class="right_btn"><span>分享</span><i class="iconfont">&#xea31;</i></mt-button>
         </div>
       </mt-button>
-    </mt-header>
+    </mt-header> -->
+    <x-header class="header" :left-options="{backText: ''}">活动详情
+      <i slot="right" class="iconfont mes" @click="showShareBtn">&#xe606;</i>
+    </x-header>
     <div class="detail">
-      <div class="space"></div>
-      <div class="tit">
+      <img :src="src" alt="">
+      <!-- <div class="tit">
         <div class="left">{{detail.activityName}}</div>
         <div class="right">
           <span>编号：</span>
           <span>{{detail.activityCode}}</span>
         </div>
-      </div>
+      </div> -->
       <main class="cont">
-        <img :src="src" alt="">
+        <p>{{detail.activityName}}</p>
+        <section class="detail_item">
+          <span>活动编号：</span>
+          <span>{{detail.activityCode}}</span>
+        </section>
         <section class="detail_item">
           <span>活动开始：</span>
           <span>{{detail.activityStart}}</span>
@@ -104,16 +111,19 @@
   </div>
 </template>
 <script>
+  import { XHeader } from 'vux'
   import { getShare } from '@/service/api/aboutMe'
   import { getActivityDet } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
   import Vue from 'vue'
   export default {
-    components: {},
+    components: {
+      XHeader
+    },
     data () {
       return {
-        src: 'static/img/banner.jpg',
+        src: 'static/img/测试banner.jpg',
         posterBanner: 'static/img/banner.jpg',
         showShare: false,
         shareUrl: '',
@@ -257,7 +267,7 @@
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @import '../../common/style/variable.less';
   .popup_banner {
     width: 86.67%;
@@ -348,41 +358,64 @@
       border-top: 1px solid #C9C9C9;
     }
   }
-  .activity_list {
-    font-family: PingFangSC-Regular;
-    .mint-header.header {
-      height: 88px;
-      background-color: @new-header-color;
-      font-size: 36px;
-      color: #333;
-      padding-top: 40px;
+  #activity_list {
+    font-family: @font-family-R;
+    // .mint-header.header {
+    //   height: 88px;
+    //   background-color: @new-header-color;
+    //   font-size: 36px;
+    //   color: #333;
+    //   padding-top: 40px;
+    // }
+    .vux-header.header{
+      background: @header-bg;
+      .vux-header-left{
+        .left-arrow:before{
+          border-color: @text-font-color;
+        }
+      }
+      .vux-header-title{
+        color: @back-color-white;
+      }
+      .vux-header-right{
+        .mes{
+          font-size: 38px;/*px*/
+          margin-right: 30px;
+          color: @text-font-color;
+        }
+      }
     }
     .detail {
-      padding-top: 88px;
+      padding-top: 126px;
       background-color: #fff;
-      .left, .right {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+      line-height: 0;
+      img{
+        width: 100%;
       }
-      .left {
-        left: 20px;
-        font-size: 30px;
-        color: @new-font-color;
-      }
-      .right {
-        right: 20px;
-        font-size: 28px;
-        color: #333;
-      }
-      .tit {
-        position: relative;
-        height: 75px;
-        line-height: 75px;
-      }
+      // .left, .right {
+      //   position: absolute;
+      //   top: 50%;
+      //   transform: translateY(-50%);
+      // }
+      // .left {
+      //   left: 20px;
+      //   font-size: 30px;
+      //   color: @new-font-color;
+      // }
+      // .right {
+      //   right: 20px;
+      //   font-size: 28px;
+      //   color: #333;
+      // }
+      // .tit {
+      //   position: relative;
+      //   height: 75px;
+      //   line-height: 75px;
+      // }
       .cont {
         font-size: 26px;
         color: #626161;
+        padding: 30px;
         img {
           display: block;
           width: 100%;

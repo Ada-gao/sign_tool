@@ -191,7 +191,7 @@
           <div class="radio_box new_field camera-box" style="border:0">
             <i class="iconfont necessary_icon">&#xe8d4;</i>
             <div class="upload">
-              <div>上传证件照<span>（请上传清晰的原件或复印件）</span></div>
+              <div>上传证件照<span class="info">（请上传清晰的原件或复印件）</span></div>
             </div>
             <div v-if="this.idSymbol === 0" class="upload_box one_upd_box">
               <camera class="upload_cont1"
@@ -854,6 +854,7 @@
         font-family: @font-family-M;
       }
       span.date_time {
+        font-size: 26px;/*px*/
         color: #DCDCDC;
         right: 56px;
         position: absolute;
@@ -1043,6 +1044,7 @@
       // border-bottom: 1px solid #D9D9D9;
       span {
         color: #999;
+        font-size: @font-size-twentyS;/*px*/
       }
     }
     .upload_box {
@@ -1087,7 +1089,7 @@
         color: #B0B0B0;
         position: absolute;
         /*left: 165px;*/
-        left: calc(50% - 260px);
+        left: calc(50% - 270px);
         top: 120px;
       }
       .back_class {
@@ -1097,7 +1099,7 @@
         position: absolute;
         /*right: 165px;*/
         /*right: 180px;*/
-        right: calc(50% - 260px);
+        right: calc(50% - 270px);
       }
     }
     .one_upd_box {
