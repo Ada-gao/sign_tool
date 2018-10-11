@@ -1,32 +1,40 @@
 <template>
-  <div class="activity_list">
-    <mt-header fixed title="报名客户" class="header">
+  <div id="signed_list_detail">
+    <!-- <mt-header fixed title="报名客户" class="header">
       <router-link :to="{name: 'clientSignedList'}" slot="left">
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
-    </mt-header>
+    </mt-header> -->
+    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink" class='header'>
+      报名客户
+    </x-header>
     <div class="detail">
-      <div class="space"></div>
+      <div class="bottom-line text-center">
+				<span class="bot">客户专属二维码</span>
+			</div>
       <div class="qrcodeBox">
         <qrcode :value="value" :size="size"></qrcode>
       </div>
-      <mt-cell
-        :title="title"
-        :value="defineVal"
-        class="def_mtcell"
-        :to="{name: 'clientList'}"
-        is-link>
-      </mt-cell>
+      <p>扫一扫二维码，进行签到</p>
     </div>
+    <div class="space"></div>
+    <mt-cell
+      :title="title"
+      :value="defineVal"
+      class="def_mtcell"
+      :to="{name: 'clientList'}"
+      is-link>
+    </mt-cell>
   </div>
 </template>
 <script>
   import { activityUrl } from '@/config/env'
-  import { Qrcode } from 'vux'
+  import { Qrcode, XHeader } from 'vux'
   import { signedData } from '@/service/api/activity'
   export default {
     components: {
-      Qrcode
+      Qrcode,
+      XHeader
     },
     data () {
       return {
@@ -39,6 +47,9 @@
       }
     },
     methods: {
+      toLink () {
+        this.$router.push({name: 'clientSignedList'})
+      },
       getData () {
         signedData(this.id).then(res => {
           this.result = Object.assign({}, res.data)
@@ -55,37 +66,80 @@
     }
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @import '../../common/style/variable.less';
-  .activity_list {
+  #signed_list_detail {
     font-family: PingFangSC-Regular;
-    .mint-header.header {
-      height: 88px;
-      background-color: @new-header-color;
-      font-size: 36px;
-      color: #333;
-      padding-top: 40px;
+    // .mint-header.header {
+    //   height: 88px;
+    //   background-color: @new-header-color;
+    //   font-size: 36px;
+    //   color: #333;
+    //   padding-top: 40px;
+    // }
+    .vux-header.header{
+      background: @header-bg;
+      .vux-header-left{
+        .left-arrow:before{
+          border-color: @text-font-color;
+        }
+      }
+      .vux-header-title{
+        color: @back-color-white;
+      }
     }
     .detail {
-      padding-top: 88px;
-      background-color: @new-bg-color;
+      padding-top: 126px;
+      padding-bottom: 30px;
+      background-color: @back-color-white;
+      .bottom-line{
+        margin-top: 55px;
+        font-size: @font-size-thirtyT;/*px*/
+        color: #333;
+        .bot:before, .bot:after{
+          display: inline-block;
+          content: '';
+          width: 76px;
+          height: 3px;
+          background:#979797;
+          vertical-align: middle;
+          position: relative;
+        }
+        .bot:before{
+          right: 12px;
+        }
+        .bot:after{
+          left: 12px;
+        }
+      }
       .qrcodeBox{
-        width: 500px;
-        height: 500px;
-        padding: 20px;
+        width: 400px;
+        height: 400px;
+        // padding: 20px;
         background: #fff;
         margin: 0 auto;
-        margin-top: 180px;
-        margin-bottom: 110px;
-        img{
-          width: 500px !important;
-          height: 500px !important;
-          padding: 30px;
-          border: 1px solid #666;
-          border-radius: 5px;
-          background: #fff;
-          box-sizing: border-box;
+        // margin-top: 180px;
+        // margin-bottom: 110px;
+        div{
+          width: 100%;
+          height: 100%;
+          img{
+            width: 400px !important;
+            height: 400px !important;
+            padding: 30px;
+            border: 1px solid #666;
+            border-radius: 5px;
+            background: #fff;
+            box-sizing: border-box;
+          }
         }
+      }
+      p{
+        font-size: @font-size-twentyS;/*px*/
+        color: @font-color-9B;
+        text-align: center;
+        margin-top: 15px;
+        // margin-bottom: 30px;
       }
       .def_mtcell {
         border-top: 1px solid #eee;

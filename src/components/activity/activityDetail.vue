@@ -72,7 +72,7 @@
       <div class="button">
         <mt-button class="def_mtcell def_mtcell_left" @click.native="toSigned">代客户报名</mt-button>
         <mt-button class="def_mtcell" @click.native="toList">查看报名列表</mt-button>
-      </div>   
+      </div>
         <!-- <mt-cell
           title="代客户报名"
           class="def_mtcell"

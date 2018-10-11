@@ -47,7 +47,7 @@
                       <span class="no_certy" v-else-if="item.certification_status === '3'">认证失败</span>
                       <span class="expire_certy" v-else-if="item.certification_status === '4'">认证已过期</span>
                       <span class="success_certy" v-else-if="item.certification_status === '2'">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
-                      <i class="iconfont icon-right"></i>
+                      <i class="iconfont">&#xe8d5;</i>
                     </div>
                   </div>
                 </div>
@@ -79,7 +79,7 @@
                       <span class="success_certy" v-else-if="item.certification_status === '2'">投资者类型已认证</span>
                       <span class="no_certy" v-else-if="item.certification_status === '3'">投资者类型认证失败</span>
                       <span class="expire_certy" v-else-if="item.certification_status === '4'">投资者类型认证已过期</span>
-                      <i class="iconfont icon-right"></i>
+                      <i class="iconfont">&#xe8d5;</i>
                     </div>
                   </div>
                 </div>
@@ -102,7 +102,7 @@
                   <div class="novalidate_right">
                     <div class="right_cont">
                       <span class="no_certy" v-show="item.mobile_validated === '1'">手机号未认证</span>
-                      <i class="iconfont icon-right"></i>
+                      <i class="iconfont">&#xe8d5;</i>
                     </div>
                   </div>
                 </div>
