@@ -87,19 +87,21 @@
         </mt-cell> -->
     </div>
     <div class="popup_banner" v-if="showShare">
-      <img :src="posterBanner"
+      <img src=""
            v-if="showShare"
-           alt="">
+           alt=""
+           id="avatar">
+      <qrcode class="qrcode" :value="this.detail.qrcodeTargetUrl" :size="size" style="display: none"></qrcode>
     </div>
     <mt-popup v-model="showShare"
               position="bottom"
               class="activity_popup">
       <!-- <div> -->
-      <div class="topBorder">
+      <!-- <div class="topBorder">
         <span class="line1"></span>
         <span class="topTitle">分享到</span>
         <span class="line2"></span>
-      </div>
+      </div> -->
       <div class="content">
         <span><img src="static/img/wechat.png" class="iconfont" @click="wachatShare"><p>微信好友</p></span>
         <span><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>朋友圈</p></span>
@@ -111,7 +113,7 @@
   </div>
 </template>
 <script>
-  import { XHeader } from 'vux'
+  import { XHeader, Qrcode } from 'vux'
   import { getShare } from '@/service/api/aboutMe'
   import { getActivityDet } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
@@ -119,7 +121,8 @@
   import Vue from 'vue'
   export default {
     components: {
-      XHeader
+      XHeader,
+      Qrcode
     },
     data () {
       return {
@@ -128,7 +131,8 @@
         showShare: false,
         shareUrl: '',
         detail: {},
-        activityId: null
+        activityId: null,
+        size: 50
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -157,6 +161,7 @@
       },
       showShareBtn () {
         this.showShare = true
+        this.drawAndShareImage()
       },
       hideShareBtn () {
         this.showShare = false
@@ -261,6 +266,114 @@
           console.log('失败')
           console.log(failReason)
         }, args)
+      },
+      drawAndShareImage () {
+        console.log('dddddddd', this.detail.activityPosterUrl)
+        let url = this.detail.activityPosterUrl
+        let url1 = this.detail.activityBannerUrl
+        // let activityQrcodeUrl = this.detail.activityQrcodeUrl
+        var canvas = document.createElement('canvas')
+        canvas.width = 350
+        canvas.height = 667
+        var context = canvas.getContext('2d')
+        context.rect(0, 0, canvas.width, canvas.height)
+        context.fillStyle = '#fff'
+        context.fill()
+        var myImage = new Image()
+        myImage.crossOrigin = 'anonymous'
+        // myImage.setAttribute("crossOrigin",'Anonymous')
+        myImage.src = url // 背景图片  你自己本地的图片或者在线图片
+        myImage.onload = function () {
+          context.drawImage(myImage, 0, 0, 350, 667)
+          // context.font = '60px Courier New'
+          // context.fillText('我是文字', 350, 450)
+          var myImage2 = new Image()
+          // var myImage2 = document.querySelector('.qrcode > img')
+          myImage2.src = url1 // 你自己本地的图片或者在线图片
+          myImage2.crossOrigin = 'anonymous'
+          // myImage2.setAttribute("crossOrigin",'Anonymous')
+          myImage2.onload = function () {
+            context.drawImage(myImage2, 20, 20, 91, 34)
+            var base64 = canvas.toDataURL('image/jpg') // "image/png" 这里注意一下
+            // var img = document.getElementById('avatar')
+            // img.setAttribute('src', base64)
+             var canvas1 = document.createElement('canvas')
+              canvas1.width = 350
+              canvas1.height = 667
+              var context1 = canvas.getContext('2d')
+              context1.rect(0, 0, canvas1.width, canvas1.height)
+              context1.fillStyle = '#fff'
+              context1.fill()
+              var myImage3 = new Image()
+              myImage3.crossOrigin = 'anonymous'
+              // myImage3.setAttribute("crossOrigin",'Anonymous')
+              myImage3.src = base64 // 背景图片  你自己本地的图片或者在线图片
+              myImage3.onload = function () {
+                context.drawImage(myImage3, 0, 0, 350, 667)
+                // context.font = '60px Courier New'
+                // context.fillText('我是文字', 350, 450)
+                var myImage4 = document.querySelector('.qrcode > img')
+                myImage4.crossOrigin = 'anonymous'
+                // myImage4.setAttribute("crossOrigin",'Anonymous')
+                myImage4.onload = function () {
+                  context.drawImage(myImage4, 150, 50, 50, 50)
+                  var base641 = canvas.toDataURL('image/jpg') // "image/png" 这里注意一下
+                  var img = document.getElementById('avatar')
+                  img.setAttribute('src', base641)
+                }
+              }
+          }
+        }
+        // let canvas = document.createElement('canvas')
+        // canvas.width = 187.5
+        // canvas.height = 333.5
+        // let context = canvas.getContext('2d')
+        // context.rect(0, 0, canvas.width, canvas.height)
+        // context.fillStyle = '#fff'
+        // context.fill()
+        // let newImg1 = new Image()
+        // newImg1.src = url
+        // newImg1.crossOrigin = 'Anonymous'
+        // newImg1.onload = function () {
+        //     context.drawImage(newImg1, 0, 0, canvas.width, canvas.height)
+        //     // context.fillText('扫一扫识别二维码', 350, 1000)
+        //     let newImg2 = new Image()
+        //     newImg2.src = url1
+        //     // newImg2.crossOrigin = 'Anonymous'
+        //     newImg2.setAttribute("crossOrigin",'Anonymous')
+        //     newImg2.onload = function () {
+        //     context.drawImage(newImg2, 219, 219)
+        //     let base641 = canvas.toDataURL('image/png')
+        //     // let img = document.getElementById('demo')
+        //     // img.setAttribute('src', base64)
+        //     // canvas.width = 45.5
+        //     // canvas.height = 17
+        //     canvas.width = 187.5
+        //     canvas.height = 333.5
+        //     let context1 = canvas.getContext('2d')
+        //     context1.rect(0, 0, canvas.width, canvas.height)
+        //     context1.fillStyle = '#fff'
+        //     context1.fill()
+        //     let newImg1 = new Image()
+        //     newImg1.src = url1
+        //     newImg1.crossOrigin = 'Anonymous'
+        //     newImg1.onload = function () {
+        //         context1.drawImage(newImg1, 0, 0, canvas.width, canvas.height)
+        //         context1.font = '50px "宋体"'
+        //         context1.fillText('扫一扫识别二维码', 100, 1000)
+        //         let newImg2 = new Image()
+        //         // newImg2.src = document.getElementById('demo').getAttribute('src')
+        //         newImg2.src = base641
+        //         newImg2.crossOrigin = 'Anonymous'
+        //         newImg2.onload = function () {
+        //         context1.drawImage(newImg2, 187.5, 333.5)
+        //         let base64 = canvas.toDataURL('image/png')
+        //         let img = document.getElementById('avatar')
+        //         img.setAttribute('src', base64)
+        //         }
+        //     }
+        //     }
+        // }
       }
     },
     mounted () {
@@ -276,10 +389,10 @@
 <style lang="less">
   @import '../../common/style/variable.less';
   .popup_banner {
-    width: 86.67%;
+    // width: 86.67%;
     background-color: #fff;
     box-sizing: border-box;
-    padding: 34px 25px;
+    // padding: 34px 25px;
     position: fixed;
     top: 36%;
     left: 50%;
@@ -287,68 +400,71 @@
     transform: translateX(-50%) translateY(-50%);
     img {
       display: inline-block;
-      width: 100%;
+      // width: 100%;
     }
   }
   .activity_popup.mint-popup{
     width: 100%;
-    height: 460px;
-    padding: 40px 60px 0;
+    height: 352px;
+    padding: 30px 60px 0;
     background: #FBFBFB;
     box-sizing: border-box;
-    font-family: PingFangSC-Regular;
+    font-family: @font-family-M;
     letter-spacing: 0;
-    .topBorder{
-      font-size: 28px;
-      color: #000000;
-      .line1{
-        display: inline-block;
-        height: 1px;
-        width: 205px;
-        background: #666;
-        margin-right: 40px;
-        vertical-align: middle;
-      }
-      .line2{
-        display: inline-block;
-        height: 1px;
-        width: 205px;
-        background: #666;
-        margin-left: 40px;
-        vertical-align: middle;
-      }
-      .topTitle:before{
-        display: inline-block;
-        content: '';
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background: #666;
-        right: 60px;
-        position: relative;
-      }
-      .topTitle:after{
-        display: inline-block;
-        content: '';
-        width: 16px;
-        height: 16px;
-        border-radius: 50%;
-        background: #666;
-        left: 60px;
-        position: relative;
-      }
-    }
+    // .topBorder{
+    //   font-size: 28px;
+    //   color: #000000;
+    //   .line1{
+    //     display: inline-block;
+    //     height: 1px;
+    //     width: 205px;
+    //     background: #666;
+    //     margin-right: 40px;
+    //     vertical-align: middle;
+    //   }
+    //   .line2{
+    //     display: inline-block;
+    //     height: 1px;
+    //     width: 205px;
+    //     background: #666;
+    //     margin-left: 40px;
+    //     vertical-align: middle;
+    //   }
+    //   .topTitle:before{
+    //     display: inline-block;
+    //     content: '';
+    //     width: 16px;
+    //     height: 16px;
+    //     border-radius: 50%;
+    //     background: #666;
+    //     right: 60px;
+    //     position: relative;
+    //   }
+    //   .topTitle:after{
+    //     display: inline-block;
+    //     content: '';
+    //     width: 16px;
+    //     height: 16px;
+    //     border-radius: 50%;
+    //     background: #666;
+    //     left: 60px;
+    //     position: relative;
+    //   }
+    // }
     .content{
       text-align: center;
-      padding-top: 50px;
+      // padding-top: 50px;
       padding-bottom: 50px;
-      font-size: 24px;
+      font-size: @font-size-twentyF;/*px*/
       color: #000000;
       span{
         display: inline-block;
         img{
-          width: 112px;
-          height: 112px;
+          width: 100px;
+          height: 100px;
+        }
+        p{
+          margin-top: 20px;
         }
       }
       span:nth-child(2){
@@ -359,7 +475,7 @@
       height: 100px;
       line-height: 100px;
       text-align: center;
-      font-size: 28px;
+      font-size: @font-size-twentyE;/*px*/
       color: #333333;
       border-top: 1px solid #C9C9C9;
     }
