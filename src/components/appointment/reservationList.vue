@@ -177,10 +177,6 @@ export default {
 				})
 				this.remittanceList = res.data.filter(item => item.status.slice(0, 1) === '2')
 				this.contractList = res.data.filter(item => item.status.slice(0, 1) === '3')
-				console.log(this.appoinmentList)
-				console.log(this.appoinmentList.length)
-				console.log(this.remittanceList)
-				console.log(this.contractList)
 			})
 		}
 	},
@@ -276,7 +272,7 @@ export default {
 							color: #9B9B9B;
 							font-size: 24px;
 							margin-top: 10px;
-							font-weight: 100;
+							// font-weight: 100;
 						}
 						&:first-child {
 							text-align: left;
