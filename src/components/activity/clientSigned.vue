@@ -54,9 +54,9 @@
         signedData(this.id).then(res => {
           this.result = Object.assign({}, res.data)
           this.value = activityUrl + this.result.qrcodeTargetUrl
-          this.title = this.result.mobile ? (this.result.clientName + '（' + this.mobile + '）') : this.result.clientName
+          this.title = this.result.mobile ? (this.result.clientName + '（' + this.result.mobile + '）') : this.result.clientName
           this.defineVal = this.result.registrationType === 0 ? '自报名' : '代报名'
-          console.log(this.value)
+          console.log(this.value, this.title)
         })
       }
     },
@@ -141,12 +141,34 @@
         margin-top: 15px;
         // margin-bottom: 30px;
       }
-      .def_mtcell {
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-      }
-      .mint-cell .mint-cell-wrapper .mint-cell-value span {
-        color: @new-font-color;
+    }
+    .def_mtcell {
+      box-shadow: 0 2px 10px 0 #E7E2DC;
+      margin: 0 20px;
+      padding: 0 30px;
+      height: 100px;
+      .mint-cell-wrapper{
+        height: 100%;
+        line-height: 100px;
+        .mint-cell-title{
+          .mint-cell-text{
+            font-size: @font-size-twentyE;/*px*/
+            color: @font-color-4A;
+          }
+        }
+        .mint-cell-value{
+          margin-right: 54px;
+          span{
+            font-size: @font-size-twentyS;/*px*/
+            color: @font-color-orange2;
+          }
+        }
+        .mint-cell-allow-right{
+        }
+        .mint-cell-allow-right:after{
+          border-color: #DADADA;
+          margin-right: 20px;
+        }
       }
     }
   }

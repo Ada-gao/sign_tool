@@ -71,7 +71,6 @@
               }
               item.registrationType = item.registrationType === 0 ? '自报名' : '代报名'
             })
-            console.log(this.ownSigned)
           }
         })
       },
