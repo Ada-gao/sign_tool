@@ -19,10 +19,8 @@
             </span>
             <div class="text">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</div>
             <div class="tit">
-              <span v-if="item.product_status === 1">预热中</span>
-              <span v-else-if="item.product_status === 2">募集中</span>
-              <span v-else-if="item.product_status === 3">已关帐</span>
-              <span class="twice">{{item.product_type_name}}</span>
+              <span>{{item.product_status|turnText(productStatus)}}</span>
+              <span class="twice">{{item.product_type}}</span>
               <span>{{item.product_cons_name}}</span>
             </div>
           <!-- </div> -->
@@ -38,9 +36,7 @@
       <div class="middle-cont">
         <span class="left">
           产品期限
-          <p v-if="item.investment_horizon_unit === '0'">{{item.investment_horizon}}月</p>
-          <p v-else-if="item.investment_horizon_unit === '1'">{{item.investment_horizon}}年</p>
-          <p v-else-if="item.investment_horizon_unit === '2'">{{item.investment_horizon}}天</p>
+          <p>{{item.investment_horizon}}{{item.investment_horizon_unit|turnText(investmentHorizonUnit)}}</p>
         </span>
         <span class="right">
           起投金额
@@ -53,22 +49,17 @@
         <table border="0" cellspacing="0" cellpadding="0">
           <tr><td>产品名称</td><td>{{item.product_name}}</td></tr>
           <tr><td>产品结构类型</td><td>{{item.product_cons_name}}</td></tr>
-          <tr><td>产品收益类型</td><td>{{item.product_type_name}}</td></tr>
+          <tr><td>产品收益类型</td><td>{{item.product_type}}</td></tr>
           <tr><td>产品风险级别</td><td>{{item.product_risk_level}}</td></tr>
-          <tr><td>交易币种</td><td>{{item.currency_id === 1 ? '人民币' : '美元' }}</td></tr>
+          <!-- <tr><td>交易币种</td><td>{{item.currency_id === 1 ? '人民币' : '美元' }}</td></tr> -->
+          <tr><td>交易币种</td><td>{{item.currency_name}}</td></tr>
           <tr>
-            <td>购买人群</td>
-            <td v-if="item.buying_crowds === '0'">大陆</td>
-            <td v-else-if="item.buying_crowds === '1'">港澳台</td>
-            <td v-else-if="item.buying_crowds === '2'">境外</td>
+            <td>购买人群</td><td><span v-for="(p, i) in item.buying_crowds" :key="i">{{p|turnText(buyingCrowds)}} </span></td>
           </tr>
         </table>
         <table border="0" cellspacing="0" cellpadding="0" v-if="show">
           <tr>
-            <td>产品期限</td>
-            <td v-if="item.investment_horizon_unit === '0'">{{item.investment_horizon}}月</td>
-            <td v-else-if="item.investment_horizon_unit === '1'">{{item.investment_horizon}}年</td>
-            <td v-else-if="item.investment_horizon_unit === '2'">{{item.investment_horizon}}天</td>
+            <td>产品期限</td><td>{{item.investment_horizon}}{{item.investment_horizon_unit|turnText(investmentHorizonUnit)}}</td>
           </tr>
           <tr><td>募集额度</td><td>{{item.collection_amount}}</td></tr>
           <tr><td>募集人数</td><td>{{item.product_lp}}</td></tr>
@@ -79,18 +70,11 @@
           <tr><td>托管银行</td><td>{{item.custodian_bank}}</td></tr>
           <tr><td>关联产品</td><td>{{item.relevance_name}}</td></tr>
           <tr>
-            <td>付息方式</td>
-            <td v-if="item.interest_payment === '0'">无</td>
-            <td v-else-if="item.interest_payment === '1'">季度付息</td>
-            <td v-else-if="item.interest_payment === '2'">自然季度付息</td>
-            <td v-else-if="item.interest_payment === '3'">半年度付息</td>
-            <td v-else-if="item.interest_payment === '4'">按年付息</td>
+            <td>付息方式</td><td>{{item.interest_payment|turnText(interestPayment)}}</td>
           </tr>
           <tr>
             <td>认购费</td>
-            <td v-if="item.subscribe === '0'">无需认购</td>
-            <td v-else-if="item.subscribe === '1'">价内认购</td>
-            <td v-else-if="item.subscribe === '2'">{{item.subscribe_rate}}%</td>
+            <td>{{item.subscribe|turnText(subscribe)}} {{item.subscribe_rate||''}}<span v-show="item.subscribe_rate">%</span></td>
           </tr>
           <tr><td>账户名称</td><td>{{item.account_name}}</td></tr>
           <tr><td>账号</td><td>{{item.card_no}}</td></tr>
@@ -99,7 +83,7 @@
         </table>
         <group class="info-detail">
           <cell
-          title="查看更多信息"
+          :title="show ? '收起信息' : '查看更多信息'"
           is-link
           :border-intent="false"
 				  :arrow-direction="show ? 'up' : 'down'"
@@ -182,6 +166,7 @@
 
 <script type="text/ecmascript-6">
 import { XHeader, Group, CellBox, Cell } from 'vux'
+import { getProductDetail } from '@/service/api/products'
 
 export default {
   data () {
@@ -190,7 +175,23 @@ export default {
       id: '',
       prePath: '',
       showBtn: true,
-      show: false
+      show: false,
+      interestPayment: JSON.parse(localStorage.getItem('interest_payment')),
+      productStatus: JSON.parse(localStorage.getItem('product_status')),
+      investmentHorizonUnit: JSON.parse(localStorage.getItem('investment_horizon_unit')),
+      buyingCrowds: JSON.parse(localStorage.getItem('buying_crowds')),
+      subscribe: [
+        {
+          value: 0,
+          label: '无需认购'
+        }, {
+          value: 1,
+          label: '价内认购'
+        }, {
+          value: 2,
+          label: '价外认购'
+        }
+      ]
       // ,
       // email: '',
       // userId: ''
@@ -208,6 +209,19 @@ export default {
 		})
   },
   methods: {
+    getList (id) {
+      getProductDetail(id).then(res => {
+        this.item = res.data
+        this.item.buying_crowds = res.data.buying_crowds.split(',')
+        if (this.$route.params.showBtn === 'hide' || this.item.product_status !== 2 || this.item.is_pause === '1') {
+          this.showBtn = false
+        }
+        if (!this.item.announcement) return
+        this.$nextTick(function () {
+          this.scrollAnnouncement()
+        })
+      })
+    },
     back () {
       if (this.$route.params.flag && !this.$route.params.return) {
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag}})
@@ -230,7 +244,18 @@ export default {
 			this.$router.push({name: 'PdfReport', params: {id: id, mark: 3}})
     },
     toAppointment () {
-      this.$router.push({name: 'ProductAppointment', params: {productInfo: this.item.product_name, productId: this.id, fromUrl: 'productDetail', minimalAmount: this.item.minimal_amount, collectionAmount: this.item.collection_amount, riskLevel: this.item.product_risk_level}})
+      this.$router.push({
+        name: 'ProductAppointment',
+        params: {
+          productInfo: this.item.product_name,
+          productId: this.id,
+          fromUrl: 'productDetail',
+          minimalAmount: this.item.minimal_amount,
+          collectionAmount: this.item.collection_amount,
+          riskLevel: this.item.product_risk_level
+          // productStatus: this.item.product_status
+        }
+      })
     },
     scrollAnnouncement () {
       var speed = 50 // 速度 -- px每秒
@@ -254,18 +279,21 @@ export default {
   },
   mounted () {
     this.id = this.$route.params.id
-    if (this.$route.params.flag === 'productDetail' || this.$route.params.flag === 'reservationList') {
-      this.item = this.$route.params.item
-    } else {
-      this.item = JSON.parse(window.localStorage.getItem('productDetail'))
-    }
-    if (this.$route.params.showBtn === 'hide' || this.item.product_status !== 2 || this.item.is_pause === '1') {
-      this.showBtn = false
-    }
+    this.getList(this.id)
+    // if (this.$route.params.flag === 'productDetail' || this.$route.params.flag === 'reservationList') {
+    //   this.item = this.$route.params.item
+    // } else {
+    //   this.item = JSON.parse(window.localStorage.getItem('productDetail'))
+    // }
+    // console.log(this.$route.params.showBtn)
+    // console.log(this.item.product_status)
+    // if (this.$route.params.showBtn === 'hide' || this.item.product_status !== 2 || this.item.is_pause === '1') {
+    //   this.showBtn = false
+    // }
     window.scroll(0, 0)
-    this.$nextTick(function () {
-      this.scrollAnnouncement()
-    })
+    // this.$nextTick(function () {
+    //   this.scrollAnnouncement()
+    // })
   }
 }
 </script>

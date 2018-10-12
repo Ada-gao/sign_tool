@@ -11,7 +11,14 @@
 							'statusRed':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
 							'statusGreen':appointmentList.status==='1003'||appointmentList.status==='2004'||appointmentList.refund_status==='4'||appointmentList.status==='3004'
 						}">
-						{{appointmentList.status|turnText(appointmentStatus)}}
+						<i class="iconfont"
+							:class="{
+							'icon-shenhezhong':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||appointmentList.refund_status==='0'||appointmentList.refund_status==='1'||appointmentList.refund_status==='2'||appointmentList.status==='3001'||appointmentList.status==='3002',
+							'icon-guanbi':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
+							'icon-yuyuechenggong':appointmentList.status==='1003'||appointmentList.status==='2004'||appointmentList.refund_status==='4'||appointmentList.status==='3004',
+							'icon-alert-warning':appointmentList.status==='1005'
+						}"></i>
+						{{appointmentList.status|turnText(appointmentStatus)}} {{appointmentList.refund_status|turnText(refundStatus)}}
 					</div>
 					<flow>
 						<flow-state title="预约" is-done></flow-state>
@@ -62,7 +69,7 @@
 					</div>
 					<div class="mb20"></div>
 					<mt-cell title="产品信息" class="tit">
-						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[productInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('appointInfo')"></i>
+						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[productInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('productInfo')"></i>
 					</mt-cell>
 					<div class="cont" v-show="productInfoShow">
 						<mt-cell title="产品名称：">{{product_name}}</mt-cell>
@@ -466,13 +473,14 @@ export default {
 			transcInfoShow: true,
 			refundInfoShow: true,
 			contractInfoShow: true,
-			appointmentStatus: JSON.parse(localStorage.getItem('appointmentStatus'))
+			appointmentStatus: JSON.parse(localStorage.getItem('appointment_status')),
+			refundStatus: JSON.parse(localStorage.getItem('refund_status'))
 		}
 	},
 	computed: {
-			slotsN: function () {
-				return [{flex: 1, values: this.nameValues, className: 'slot1', textAlign: 'center'}]
-			}
+		slotsN: function () {
+			return [{flex: 1, values: this.nameValues, className: 'slot1', textAlign: 'center'}]
+		}
 	},
 	components: {
 		XHeader,
@@ -1053,6 +1061,9 @@ export default {
 						this.appointInfoShow = false
 						this.productInfoShow = false
 					}
+					if (this.appointmentList.status === '1004') {
+						this.remitInfoShow = false
+					}
 					if (this.appointmentList.status.includes('2003') || this.appointmentList.status.includes('2004') || this.appointmentList.status.includes('300')) { // 订单关闭
 						this.transcInfoShow = false
 						this.bankInfoShow = false
@@ -1599,6 +1610,9 @@ export default {
 	// },
 	activated () {
 		if (this.$route.params.fromUrl === 'productDetail') {
+			console.log('this.appointmentList.client_id')
+			// console.log(this.appointmentList.client_id)
+			console.log(this.$route.params)
 			this.writeAppointment()
 			// this.getList()
 		} else if (this.$route.params.fromUrl === 'reservationList') {

@@ -2,9 +2,9 @@
 	<div class="reservation">
 		<x-header class="balck-header" :left-options="{showBack: false}">
 			<mt-navbar v-model="selected">
-				<mt-tab-item id="1">预约</mt-tab-item>
-				<mt-tab-item id="2">打款</mt-tab-item>
-				<mt-tab-item id="3">合同</mt-tab-item>
+				<mt-tab-item id="1">预&nbsp;&nbsp;约</mt-tab-item>
+				<mt-tab-item id="2">打&nbsp;&nbsp;款</mt-tab-item>
+				<mt-tab-item id="3">合&nbsp;&nbsp;同</mt-tab-item>
 			</mt-navbar>
 		</x-header>
     <!-- <x-header :left-options="{showBack: false}">交易列表</x-header> -->
@@ -88,7 +88,7 @@
 											'statusRed':item.refund_status==='3',
 											'statusGreen':item.refund_status==='4'
 										}">
-										{{item.refund_status|turnText(refundStatus)}}</span>
+										{{item.refund_status|turnText(refundStatus)||'--'}}</span>
 							</div>
 						</div>
 					</div>
@@ -146,8 +146,8 @@ export default {
 			remittanceList: [],
 			contractList: [],
 			timeCount: 3,
-			appointmentStaus: JSON.parse(localStorage.getItem('appointmentStatus')),
-			refundStatus: JSON.parse(localStorage.getItem('refundStatus'))
+			appointmentStaus: JSON.parse(localStorage.getItem('appointment_status')),
+			refundStatus: JSON.parse(localStorage.getItem('refund_status'))
 		}
 	},
 	components: {
@@ -208,7 +208,7 @@ export default {
 	.wrapper{
 		margin-bottom: 96px;
 		.mint-navbar{
-			height: 80px;
+			// height: 90%;
 			.mint-tab-item{
 				line-height: 80px;
 				margin: 0 30px;
@@ -276,6 +276,7 @@ export default {
 							color: #9B9B9B;
 							font-size: 24px;
 							margin-top: 10px;
+							font-weight: 100;
 						}
 						&:first-child {
 							text-align: left;
