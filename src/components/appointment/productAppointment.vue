@@ -11,7 +11,14 @@
 							'statusRed':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
 							'statusGreen':appointmentList.status==='1003'||appointmentList.status==='2004'||appointmentList.refund_status==='4'||appointmentList.status==='3004'
 						}">
-						{{appointmentList.status|turnText(appointmentStatus)}}
+						<i class="iconfont"
+							:class="{
+							'icon-shenhezhong':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||appointmentList.refund_status==='0'||appointmentList.refund_status==='1'||appointmentList.refund_status==='2'||appointmentList.status==='3001'||appointmentList.status==='3002',
+							'icon-guanbi':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
+							'icon-yuyuechenggong':appointmentList.status==='1003'||appointmentList.status==='2004'||appointmentList.refund_status==='4'||appointmentList.status==='3004',
+							'icon-alert-warning':appointmentList.status==='1005'
+						}"></i>
+						{{appointmentList.status|turnText(appointmentStatus)}} {{appointmentList.refund_status|turnText(refundStatus)}}
 					</div>
 					<flow>
 						<flow-state title="预约" is-done></flow-state>
@@ -62,7 +69,7 @@
 					</div>
 					<div class="mb20"></div>
 					<mt-cell title="产品信息" class="tit">
-						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[productInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('appointInfo')"></i>
+						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[productInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('productInfo')"></i>
 					</mt-cell>
 					<div class="cont" v-show="productInfoShow">
 						<mt-cell title="产品名称：">{{product_name}}</mt-cell>
@@ -466,13 +473,15 @@ export default {
 			transcInfoShow: true,
 			refundInfoShow: true,
 			contractInfoShow: true,
-			appointmentStatus: JSON.parse(localStorage.getItem('appointmentStatus'))
+			appointmentStatus: JSON.parse(localStorage.getItem('appointment_status')),
+			refundStatus: JSON.parse(localStorage.getItem('refund_status')),
+			routeParams: null
 		}
 	},
 	computed: {
-			slotsN: function () {
-				return [{flex: 1, values: this.nameValues, className: 'slot1', textAlign: 'center'}]
-			}
+		slotsN: function () {
+			return [{flex: 1, values: this.nameValues, className: 'slot1', textAlign: 'center'}]
+		}
 	},
 	components: {
 		XHeader,
@@ -535,9 +544,12 @@ export default {
 				})
 			},
 			chooseName () {
-				if (this.$route.params.riskLevel) {
-					this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag, riskLevel: this.$route.params.riskLevel}})
+				const riskLevel = localStorage.getItem('riskLevel')
+				if (riskLevel) {
+					this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag, riskLevel: riskLevel}})
 				} else {
+					// 从客户列表页来后，路由参数发生了改变，被替换了，故请求接口获取 riskLevel
+					// 保存 riskLevel 到 localStorage 里，可以不用再调取下面的 getProducts 接口
 					let arr = []
 					getProducts().then(res => {
 						res.data.map((item, index) => {
@@ -979,7 +991,7 @@ export default {
 					this.product_name = this.$route.params.productInfo
 					this.product_id = this.$route.params.productId
 					this.topBar = '预约'
-					this.topTitle = '预约'
+					this.topTitle = '预约' // 已用变量代替
 					this.name = ''
 					this.cMob = ''
 					this.money = ''
@@ -1007,18 +1019,20 @@ export default {
 					this.giveMoneyDone = false
 					this.giveMoneyIng = false
 					this.contractManage = false
+					localStorage.setItem('riskLevel', this.$route.params.riskLevel)
 					// appointmentList(this.$route.params.riskLevel).then(res => {
 					// 	this.appointmentList = res.data
 					// })
+					console.log(this.appointmentList)
 			},
 			getList () {
 				this.appointmentId = this.$route.params.appointmentId
 				this.orderCloseSuc = false
+				this.showNameClick = false
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
 					this.product_id = this.appointmentList.product_id
 					this.showMoneyClick = false
-					this.showNameClick = false
 					this.appointmentCode = true
 					this.codeA = this.appointmentList.appointment_code
 					this.name = this.appointmentList.client_name
@@ -1052,6 +1066,9 @@ export default {
 					} else {
 						this.appointInfoShow = false
 						this.productInfoShow = false
+					}
+					if (this.appointmentList.status === '1004') {
+						this.remitInfoShow = false
 					}
 					if (this.appointmentList.status.includes('2003') || this.appointmentList.status.includes('2004') || this.appointmentList.status.includes('300')) { // 订单关闭
 						this.transcInfoShow = false
@@ -1113,7 +1130,7 @@ export default {
 						this.closeReason = this.appointmentList.appoint_failure
 						this.submitAppointmentBtnShow = false
 						this.repeatAppointmentBtnShow = true
-						this.showNameClick = true
+						this.showNameClick = false // 预约失败时，应根据原因修改预约数据，而非客户
 						this.showMoneyClick = true
 						this.closeOrderReason = true
 						this.sucBtn = false
@@ -1582,23 +1599,9 @@ export default {
 			// vm.getList()
 		})
 	},
-	// beforeRouteLeave (to, from, next) {
-	// 	console.log(from)
-	// 	console.log('--------')
-	// 	console.log(to)
-	// 		if (to.name === 'ReservationList') {
-	// 			console.log('list111111')
-	// 			from.meta.keepAlive = false
-	// 			console.log(from.meta)
-	// 		} else if (to.name === 'ProductDetail') {
-	// 			console.log('detail222222')
-	// 			from.meta.keepAlive = true
-	// 			console.log(from.meta)
-	// 		}
-	// 		next()
-	// },
 	activated () {
 		if (this.$route.params.fromUrl === 'productDetail') {
+			console.log('this.appointmentList.client_id')
 			this.writeAppointment()
 			// this.getList()
 		} else if (this.$route.params.fromUrl === 'reservationList') {
@@ -1609,6 +1612,7 @@ export default {
 			this.evidenceUrl = []
 			this.materialSrc = []
 			this.refundSrc = []
+			console.log('重新预约')
 			this.getList()
 			this.getBankList()
 		} else if (this.$route.params.mark === 'selected') {
@@ -1634,7 +1638,7 @@ export default {
 	// },
 	created () {
 		window.scroll(0, 0)
-		console.log('this.appointmentList.client_id')
+		// console.log('this.appointmentList.client_id')
 		// console.log(this.appointmentList.client_id)
 		console.log(this.$route.params)
 	}
@@ -1673,7 +1677,10 @@ export default {
 				font-size: 36px;
 				color: @font-color-4A;
 				padding: 30px 0;
-				font-weight: bold;
+				font-weight: 100;
+			}
+			.iconfont {
+				font-size: 36px;
 			}
 			.weui-wepay-flow{
         width: 100%;

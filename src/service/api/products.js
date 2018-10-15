@@ -22,6 +22,17 @@ export function getTransaction (productId) {
 }
 
 /**
+ * 获取产品详情
+ * @param productId
+ */
+export function getProductDetail (productId) {
+  return axios({
+    url: `/v1/product/get_products/${productId}/`,
+    method: 'get'
+  })
+}
+
+/**
  * 获取产品文件列表
  * @param productId
  */
