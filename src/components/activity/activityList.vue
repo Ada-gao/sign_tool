@@ -9,7 +9,7 @@
     <div class="activity_cont">
       <ul>
         <li v-for="(item, index) in list" :key="index" @click="handleRouter(item.activityId)">
-          <div class="img"><img :src="src" alt=""></div>
+          <div class="img"><img :src="item.activityBannerUrl" alt=""></div>
           <div class="bottom">
             <div class="left">
               <p class="title">
@@ -97,23 +97,27 @@
         height: 488px;
         margin-bottom: 20px;
         background: @back-color-white;
-        padding: 30px 0;
+        padding: 30px 30px;
         box-sizing: border-box;
-        .img{
-          width: calc(100% - 60px);
-          margin: 0 auto;
-          overflow: hidden;
+        img{
+          width: 100%;
           height: 309px;
-          margin-bottom: 20px;
-          img {
-            display: block;
-            width: calc(100% + 60px);
-            margin-left: -30px;
-          }
         }
+        // .img{
+        //   width: calc(100% - 60px);
+        //   margin: 0 auto;
+        //   overflow: hidden;
+        //   height: 309px;
+        //   margin-bottom: 20px;
+        //   img {
+        //     display: block;
+        //     width: calc(100% + 60px);
+        //     margin-left: -30px;
+        //   }
+        // }
         .bottom {
           color: @font-color-9B;
-          padding: 0 30px;
+          // padding: 0 30px;
           .left {
             .title{
               margin-bottom: 20px;
