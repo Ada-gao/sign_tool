@@ -544,10 +544,12 @@ export default {
 				})
 			},
 			chooseName () {
-				if (this.$route.params.risk_level) {
-					this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag, riskLevel: this.$route.params.riskLevel}})
+				const riskLevel = localStorage.getItem('riskLevel')
+				if (riskLevel) {
+					this.$router.push({name: 'CustomerNameList', params: {flag: this.$route.params.fromUrl || this.$route.params.flag, riskLevel: riskLevel}})
 				} else {
 					// 从客户列表页来后，路由参数发生了改变，被替换了，故请求接口获取 riskLevel
+					// 保存 riskLevel 到 localStorage 里，可以不用再调取下面的 getProducts 接口
 					let arr = []
 					getProducts().then(res => {
 						res.data.map((item, index) => {
@@ -1017,6 +1019,7 @@ export default {
 					this.giveMoneyDone = false
 					this.giveMoneyIng = false
 					this.contractManage = false
+					localStorage.setItem('riskLevel', this.$route.params.riskLevel)
 					// appointmentList(this.$route.params.riskLevel).then(res => {
 					// 	this.appointmentList = res.data
 					// })
