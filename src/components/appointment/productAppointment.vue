@@ -935,6 +935,7 @@ export default {
 						this.sucBtn = false
 						this.uploadShow = false
 						this.sureCancleA = false
+						this.appointmentList.status = '1004'
 					}
 				})
 			},
