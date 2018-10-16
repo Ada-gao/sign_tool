@@ -12,7 +12,7 @@
       </check-list>
       <ul v-if="!checkListShow">
         <li v-for="(item, index) in documentList" :key="index">
-          {{index + 1}}.{{eyeShow ? item.name : item.file_name}}
+          <span class="title">{{index + 1}}.{{eyeShow ? item.name : item.file_name}}</span>
           <div class="eye" @click="get(item)" v-if="eyeShow">
 						<span class="vertical-align">查看</span><i class="iconfont vertical-align">&#xe8d5;</i>
           </div>
@@ -309,10 +309,14 @@ export default {
       font-size: @font-size-twentyE;/*px*/
       color: @font-color-333;
       border-bottom: 1px solid #E9E9E9;/*no*/
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       position: relative;
+      .title{
+        width: 82%;
+        display: inline-block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
       .eye{
         position: absolute;
         right: 0;

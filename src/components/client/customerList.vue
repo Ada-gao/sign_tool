@@ -287,7 +287,8 @@
         position: absolute;
         display: inline-block;
         content: '';
-        left: 7%;
+        left: 50%;
+        transform: translate(-50%, 0);
         bottom: 0;
         width: 86%;
         height: 6px;

@@ -34,7 +34,7 @@
                     type="fading-circle"></mt-spinner>
       </div>
       <!-- <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
-      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg('imgSrc')">&#xe64e;</i>
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg('imgSrc')">&#xe609;</i>
     </div>
     <thumbnails v-if="showImg" :imgTotal="bigImg" :imgKey="bigImgIndex" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
     <mt-popup v-model="show"
@@ -379,15 +379,18 @@
         height: 100%;
       }
       .delete_img {
+        width: 40px;
+        height: 40px;
+        display: inline-block;
+        background: rgba(0,0,0,0.60);
+        border-radius: 50%;
+        line-height: 35px;
+        text-align: center;
+        color: #fff;
+        font-size: 30px;/*px*/
         position: absolute;
-        text-align: right;
-        top: -11px;
-        right: 0;
-        font-size: 30px;
-        line-height: 30px;
-        color: #000;
-        width: 50px;
-        height: 50px;
+        top: -15px;
+        right: -15px;
       }
     }
     li:not(:last-child) {
