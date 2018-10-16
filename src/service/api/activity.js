@@ -37,6 +37,16 @@ export function getActivityList () {
   })
 }
 
+/**
+ * 理财师logo
+ */
+export function getActivityLogo () {
+  return axios({
+    url: activityUrl + 'financial/activity/logo',
+    method: 'get'
+  })
+}
+
 export function signActivity (data) {
   return axios({
     url: activityUrl + 'financial/activityClient',

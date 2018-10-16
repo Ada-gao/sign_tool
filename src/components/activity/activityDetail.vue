@@ -14,7 +14,7 @@
       <i slot="right" class="iconfont mes" @click="showShareBtn">&#xe606;</i>
     </x-header>
     <div class="detail">
-      <img :src="src" alt="">
+      <img :src="this.detail.activityBannerUrl" alt="">
       <!-- <div class="tit">
         <div class="left">{{detail.activityName}}</div>
         <div class="right">
@@ -93,6 +93,22 @@
            id="avatar">
       <qrcode class="qrcode" :value="this.detail.qrcodeTargetUrl" :size="size" style="display: none"></qrcode>
     </div>
+     <!-- <div class="popup_banner" v-if="showShare1">
+      <img src=""
+           v-if="showShare1"
+           alt=""
+           id="avatar">
+      <qrcode class="qrcode" :value="this.detail.qrcodeTargetUrl" :size="size" style="display: none"></qrcode>
+    </div> -->
+    <mt-popup class="bigImg"
+      v-model="showShare1"
+      @click.native="hideBigImg">
+      <img src=""
+           v-if="showShare1"
+           alt=""
+           id="avatar">
+      <qrcode class="qrcode" :value="this.detail.qrcodeTargetUrl" :size="size" style="display: none"></qrcode>
+    </mt-popup>
     <mt-popup v-model="showShare"
               position="bottom"
               class="activity_popup">
@@ -115,7 +131,7 @@
 <script>
   import { XHeader, Qrcode } from 'vux'
   import { getShare } from '@/service/api/aboutMe'
-  import { getActivityDet } from '@/service/api/activity'
+  import { getActivityDet, getActivityLogo } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
   import Vue from 'vue'
@@ -129,10 +145,13 @@
         src: 'static/img/测试banner.jpg',
         posterBanner: 'static/img/banner.jpg',
         showShare: false,
+        showShare1: false,
         shareUrl: '',
         detail: {},
         activityId: null,
-        size: 50
+        size: 50,
+        qrcodeUrl: '',
+        i: 1
       }
     },
     beforeRouteLeave (to, from, next) {
@@ -157,11 +176,18 @@
         })
       },
       handleShare () {
-        console.log(111)
+        this.showShare1 = true
+        this.i = 2
+        console.log(this.detail.qrcodeTargetUrl)
+        this.drawAndShareImage(this.i)
+      },
+      hideBigImg () {
+        this.showShare1 = false
       },
       showShareBtn () {
         this.showShare = true
-        this.drawAndShareImage()
+        this.i = 1
+        this.drawAndShareImage(this.i)
       },
       hideShareBtn () {
         this.showShare = false
@@ -267,14 +293,13 @@
           console.log(failReason)
         }, args)
       },
-      drawAndShareImage () {
-        console.log('dddddddd', this.detail.activityPosterUrl)
+      drawAndShareImage (i) {
         let url = this.detail.activityPosterUrl
-        let url1 = this.detail.activityBannerUrl
+        let url1 = this.qrcodeUrl
         // let activityQrcodeUrl = this.detail.activityQrcodeUrl
         var canvas = document.createElement('canvas')
-        canvas.width = 350
-        canvas.height = 667
+        canvas.width = 350 * i
+        canvas.height = 667 * i
         var context = canvas.getContext('2d')
         context.rect(0, 0, canvas.width, canvas.height)
         context.fillStyle = '#fff'
@@ -284,22 +309,22 @@
         // myImage.setAttribute("crossOrigin",'Anonymous')
         myImage.src = url // 背景图片  你自己本地的图片或者在线图片
         myImage.onload = function () {
-          context.drawImage(myImage, 0, 0, 350, 667)
+          context.drawImage(myImage, 0, 0, 350 * i, 667 * i)
           // context.font = '60px Courier New'
           // context.fillText('我是文字', 350, 450)
           var myImage2 = new Image()
           // var myImage2 = document.querySelector('.qrcode > img')
-          myImage2.src = url1 // 你自己本地的图片或者在线图片
           myImage2.crossOrigin = 'anonymous'
+          myImage2.src = url1 // 你自己本地的图片或者在线图片
           // myImage2.setAttribute("crossOrigin",'Anonymous')
           myImage2.onload = function () {
-            context.drawImage(myImage2, 20, 20, 91, 34)
-            var base64 = canvas.toDataURL('image/jpg') // "image/png" 这里注意一下
+            context.drawImage(myImage2, 20 * i, 20 * i, 91 * i, 34 * i)
+            var base64 = canvas.toDataURL('image/png') // "image/png" 这里注意一下
             // var img = document.getElementById('avatar')
             // img.setAttribute('src', base64)
              var canvas1 = document.createElement('canvas')
-              canvas1.width = 350
-              canvas1.height = 667
+              canvas1.width = 350 * i
+              canvas1.height = 667 * i
               var context1 = canvas.getContext('2d')
               context1.rect(0, 0, canvas1.width, canvas1.height)
               context1.fillStyle = '#fff'
@@ -309,71 +334,21 @@
               // myImage3.setAttribute("crossOrigin",'Anonymous')
               myImage3.src = base64 // 背景图片  你自己本地的图片或者在线图片
               myImage3.onload = function () {
-                context.drawImage(myImage3, 0, 0, 350, 667)
+                context.drawImage(myImage3, 0, 0, 350 * i, 667 * i)
                 // context.font = '60px Courier New'
                 // context.fillText('我是文字', 350, 450)
                 var myImage4 = document.querySelector('.qrcode > img')
                 myImage4.crossOrigin = 'anonymous'
                 // myImage4.setAttribute("crossOrigin",'Anonymous')
-                myImage4.onload = function () {
-                  context.drawImage(myImage4, 150, 50, 50, 50)
-                  var base641 = canvas.toDataURL('image/jpg') // "image/png" 这里注意一下
+                // myImage4.onload = function () {
+                  context.drawImage(myImage4, 150 * i, 567 * i, 50 * i, 50 * i)
+                  var base641 = canvas.toDataURL('image/png') // "image/png" 这里注意一下
                   var img = document.getElementById('avatar')
                   img.setAttribute('src', base641)
-                }
+                // }
               }
           }
         }
-        // let canvas = document.createElement('canvas')
-        // canvas.width = 187.5
-        // canvas.height = 333.5
-        // let context = canvas.getContext('2d')
-        // context.rect(0, 0, canvas.width, canvas.height)
-        // context.fillStyle = '#fff'
-        // context.fill()
-        // let newImg1 = new Image()
-        // newImg1.src = url
-        // newImg1.crossOrigin = 'Anonymous'
-        // newImg1.onload = function () {
-        //     context.drawImage(newImg1, 0, 0, canvas.width, canvas.height)
-        //     // context.fillText('扫一扫识别二维码', 350, 1000)
-        //     let newImg2 = new Image()
-        //     newImg2.src = url1
-        //     // newImg2.crossOrigin = 'Anonymous'
-        //     newImg2.setAttribute("crossOrigin",'Anonymous')
-        //     newImg2.onload = function () {
-        //     context.drawImage(newImg2, 219, 219)
-        //     let base641 = canvas.toDataURL('image/png')
-        //     // let img = document.getElementById('demo')
-        //     // img.setAttribute('src', base64)
-        //     // canvas.width = 45.5
-        //     // canvas.height = 17
-        //     canvas.width = 187.5
-        //     canvas.height = 333.5
-        //     let context1 = canvas.getContext('2d')
-        //     context1.rect(0, 0, canvas.width, canvas.height)
-        //     context1.fillStyle = '#fff'
-        //     context1.fill()
-        //     let newImg1 = new Image()
-        //     newImg1.src = url1
-        //     newImg1.crossOrigin = 'Anonymous'
-        //     newImg1.onload = function () {
-        //         context1.drawImage(newImg1, 0, 0, canvas.width, canvas.height)
-        //         context1.font = '50px "宋体"'
-        //         context1.fillText('扫一扫识别二维码', 100, 1000)
-        //         let newImg2 = new Image()
-        //         // newImg2.src = document.getElementById('demo').getAttribute('src')
-        //         newImg2.src = base641
-        //         newImg2.crossOrigin = 'Anonymous'
-        //         newImg2.onload = function () {
-        //         context1.drawImage(newImg2, 187.5, 333.5)
-        //         let base64 = canvas.toDataURL('image/png')
-        //         let img = document.getElementById('avatar')
-        //         img.setAttribute('src', base64)
-        //         }
-        //     }
-        //     }
-        // }
       }
     },
     mounted () {
@@ -382,6 +357,9 @@
       if (!activityId) {
         setStore('activityId', this.activityId)
       }
+      getActivityLogo().then(res => {
+        this.qrcodeUrl = res.data
+      })
       this.getData(this.activityId)
     }
   }
@@ -394,6 +372,7 @@
     box-sizing: border-box;
     // padding: 34px 25px;
     position: fixed;
+    height: 667px;
     top: 36%;
     left: 50%;
     z-index: 9999;
@@ -625,6 +604,9 @@
           margin-right: 40px;
         }
       }
+    }
+    .mint-popup.bigImg{
+      height: 1334px;
     }
   }
 </style>
