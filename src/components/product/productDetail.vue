@@ -54,10 +54,10 @@
           <!-- <tr><td>交易币种</td><td>{{item.currency_id === 1 ? '人民币' : '美元' }}</td></tr> -->
           <tr><td>交易币种</td><td>{{item.currency_name}}</td></tr>
           <tr>
-            <td>购买人群</td><td><span v-for="(p, i) in item.buying_crowds" :key="i">{{p|turnText(buyingCrowds)}} </span></td>
+            <td>购买人群</td><td><span v-for="(p, i) in item.buying_crowds" :key="i">{{p|turnText(buyingCrowds)}}{{item.buying_crowds.length !== 1 && p|turnText(buyingCrowds) ? '/' : ''}} </span></td>
           </tr>
         </table>
-        <table border="0" cellspacing="0" cellpadding="0" v-if="show">
+        <table border="0" cellspacing="0" cellpadding="0" v-if="show" class="tableTwo">
           <tr>
             <td>产品期限</td><td>{{item.investment_horizon}}{{item.investment_horizon_unit|turnText(investmentHorizonUnit)}}</td>
           </tr>
@@ -244,6 +244,7 @@ export default {
 			this.$router.push({name: 'PdfReport', params: {id: id, mark: 3}})
     },
     toAppointment () {
+      console.log('toAppointment')
       this.$router.push({
         name: 'ProductAppointment',
         params: {
@@ -508,6 +509,13 @@ export default {
             width: 475px;
             font-size: @font-size-twentyE;/*px*/
             color: @font-color-4A;
+          }
+        }
+      }
+      .tableTwo{
+        tr:first-child{
+          td{
+            border-top: none;
           }
         }
       }

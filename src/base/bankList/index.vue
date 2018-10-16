@@ -5,7 +5,7 @@
     </mt-popup>
     <x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡
       <div slot="right" class="add_card_btn"
-             v-if="addCard !== '2'"
+             v-if="addCard"
              @click="routerPush">
           <i class="iconfont">&#xe6bd;</i>
           <span>新增银行卡</span>

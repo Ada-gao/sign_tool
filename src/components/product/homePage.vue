@@ -1,6 +1,6 @@
 <template>
   <div class="homePage">
-    <common-header title="产品"></common-header>
+    <common-header title="产品" flag="HomePage"></common-header>
 		<div>
 			<mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
 		</div>

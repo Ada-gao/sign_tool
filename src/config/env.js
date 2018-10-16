@@ -11,13 +11,13 @@ let routerMode = 'hash'
 let imgBaseUrl = ''
 
 if (process.env.NODE_ENV === 'development') {
-    // baseUrl = 'http://10.9.60.141:5000/api/'
-    // imgBaseUrl = 'http://10.9.60.141:5000/api/'
+    baseUrl = 'http://10.9.60.141:5000/api/'
+    imgBaseUrl = 'http://10.9.60.141:5000/api/'
     activityUrl = 'http://203.156.231.251:9999/activity/'
     // activityUrl = 'http://10.9.70.231:9999/activity/'
     // activityUrl = 'http://10.9.70.235:9999/activity/'
-    baseUrl = 'http://203.156.231.251:5000/api/'
-    imgBaseUrl = 'http://203.156.231.251:5000/api/'
+    // baseUrl = 'http://203.156.231.251:5000/api/'
+    // imgBaseUrl = 'http://203.156.231.251:5000/api/'
     // activityUrl = 'http://203.156.231.251:9999/activity/'
 } else if (process.env.NODE_ENV === 'production') {
     baseUrl = 'http://10.9.60.141:5000/api/'

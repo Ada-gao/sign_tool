@@ -79,7 +79,8 @@
 					<div class="uploadCustomer" v-if="uploadShow">
 						<div class="cont">
 							<div class="fightMoney">
-								<mt-cell v-if="chooseSelectedBank" title="银行卡信息" class="tit border-b-0" :to="{name: 'BankList', params: {id: this.appointmentList.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}}" is-link>
+								<!--  :to="{name: 'BankList', params: {id: this.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}}"  -->
+								<mt-cell v-if="chooseSelectedBank" title="银行卡信息" class="tit border-b-0" @click.native="chooseBankCard" is-link>
 									<span class="cardSelected">选择已绑定银行卡</span>
 								</mt-cell>
 								<mt-cell v-else title="银行卡信息" class="tit border-b-0">
@@ -269,7 +270,7 @@
 					</div>
 					<div class="mailBtn" v-if="giveMoneySuc">
           	<mt-button type="primary" @click.native="emailContract">去邮寄合同</mt-button>
-          	<mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button>
+          	<!-- <mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button> -->
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
 						<img :src="submitAppointImg" alt="">
@@ -428,6 +429,7 @@ export default {
 			imgTotal: null,
 			imgIndex: '',
 			timer1: null,
+			client_id: '',
 			slotsM: [
 				{
           flex: 1,
@@ -995,6 +997,7 @@ export default {
 					this.name = ''
 					this.cMob = ''
 					this.money = ''
+					this.appointInfoShow = true
 					this.closeOrderReason = false
 					this.showNameClick = true
 					this.showMoneyClick = true
@@ -1031,6 +1034,7 @@ export default {
 				this.showNameClick = false
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
+					this.client_id = this.appointmentList.product_id
 					this.product_id = this.appointmentList.product_id
 					this.showMoneyClick = false
 					this.appointmentCode = true
@@ -1986,7 +1990,7 @@ export default {
 				}
 				.mint-button.mint-button--primary.mint-button--normal{
 					/*width: 300px;*/
-          width: 40%;
+          			width: 85%;
 					height: 88px;
 					background: linear-gradient(to right, #DFC189, #BD9D62);
 					// border-radius: 8px;
@@ -1996,12 +2000,12 @@ export default {
 						color: #FFFFFF;
 					}
 				}
-				button:first-child{
-					margin-right: 25px;
-				}
-				button:nth-child(2){
-					margin-left: 25px;
-				}
+				// button:first-child{
+				// 	margin-right: 25px;
+				// }
+				// button:nth-child(2){
+				// 	margin-left: 25px;
+				// }
 			}
 			.uploadCustomer{
 				background-color: #f5f5f5;
