@@ -25,7 +25,7 @@
       <!-- </div> -->
       <div class="space"></div>
       <div class="list">
-        <div class="item" :data="bankList" v-for="item in bankList" :key="item.bank_id" @click="selected(item)">
+        <div class="item" :data="bankList" v-for="(item, index) in bankList" :key="index" @click="selected(item)">
           <!-- <div class="tip"> -->
             <!-- <span class="tit">银行名称：</span> -->
             <p class="bankname">{{item.bank_name}}</p>
@@ -105,6 +105,7 @@
         }
       },
       selected (item) {
+        if (!this.$route.params.flag) return
         this.mark = 'selected'
         this.selectedItem = item
         // console.log(this.mark, item)

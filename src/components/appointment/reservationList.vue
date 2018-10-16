@@ -94,7 +94,7 @@
 					</div>
 				</mt-tab-container-item>
 				<mt-tab-container-item id="3">
-					<div v-show="!remittanceList.length" class="defaultPage">
+					<div v-show="!contractList.length" class="defaultPage">
 						<i class="iconfont icon-Null-data"></i>
 						<p>暂无合同</p>
 					</div>

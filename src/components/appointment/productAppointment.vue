@@ -4,8 +4,8 @@
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
 			<div class="wrapper" style="padding-bottom: 80px;">
 				<div class="topBar">
-					<!-- <div class="title">{{topTitle}}</div> -->
 					<div class="title"
+						v-if="!firstStep"
 						:class="{
 							'statusYellow':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||appointmentList.refund_status==='0'||appointmentList.refund_status==='1'||appointmentList.refund_status==='2'||appointmentList.status==='3001'||appointmentList.status==='3002',
 							'statusRed':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
@@ -20,6 +20,7 @@
 						}"></i>
 						{{appointmentList.status|turnText(appointmentStatus)}} {{appointmentList.refund_status|turnText(refundStatus)}}
 					</div>
+					<div class="title statusYellow" v-else>预约提交中</div>
 					<flow>
 						<flow-state title="预约" is-done></flow-state>
 						<flow-line line-span=224 tip="ing" :is-done="appointmentDone"></flow-line>
@@ -477,7 +478,8 @@ export default {
 			contractInfoShow: true,
 			appointmentStatus: JSON.parse(localStorage.getItem('appointment_status')),
 			refundStatus: JSON.parse(localStorage.getItem('refund_status')),
-			routeParams: null
+			routeParams: null,
+			firstStep: false
 		}
 	},
 	computed: {
@@ -937,6 +939,7 @@ export default {
 						this.sucBtn = false
 						this.uploadShow = false
 						this.sureCancleA = false
+						this.appointmentList.status = '1004'
 					}
 				})
 			},
@@ -1023,6 +1026,7 @@ export default {
 					this.giveMoneyIng = false
 					this.contractManage = false
 					localStorage.setItem('riskLevel', this.$route.params.riskLevel)
+					this.firstStep = true
 					// appointmentList(this.$route.params.riskLevel).then(res => {
 					// 	this.appointmentList = res.data
 					// })
