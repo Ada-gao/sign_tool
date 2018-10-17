@@ -341,6 +341,7 @@
       height: 100%;
       left: 0;
       top: 0;
+      z-index: 10;
     }
     .upload_more{
       display: inline-block;
@@ -353,6 +354,7 @@
     right: 0;
     font-size: 30px;
     line-height: 30px;
+    z-index: 11;
   }
   .upload_small {
     width: 100%;
