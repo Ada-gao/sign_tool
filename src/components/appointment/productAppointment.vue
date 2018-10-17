@@ -2,21 +2,22 @@
     <div class="productAppointment" @touchmove="touchScreen">
     	<x-header class="balck-header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{topBar}}</x-header>
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
-			<div class="wrapper" style="padding-bottom: 80px;">
+			<div class="wrapper">
 				<div class="topBar">
 					<div class="title"
 						v-if="!firstStep"
 						:class="{
-							'statusYellow':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||appointmentList.refund_status==='0'||appointmentList.refund_status==='1'||appointmentList.refund_status==='2'||appointmentList.status==='3001'||appointmentList.status==='3002',
-							'statusRed':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
-							'statusGreen':appointmentList.status==='1003'||appointmentList.status==='2004'||appointmentList.refund_status==='4'||appointmentList.status==='3004'
+							'statusYellow':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||(appointmentList.status==='2003' && appointmentList.refund_status==='2')||(appointmentList.status==='2003' && appointmentList.refund_status==='3')||appointmentList.status==='3001'||appointmentList.status==='3002',
+							'statusRed':appointmentList.status==='1002' || appointmentList.status==='1004'||(appointmentList.status==='2003' && appointmentList.refund_status==='0')||(appointmentList.status==='2003' && appointmentList.refund_status==='1')||appointmentList.status==='3003',
+							'statusGreen':appointmentList.status==='1003'||appointmentList.status==='2004'||(appointmentList.status==='2003' && appointmentList.refund_status==='4')||appointmentList.status==='3004',
+							'statusGray':appointmentList.status==='1005'
 						}">
 						<i class="iconfont"
 							:class="{
-							'icon-shenhezhong':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||appointmentList.refund_status==='0'||appointmentList.refund_status==='1'||appointmentList.refund_status==='2'||appointmentList.status==='3001'||appointmentList.status==='3002',
-							'icon-guanbi':appointmentList.status==='1002'||appointmentList.status==='1004'||appointmentList.status==='2003'||appointmentList.refund_status==='3'||appointmentList.status==='3003',
-							'icon-yuyuechenggong':appointmentList.status==='1003'||appointmentList.status==='2004'||appointmentList.refund_status==='4'||appointmentList.status==='3004',
-							'icon-alert-warning':appointmentList.status==='1005'
+							'icon-shenhezhong':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||(appointmentList.status==='2003' && appointmentList.refund_status==='2')||appointmentList.status==='3001'||appointmentList.status==='3002',
+							'icon-guanbi':appointmentList.status==='1002' || appointmentList.status==='1004'||(appointmentList.status==='2003' && appointmentList.refund_status==='0')||(appointmentList.status==='2003' && appointmentList.refund_status==='1')||appointmentList.status==='3003',
+							'icon-yuyuechenggong':appointmentList.status==='1003'||appointmentList.status==='2004'||(appointmentList.status==='2003' && appointmentList.refund_status==='4')||appointmentList.status==='3004',
+							'icon-alert-warning':appointmentList.status==='1005'||(appointmentList.status==='2003' && appointmentList.refund_status==='3')
 						}"></i>
 						{{appointmentList.status|turnText(appointmentStatus)}} {{appointmentList.refund_status|turnText(refundStatus)}}
 					</div>
@@ -1663,6 +1664,9 @@ export default {
 .statusGreen {
 	color: @font-color-green!important;
 }
+.statusGray {
+	color: @font-color-9E!important;
+}
 .productAppointment{
 	font-family: PingFangSC-Regular;
 		.spaceBack{
@@ -1676,6 +1680,7 @@ export default {
 			z-index: 100;
 		}
 	.wrapper{
+		padding-bottom: 0px;
 		.topBar{
 			height: 221px;
 			background: #fff;
@@ -1991,25 +1996,32 @@ export default {
 					display: inline-block;
 					width: 40%;
 					height: 88px;
+					vertical-align: middle;
 				}
 				.mint-button.mint-button--primary.mint-button--normal{
 					/*width: 300px;*/
-          			width: 85%;
+          			width: 315px;
 					height: 88px;
 					background: linear-gradient(to right, #DFC189, #BD9D62);
 					// border-radius: 8px;
+					vertical-align: middle;
 					label{
 						font-family: PingFangSC-Regular;
 						font-size: 28px;
 						color: #FFFFFF;
 					}
 				}
-				// button:first-child{
-				// 	margin-right: 25px;
-				// }
-				// button:nth-child(2){
-				// 	margin-left: 25px;
-				// }
+				button:first-child{
+					margin-right: 25px;
+				}
+				button:nth-child(2){
+					margin-left: 25px;
+				}
+			}
+			.mailBtn{
+				.mint-button.mint-button--primary.mint-button--normal{
+          			width: 84%;
+				}
 			}
 			.uploadCustomer{
 				background-color: #f5f5f5;

@@ -183,7 +183,7 @@ export default {
       subscribe: [
         {
           value: 0,
-          label: '无需认购'
+          label: '无认购费'
         }, {
           value: 1,
           label: '价内认购'
