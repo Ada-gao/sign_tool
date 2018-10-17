@@ -22,7 +22,7 @@
       </div>
       <div class="space"></div>
       <group class="list">
-        <cell title="我的消息" :link="{name: 'MyInfo'}">
+        <cell title="我的消息" :is-link='isLink' @click.native="toInfoList">
           <div class="num text-center" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</div>
 				  <i slot="icon" class="iconfont icon vertical-align">&#xe607;</i>
         </cell>
@@ -190,6 +190,10 @@ export default {
     // cancle () {
     //   // this.dialogTableVisible = false
     // },
+    toInfoList () {
+      window.localStorage.setItem('infoFlag', 'AboutMe')
+      this.$router.push({name: 'MyInfo'})
+    },
     showQrcode () {
       this.showMyQrcode = true
     },
@@ -444,8 +448,8 @@ export default {
         .phone{
           font-size: @font-size-twenty;/*px*/
           color: @text-font-color;
-          border: 1px solid #BD9D62;/*no*/
-          border-radius: 2px;/*no*/
+          // border: 1px solid #BD9D62;/*no*/
+          // border-radius: 2px;/*no*/
           height: 28px;
           line-height: 28px;
           padding: 0 5px;
