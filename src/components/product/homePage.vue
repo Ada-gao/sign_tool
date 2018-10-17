@@ -7,9 +7,9 @@
     <div class="wrapper">
 			<div class="swipe">
 				<mt-swipe :auto="4000">
-					<mt-swipe-item><img src="static/img/测试banner.jpg" @click="handleRoute"></mt-swipe-item>
-					<mt-swipe-item><img src="static/img/测试banner.jpg" @click="handleRoute"></mt-swipe-item>
-					<mt-swipe-item><img src="static/img/测试banner.jpg" @click="handleRoute"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
 				</mt-swipe>
 			</div>
 			<!-- <div class="announcement">
