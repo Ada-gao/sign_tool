@@ -4,7 +4,7 @@
 		<div class="wrapper">
 			<div class="search">
 				<input type="text" class="text-search" v-model.trim="keyValue" placeholder="搜索 客户名 手机号码"/>
-				<i class="iconfont" @click="search()">&#xe64e;</i>
+				<i class="iconfont icon_search" @click="search()">&#xe609;</i>
 			</div>
 			<div class="title">客户列表</div>
 			<div class="item" :data="list" v-for="item in list" :key="item.client_id" @click="chooseName(item)" v-if="show">
