@@ -2,22 +2,6 @@
 .is-iOS .vux-header {
   padding-top: constant(safe-area-inset-top)!important; // iOs 11
   padding-top: env(safe-area-inset-top)!important; // iOs 11+ (feature)
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .vux-header-left {
-    margin-left: 20px;
-  }
-  .vux-header-right {
-    margin-right: 40px;
-  }
-  .vux-header-title {
-    width: 100%;
-    margin-left: 20px;
-  }
-}
-.is-iOS .vux-header-right,.vux-header-left{
-  position: static;
 }
 .is-iOS .wrapper {
   // padding-top: 157px;
@@ -36,6 +20,9 @@
   .bottom-remark {
     padding-bottom: 34px;
   }
+}
+.is-iOS .reservation .vux-header-title .mint-tab-item-label {
+  line-height: 1!important;
 }
 // pdf材料页面
 .is-iOS #pdfPage .select {
@@ -65,9 +52,4 @@
 //     width: 64%;
 //   }
 // }
-.is-iOS .customer-header {
-  .vux-header-title {
-    width: 64%;
-    margin-left: 20px;
-  }
-}
+

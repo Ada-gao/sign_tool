@@ -46,6 +46,7 @@
                           mark="homePage"
                           @cgPopup="cgPopup"
                           :popupVisible="popupVisible"
+													class="reservation-wrapper"
 													v-if="this.choosePro.length !== 0"></selling-products>
 				<div class="no-product text-center" v-if="this.choosePro.length === 0">
 					<div class="warn absolute-center-xy">

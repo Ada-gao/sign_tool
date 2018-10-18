@@ -418,7 +418,7 @@ export default {
   }
   .wrapper {
     padding-bottom: 0;
-    padding-top: 0;
+    padding-top: 0!important;
     .top{
       height: 400px;
       // background: @header-bg;

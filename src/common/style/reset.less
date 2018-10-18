@@ -8,7 +8,7 @@ a {
   // padding-top: 29px !important;
   // padding-bottom: 29px !important;
   // Stauts bar height on ios 10
-  padding-top: 40px;
+  // padding-top: 40px;
   // Status bar height on ios 11+
   // padding-top: env(safe-area-inset-top);
   // height: 108px;
@@ -17,25 +17,41 @@ a {
   width: 100%;
   z-index: 100;
   top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .vux-header-left {
+    margin-left: 20px;
+  }
+  .vux-header-right {
+    margin-right: 40px;
+  }
+  // .vux-header-title {
+  //   width: 100%;
+  //   margin-left: 20px;
+  // }
   .vux-header-title {
     font-size: @font-size-thirtyS; /*px*/
     line-height: 88px;
     color: #333333;
-    // color: #fff;
     font-family: @font-family-R;
+    width: 100%;
+    margin-left: 20px;
   }
   .left-arrow {
     // bottom: 2px !important;
     // left: 10px !important;
-    position: static;
+    position: relative!important;
     &:before {
       border-color: #333;
       width: 20px !important;
       height: 20px !important;
+      top: 0!important;
     }
   }
   .vux-header-left,
   .vux-header-right {
+    position: static;
     // bottom: 29px !important;
     a {
       color: #333 !important;
@@ -50,6 +66,12 @@ a {
         margin-right: 10px;
       }
     }
+  }
+}
+.customer-header {
+  .vux-header-title {
+    width: 64%;
+    margin-left: 20px;
   }
 }
 #app .balck-header {
@@ -69,6 +91,7 @@ a {
     .mint-tab-item {
       .mint-tab-item-label {
         font-size: 36px;
+        line-height: 80px;
       }
     }
     .mint-tab-item.is-selected {
@@ -294,9 +317,8 @@ a {
       width: 69.57%;
     }
     .vux-header-right {
-      height: 60px;
-      line-height: 60px;
-      // top: 50px; // 处理样式
+      // height: 60px;
+      // line-height: 60px;
       margin-right: 40px;
     }
   }
@@ -332,7 +354,7 @@ a {
     border-top: none;
   }
   .vux-header {
-    padding: 34px 40px 0 20px;
+    // padding: 34px 40px 0 20px;
     background-color: @header-bg!important;
     .vux-header-title {
       height: 84px;

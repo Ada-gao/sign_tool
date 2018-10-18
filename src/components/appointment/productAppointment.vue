@@ -1790,7 +1790,8 @@ export default {
 			// border-bottom: 1px solid #CCC;
 			.mint-cell{
 				// border-top: 1px solid #CCC;
-				height: 80px;
+				// height: 80px;
+				height: 100%;
 				.mint-cell-wrapper{
 					padding: 0 20px;
 					height: 100%;
@@ -1804,9 +1805,11 @@ export default {
 					}
 					.mint-cell-text{
 						font-size: 30px;
+						white-space: nowrap;
 					}
 					.mint-cell-value{
 						font-family: PingFangSC-Regular;
+						line-height: 1.2;
 					}
 				}
 			}
