@@ -25,6 +25,11 @@ export const install = function (Vue, options, cb) {
       }
     })
 
+    let platform = Vue.cordova.device.platform
+    if (platform) {
+      document.body.classList.add('is-' + platform)
+    }
+
     console.log('app is ready..')
     var event = new Event('appReady')
 

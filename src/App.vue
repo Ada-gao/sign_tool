@@ -15,10 +15,24 @@
 
 <script>
 import TabBottom from '@/base/tabBottom/tabBottom'
+import Vue from 'vue'
 export default {
   name: 'App',
   components: {
   	TabBottom
+  },
+  watch: {
+    $route (to, from) {
+      console.log(to)
+      console.log(from)
+      if (to.path.includes('HomePage')) {
+        Vue.cordova.statusBar.styleDefault()
+        console.log(Vue.cordova.statusBar)
+      } else {
+        console.log('不是首页')
+        Vue.cordova.statusBar.styleBlackTranslucent()
+      }
+    }
   }
 }
 </script>

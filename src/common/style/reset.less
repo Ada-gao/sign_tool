@@ -25,8 +25,9 @@ a {
     font-family: @font-family-R;
   }
   .left-arrow {
-    bottom: 2px !important;
-    left: 10px !important;
+    // bottom: 2px !important;
+    // left: 10px !important;
+    position: static;
     &:before {
       border-color: #333;
       width: 20px !important;
@@ -35,11 +36,11 @@ a {
   }
   .vux-header-left,
   .vux-header-right {
-    bottom: 29px !important;
+    // bottom: 29px !important;
     a {
       color: #333 !important;
       font-size: 26px; /*px*/
-      letter-spacing: 3px;
+      // letter-spacing: 3px;
       img {
         width: 15px;
         vertical-align: text-top;
@@ -72,16 +73,18 @@ a {
     }
     .mint-tab-item.is-selected {
       color: @text-font-color;
-      border-bottom: 6px solid @text-font-color;
+      // border-bottom: 6px solid @text-font-color;
+      border-bottom: none;
       position: relative;
       .mint-tab-item-label::after {
         content: '';
-        width: 20px;
+        position: absolute;
+        width: 50%;
         height: 6px;
         bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #fff;
+        left: 26%;
+        // transform: translateX(-50%);
+        background-color: @text-font-color;
       }
     }
   }
@@ -283,7 +286,7 @@ a {
 .customerList, #activity_singed_list {
   .vux-header {
     background-color: @header-bg!important;
-    padding: 34px 40px 0 20px;
+    // padding: 34px 40px 0 20px; // 处理样式
     .vux-header-title {
       height: 84px;
       line-height: 84px;
@@ -293,7 +296,8 @@ a {
     .vux-header-right {
       height: 60px;
       line-height: 60px;
-      top: 50px;
+      // top: 50px; // 处理样式
+      margin-right: 40px;
     }
   }
   .vux-header.define_header {

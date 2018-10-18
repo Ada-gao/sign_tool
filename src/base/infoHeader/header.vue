@@ -139,7 +139,7 @@ export default {
 		}
 	}
 	.vux-header-right{
-		right: 20px;
+		// right: 20px;
 		.mes{
 			font-size: 38px;/*px*/
 			color: @font-color-000;

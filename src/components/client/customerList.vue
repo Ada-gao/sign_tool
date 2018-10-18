@@ -1,6 +1,6 @@
 <template>
   <div class="customerList">
-    <x-header :left-options="{showBack: false}" :class="{define_header: isClick}">
+    <x-header :left-options="{showBack: false}" class="customer-header" :class="{define_header: isClick}">
       <!-- 搜索框组件部分 -->
       <search-tool @searchHandler="updateSearchValue"
                    @cancel="handlerCancel"

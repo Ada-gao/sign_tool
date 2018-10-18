@@ -2,7 +2,7 @@
     <div class="productAppointment" @touchmove="touchScreen">
     	<x-header class="balck-header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{topBar}}</x-header>
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
-			<div class="wrapper" style="padding-bottom: 80px;">
+			<div class="wrapper">
 				<div class="topBar">
 					<div class="title"
 						v-if="!firstStep"
@@ -1964,7 +1964,7 @@ export default {
       .cont.last_cont {
         margin-bottom: 0;
       }
-			.submitBtn{
+			.submitBtn, .mailBtn{
 				text-align: center;
 				.mint-button.mint-button--primary.mint-button--normal{
 					width: 670px;
@@ -1981,7 +1981,7 @@ export default {
 					}
 				}
 			}
-			.successBtn,.mailBtn{
+			.successBtn{
 				text-align: center;
 				padding: 10px 0 30px 0;
 				.mint-button.mint-button--default {
@@ -1994,9 +1994,10 @@ export default {
 				}
 				.mint-button.mint-button--primary.mint-button--normal{
 					/*width: 300px;*/
-          			width: 85%;
+          width: 40%;
 					height: 88px;
 					background: linear-gradient(to right, #DFC189, #BD9D62);
+					vertical-align: text-top;
 					// border-radius: 8px;
 					label{
 						font-family: PingFangSC-Regular;

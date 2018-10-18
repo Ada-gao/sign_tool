@@ -158,7 +158,7 @@
         <div class="reservation" v-if="item.product_status == 2 && item.is_pause === '1'">
           <mt-button disabled>预约</mt-button>
         </div>
-        <div class="space32"></div>
+        <!-- <div class="space32"></div> -->
       <!-- </div> -->
     </div>
   </div>
