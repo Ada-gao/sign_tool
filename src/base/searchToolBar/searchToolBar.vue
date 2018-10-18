@@ -63,6 +63,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../../common/style/variable.less";
 .search {
   /*padding-top: 108px;*/
   text-align: center;
@@ -93,7 +94,30 @@ export default {
     vertical-align: bottom;
     background: rgba(255, 255, 255, .1);
     /*margin-top: 20px;*/
-	}
+  }
+  .ipt::-webkit-input-placeholder {
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
+  .ipt:-moz-placeholder {
+    /* FF 4-18 */
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
+  .ipt::-moz-placeholder {
+    /* FF 19+ */
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
+  .ipt:-ms-input-placeholder {
+    /* IE 10+ */
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
 	.btn-cancel {
 		outline: none;
 		background-color: #fff;

@@ -330,8 +330,8 @@
                 box-sizing: border-box;
               }
               .customer_left {
-                left: 34px;
-                margin-top: 38px;
+                left: 30px;
+                margin-top: 30px;
                 height: auto;
                 line-height: 40px;
                 span {
@@ -345,7 +345,7 @@
                 }
               }
               .customer_right {
-                right: 30px;
+                right: 75px;
                 height: 100%;
                 .right_cont {
                   position: relative;
@@ -353,19 +353,19 @@
                   height: 100%;
                   span {
                     position: absolute;
-                    right: 70px;
+                    right: 0px;
                   }
                   span:nth-of-type(1) {
-                    top: 24%;
+                    top: 18%;
                   }
                   span:nth-of-type(2) {
-                    bottom: 13%;
+                    bottom: 18%;
                   }
-                  .icon-right {
-                    font-size: 40px;
+                  .iconfont {
+                    font-size: 50px;
                     color: #e6e6e6;
                     position: absolute;
-                    right: 0;
+                    right: -60px;
                     top: 50%;
                     transform: translateY(-50%);
                   }
@@ -374,7 +374,7 @@
               .novalidate_right {
                 position: absolute;
                 width: 50%;
-                right: 30px;
+                right: 75px;
                 top: 50%;
                 transform: translateY(-50%);
                 height: 100%;
@@ -383,10 +383,11 @@
                   width: 100%;
                   height: 100%;
                   text-align: right;
-                  .icon-right {
-                    font-size: 40px;
+                  .iconfont {
+                    position: absolute;
+                    font-size: 50px;
                     color: #e6e6e6;
-                    margin-left: 20px;
+                    right: -60px;
                   }
                   span, i {
                     vertical-align: middle;

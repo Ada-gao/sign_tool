@@ -249,6 +249,7 @@ export default {
 			.item1 {
 				.flex-top {
 					display: flex;
+					// display: -webkit-box;
 					justify-content: space-around;
 					position: relative;
 					padding-bottom: 20px;
@@ -280,6 +281,9 @@ export default {
 						&:last-child {
 							text-align: right;
 						}
+					}
+					.flex-item:last-child{
+						flex: 2;
 					}
 				}
 				.mt-20 {

@@ -9,12 +9,15 @@
         <span v-else-if="item.product_status === 2" class="box green vertical-align">募集中</span>
         <span v-else-if="item.product_status === 3" class="box gray vertical-align">已关帐</span>
         <div class="item">
-          <div :class="item.is_float === 0 ? 'text-center left vertical-align' : 'left vertical-align'">
-            <span v-if="item.is_float === 0" class="number mar vertical-align">-</span>
-            <span v-else>
+          <div v-if="item.is_float === 0" class="left vertical-align">
+            <span class="float">浮动</span>
+          </div>
+          <div v-else class="left vertical-align">
+            <!-- <span v-if="item.is_float === 0" class="number mar vertical-align">-</span> -->
+            <span>
               <span class="number vertical-align">{{item.annualized_return}}</span><span class="percent vertical-align">%</span>
             </span>
-            <div class="text text-left">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</div>
+            <div class="text text-left">收益对标基准</div>
           </div>
           <span class="bor-line vertical-align"></span>
           <div class="right vertical-align">
@@ -203,6 +206,10 @@
     .left, .right{
       display: inline-block;
       font-family: @font-family-M;
+      .float{
+        font-size: 60px;/*px*/
+        color: #FF2E24;
+      }
       .number{
         font-size: 60px;/*px*/
         color: #FF2E24;

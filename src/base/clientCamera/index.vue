@@ -58,7 +58,7 @@
                     v-show="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
-      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe64e;</i>
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe609;</i>
     </div>
     <mt-popup v-model="show"
               position="bottom"
@@ -284,6 +284,7 @@
       height: 100%;
       left: 0;
       top: 0;
+      z-index: 10;
     }
   }
   .enlarge{
@@ -293,6 +294,7 @@
     font-size: 30px;
     line-height: 30px;
     margin-right: 0;
+    z-index: 11;
   }
   .upload_small {
     width: 100%;

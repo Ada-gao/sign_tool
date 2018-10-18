@@ -46,6 +46,7 @@
                      class="x_branch ipt"
                      ref="bankBranch"
                      v-model="personInfo.branchBank"
+                     placeholder="请输入支行名称"
                      :show-clear="false"
             ></x-input>
           <div class="bb"></div>
@@ -352,6 +353,7 @@
       position: relative;
       height: 110px;
       line-height: 110px;
+      border-bottom: 1px solid #E9E9E9;
       // padding: 0 20px;
       // border-bottom: 1px solid #ddd;
       span {
@@ -412,6 +414,7 @@
         line-height: 110px;
         color: @font-color-4A;
         height: 110px;
+        border-bottom: 1px solid #E9E9E9;/*no*/
         // padding: 0 20px;
         // border-bottom: 1px solid #ddd;
       }
@@ -421,6 +424,9 @@
         // height: 110px;
         .weui-cell__ft {
           display: none;
+        }
+        .weui-cell__bd.weui-cell__primary{
+          padding-right: 20px;
         }
         .weui-input {
           text-align: right;
