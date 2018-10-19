@@ -337,7 +337,7 @@
                 white-space: nowrap;
                 text-align: right;
                 font-size: 30px;
-                color: #DCDCDC;
+                color: #4A4A4A;
               }
               i {
                 position: absolute;

@@ -1,6 +1,6 @@
 <template>
 	<div id="write-page">
-		<x-header class="header" :left-options="{backText: ''}">消息详情</x-header>
+		<x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">消息详情</x-header>
 		<div class="wrapper">
 			<!--<input type="text" v-focus v-model="msg"/>-->
 			<!-- <textarea class="inputing" v-focus v-model="msg" name="" rows="" cols=""></textarea> -->
@@ -22,7 +22,12 @@ export default {
   data () {
   	return {
 			remark: ''
-  	}
+  		}
+	},
+	methods: {
+		back () {
+      		this.$router.push({name: 'MyInfo'})
+		}
 	},
 	mounted () {
 		infoDetail(this.$route.params.id).then(res => {

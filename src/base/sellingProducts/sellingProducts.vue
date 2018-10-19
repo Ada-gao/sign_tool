@@ -164,6 +164,8 @@
   background: @back-color-white;
   .important{
     width: 200px;
+    height: 40px;
+    line-height: 40px;
     background: #BD9D62;
     transform: rotate(40deg);
     position: absolute;
@@ -172,7 +174,7 @@
     display: inline-block;
     background: @text-font-color;
     font-family: @font-family-R;
-    font-size: @font-size-twenty;/*px*/
+    font-size: 22px;/*px*/
     color: @back-color-white;
   }
   .tit{
