@@ -30,12 +30,16 @@
 						<flow-state title="合同管理" :is-done="contractManage"></flow-state>
 					</flow>
 				</div>
-				<div class="emailReason"  v-if="uploadContract">
-					<mt-cell title="审核不通过原因：">{{emailClose}}</mt-cell>
-					<mt-cell title="寄出合同方式：">{{emailType}}</mt-cell>
-				</div>
 				<div class="closeReason" v-if="closeOrderReason">
-					<mt-cell :title= failTitle>{{closeReason}}</mt-cell>
+					<!-- <mt-cell :title= failTitle>{{closeReason}}</mt-cell> -->
+					<span class="reason-title">原因: </span>
+					<span class="reason-content">{{closeReason}}</span>
+				</div>
+				<div class="emailReason"  v-if="uploadContract">
+					<!-- <mt-cell title="原因：">{{emailClose}}</mt-cell>
+					<mt-cell title="寄出合同方式：">{{emailType}}</mt-cell> -->
+					<span class="reason-title">寄出合同方式：</span>
+					<span class="reason-content">{{emailType}}</span>
 				</div>
 				<div class="info">
 					<mt-cell title="预约信息" class="tit">
@@ -1061,8 +1065,8 @@ export default {
 					this.contractNumW = this.appointmentList.contract_no
 					this.expresszCom = this.appointmentList.express_company
 					this.expressNums = this.appointmentList.express_no
-					this.closeReason = this.appointmentList.order_closure_remark
-					this.emailClose = this.appointmentList.contract_no_pass_remark
+					this.closeReason = this.appointmentList.order_closure_remark || this.appointmentList.contract_no_pass_remark
+					// this.emailClose = this.appointmentList.contract_no_pass_remark
 					this.remitAmount = this.appointmentList.remit_amount
 					if (this.appointmentList.audit_contract_express === '0') {
 						this.emailType = '自取'
@@ -1812,6 +1816,22 @@ export default {
 						line-height: 1.2;
 					}
 				}
+			}
+		}
+		.closeReason {
+			background: #fff;
+			display: flex;
+			padding: 0 40px 20px;
+			.reason-title {
+				color: #F05D59;
+				font-size: 30px;
+				width: 90px;
+				white-space: nowrap;
+			}
+			.reason-content {
+				font-size: 28px;
+				color: #4A4A4A;
+				margin-left: 20px;
 			}
 		}
 		.info{
