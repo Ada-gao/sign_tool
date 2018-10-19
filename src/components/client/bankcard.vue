@@ -59,6 +59,7 @@
                       ref="cardNum"
                       class="x_cardnumber ipt"
                       v-model="personInfo.bankCardNumber"
+                      placeholder="请输入银行卡号"
                       :show-clear="false"
               ></x-input>
           <div class="bb"></div>
@@ -70,6 +71,7 @@
             <x-input title="持卡人姓名："
                      ref="cardOwner"
                      v-model="personInfo.cardOwner"
+                     placeholder="请输入持卡人姓名"
                      :show-clear="false"
                      class="x_iptname ipt"
             ></x-input>
@@ -432,6 +434,29 @@
           text-align: right;
           color: @font-color-4A;
           font-family: @font-family-M;
+        }
+        input::-webkit-input-placeholder {
+          font-size: @font-size-thirty;/*px*/
+          font-family: @font-family-R;
+          color: @text-font-noEdit;
+        }
+        input:-moz-placeholder {
+          /* FF 4-18 */
+          font-size: @font-size-thirty;/*px*/
+          font-family: @font-family-R;
+          color: @text-font-noEdit;
+        }
+        input::-moz-placeholder {
+          /* FF 19+ */
+          font-size: @font-size-thirty;/*px*/
+          font-family: @font-family-R;
+          color: @text-font-noEdit;
+        }
+        input:-ms-input-placeholder {
+          /* IE 10+ */
+          font-size: @font-size-thirty;/*px*/
+          font-family: @font-family-R;
+          color: @text-font-noEdit;
         }
       }
     }

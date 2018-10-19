@@ -1,6 +1,6 @@
 <template>
 	<div id="remark-page">
-		<x-header class="header" :left-options="{backText: ''}">备注列表</x-header>
+		<x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">备注列表</x-header>
 		<div class="wrapper">
 			<div class="search">
 				<div class="toggle-button">
@@ -83,8 +83,8 @@ export default {
   		value2: null,
 			demo5: [],
 			pickerVisible: false,
-			pickerValue1: new Date(),
-      pickerValue2: new Date(),
+			pickerValue1: '',
+      pickerValue2: '',
       remarkList: [],
       startList: [],
       keyValue: '',
@@ -95,11 +95,18 @@ export default {
 	},
 	filters: {
     formatDate (time) {
-      var date = new Date(time)
-      return formatDate(date)
+      if (time === '') {
+        return ''
+      } else {
+        var date = new Date(time)
+        return formatDate(date)
+      }
     }
   },
   methods: {
+    back () {
+      this.$router.push({name: 'AboutMe'})
+    },
   	checkIndex (num) {
       num === 1 ? this.isChecked = true : this.isChecked = false
       this.remarkList = this.startList
@@ -259,6 +266,7 @@ export default {
               box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.50);
               border-radius: 10px;
               outline: none;
+              vertical-align: middle;
             }
           }
           .item02{

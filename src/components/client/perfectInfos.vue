@@ -202,6 +202,7 @@
                       @showPopup="showPopup1"
                       @imgHandler="imageHandler1"
                       @hidePopup="hidePopup1"></camera>
+              <span class="front_class mid_class">上传证件照</span>
             </div>
             <div class="upload_box" v-else-if="this.idSymbol === 1">
               <camera class="upload_cont1"
@@ -242,7 +243,7 @@
       <div class="space"></div>
       <x-dialog v-model="submitDialog" class="dialog-demo quitDialog" hide-on-blur>
         <img src="static/img/certify_right.png" alt="">
-        <div class="submit_cont">{{submitCont}}</div>
+        <div class="submit_cont">{{submitCont}}...{{this.count}}s</div>
         <!-- <x-button class="submit_btn" type="primary" @click.native="routerPush">返回潜客详情</x-button> -->
         <button @click="routerPush">返回潜客详情</button>
       </x-dialog>
@@ -457,6 +458,7 @@
         fromBank: 1,
         itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
         visibleItemCount: 3,
+        count: '',
         slots: [
           {
             flex: 1,
@@ -580,6 +582,23 @@
         clearTimeout(this.timer)
         this.showCerCode = false
       },
+      autoReturnDetail () {
+        console.log('in.........')
+				const TIME_COUNT = 10
+				if (!this.timer1) {
+          console.log('this.timer.........')
+					this.count = TIME_COUNT
+					this.tiemr1 = setInterval(() => {
+						if (this.count > 0) {
+							this.count--
+						} else {
+							this.routerPush()
+							clearInterval(this.tiemr1)
+							this.timer1 = null
+						}
+					}, 1000)
+        }
+			},
       formatDate (time) {
         let date = new Date(time)
         return formatDate(date)
@@ -689,6 +708,7 @@
         uploadId(this.client_certification_id, params).then(res => {
           if (res.status === 200) {
             this.submitDialog = true
+            this.autoReturnDetail()
           }
         })
       }
@@ -1100,6 +1120,10 @@
         /*right: 165px;*/
         /*right: 180px;*/
         right: calc(50% - 270px);
+      }
+      .mid_class{
+        left: 50%;
+        transform: translate(-50%, 0);
       }
     }
     .one_upd_box {

@@ -416,7 +416,7 @@ export default {
             // width: 138px;
             height: 46px;
             line-height: 46px;
-            border: 1px solid #FFFFFF;
+            border: 1px solid #FFFFFF;/*no*/
             border-radius: 100px;/*px*/
             padding: 0 30px;
           }
@@ -457,7 +457,7 @@ export default {
     }
     .middle-cont{
       background: @back-color-white;
-      padding-top: 20px;
+      padding: 25px 0;
       height: 134px;
       .left, .right{
         display: inline-block;

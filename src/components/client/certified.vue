@@ -1,8 +1,7 @@
 <template>
   <div class="certified">
-    <x-header :left-options="{backText: ''}"
-              left-options.preventGoBack="true"
-              on-click-back="toLink(id)">投资者身份认证
+    <x-header :left-options="{backText: '', preventGoBack:true}"
+              @on-click-back="toLink(id)">投资者身份认证
     </x-header>
     <div class="certified_cont wrapper">
       <div class="space"></div>
@@ -93,7 +92,7 @@
       </mt-popup>
       <mt-popup v-model="showSubmit.isShow"
                 closeOnclickModel="false">
-        <div class="confirm_box text-center">
+        <div class="confirm_box text-center popup">
           <img src="static/img/certify_right.png" v-show="showSubmit.isSuccess !== 2" alt="">
           <!-- <i class="iconfont icon_success"
              v-show="showSubmit.isSuccess !== 2">&#xe60a;</i> -->
@@ -257,6 +256,7 @@
         this.popupVisible = data
       },
       toLink (id) {
+        console.log('ddddddddd')
         this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
       },
       convert (radio) {
@@ -403,7 +403,7 @@
     }
   }
 
-  .confirm_box {
+  .mint-popup .confirm_box.popup {
     border-radius: 8px;
     width: 560px;
     height: 593px;
@@ -411,6 +411,9 @@
     font-family: @font-family-R;
     font-size: @font-size-thirtyT;/*px*/
     color: #4A4A4A;
+    img{
+      width: 283px;
+    }
     .confirm_cont{
       margin: 25px 0;
     }
@@ -599,6 +602,7 @@
                 /*background-color: #f3f3f3;*/
               }
               span.date_time {
+			          font-family: @font-family-M;
                 height: 40px;
                 line-height: 40px;
                 position: absolute;
@@ -609,7 +613,7 @@
                 white-space: nowrap;
                 text-align: right;
                 font-size: 30px;
-                color: #DCDCDC;
+                color: @font-color-4A;
               }
               i {
                 position: absolute;
