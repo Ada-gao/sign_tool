@@ -1,6 +1,6 @@
 <template>
   <div class="customerList">
-    <x-header :left-options="{showBack: false}" :class="{define_header: isClick}">
+    <x-header :left-options="{showBack: false}" class="customer-header" :class="{define_header: isClick}">
       <!-- 搜索框组件部分 -->
       <search-tool @searchHandler="updateSearchValue"
                    @cancel="handlerCancel"
@@ -10,7 +10,7 @@
         <i>新增潜客</i>
       </router-link>
     </x-header>
-    <div class="wrapper">
+    <div class="wrapper reservation-wrapper">
       <loading :show="isShowSpinner"></loading>
       <!-- 搜索框组件部分 -->
       <!--<search-tool @searchHandler="updateSearchValue"></search-tool>-->
@@ -31,7 +31,7 @@
           <span class="tabitem" :class="{'active': idx === 1}" @click="onItemClick(1)">潜客列表</span>
           <span class="tabitem" :class="{'active': idx === 2}" @click="onItemClick(2)">手机未验证客户</span>
         </div>
-        <div class="list_box">
+        <div class="list_box reservation-wrapper">
           <ul v-show="idx === 0" :data="customers">
             <li v-for="(item, index) in customers" :key="index">
               <router-link :to="{name: 'CustomerManagement', params: {id: item.client_id}}">

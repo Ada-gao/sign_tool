@@ -1790,7 +1790,8 @@ export default {
 			// border-bottom: 1px solid #CCC;
 			.mint-cell{
 				// border-top: 1px solid #CCC;
-				height: 80px;
+				// height: 80px;
+				height: 100%;
 				.mint-cell-wrapper{
 					padding: 0 20px;
 					height: 100%;
@@ -1804,9 +1805,11 @@ export default {
 					}
 					.mint-cell-text{
 						font-size: 30px;
+						white-space: nowrap;
 					}
 					.mint-cell-value{
 						font-family: PingFangSC-Regular;
+						line-height: 1.2;
 					}
 				}
 			}
@@ -1969,7 +1972,7 @@ export default {
       .cont.last_cont {
         margin-bottom: 0;
       }
-			.submitBtn{
+			.submitBtn, .mailBtn{
 				text-align: center;
 				.mint-button.mint-button--primary.mint-button--normal{
 					width: 670px;
@@ -1986,7 +1989,7 @@ export default {
 					}
 				}
 			}
-			.successBtn,.mailBtn{
+			.successBtn{
 				text-align: center;
 				padding: 10px 0 30px 0;
 				.mint-button.mint-button--default {
@@ -2000,9 +2003,10 @@ export default {
 				}
 				.mint-button.mint-button--primary.mint-button--normal{
 					/*width: 300px;*/
-          			width: 315px;
+          width: 40%;
 					height: 88px;
 					background: linear-gradient(to right, #DFC189, #BD9D62);
+					vertical-align: text-top;
 					// border-radius: 8px;
 					vertical-align: middle;
 					label{

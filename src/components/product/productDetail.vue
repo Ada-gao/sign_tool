@@ -158,7 +158,7 @@
         <div class="reservation" v-if="item.product_status == 2 && item.is_pause === '1'">
           <mt-button disabled>预约</mt-button>
         </div>
-        <div class="space32"></div>
+        <!-- <div class="space32"></div> -->
       <!-- </div> -->
     </div>
   </div>
@@ -315,8 +315,8 @@ export default {
   }
   .wrapper {
     // background: #F5F5F5;
-    padding-bottom: 0px;
-    padding-top: 126px;
+    padding-bottom: 0;
+    // padding-top: 126px;
     .rate-top {
       // text-align: center;
       // height: 365px;

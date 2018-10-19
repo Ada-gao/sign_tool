@@ -1,36 +1,55 @@
 // 适配 iphoneX 样式
-@padding: 34px;
-@media only screen and (device-width: 375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3) {
-  #app{
-    .vux-header {
-      // padding-top: 54px;
-      padding-top: 70px;
-    }
-    .customerList .vux-header .vux-header-right{
-      top: 80px;
-    }
-    .wrapper {
-      padding-top: 157px;
-    }
-    .weui-tabbar {
-      padding-bottom: @padding;
-    }
-    .wrapper {
-      // padding-bottom: @padding;
-      .bottom-remark {
-        padding-bottom: @padding;
-      }
-    }
-    .footer-button {
-      bottom: @padding;
-    }
-    .qTitle{
-      padding-top: 120px;
-    }
-    // .index-wrapper {
-    //   .wrapper {
-    //     padding-bottom: 0;
-    //   }
-    // }
+.is-iOS .vux-header {
+  padding-top: constant(safe-area-inset-top)!important; // iOs 11
+  padding-top: env(safe-area-inset-top)!important; // iOs 11+ (feature)
+}
+.is-iOS .wrapper {
+  // padding-top: 157px;
+  padding-top: calc(88px + env(safe-area-inset-top))!important;
+  padding-bottom: env(safe-area-inset-bottom)!important;
+}
+.is-iOS .reservation-wrapper {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
+}
+.is-iOS .weui-tabbar {
+  padding-bottom: constant(safe-area-inset-bottom)!important;
+  padding-bottom: env(safe-area-inset-bottom)!important;
+  box-sizing: content-box;
+}
+.is-iOS .wrapper {
+  .bottom-remark {
+    padding-bottom: 34px;
   }
 }
+.is-iOS .reservation .vux-header-title .mint-tab-item-label {
+  line-height: 1!important;
+}
+// pdf材料页面
+.is-iOS #pdfPage .select {
+  bottom: constant(safe-area-inset-bottom)!important;
+  bottom: env(safe-area-inset-bottom)!important;
+}
+.is-iOS .fixed-water-mark {
+  top: calc(88px + env(safe-area-inset-top))!important;
+}
+// .footer-button {
+//   bottom: @padding;
+// }
+// .is-iOS .qTitle{
+//   padding-top: 120px;
+// }
+// .is-iOS .customer-header {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   .vux-header-left {
+//     margin-left: 40px;
+//   }
+//   .vux-header-right {
+//     margin-right: 40px;
+//   }
+//   .vux-header-title {
+//     width: 64%;
+//   }
+// }
+

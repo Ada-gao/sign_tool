@@ -1,6 +1,6 @@
 <template>
 	<div class="reservation">
-		<x-header class="balck-header" :left-options="{showBack: false}">
+		<x-header class="balck-header reservation-header" :left-options="{showBack: false}">
 			<mt-navbar v-model="selected">
 				<mt-tab-item id="1">预&nbsp;&nbsp;约</mt-tab-item>
 				<mt-tab-item id="2">打&nbsp;&nbsp;款</mt-tab-item>
@@ -8,7 +8,7 @@
 			</mt-navbar>
 		</x-header>
     <!-- <x-header :left-options="{showBack: false}">交易列表</x-header> -->
-		<div class="wrapper">
+		<div class="wrapper reservation-wrapper">
 			<!-- <mt-navbar v-model="selected">
 				<mt-tab-item id="1">预约</mt-tab-item>
 				<mt-tab-item id="2">打款</mt-tab-item>
@@ -202,7 +202,7 @@ export default {
 	height: 100%;
 	font-family: PingFangSC-Regular;
 	.wrapper{
-		margin-bottom: 96px;
+		padding-bottom: 96px;
 		.mint-navbar{
 			// height: 90%;
 			.mint-tab-item{
@@ -215,35 +215,35 @@ export default {
 					color: #999999;
 				}
 			}
-			.mint-tab-item.is-selected{
-				border-bottom: 8px solid #2672BA;
-				.mint-tab-item-label{
-					color: #2672BA;
-				}
-			}
-			.mint-tab-item:nth-child(2){
-				position: relative;
-			}
-			.mint-tab-item:nth-child(2)::before{
-					content: '';
-					height: 39px;
-					width: 1px;
-					background: #D5D5D5;
-					position: absolute;
-					left: -30px;
-					top: 50%;
-					transform: translate(0, -50%);
-			}
-			.mint-tab-item:nth-child(2)::after{
-					content: '';
-					height: 39px;
-					width: 1px;
-					background: #D5D5D5;
-					position: absolute;
-					right: -30px;
-					top: 50%;
-					transform: translate(0, -50%);
-			}
+			// .mint-tab-item.is-selected{
+			// 	// border-bottom: 8px solid #2672BA;
+			// 	.mint-tab-item-label{
+			// 		color: #2672BA;
+			// 	}
+			// }
+			// .mint-tab-item:nth-child(2){
+			// 	position: relative;
+			// }
+			// .mint-tab-item:nth-child(2)::before{
+			// 		content: '';
+			// 		height: 39px;
+			// 		width: 1px;
+			// 		background: #D5D5D5;
+			// 		position: absolute;
+			// 		left: -30px;
+			// 		top: 50%;
+			// 		transform: translate(0, -50%);
+			// }
+			// .mint-tab-item:nth-child(2)::after{
+			// 		content: '';
+			// 		height: 39px;
+			// 		width: 1px;
+			// 		background: #D5D5D5;
+			// 		position: absolute;
+			// 		right: -30px;
+			// 		top: 50%;
+			// 		transform: translate(0, -50%);
+			// }
 		}
 		.mint-tab-container .mint-tab-container-item{
 			.item1 {
