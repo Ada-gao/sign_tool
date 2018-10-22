@@ -1,6 +1,6 @@
 <template>
   <div id="v-page">
-    <x-header class="header no-margin-title" :left-options="{backText: ''}">关于我们</x-header>
+    <x-header class="header" :left-options="{backText: ''}">关于我们</x-header>
     <div class="wrapper">
       <div class="logo text-center absolute-center-x">
 			  <img src="static/img/app_logo.png">
