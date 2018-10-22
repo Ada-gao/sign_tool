@@ -519,8 +519,15 @@
 //      this.getIdArray()
 //      this.itemHeight = getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0
       this.form = JSON.parse(getStore('selfInfos'))
+      console.log('form', this.form)
       this.isSubmit = this.$route.params.isSubmit
       let perInfos = JSON.parse(getStore('perInfos'))
+      if (this.form.id_type < 0) {
+        this.form.id_type = '请选择'
+      }
+      this.id_start_date = this.form.id_start_date || ''
+      this.id_expiration = this.form.id_expiration || ''
+      this.birthday = this.form.birthday || ''
       if (perInfos) {
         console.log('cvbjdcfbdjbcndk')
         this.form.gender = perInfos.gender

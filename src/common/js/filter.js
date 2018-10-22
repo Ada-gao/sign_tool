@@ -143,6 +143,10 @@ export function tfCerIdToText (status) {
       params.flag = '认证失败！请您重新认证'
       params.disabled = false
       break
+    case '4':
+      params.flag = '已过期'
+      params.disabled = false
+      break
     default:
       params.flag = '未认证'
       params.disabled = false
@@ -173,6 +177,10 @@ export function tfCtypeToText (status) {
       params.disabled = false
       break
     case '3':
+      params.flag = '修改'
+      params.disabled = false
+      break
+    case '4':
       params.flag = '修改'
       params.disabled = false
       break
