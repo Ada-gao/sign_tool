@@ -7,7 +7,8 @@ const pluginsList = [
   'cordova-plugin-qqsdk',
   'cordova-plugin-statusbar',
   'cordova-plugin-wechatv2',
-  'shuyunqrcodescanner'
+  'shuyunqrcodescanner',
+  'skwas-cordova-plugin-appinfo'
 ]
 
 exports.install = (Vue, options) => {

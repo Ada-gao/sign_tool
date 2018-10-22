@@ -1,4 +1,5 @@
 import axios from '../../config/axios'
+import { appVersionUrl } from '@/config/env'
 
 /**
  * 获取分享图片
@@ -27,5 +28,15 @@ export function infoDetail (notificationId) {
     return axios({
         url: `/v1/mine/notification/detail/${notificationId}/`,
         method: 'get'
+    })
+}
+/**
+ * 获取最新的版本信息
+ */
+export function getLatestVersion (q) {
+    return axios({
+        url: appVersionUrl + 'appVersion/getLatestVersion',
+        method: 'get',
+        params: q
     })
 }

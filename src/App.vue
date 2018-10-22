@@ -26,11 +26,11 @@ export default {
       console.log(to)
       console.log(from)
       if (to.path.includes('HomePage')) {
-        Vue.cordova.statusBar.styleDefault()
+        Vue.cordova.statusBar && Vue.cordova.statusBar.styleDefault()
         console.log(Vue.cordova.statusBar)
       } else {
         console.log('不是首页')
-        Vue.cordova.statusBar.styleBlackTranslucent()
+        Vue.cordova.statusBar && Vue.cordova.statusBar.styleBlackTranslucent()
       }
     }
   }

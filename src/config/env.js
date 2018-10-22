@@ -9,10 +9,12 @@ let baseUrl = ''
 let activityUrl = ''
 let routerMode = 'hash'
 let imgBaseUrl = ''
+let appVersionUrl = ''
 
 if (process.env.NODE_ENV === 'development') {
     baseUrl = 'http://10.9.60.141:5000/api/'
     imgBaseUrl = 'http://10.9.60.141:5000/api/'
+    appVersionUrl = 'http://10.9.60.141:9999/admin/'
     activityUrl = 'http://203.156.231.251:9999/activity/'
     // activityUrl = 'http://10.9.70.231:9999/activity/'
     // activityUrl = 'http://10.9.70.235:9999/activity/'
@@ -22,15 +24,20 @@ if (process.env.NODE_ENV === 'development') {
 } else if (process.env.NODE_ENV === 'production') {
     baseUrl = 'http://10.9.60.141:5000/api/'
     imgBaseUrl = 'http://10.9.60.141:5000/api/'
+    appVersionUrl = 'http://10.9.60.141:9999/admin/'
     activityUrl = 'http://10.9.70.231:9999/activity/'
     // baseUrl = 'https://crm-uat.suxianginvestment.com/starmap/api/'
     // imgBaseUrl = 'https://crm-uat.suxianginvestment.com/starmap/api/'
     // activityUrl = 'https://crm-uat.suxianginvestment.com/starmap/activity/'
+    // baseUrl = 'http://203.156.231.251:5000/api/'
+    // imgBaseUrl = 'http://203.156.231.251:5000/api/'
+    // activityUrl = 'http://203.156.231.251:9999/activity/'
 }
 
-export { baseUrl, routerMode, imgBaseUrl, activityUrl }
+export { baseUrl, routerMode, imgBaseUrl, activityUrl, appVersionUrl }
 
 console.log('baseUrl:' + baseUrl)
 console.log('activityUrl:' + activityUrl)
 console.log('routerMode:' + routerMode)
 console.log('imgBaseUrl:' + imgBaseUrl)
+console.log('appVersionUrl:' + appVersionUrl)
