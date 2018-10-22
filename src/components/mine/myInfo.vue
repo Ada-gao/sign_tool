@@ -1,6 +1,6 @@
 <template>
   <div id="infoPage">
-    <x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">我的消息</x-header>
+    <x-header class="header no-margin-title" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">我的消息</x-header>
     <div class="wrapper">
         <div class="no-info text-center" v-if="this.infoList.length === 0">
           <div class="warn absolute-center-xy">

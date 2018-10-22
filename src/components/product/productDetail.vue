@@ -1,6 +1,6 @@
 <template>
   <div id="detailPage">
-    <x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{item.product_name}}</x-header>
+    <x-header class="header no-margin-title" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{item.product_name}}</x-header>
     <div class="wrapper">
       <div class="rate-top">
         <div class="announcement" v-show="item.announcement">

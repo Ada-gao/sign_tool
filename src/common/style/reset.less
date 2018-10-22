@@ -36,7 +36,8 @@ a {
     color: #333333;
     font-family: @font-family-R;
     width: 100%;
-    margin-left: 20px;
+    // margin-left: 20px;
+    margin: 0;
   }
   .left-arrow {
     // bottom: 2px !important;
@@ -68,6 +69,7 @@ a {
     }
   }
 }
+
 .customer-header {
   .vux-header-title {
     width: 64%;
@@ -314,12 +316,12 @@ a {
       height: 84px;
       line-height: 84px;
       margin: 0;
-      width: 69.57%;
+      width: 64%!important;
     }
     .vux-header-right {
       // height: 60px;
       // line-height: 60px;
-      margin-right: 40px;
+      margin-right: 40px!important;
     }
   }
   .vux-header.define_header {
@@ -392,3 +394,6 @@ a {
 //     color: #1e1e1e;
 //   }
 // }
+#app .vux-header.no-margin-title .vux-header-title {
+  margin: 0!important;
+}

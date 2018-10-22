@@ -1,6 +1,6 @@
 <template>
 	<div id="remark-page">
-		<x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">备注列表</x-header>
+		<x-header class="header no-margin-title" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">备注列表</x-header>
 		<div class="wrapper">
 			<div class="search">
 				<div class="toggle-button">

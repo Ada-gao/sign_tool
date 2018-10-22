@@ -1,5 +1,5 @@
 <template>
-	<x-header class="header-top" :left-options="{showBack: false}">{{title}}
+	<x-header class="header-top no-margin-title" :left-options="{showBack: false}">{{title}}
 		<span slot="overwrite-left" @click="infoList" class="warn">
 			<i class="iconfont mes">&#xe607;</i>
 			<i class="text-center num" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</i>

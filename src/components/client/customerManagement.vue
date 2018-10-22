@@ -1,7 +1,8 @@
 <template>
   <div class="customerManagement">
     <x-header :left-options="{backText: '', preventGoBack:true}"
-              @on-click-back="toLink">客户详情</x-header>
+              @on-click-back="toLink"
+              class="no-margin-title">客户详情</x-header>
     <div class="wrapper">
       <div class="fix_mobile">
         <i class="iconfont">&#xe600;</i>
