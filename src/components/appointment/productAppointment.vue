@@ -784,7 +784,7 @@ export default {
 					})
 					return
 				}
-				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
+				if (!/(^\d{17}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
 					// this.alertMsg = true
 					this.msgDetail = '银行卡输入有误'
 					Toast({
@@ -936,11 +936,12 @@ export default {
 			sureCancle () {
 				cancelAppointment(this.appointmentId).then(res => {
 					if (res.status === 200) {
+						// window.reload()
+						this.appointmentList.status = '1004'
 						this.topTitle = '预约取消'
 						this.sucBtn = false
 						this.uploadShow = false
 						this.sureCancleA = false
-						this.appointmentList.status = '1004'
 					}
 				})
 			},
@@ -1037,6 +1038,7 @@ export default {
 				this.appointmentId = this.$route.params.appointmentId
 				this.orderCloseSuc = false
 				this.showNameClick = false
+				this.firstStep = false
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
 					this.client_id = this.appointmentList.product_id

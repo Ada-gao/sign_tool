@@ -12,11 +12,11 @@
 					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
 				</mt-swipe>
 			</div>
-			<!-- <div class="announcement">
+			<div class="announcement">
 				<i class="iconfont vertical-align">&#xe62e;</i>
 				<span>点击查看更多活动…</span>
 				<span class="more" @click="handleRoute">查看 <i class="iconfont vertical-align">&#xe6d6;</i></span>
-			</div> -->
+			</div>
 			<div class="space"></div>
 			<div style="overflow: hidden; overflow-x: auto;" v-if="!spinner">
         <ul class="tabbar" :style="{'width': ulWidth}">
@@ -143,7 +143,7 @@ export default {
 	mounted () {
 		// this.email = this.$route.params.email
 		// this.userId = this.$route.params.userId
-		this.liWidth = document.documentElement.offsetWidth / 4
+		this.liWidth = document.documentElement.offsetWidth / 4.5
 		getProducts().then(res => {
 			this.spinner = false
 			this.productsList = res.data

@@ -682,7 +682,7 @@ export default {
         width: 560px;
         height: 88px;
         line-height: 88px;
-        border: 1px solid #BD9D62;
+        border: 1px solid #BD9D62;/*no*/
         border-radius: 100px;/*px*/
         font-family: @font-family-M;
         font-size: @font-size-thirtyT;/*px*/
