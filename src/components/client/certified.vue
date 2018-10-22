@@ -415,15 +415,17 @@
       width: 283px;
     }
     .confirm_cont{
-      margin: 25px 0;
+      margin: 30px 0;
+      line-height: 45px;
     }
     .confirm_btn{
-      border-top: 1px solid #D2D3D5;
+      border-top: 1px solid #D2D3D5;/*px*/
       display: inline-block;
       width: 100%;
       font-size: @font-size-thirtyS;/*px*/
       color: @text-font-color;
       line-height: 100px;
+      background: #fff;
     }
   }
   .mint-popup {

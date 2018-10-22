@@ -645,6 +645,8 @@
         this.$router.push({name: 'Bankcard'})
       },
       routerPush () {
+				clearInterval(this.tiemr1)
+				this.timer1 = null
         this.$router.push({name: 'PotentialCustomerList', params: {id: this.form.client_id}})
       },
       submitInfos () {
