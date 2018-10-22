@@ -310,3 +310,14 @@ export function getProReasons () {
     method: 'get'
   })
 }
+
+/**
+ * 获取数据字典
+ * @returns {AxiosPromise}
+ */
+export function getDict () {
+  return axios({
+    url: 'v1/common/dicts/',
+    method: 'get'
+  })
+}

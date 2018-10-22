@@ -214,7 +214,7 @@ export default {
 	mounted () {
 		// this.email = this.$route.params.email
 		// this.userId = this.$route.params.userId
-		this.liWidth = document.documentElement.offsetWidth / 4
+		this.liWidth = document.documentElement.offsetWidth / 4.5
 		getProducts().then(res => {
 			this.spinner = false
 			this.productsList = res.data
