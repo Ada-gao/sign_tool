@@ -4,12 +4,12 @@
     <div class="wrapper">
       <div class="logo text-center absolute-center-x">
 			  <img src="static/img/shitu-logo.png">
-        <p class="tit">侍 徒</p>
+        <p class="tit">财智滙</p>
         <p>客户端版本号： 1.0</p>
       </div>
       <div class="tips text-center absolute-center-x">
         <p>版权所有：上海数赟科技有限公司</p>
-        <p class="copyRight">Copyright © 2018 shuyun.All Rights Reserved</p>
+        <p class="copyRight">Copyright © 2018 Shuyun.All Rights Reserved</p>
       </div>
     </div>
   </div>

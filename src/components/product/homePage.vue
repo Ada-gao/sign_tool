@@ -12,11 +12,11 @@
 					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
 				</mt-swipe>
 			</div>
-			<!-- <div class="announcement">
+			<div class="announcement">
 				<i class="iconfont vertical-align">&#xe62e;</i>
 				<span>点击查看更多活动…</span>
 				<span class="more" @click="handleRoute">查看 <i class="iconfont vertical-align">&#xe6d6;</i></span>
-			</div> -->
+			</div>
 			<div class="space"></div>
 			<div style="overflow: hidden; overflow-x: auto;" v-if="!spinner">
         <ul class="tabbar" :style="{'width': ulWidth}">
@@ -61,6 +61,22 @@
 				<span class="bot">我是有底线的</span>
 			</div>
     </div>
+		<!-- 版本升级 -->
+    <div class="v_dialog" v-show="versionVisible">
+      <div class="v_main">
+        <div class="bgImg">
+          <p class="version_number">V{{versionData.versionName}}</p>
+        </div>
+        <!--<img class="img" src="../../assets/images/version.png" alt=""/>-->
+        <div class="content">
+          <div class="title">【新版本特性】</div>
+          <pre class="v_list" v-html="versionData.promptText">
+          </pre>
+          <a :href="versionData.packageUrl" class="ves_buttom">立即升级</a>
+        </div>
+        <i class="iconfont icon-guanbi" v-if="versionClose" @click="closeVersion"></i>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -70,6 +86,7 @@ import SellingProducts from '@/base/sellingProducts/sellingProducts'
 import commonHeader from '@/base/infoHeader/header'
 import { getProducts } from '@/service/api/products'
 import { getTags } from '@/service/api/mineJPush'
+import { getLatestVersion } from '@/service/api/aboutMe'
 import Vue from 'vue'
 // import { getInfoList } from '@/service/api/aboutMe'
 
@@ -110,7 +127,39 @@ export default {
             })
         }
 			})
-		}
+		},
+    closeVersion () {
+      this.versionVisible = false
+      sessionStorage.setItem('closeVersions', true)
+      // localStorage.setItem('versionRemark', this.versionVisible)
+		},
+		updateVersionApp (appPackage, platform, versionName, versionCode) {
+      let closeData = sessionStorage.getItem('closeVersions')
+      if (closeData) {
+        this.versionVisible = false
+      } else {
+        getLatestVersion(appPackage, platform, versionName, versionCode).then(res => {
+					alert(JSON.parse(res.data))
+          this.versionData = res.data
+          // this.packageUrl = res.data.packageUrl
+          if (res.data) {
+            // 弹出升级框
+            this.versionVisible = true
+            // this.packageUrl = res.data.packageUrl
+            // this.promptText = res.data.promptText
+            if (res.data.promptType === 'Silence') { // 静默
+              this.versionVisible = false
+            } else if (res.data.promptType === 'Force') { // 强制升级
+              this.versionClose = false
+            } else if (res.data.promptType === 'Recommend') { // 推荐升级
+              this.versionClose = true
+            }
+          } else {
+            this.versionVisible = false
+          }
+        })
+      }
+    }
   },
   data () {
     return {
@@ -135,10 +184,32 @@ export default {
 			liWidth: '',
 			n: 0,
 			products: [],
-			choosePro: []
+			choosePro: [],
+			versionVisible: false,
+			versionData: {},
+			versionClose: true,
+			appPackage: 'com.suxianginvestment.crm01'
 			// email: '',
 			// userId: ''
     }
+	},
+	created () {
+		let _this = this
+		_this.devicePlatform = Vue.cordova.device.platform
+		/* global cordova */
+    cordova.getAppVersion.getVersionCode(function (version) {
+      // alert(_this.devicePlatform)
+      _this.versionCode = version
+			let versionName = Vue.cordova.appInfo.version
+			let params = {
+				appPackage: _this.appPackage,
+				platform: _this.devicePlatform,
+				versionName: versionName,
+				versionCode: _this.versionCode
+			}
+			// console.log(params)
+      _this.updateVersionApp(params) // 等待测试
+    })
 	},
 	mounted () {
 		// this.email = this.$route.params.email
