@@ -189,7 +189,7 @@ export default {
      wrap.className = 'fixed-water-mark' // 给div添加类名
      var wm = document.createElement('canvas') // 单个水印画布
      wm.id = 'watermark' // 给canvas标签添加id
-     wm.width = 150 // 设置canvas宽
+     wm.width = 200 // 设置canvas宽
      wm.height = 80 // 设置canvas高
      wm.style.display = 'none' // 设置画布隐藏属性
      wrap.appendChild(wm) // 在div中添加画布
@@ -202,7 +202,7 @@ export default {
      var cw = document.getElementById('watermark')
      var ctx = cw.getContext('2d')
      ctx.clearRect(0, 0, 100, 80) // 清空矩形
-     ctx.font = '15px 黑体' // 设置字体
+     ctx.font = '30px 黑体' // 设置字体
      ctx.rotate(-20 * Math.PI / 180) // 逆时针旋转20度
      ctx.fillStyle = 'rgba(100,100,100,0.2)' // 填充透明度为0.2的灰色
      ctx.fillText(workId, -10, 60) // 填充内容为工号
@@ -229,7 +229,7 @@ export default {
     let url = Base64.decode(this.$route.params.url)
     this.loadFile(url)
     let paint = JSON.parse(window.localStorage.getItem('data')).name + ',' + JSON.parse(window.localStorage.getItem('data')).mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
-    if (this.$route.params.mark !== 3) {
+    if (this.$route.params.mark === 1 || this.$route.params.mark === 2) {
       this.paintFixedWaterMark(paint)
     }
   }

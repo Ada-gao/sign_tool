@@ -286,7 +286,7 @@ export default {
   }
   .wrapper{
     background: #F5F5F5;
-    // padding-bottom: 8px;
+    padding-bottom: 0px;
     margin-bottom: 98px;
     font-family: @font-family-R;
 		.eye{

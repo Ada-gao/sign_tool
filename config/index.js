@@ -17,6 +17,13 @@ module.exports = {
         pathRewrite: {
           '^/activity': '/activity'
         }
+      },
+      '/admin': {
+        target: 'http://10.9.60.141:9999',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/admin': '/admin'
+        }
       }
     },
 

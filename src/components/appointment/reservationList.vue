@@ -210,7 +210,7 @@ export default {
 				margin: 0 30px;
 				padding: 0;
 				.mint-tab-item-label{
-					line-height: 80px;
+					// line-height: 80px;
 					font-size: 28px;
 					color: #999999;
 				}

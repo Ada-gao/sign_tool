@@ -30,12 +30,16 @@
 						<flow-state title="合同管理" :is-done="contractManage"></flow-state>
 					</flow>
 				</div>
-				<div class="emailReason"  v-if="uploadContract">
-					<mt-cell title="审核不通过原因：">{{emailClose}}</mt-cell>
-					<mt-cell title="寄出合同方式：">{{emailType}}</mt-cell>
-				</div>
 				<div class="closeReason" v-if="closeOrderReason">
-					<mt-cell :title= failTitle>{{closeReason}}</mt-cell>
+					<!-- <mt-cell :title= failTitle>{{closeReason}}</mt-cell> -->
+					<span class="reason-title">原因: </span>
+					<span class="reason-content">{{closeReason}}</span>
+				</div>
+				<div class="emailReason"  v-if="appointmentList.status === '3003'">
+					<!-- <mt-cell title="原因：">{{emailClose}}</mt-cell>
+					<mt-cell title="寄出合同方式：">{{emailType}}</mt-cell> -->
+					<span class="reason-title">寄出合同方式：</span>
+					<span class="reason-content">{{emailType}}</span>
 				</div>
 				<div class="info">
 					<mt-cell title="预约信息" class="tit">
@@ -50,22 +54,6 @@
 						<mt-field label="预约金额(万)：" class="inputMoney" placeholder="请输入预约金额" v-model="money" v-if="showMoneyClick"></mt-field>
 						<!-- <mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell> -->
 						<mt-cell title="预约金额：" v-if="!showMoneyClick">{{money}}万</mt-cell>
-						<!-- <mt-popup v-model="showMoney"
-                position="bottom"
-                class="cercode_box"
-                popup-transition="popup-fade">
-							<mt-picker :slots="slotsM"
-												:showToolbar="true"
-												:itemHeight=70
-												:visibleItemCount=3
-												value-key="name"
-												@change="onValuesChangeMoney">
-								<div class="toolbar">
-									<span class="cancel" @click="cancelMoney">取消</span>
-									<span class="ensure" @click="ensureMoney">确定</span>
-								</div>
-							</mt-picker>
-						</mt-popup> -->
 						<mt-cell title="预约时间：">{{nowTime}}</mt-cell>
 						<mt-cell title="已打款审核通过时间：" v-if="alreadyPass">{{alreadyPassTime}}</mt-cell>
 					</div>
@@ -251,33 +239,44 @@
 							<mt-field label="快递编号：" v-model="expressNum"></mt-field>
 						</div>
 					</div> -->
-					<div class="submitBtn" v-if="submitAppointmentBtnShow">
+					<div class="submitBtn" v-if="appointmentList.status === '-1'">
+					<!-- <div class="submitBtn" v-if="submitAppointmentBtnShow"> -->
           	<mt-button type="primary" @click.native="submitAppointmentBtn">提交预约</mt-button>
 					</div>
-					<div class="submitBtn" v-if="repeatAppointmentBtnShow">
+					<div class="submitBtn" v-if="appointmentList.status === '1002'">
+					<!-- <div class="submitBtn" v-if="repeatAppointmentBtnShow"> -->
           	<mt-button type="primary" @click.native="repeatAppointmentBtn">重新预约</mt-button>
 					</div>
-					<div class="submitBtn" v-if="initiateRefund">
-          	<mt-button type="primary" @click.native="refund">{{refundLan}}</mt-button>
+					<div class="submitBtn" v-if="appointmentList.refund_status === '1' || appointmentList.refund_status === '3'">
+          	<mt-button type="primary" @click.native="refund">{{appointmentList.refund_status === '1'? '发起退款': '重新发起退款'}}</mt-button>
 					</div>
-					<div class="successBtn" v-if="sucBtn">
+					<!-- <div class="submitBtn" v-if="initiateRefund">
+          	<mt-button type="primary" @click.native="refund">{{refundLan}}</mt-button>
+					</div> -->
+					<div class="successBtn" v-if="appointmentList.status === '1003'">
+					<!-- <div class="successBtn" v-if="sucBtn"> -->
           	<mt-button plain type="default" @click.native="cancleAppointment">取消预约</mt-button>
           	<mt-button type="primary" @click.native="submitPayMaterials">提交打款材料</mt-button>
 					</div>
-					<div class="submitBtn" v-if="repeatPayMaterials">
+					<div class="submitBtn" v-if="appointmentList.status === '2002'">
+					<!-- <div class="submitBtn" v-if="repeatPayMaterials"> -->
           	<mt-button type="primary" @click.native="repeatSubmitPayMaterials">重新提交打款材料</mt-button>
 					</div>
-					<div class="submitBtn" v-if="uploadContract">
+					<div class="submitBtn" v-if="appointmentList.status === '3003'">
+					<!-- <div class="submitBtn" v-if="uploadContract"> -->
           	<mt-button type="primary" @click.native="emailContract">重新提交</mt-button>
 					</div>
-					<div class="mailBtn" v-if="giveMoneySuc">
+					<div class="mailBtn" v-if="appointmentList.status === '2004'">
+					<!-- <div class="mailBtn" v-if="giveMoneySuc"> -->
           	<mt-button type="primary" @click.native="emailContract">去邮寄合同</mt-button>
           	<!-- <mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button> -->
 					</div>
 					<x-dialog v-model="submitDialog" class="dialog-demo submitDialog">
 						<img :src="submitAppointImg" alt="">
-						<div v-if="!submitFailStatus" class="returnDetailCss">{{submitAppointDetail}}...{{count}}s</div>
-						<div v-else class="returnDetailCss">{{submitAppointDetail}}</div>
+						<div class="returnDetailCss">
+							{{submitAppointDetail}}<span v-if="!submitFailStatus">...{{count}}s</span></div>
+						<!-- <div v-if="!submitFailStatus" class="returnDetailCss">{{submitAppointDetail}}...{{count}}s</div>
+						<div v-else class="returnDetailCss">{{submitAppointDetail}}</div> -->
 						<div v-if="!submitFailStatus" class="bottomBack" @click="returnDetail">返回产品详情</div>
 						<div v-else class="bottomBack" @click="submitDialog=false">确定</div>
 					</x-dialog>
@@ -345,7 +344,9 @@ export default {
 			product_name: '',
 			product_id: '',
 			prePath: '',
-			appointmentList: [],
+			appointmentList: {
+				status: '-1'
+			},
 			showBankCardName: false,
 			showMoney: false,
 			nowTime: '',
@@ -784,7 +785,7 @@ export default {
 					})
 					return
 				}
-				if (!/(^\d{15}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
+				if (!/(^\d{17}$)|(^\d{16}$)|(^\d{19}$)/.test(this.cardnum)) {
 					// this.alertMsg = true
 					this.msgDetail = '银行卡输入有误'
 					Toast({
@@ -936,11 +937,12 @@ export default {
 			sureCancle () {
 				cancelAppointment(this.appointmentId).then(res => {
 					if (res.status === 200) {
+						// window.reload()
+						this.appointmentList.status = '1004'
 						this.topTitle = '预约取消'
 						this.sucBtn = false
 						this.uploadShow = false
 						this.sureCancleA = false
-						this.appointmentList.status = '1004'
 					}
 				})
 			},
@@ -1027,6 +1029,8 @@ export default {
 					this.giveMoneyIng = false
 					this.contractManage = false
 					localStorage.setItem('riskLevel', this.$route.params.riskLevel)
+					localStorage.setItem('minimalAmount', this.$route.params.minimalAmount)
+					localStorage.setItem('collectionAmount', this.$route.params.collectionAmount)
 					this.firstStep = true
 					// appointmentList(this.$route.params.riskLevel).then(res => {
 					// 	this.appointmentList = res.data
@@ -1037,6 +1041,7 @@ export default {
 				this.appointmentId = this.$route.params.appointmentId
 				this.orderCloseSuc = false
 				this.showNameClick = false
+				this.firstStep = false
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
 					this.client_id = this.appointmentList.product_id
@@ -1061,8 +1066,8 @@ export default {
 					this.contractNumW = this.appointmentList.contract_no
 					this.expresszCom = this.appointmentList.express_company
 					this.expressNums = this.appointmentList.express_no
-					this.closeReason = this.appointmentList.order_closure_remark
-					this.emailClose = this.appointmentList.contract_no_pass_remark
+					this.closeReason = this.appointmentList.order_closure_remark || this.appointmentList.contract_no_pass_remark
+					// this.emailClose = this.appointmentList.contract_no_pass_remark
 					this.remitAmount = this.appointmentList.remit_amount
 					if (this.appointmentList.audit_contract_express === '0') {
 						this.emailType = '自取'
@@ -1123,6 +1128,7 @@ export default {
 						this.failTitle = '预约失败原因：'
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 						let arr = []
+						console.log('localstorage')
 						getProducts().then(res => {
 							res.data.map((item, index) => {
 								item.products.map((info, index) => {
@@ -1381,9 +1387,9 @@ export default {
 						this.sureCancleA = false
 						this.selected = '2'
 						if (this.appointmentList.refund_status === '0') {
-							this.topTitle = '订单关闭 无需退款'
+							// this.topTitle = '订单关闭 无需退款'
 						} else if (this.appointmentList.refund_status === '1') {
-							this.topTitle = '需要退款'
+							// this.topTitle = '需要退款'
 							this.uploadRefund = true
 							this.initiateRefund = true
 						} else if (this.appointmentList.refund_status === '2') {
@@ -1609,8 +1615,9 @@ export default {
 		})
 	},
 	activated () {
+		console.log('the params in this.$route')
+		console.log(this.$route.params)
 		if (this.$route.params.fromUrl === 'productDetail') {
-			console.log('this.appointmentList.client_id')
 			this.writeAppointment()
 			// this.getList()
 		} else if (this.$route.params.fromUrl === 'reservationList') {
@@ -1649,6 +1656,7 @@ export default {
 		window.scroll(0, 0)
 		// console.log('this.appointmentList.client_id')
 		// console.log(this.appointmentList.client_id)
+		console.log('this.$route.params')
 		console.log(this.$route.params)
 	}
 }
@@ -1812,6 +1820,22 @@ export default {
 						line-height: 1.2;
 					}
 				}
+			}
+		}
+		.closeReason {
+			background: #fff;
+			display: flex;
+			padding: 0 40px 20px;
+			.reason-title {
+				color: #F05D59;
+				font-size: 30px;
+				width: 90px;
+				white-space: nowrap;
+			}
+			.reason-content {
+				font-size: 28px;
+				color: #4A4A4A;
+				margin-left: 20px;
 			}
 		}
 		.info{

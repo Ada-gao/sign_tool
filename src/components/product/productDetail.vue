@@ -13,11 +13,13 @@
         </div>
         <div class="top-detail text-center">
           <!-- <div class="num-percent"> -->
-            <span v-if="item.is_float === 0" class="number mar">-</span>
-            <span v-else>
+            <div v-if="item.is_float === 0">
+              <span class="float">浮动</span>
+            </div>
+            <div v-else>
               <span class="number">{{item.annualized_return}}</span><span class="percent">%</span>
-            </span>
-            <div class="text">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</div>
+              <div class="text">收益对标基准</div>
+            </div>
             <div class="tit">
               <span>{{item.product_status|turnText(productStatus)}}</span>
               <span class="twice">{{item.product_type}}</span>
@@ -392,6 +394,11 @@ export default {
       .top-detail{
         padding: 39px 0;
         height: 305px;
+        .float{
+          font-size: 60px;
+          display: inline-block;
+          margin: 10px 0;
+        }
         // .num-percent{
           .number, .percent{
             font-family: @font-family-M;
