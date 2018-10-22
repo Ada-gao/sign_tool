@@ -48,7 +48,7 @@ export function upperNum (value) {
  * @param cb
  */
 export function mobileValidate (value) {
-  const reg = /^((1[3-8][0-9])+\d{8})$/
+  const reg = /^((1[3-9][0-9])+\d{8})$/
   let flag = reg.test(value)
   return {
     stat: flag
@@ -87,7 +87,7 @@ export function idcardValidate (value) {
  * @returns {{stat: boolean}}
  */
 export function bankcrdValidate (value) {
-  const reg = /^(\d{16}|\d{19})$/
+  const reg = /^(\d{16}|\d{17}|\d{19})$/
   let flag = reg.test(value)
   return {
     stat: flag

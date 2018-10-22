@@ -229,10 +229,11 @@
         </div>
       </group>
       <div class="space"></div>
-      <div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">
+      <!--<div class="myBank" :class="{'grayMyBank': isSubmit}" @click="toLink">-->
+      <div class="myBank" @click="toLink">
         <span>银行卡信息</span>
         <span class="click">
-          未认证<i class="iconfont">&#xe8d5;</i>
+          <i class="iconfont">&#xe8d5;</i>
         </span>
       </div>
       <div class="space"></div>
@@ -410,7 +411,7 @@
 
 <script>
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
-  import {uploadId, perfectInfos} from '@/service/api/customers'
+  import {uploadId, perfectInfos, getDict} from '@/service/api/customers'
   import camera from '@/base/clientCamera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
@@ -473,9 +474,10 @@
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        removeStore('perInfos')
+//        removeStore('perInfos')
         let info = JSON.parse(getStore('selfInfos'))
         vm.client_certification_id = info.client_certification_id
+        vm.form.gender = info.gender && info.gender === '0' ? '男' : '女'
         if (!info.client_certification_id) {
           perfectInfos({client_id: info.client_id}).then(res => {
             info.client_certification_id = res.data.client_certification_id
@@ -508,10 +510,13 @@
           id_symbol: this.idSymbol
         }
         setStore('perInfos', perInfos)
+      } else {
+        removeStore('perInfos')
       }
       next()
     },
     mounted () {
+//      this.getIdArray()
 //      this.itemHeight = getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0
       this.form = JSON.parse(getStore('selfInfos'))
       this.isSubmit = this.$route.params.isSubmit
@@ -532,6 +537,19 @@
       console.log('this.form.id_type', this.form.id_type)
     },
     methods: {
+      getIdArray () {
+        getDict().then(res => {
+          let tempArray = []
+          for (let i of res.data) {
+            if (i.type === 'id_type') {
+              tempArray = [...i.dict]
+            }
+          }
+          tempArray.map(item => {
+            this.slots[0].values.push(item.label)
+          })
+        })
+      },
       touchScreen () {
         document.getElementById('ipt').blur()
       },
@@ -836,7 +854,7 @@
           line-height: 56px;
           padding: 0 30px;
           // color: #2672ba;
-          color: @font-color-blue;
+          color: @text-font-color;
           font-size: 34px;
           position: absolute;
           border-bottom: 1px solid #ddd;
@@ -846,7 +864,7 @@
           }
           span.cancel {
             left: 30px;
-            color: @font-color-4A;
+            color: @text-font-color;
           }
           span.ensure {
             right: 30px;
@@ -899,11 +917,11 @@
           height: 66px;
           line-height: 66px;
           font-size: 34px;
-          color: @font-color-blue;
+          color: @text-font-color;
         }
         .mint-datetime-cancel {
           text-align: left;
-          color: @font-color-4A;
+          color: @text-font-color;
         }
         .mint-datetime-confirm {
           text-align: right;
