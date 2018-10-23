@@ -1,8 +1,7 @@
 <template>
   <div class="customerManagement">
     <x-header :left-options="{backText: '', preventGoBack:true}"
-              @on-click-back="toLink"
-              class="no-margin-title">客户详情</x-header>
+              @on-click-back="toLink">客户详情</x-header>
     <div class="wrapper">
       <div class="fix_mobile">
         <i class="iconfont">&#xe600;</i>
@@ -355,33 +354,13 @@
       handlerPd () {
         this.$router.push({name: 'PurchasedProducts', params: {id: this.clientId}})
       },
-      dateFormat (date, fmt) {
-        date = new Date(date)
-        let o = {
-          'M+': date.getMonth() + 1,
-          'd+': date.getDate(),
-          'h+': date.getHours(),
-          'm+': date.getMinutes(),
-          's+': date.getSeconds(),
-          'S+': date.getMilliseconds()
-        }
-        if (/(y+)/.test(fmt)) {
-          fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
-        }
-        for (let k in o) {
-          if (new RegExp('(' + k + ')').test(fmt)) {
-            fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('' + o[k]).substr(('' + o[k].length))))
-          }
-        }
-        return fmt
-      },
       getList (id) {
         checkCusomersDetail(id).then(res => {
           this.data = Object.assign({}, res.data)
           this.data.id_type = tfIdtype(this.data.id_type)
           setStore('selfInfos', res.data)
           this.data.asset_amount = this.data.asset_amount || 0
-          this.data.create_time = this.dateFormat(this.data.create_time, 'yyyy-MM-dd')
+          this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
           this.clientId = res.data.client_id
           this.clientName = res.data.name
           this.clientType = res.data.client_type
@@ -420,25 +399,25 @@
       submitAddNew () {
         this.showHideOnBlur = false
         this.remarkInput = null
-//        let dateFormat = function (date, fmt) {
-//          let o = {
-//            'M+': date.getMonth() + 1,
-//            'd+': date.getDate(),
-//            'h+': date.getHours(),
-//            'm+': date.getMinutes(),
-//            's+': date.getSeconds(),
-//            'S+': date.getMilliseconds()
-//          }
-//          if (/(y+)/.test(fmt)) {
-//            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
-//          }
-//          for (let k in o) {
-//            if (new RegExp('(' + k + ')').test(fmt)) {
-//              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('' + o[k]).substr(('' + o[k].length))))
-//            }
-//          }
-//          return fmt
-//        }
+        let dateFormat = function (date, fmt) {
+          let o = {
+            'M+': date.getMonth() + 1,
+            'd+': date.getDate(),
+            'h+': date.getHours(),
+            'm+': date.getMinutes(),
+            's+': date.getSeconds(),
+            'S+': date.getMilliseconds()
+          }
+          if (/(y+)/.test(fmt)) {
+            fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+          }
+          for (let k in o) {
+            if (new RegExp('(' + k + ')').test(fmt)) {
+              fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('' + o[k]).substr(('' + o[k].length))))
+            }
+          }
+          return fmt
+        }
         if (!this.remarkInfo || this.remarkInfo.trim().length === 0) return
         let params = {
           remark: this.remarkInfo,
@@ -448,7 +427,7 @@
           if (res.status === 200) {
             this.remarkList.push({
               remark: this.remarkInfo.trim(),
-              create_time: this.dateFormat(new Date(), 'yyyy-MM-dd')
+              create_time: dateFormat(new Date(), 'yyyy-MM-dd')
             })
             this.remarkInfo = ''
           }

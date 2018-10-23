@@ -19,7 +19,6 @@ exports.install = function (Vue, options, cb) {
     ai.isDebuggable = appInfo.isDebuggable
 
     Vue.cordova.appInfo = ai
-    console.log(Vue.cordova.appInfo)
     // eslint-disable-next-line
     return cb(true)
   }, false)

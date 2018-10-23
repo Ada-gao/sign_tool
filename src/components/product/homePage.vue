@@ -64,12 +64,12 @@
 		<!-- 版本升级 -->
     <div class="v_dialog" v-show="versionVisible">
       <div class="v_main">
-        <div class="bgImg">
+        <!-- <div class="bgImg">
           <p class="version_number">V{{versionData.versionName}}</p>
-        </div>
-        <!--<img class="img" src="../../assets/images/version.png" alt=""/>-->
+        </div> -->
+        <img class="img" src="static/img/version.png" alt=""/>
         <div class="content">
-          <div class="title">【新版本特性】</div>
+          <div class="v_title">【新版本特性】</div>
           <pre class="v_list" v-html="versionData.promptText">
           </pre>
           <a :href="versionData.packageUrl" class="ves_buttom">立即升级</a>
@@ -100,6 +100,97 @@ export default {
 		SellingProducts,
 		commonHeader
 	},
+  data () {
+    return {
+			showContentList: {
+				'0': true,
+				'1': true,
+				'2': true,
+				'3': true,
+				'4': true,
+				'5': true,
+				'6': true,
+				'7': true,
+				'8': true,
+				'9': true,
+				'10': true
+			},
+			productsList: [],
+			spinner: true,
+			popupVisible: false,
+			tabBars: [],
+			ulWidth: '100%',
+			liWidth: '',
+			n: 0,
+			products: [],
+			choosePro: [],
+			versionVisible: false,
+			versionData: {},
+			versionClose: true,
+			appPackage: 'com.suxianginvestment.crm01',
+			appVersionFirstClick: sessionStorage.getItem('appVersionFirstClick') || 0
+			// email: '',
+			// userId: ''
+    }
+	},
+	created () {
+		let _this = this
+		console.log(Vue.cordova.device)
+		if (Vue.cordova.device.platform === 'browser') {
+			// just for test
+			// alert('browser')
+			// let temPramas = {
+			// 	appPackage: 'com.suxianginvestment.crm01',
+			// 	platform: 'iOS',
+			// 	versionName: '1.0.0',
+			// 	versionCode: '1'
+			// }
+			// this.updateVersionApp(temPramas)
+			return
+		}
+		_this.devicePlatform = Vue.cordova.device.platform
+		/* global cordova */
+    cordova.getAppVersion.getVersionCode(function (version) {
+      _this.versionCode = version
+			let versionName = Vue.cordova.appInfo.version
+			// alert(versionName)
+			let params = {
+				appPackage: _this.appPackage,
+				platform: _this.devicePlatform,
+				versionName: versionName,
+				versionCode: _this.versionCode
+			}
+			// alert(JSON.stringify(params))
+			let closeData = JSON.parse(sessionStorage.getItem('closeVersions'))
+      if (closeData) {
+        this.versionVisible = false
+      } else {
+      	_this.updateVersionApp(params)
+			}
+    })
+	},
+	mounted () {
+		// this.email = this.$route.params.email
+		// this.userId = this.$route.params.userId
+		this.liWidth = document.documentElement.offsetWidth / 4.5
+		getProducts().then(res => {
+			this.spinner = false
+			this.productsList = res.data
+			this.productsList.map(item => {
+				this.tabBars.push(item.name)
+				this.products.push(item.products)
+			})
+			this.choosePro = this.products[this.n]
+			// let cnt = Math.ceil(this.tabBars.length / 4)
+			let cnt = this.tabBars.length / 4
+      this.ulWidth = cnt * 100 + '%'
+		}).catch(err => {
+			if (err) {
+				this.spinner = false
+			}
+		})
+		this.getTag()
+	},
 	methods: {
 		switchTab (index) {
 			this.n = index
@@ -129,17 +220,19 @@ export default {
 			})
 		},
     closeVersion () {
-      this.versionVisible = false
+			this.versionVisible = false
+			// sessionStorage.setItem('appVersionFirstClick', 1)
       sessionStorage.setItem('closeVersions', true)
       // localStorage.setItem('versionRemark', this.versionVisible)
 		},
-		updateVersionApp (appPackage, platform, versionName, versionCode) {
-      let closeData = sessionStorage.getItem('closeVersions')
-      if (closeData) {
-        this.versionVisible = false
-      } else {
-        getLatestVersion(appPackage, platform, versionName, versionCode).then(res => {
-					// alert(JSON.parse(res.data))
+		updateVersionApp (params) {
+      // let closeData = JSON.parse(sessionStorage.getItem('closeVersions'))
+      // if (closeData) {
+      //   this.versionVisible = false
+      // } else {
+				alert('start request...')
+        getLatestVersion(params).then(res => {
+					// alert(JSON.stringify(res.data))
 					// localStorage.setItem('appVersion', JSON.stringify(res.data))
           this.versionData = res.data
           // this.packageUrl = res.data.packageUrl
@@ -159,85 +252,9 @@ export default {
             this.versionVisible = false
           }
         })
-      }
+      // }
     }
-  },
-  data () {
-    return {
-			showContentList: {
-				'0': true,
-				'1': true,
-				'2': true,
-				'3': true,
-				'4': true,
-				'5': true,
-				'6': true,
-				'7': true,
-				'8': true,
-				'9': true,
-				'10': true
-			},
-			productsList: [],
-			spinner: true,
-			popupVisible: false,
-			tabBars: [],
-			ulWidth: '100%',
-			liWidth: '',
-			n: 0,
-			products: [],
-			choosePro: [],
-			versionVisible: false,
-			versionData: {},
-			versionClose: true,
-			appPackage: 'com.suxianginvestment.crm01'
-			// email: '',
-			// userId: ''
-    }
-	},
-	created () {
-		let _this = this
-		_this.devicePlatform = Vue.cordova.device.platform
-		/* global cordova */
-    cordova.getAppVersion.getVersionCode(function (version) {
-      // alert(cordova.getAppVersion)
-      _this.versionCode = version
-			let versionName = Vue.cordova.appInfo.version
-			let params = {
-				appPackage: _this.appPackage,
-				platform: _this.devicePlatform,
-				versionName: versionName,
-				versionCode: _this.versionCode
-			}
-      _this.updateVersionApp(params)
-    })
-	},
-	mounted () {
-		// this.email = this.$route.params.email
-		// this.userId = this.$route.params.userId
-		this.liWidth = document.documentElement.offsetWidth / 4.5
-		getProducts().then(res => {
-			this.spinner = false
-			this.productsList = res.data
-			this.productsList.map(item => {
-				this.tabBars.push(item.name)
-				this.products.push(item.products)
-			})
-			this.choosePro = this.products[this.n]
-			// let cnt = Math.ceil(this.tabBars.length / 4)
-			let cnt = this.tabBars.length / 4
-      this.ulWidth = cnt * 100 + '%'
-		}).catch(err => {
-			if (err) {
-				this.spinner = false
-			}
-		})
-		this.getTag()
-		// getInfoList().then(res => {
-		// 	console.log('Jpush...........777777')
-		// 	// let noCheckInfo = res.data.filter(item => item.is_read === '0')
-		// 	// window.JPush.setApplicationIconBadgeNumber(noCheckInfo.length)
-		// })
-	}
+  }
 }
 </script>
 
@@ -402,5 +419,88 @@ export default {
 	// .icon-finance-4{
 	// 	color: orange;
 	// }
+	.v_dialog {
+    width: 100%;
+    height: 100%;
+    background-color: #353535c7;
+    position: absolute;
+		z-index: 999;
+		top: 0;
+    .iconfont {
+      position: absolute;
+      bottom: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #fff;
+      font-size: 60px;
+    }
+    .v_main {
+      width: 618px;
+      // height: 650px;
+      background-color: #fff;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 8px;
+      padding-bottom: 34px;
+      .bgImg {
+        width: 100%;
+        height: 230px;
+        background: url('../../../static/img/version.png') 50% no-repeat;
+        background-size: cover;
+        border-radius: 8px 8px 0 0;
+        .version_number {
+          width: 20%;
+          height:42px;
+          border: 1px solid #ffffff;
+          color: #ffffff;
+          line-height: 42px;
+          text-align: center;
+          margin: 0 auto;
+          position: absolute;
+          top: 112px;
+          left: 41%;
+					border-radius: 6px;
+					font-size: 26px;
+        }
+      }
+      .img {
+        width: 100%;
+        height: 230px;
+        border-radius: 8px 8px 0 0;
+      }
+      .content {
+        width: 477px;
+				margin: 0 auto;
+        .v_title {
+          color: #505050;
+					font-size: 32px;
+					margin-bottom: 20px;
+        }
+        .v_list {
+					color: #505050;
+          font-size: 26px;
+          white-space: pre-wrap;
+          overflow-wrap: break-word;
+          width: 93%;
+          margin: 0 auto;
+					font-family: -webkit-body;
+					line-height: 37px;
+        }
+        .ves_buttom {
+          background: linear-gradient(to right, #dfc189, #BD9D62);
+          color: #fff;
+          border-radius: 50px;
+          margin-top: 43px;
+          display: block;
+          text-align: center;
+          height: 90px;
+					line-height: 90px;
+					font-size: 36px;
+        }
+      }
+    }
+  }
 }
 </style>
