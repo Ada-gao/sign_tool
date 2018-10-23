@@ -63,7 +63,7 @@
 					</mt-cell>
 					<div class="cont" v-show="productInfoShow">
 						<mt-cell title="产品名称：">{{product_name}}</mt-cell>
-						<mt-cell title="产品信息：" value="查看" is-link @click.native="returnProductInfo"></mt-cell>
+						<mt-cell title="产品信息：" value="查看" is-link @click.native="returnProductInfo" class="watch"></mt-cell>
 					</div>
 					<div class="mb20"></div>
 					<div class="uploadCustomer" v-if="uploadShow">
@@ -239,7 +239,7 @@
 							<mt-field label="快递编号：" v-model="expressNum"></mt-field>
 						</div>
 					</div> -->
-					<div class="submitBtn" v-if="appointmentList.status === '-1'">
+					<div class="submitBtn" v-if="firstStep">
 					<!-- <div class="submitBtn" v-if="submitAppointmentBtnShow"> -->
           	<mt-button type="primary" @click.native="submitAppointmentBtn">提交预约</mt-button>
 					</div>
@@ -1658,6 +1658,9 @@ export default {
 		// console.log(this.appointmentList.client_id)
 		console.log('this.$route.params')
 		console.log(this.$route.params)
+    window.onpopstate = () => {
+      this.back()
+    }
 	}
 }
 </script>
@@ -1713,7 +1716,7 @@ export default {
 					justify-content: start;
 					.weui-wepay-flow__li{
 						.weui-wepay-flow__state{
-							background: #9099A2;
+							background: #E0E0E0;
 							width: 18px;
 							height: 18px;
 							line-height: 18px;
@@ -1729,7 +1732,7 @@ export default {
 							width: 30px;
 							height: 30px;
 							background: #fff;
-							border: 3px solid #9099A2;
+							border: 3px solid #E0E0E0;
 							border-radius: 50%;
 							z-index: -1;
 						}
@@ -1774,7 +1777,7 @@ export default {
 						/*width: 224px;*/
             width: 44%;
 						height: 6px;
-						background: #9099A2;
+						background: #E0E0E0;
 					}
 					.weui-wepay-flow__line.weui-wepay-flow__line_done{
 						background: @font-color-orange1;
@@ -1840,6 +1843,15 @@ export default {
 		}
 		.info{
 			margin-top: 20px;
+			.mint-cell.watch{
+				.mint-cell-wrapper{
+					.mint-cell-value{
+						span{
+							color: #3377FF;
+						}
+					}
+				}
+			}
 			.mint-cell.border-b-0 {
 				border-bottom: none!important;
 			}

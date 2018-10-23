@@ -131,6 +131,12 @@ export default {
         this.userLog = true
         this.disabledSend = true
       }
+      if (username === '') {
+        console.log('未输入')
+        this.telTip = true
+        this.msgTip = '请输入手机号或邮箱'
+        this.disabledSend = false
+      }
       setTimeout(() => {
           this.msgTip = ''
           }, 3000)
@@ -311,6 +317,9 @@ export default {
       .iconfont{
         color: #DADADA;
         font-size: 33px;/*px*/
+      }
+      .mint-cell.mint-field{
+        background-image: none;
       }
       .right{
         position: absolute;

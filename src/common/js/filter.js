@@ -140,7 +140,7 @@ export function tfCerIdToText (status) {
       params.disabled = true
       break
     case '3':
-      params.flag = '认证失败！请您重新认证'
+      params.flag = '认证失败，请重新认证'
       params.disabled = false
       break
     case '4':
