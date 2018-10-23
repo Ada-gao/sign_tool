@@ -1,20 +1,37 @@
 <template>
-	<div class="customList">
-		<x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">客户</x-header>
-		<div class="wrapper">
+	<div id="customList">
+		<x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">
 			<div class="search">
+				<input type="text" class="text-search" v-model.trim="keyValue" placeholder="搜索 客户名 手机号码" @input="search"/>
+				<i class="iconfont icon_search">&#xe609;</i>
+			</div>
+		</x-header>
+		<div class="wrapper">
+			<!-- <div class="search">
 				<input type="text" class="text-search" v-model.trim="keyValue" placeholder="搜索 客户名 手机号码"/>
 				<i class="iconfont icon_search" @click="search()">&#xe609;</i>
-			</div>
+			</div> -->
 			<div class="title">客户列表</div>
+			<div class="space"></div>
 			<div class="item" :data="list" v-for="item in list" :key="item.client_id" @click="chooseName(item)" v-if="show">
-				<span class="name">{{item.name}}（{{item.mobile}}）</span>
-				<span class="tip" v-if="item.client_type === '0'">普通投资者</span>
-				<span class="tip" v-if="item.client_type === '1'">专业投资者</span>
+				<section class="left">
+					<p class="name">{{item.name}}</p>
+					<p class="mobile">{{item.mobile}}</p>
+				</section>
+				<section class="right">
+					<span class="tip" v-if="item.client_type === '0'">普通投资者</span>
+					<span class="tip" v-if="item.client_type === '1'">专业投资者</span>
+				</section>
+				<i class="iconfont">&#xe8d5;</i>
 			</div>
-			<div class="noList" v-if="!show">
-				<img src="static/img/customerIcon.png" alt="">
-        <div>暂时没有可预约客户</div>
+			<div class="bottom-line text-center" v-if="this.list.length >= 5">
+				<span class="bot">我是有底线的</span>
+			</div>
+			<div class="no-product text-center" v-if="!show">
+				<div class="warn absolute-center-xy">
+					<i class="iconfont">&#xe869;</i>
+					<p>暂无可预约客户</p>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -62,79 +79,156 @@ export default {
 }
 </script>
 <style lang="less">
-.customList{
+  @import '../../common/style/variable';
+#customList{
 	font-family: PingFangSC-Regular;
 	height: 100%;
+	.vux-header.header{
+    background: @header-bg;
+    .vux-header-left{
+      .left-arrow:before{
+        border-color: @text-font-color;
+      }
+    }
+    .vux-header-title{
+			width: 90%;
+			margin: 0;
+			margin-left: 20px;
+			color: @back-color-white;
+			.search{
+				width: 100%;
+				text-align: center;
+				position: relative;
+				.text-search{
+					width: 100%;
+					height: 60px;
+					text-indent: 62px;
+					font-size: 24px;
+					color: #9B9B9B;
+					background: rgba(255, 255, 255, 0.1);
+					border-radius: 100px;
+					border: none
+				}
+				.text-search::-webkit-input-placeholder {
+					font-size: @font-size-twentyF;/*px*/
+					font-family: @font-family-R;
+					color: @font-color-9B;
+				}
+				.text-search:-moz-placeholder {
+					/* FF 4-18 */
+					font-size: @font-size-twentyF;/*px*/
+					font-family: @font-family-R;
+					color: @font-color-9B;
+				}
+				.text-search::-moz-placeholder {
+					/* FF 19+ */
+					font-size: @font-size-twentyF;/*px*/
+					font-family: @font-family-R;
+					color: @font-color-9B;
+				}
+				.text-search:-ms-input-placeholder {
+					/* IE 10+ */
+					font-size: @font-size-twentyF;/*px*/
+					font-family: @font-family-R;
+					color: @font-color-9B;
+				}
+				i{
+					position: absolute;
+					top: 55%;
+					left: 0px;
+					margin: 0 20px;
+					transform: translateY(-50%);
+					-webkit-transform: translateY(-50%);
+					font-size: 26px; /*px*/
+					color: @font-color-9B;
+				}
+			}
+    }
+  }
 	.wrapper{
-		.search{
-			width: 100%;
-			height: 110px;
-			line-height: 110px;
-			text-align: center;
-			position: relative;
-			background: #fff;
-			.text-search{
-				width: 665px;
-				height: 70px;
-				text-indent: 30px;
-				font-size: 26px;
-				color: #999999;
-				border: 1px solid #999999;
-				border-radius: 10px;
-			}
-			i{
-				position: absolute;
-				top: 50%;
-				right: 70px;
-				transform: translateY(-50%);
-				-webkit-transform: translateY(-50%);
-				font-size: 45px; /*px*/
-				color: #D8D8D8;
-			}
-		}
 		.title{
-			height: 80px;
-			line-height: 80px;
+			height: 88px;
+			line-height: 88px;
 			background: #fff;
 			text-align: center;
 			font-size: 30px;
-			color: #2A7DC1;
-			margin: 20px 0;
+			color: @text-font-color;
 		}
 		.item{
-			width: 670px;
-			height: 155px;
-			line-height: 155px;
+			width: 710px;
+			height: 167px;
 			background: #fff;
-			border: 1px solid #DDDDDD;
-			border-radius: 5px;
-			margin: 0 auto;
+			box-shadow: 0 2px 10px 0 #E7E2DC;
+			border-radius: 6px;
+			font-size: 26px;/*px*/
+			margin: 0 20px;
 			margin-bottom: 20px;
-			font-size: 24px;
-			color: #2672BA;
-			padding: 0 34px;
-			box-sizing: border-box;
-			.name{
-				a{
-					color: #2672BA;
+			padding: 30px;
+			position: relative;
+			.left,.right{
+				display: inline-block;
+			}
+			.left{
+				color: #4A4A4A;
+				.name{
+					font-family: PingFangSC-Medium;
+					font-size: 28px;
+					margin-bottom: 30px;
 				}
 			}
-			.tip{
+			.right{
 				float: right;
+				margin-right: 55px;
+				.tip{
+					color: #9E9E9E;
+					line-height: 107px;
+				}
+			}
+			.iconfont{
+				position: absolute;
+				right: 15px;
+				top: 50%;
+				transform: translate(0, -50%);
+				font-size: 50px;
+				color: #E6E6E6;
 			}
 		}
-		.noList{
-			width: 100%;
-			// height: calc(100% - 230px);
-			text-align: center;
-			margin-top: 200px;
-			img{
-				width: 550px;
+		.bottom-line{
+			height: 73px;
+			line-height: 73px;
+			font-family: @font-family-R;
+			font-size: @font-size-twentyF;/*px*/
+			color: #D6D6D6;
+			.bot:before, .bot:after{
+				display: inline-block;
+				content: '';
+				width: 106px;
+				height: 3px;
+				background:#D6D6D6;
+				vertical-align: middle;
+				position: relative;
 			}
-			div{
-				font-size: 32px;
-				color: #888888;
-				margin-top: 88px;
+			.bot:before{
+				right: 20px;
+			}
+			.bot:after{
+				left: 20px;
+			}
+		}
+		.no-product{
+			position: relative;
+			height: 900px;
+			.warn{
+				i{
+					font-size: 150px;/*px*/
+					color: @back-color-E8;
+				}
+				p{
+					font-family: @font-family-R;
+					font-size: @font-size-twentyS;/*px*/
+					color: #ccc;
+					margin-top: 25px;
+				}
 			}
 		}
 	}
