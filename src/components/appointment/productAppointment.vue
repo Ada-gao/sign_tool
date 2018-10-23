@@ -1658,6 +1658,9 @@ export default {
 		// console.log(this.appointmentList.client_id)
 		console.log('this.$route.params')
 		console.log(this.$route.params)
+    window.onpopstate = () => {
+      this.back()
+    }
 	}
 }
 </script>

@@ -260,7 +260,7 @@
   .upload_cont {
     text-align: center;
     width: 270px;
-    /*height: 180px;*/
+    height: 180px;
     /*line-height: 180px;*/
     background-color: #ddd;
     border-radius: 8px;

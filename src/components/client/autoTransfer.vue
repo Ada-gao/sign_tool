@@ -331,8 +331,9 @@
                 line-height: 40px;
                 position: absolute;
                 width: calc(100% - 70px);
-                overflow: hidden;
-                text-overflow: ellipsis;
+                overflow-y: hidden;
+                overflow-x: scroll;
+                /*text-overflow: ellipsis;*/
                 display: inline-block;
                 white-space: nowrap;
                 text-align: right;
