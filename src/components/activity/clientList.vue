@@ -131,7 +131,7 @@
   import ShowSearch from 'base/searchToolBar/showSearchList'
   import {checkCusomersList} from '@/service/api/customers'
   import { signActivity, getSignedClientList } from '@/service/api/activity'
-  import { getStore, removeStore } from '@/config/mUtils'
+//  import { getStore, removeStore } from '@/config/mUtils'
   import Loading from 'base/loading'
   import { MessageBox } from 'mint-ui'
 
@@ -169,7 +169,7 @@
       }
     },
     mounted () {
-      this.activityId = getStore('activityId')
+      this.activityId = this.$route.params.id
       this.getList()
     },
     methods: {
@@ -223,7 +223,7 @@
       },
       handlerReturn () {
         this.popupVisible = false
-        removeStore('activityId')
+//        removeStore('activityId')
         this.$router.replace({name: 'activityList'})
       },
       handlerClick (id, name) {
@@ -326,7 +326,7 @@
   .confirm_box {
     border-radius: 8px;
     width: 560px;
-    height: 549px;
+    /*height: 549px;*/
     padding-top: 40px;
     font-family: @font-family-R;
     font-size: @font-size-thirtyT;/*px*/

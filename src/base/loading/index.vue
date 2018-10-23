@@ -1,7 +1,7 @@
 <template>
   <div class="define_loading">
     <mt-spinner type="fading-circle"
-                color="#158FD2"
+                color="#bd9d62"
                 class="spinner_box"
                 v-show="show"></mt-spinner>
   </div>

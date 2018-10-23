@@ -45,7 +45,7 @@
 <script>
   import {XHeader} from 'vux'
   import { getSignedClientList } from '@/service/api/activity'
-  import { getStore } from '@/config/mUtils'
+//  import { getStore } from '@/config/mUtils'
   export default {
     components: {
       XHeader
@@ -79,7 +79,7 @@
       }
     },
     mounted () {
-      this.activityId = getStore('activityId')
+      this.activityId = this.$route.params.id
       this.getList()
     }
   }
