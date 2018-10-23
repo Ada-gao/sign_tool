@@ -3,9 +3,11 @@
     <x-header class="header" :left-options="{backText: ''}">关于我们</x-header>
     <div class="wrapper">
       <div class="logo text-center absolute-center-x">
-			  <img src="static/img/shitu-logo.png">
+			  <img src="static/img/app_logo.png">
+			  <!-- <img src="static/img/shitu-logo.png"> -->
         <p class="tit">财智滙</p>
-        <p>客户端版本号： 1.0</p>
+        <p class="sub-tit">客户端版本号：{{ version }}({{ build }})</p>
+        <p class="sub-tit">Build时间：{{ buildDate|parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</p>
       </div>
       <div class="tips text-center absolute-center-x">
         <p>版权所有：上海数赟科技有限公司</p>
@@ -17,15 +19,22 @@
 
 <script type="text/ecmascript-6">
 import { XHeader } from 'vux'
+import Vue from 'vue'
 
 export default {
   data () {
     return {
-
+      version: Vue.cordova.appInfo.version,
+      build: Vue.cordova.appInfo.build,
+      buildDate: Vue.cordova.appInfo.compileDate
     }
   },
   components: {
     XHeader
+  },
+  mounted () {
+    console.log('Vue.cordova.appInfo')
+    console.log(Vue.cordova.appInfo)
   }
 }
 </script>
@@ -61,6 +70,12 @@ export default {
         font-size: 44px;/*px*/
         color: #393939;
         line-height: 97px;
+      }
+      .sub-tit {
+        color: #9B9B9B;
+        margin-bottom: 20px;
+        font-size: 28px;
+        white-space: nowrap;
       }
     }
     .tips {

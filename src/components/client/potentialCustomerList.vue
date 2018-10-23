@@ -156,18 +156,19 @@
           <div class="cell_box" @click="handlerCerty">
             <span class="cell_left">
               投资者类型：
-              <i v-if="data.certification_status === '0'">
-                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-              </i>
-              <i v-if="data.certification_status === '1'">
-                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-              </i>
-              <i v-if="data.certification_status === '2'">
-                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-              </i>
-              <i v-if="data.certification_status === '3'">
-                {{clickArrowObj.cerObj.type}} {{data.risk_level}}
-              </i>
+              <!--<i v-if="data.certification_status === '0'">-->
+                <!--{{clickArrowObj.cerObj.type}} {{data.risk_level}}-->
+              <!--</i>-->
+              <!--<i v-if="data.certification_status === '1'">-->
+                <!--{{clickArrowObj.cerObj.type}} {{data.risk_level}}-->
+              <!--</i>-->
+              <!--<i v-if="data.certification_status === '2'">-->
+                <!--{{clickArrowObj.cerObj.type}} {{data.risk_level}}-->
+              <!--</i>-->
+              <!--<i v-if="data.certification_status === '3'">-->
+                <!--{{clickArrowObj.cerObj.type}} {{data.risk_level}}-->
+              <!--</i>-->
+              <i>{{clickArrowObj.cerObj.type}} {{data.risk_level}}</i>
             </span>
             <span class="cell_right">
               <i v-if="data.certification_status === '0'"
@@ -176,7 +177,7 @@
                   class="wait_certy">{{clickArrowObj.cerObj.stat}}</i>
               <i v-if="data.certification_status === '2'"
                   class="success_certy">{{clickArrowObj.cerObj.stat}}</i>
-              <i v-if="data.certification_status === '3'"
+              <i v-if="data.certification_status === '3' || data.certification_status === '4'"
                   class="expire_certy">{{clickArrowObj.cerObj.stat}}</i>
               <i class="iconfont right_icon"
                   v-if="!clickArrowObj.cerObj.disabled">&#xe8d5;</i>

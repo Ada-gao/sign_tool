@@ -218,12 +218,11 @@
       this.userInfos.emailAddress = JSON.parse(getStore('data')).email
     },
     beforeRouteEnter (to, from, next) {
+      console.log('from', from)
       if (from.name === 'CustomerManagement') {
         next(vm => {
-          next(vm => {
-            vm.id = from.params.id
-            vm.beforeRouteName = 'CustomerManagement'
-          })
+          vm.id = from.params.id
+          vm.beforeRouteName = 'CustomerManagement'
         })
       } else {
         next(vm => {
@@ -256,8 +255,12 @@
         this.popupVisible = data
       },
       toLink (id) {
-        console.log('ddddddddd')
-        this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
+        console.log('before', this.beforeRouteName)
+        if (this.beforeRouteName === 'CustomerManagement') {
+          this.$router.push({name: 'CustomerManagement', params: {id: id}})
+        } else {
+          this.$router.push({name: 'PotentialCustomerList', params: {id: id}})
+        }
       },
       convert (radio) {
         switch (radio) {

@@ -41,19 +41,19 @@ export default {
       }
       Vue.cordova.scanner.scan(
         {// 全部参数
-          'baseColor': '#4e8dec',
+          'baseColor': '#ffcd32',
           // (边框、按钮、导航栏等背景颜色，优先级最低，单独设置可覆盖)
 
           // bar
-          'title': '我是标题',
+          'title': '扫一扫',
           // (标题文字)
-          'barColor': '4e8dec',
+          'barColor': '383636',
           // (导航栏颜色)
           'statusBarColor': 'white',
           // (状态栏字体颜色 white为白，不填为默认)
 
           // describe string
-          'describe': '我是提示语',
+          'describe': '',
           // (提示用户文字，支持 \n 换行，多行文字需注意小屏幕设备适配问题)
           'describeFontSize': '15',
           // (字体大小)
@@ -63,7 +63,7 @@ export default {
           // (文字颜色)
 
           // scan border
-          'borderColor': '4e8dec',
+          'borderColor': 'ffcd32',
           // (扫描框颜色)
           'borderScale': '0.6',
           // (边框大小，0.1 ~ 1)
@@ -73,7 +73,7 @@ export default {
           // (支持相册选取, 默认false)
           'choosePhotoBtnTitle': '相册',
           // (选取按钮文字)
-          'choosePhotoBtnColor': '4e8dec',
+          'choosePhotoBtnColor': 'ffcd32',
           // (选取按钮颜色)
 
           // flashlight
