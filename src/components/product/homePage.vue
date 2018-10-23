@@ -139,7 +139,8 @@ export default {
         this.versionVisible = false
       } else {
         getLatestVersion(appPackage, platform, versionName, versionCode).then(res => {
-					alert(JSON.parse(res.data))
+					// alert(JSON.parse(res.data))
+					// localStorage.setItem('appVersion', JSON.stringify(res.data))
           this.versionData = res.data
           // this.packageUrl = res.data.packageUrl
           if (res.data) {
@@ -198,7 +199,7 @@ export default {
 		_this.devicePlatform = Vue.cordova.device.platform
 		/* global cordova */
     cordova.getAppVersion.getVersionCode(function (version) {
-      // alert(_this.devicePlatform)
+      // alert(cordova.getAppVersion)
       _this.versionCode = version
 			let versionName = Vue.cordova.appInfo.version
 			let params = {
@@ -207,8 +208,7 @@ export default {
 				versionName: versionName,
 				versionCode: _this.versionCode
 			}
-			// console.log(params)
-      _this.updateVersionApp(params) // 等待测试
+      _this.updateVersionApp(params)
     })
 	},
 	mounted () {

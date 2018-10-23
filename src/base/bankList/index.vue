@@ -4,12 +4,13 @@
       <mt-spinner type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
     </mt-popup>
     <x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡
-      <div slot="right" class="add_card_btn"
-             v-if="addCard"
-             @click="routerPush">
-          <i class="iconfont">&#xe6bd;</i>
-          <span>新增银行卡</span>
-        </div>
+      <!-- 在该页面关闭新增银行卡入口 -->
+      <!-- <div slot="right" class="add_card_btn"
+           v-if="addCard"
+           @click="routerPush">
+        <i class="iconfont">&#xe6bd;</i>
+        <span>新增银行卡</span>
+      </div> -->
     </x-header>
     <div class="wrapper">
       <!-- <div class="top"> -->
@@ -135,10 +136,10 @@
     font-family: @font-family-R;
     .vux-header.header{
       .vux-header-right{
-        width: 23%;
-        height: 42px;
-        right: 30px;
-        top: 66px;
+        // width: 23%;
+        // height: 42px;
+        // right: 30px;
+        // top: 66px;
         .add_card_btn {
           display: inline-block;
           position: absolute;
