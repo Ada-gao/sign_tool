@@ -153,7 +153,7 @@
 </template>
 <script>
   import {XHeader, Group, Cell, XInput, PopupPicker, XDialog, XButton} from 'vux'
-  import camera from '@/base/camera/camera'
+  import camera from '@/base/clientCamera'
   import {uploadBankCard, getBankInfos, perfectInfos} from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import {bankcrdValidate, toast} from '@/common/js/filter'
