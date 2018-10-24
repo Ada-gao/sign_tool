@@ -36,7 +36,7 @@
               <span class="date_tit">认证原因</span>
             <div class="date_box">
               <div class="date_cont">
-                <span class="date_time">{{reason}}</span>
+                <span :class="{'date_time': true, 'date_time1': changeClass}">{{reason}}</span>
                 <i class="iconfont right_icon">&#xe8d5;</i>
               </div>
             </div>
@@ -123,6 +123,7 @@
     },
     data () {
       return {
+        changeClass: false,
         showSubmit: {
           isShow: false,
           isSuccess: 0
@@ -240,6 +241,7 @@
       ensureCerCode (val) {
         this.reason = this.apply_reason
         this.reason_id = this.apply_reason_id
+        this.changeClass = true
         this.showCerCode = false
       },
       onValuesChange (picker, values) {
@@ -571,7 +573,7 @@
                 height: 56px;
                 line-height: 56px;
                 padding: 0 30px;
-                color: #2672ba;
+                color: @text-font-color;
                 font-size: 34px;
                 position: absolute;
                 border-bottom: 1px solid #ddd;
@@ -590,36 +592,42 @@
           }
           .time_box {
             position: relative;
-            height: 82px;
+            min-height: 100px;
             line-height: 82px;
             padding: 0 40px;
             .date_box {
               width: 68.5%;
               position: absolute;
               right: 0;
-              height: 40px;
+              min-height: 40px;
               top: 18px;
               .date_cont {
                 position: relative;
-                height: 40px;
+                min-height: 40px;
                 /*border: 1px solid #CCCCCC;*/
                 /*border-radius: 8px;*/
                 /*background-color: #f3f3f3;*/
               }
-              span.date_time {
+              span.date_time,
+              span.date_time1 {
 			          font-family: @font-family-M;
-                height: 40px;
+                min-height: 40px;
                 line-height: 40px;
                 position: absolute;
                 width: calc(100% - 70px);
-                overflow-y: hidden;
-                overflow-x: scroll;
+                /*overflow-y: hidden;*/
+                /*overflow-x: scroll;*/
                 /*text-overflow: ellipsis;*/
                 display: inline-block;
-                white-space: nowrap;
-                text-align: right;
+                /*white-space: nowrap;*/
                 font-size: 30px;
                 color: @font-color-4A;
+              }
+              span.date_time {
+                text-align: right;
+              }
+              span.date_time1 {
+                text-align: left;
               }
               i {
                 position: absolute;

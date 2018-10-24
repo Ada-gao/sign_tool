@@ -356,7 +356,7 @@ const router = new Router({
       }
     },
     {
-      path: '/clientSignedList',
+      path: '/clientSignedList/:id',
       name: 'clientSignedList',
       component: clientSignedList,
       meta: {
@@ -364,7 +364,7 @@ const router = new Router({
       }
     },
     {
-      path: '/clientList',
+      path: '/clientList/:id',
       name: 'clientList',
       component: clientList,
       meta: {
@@ -372,7 +372,7 @@ const router = new Router({
       }
     },
     {
-      path: '/clientSigned/:id',
+      path: '/clientSigned/:activityId/:clientId',
       name: 'clientSigned',
       component: clientSigned,
       meta: {

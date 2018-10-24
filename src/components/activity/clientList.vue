@@ -131,7 +131,7 @@
   import ShowSearch from 'base/searchToolBar/showSearchList'
   import {checkCusomersList} from '@/service/api/customers'
   import { signActivity, getSignedClientList } from '@/service/api/activity'
-  import { getStore, removeStore } from '@/config/mUtils'
+//  import { getStore, removeStore } from '@/config/mUtils'
   import Loading from 'base/loading'
   import { MessageBox } from 'mint-ui'
 
@@ -169,7 +169,7 @@
       }
     },
     mounted () {
-      this.activityId = getStore('activityId')
+      this.activityId = this.$route.params.id
       this.getList()
     },
     methods: {
@@ -223,12 +223,12 @@
       },
       handlerReturn () {
         this.popupVisible = false
-        removeStore('activityId')
+//        removeStore('activityId')
         this.$router.replace({name: 'activityList'})
       },
       handlerClick (id, name) {
         this.signedName = name
-        MessageBox.confirm('', `确定给${name}报名活动吗？`).then(action => {
+        MessageBox.confirm(`确定给${name}报名活动吗？`, '提交确认').then(action => {
           let params = {
             clientId: id,
             activityId: this.activityId
@@ -243,6 +243,7 @@
       },
       continueSigned () {
         this.popupVisible = false
+        location.reload()
       },
       onItemClick (index) {
         this.idx = index
@@ -326,11 +327,14 @@
   .confirm_box {
     border-radius: 8px;
     width: 560px;
-    height: 549px;
+    /*height: 549px;*/
     padding-top: 40px;
     font-family: @font-family-R;
     font-size: @font-size-thirtyT;/*px*/
     color: #4A4A4A;
+    img{
+      width: 283px;
+    }
     .confirm_cont{
       margin: 25px 0;
     }
@@ -411,7 +415,7 @@
   //   }
   // }
   .wrapper{
-    padding-top: 117px;
+    padding-top: 88px;
   }
   .tabbar {
     height: 88px;

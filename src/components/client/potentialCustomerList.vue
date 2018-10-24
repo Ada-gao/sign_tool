@@ -348,6 +348,25 @@
       }
     },
     methods: {
+      getRemarks (id) {},
+      getList (id) {
+        checkCusomersDetail(this.client_id).then(res => {
+          let selfInfos = Object.assign({}, res.data)
+          setStore('selfInfos', selfInfos)
+          this.data = Object.assign({}, res.data)
+          this.data.id_type = tfIdtype(this.data.id_type)
+          this.topTitle = this.data.mobile_validated === '0' ? '潜客信息' : '手机未验证'
+          this.clickArrowObj.cerObj.stat = tfCtypeToText(this.data.certification_status).flag
+          this.clickArrowObj.cerObj.disabled = tfCtypeToText(this.data.certification_status).disabled
+          if (this.data.client_type === '0') {
+            this.clickArrowObj.cerObj.type = '普通投资者'
+          } else if (this.data.client_type === '1') {
+            this.clickArrowObj.cerObj.type = '专业投资者'
+          }
+          this.clickArrowObj.realnameObj.stat = tfCerIdToText(this.data.realname_status).flag
+          this.clickArrowObj.realnameObj.disabled = tfCerIdToText(this.data.realname_status).disabled
+        })
+      },
       handlerFlag (data) {
         this.remarkList[data.index].flag = data.flag
       },

@@ -243,30 +243,30 @@
 					<!-- <div class="submitBtn" v-if="submitAppointmentBtnShow"> -->
           	<mt-button type="primary" @click.native="submitAppointmentBtn">提交预约</mt-button>
 					</div>
-					<div class="submitBtn" v-if="appointmentList.status === '1002'">
+					<div class="submitBtn" v-if="(appointmentList.status === '1002') && !firstStep">
 					<!-- <div class="submitBtn" v-if="repeatAppointmentBtnShow"> -->
           	<mt-button type="primary" @click.native="repeatAppointmentBtn">重新预约</mt-button>
 					</div>
-					<div class="submitBtn" v-if="appointmentList.refund_status === '1' || appointmentList.refund_status === '3'">
+					<div class="submitBtn" v-if="(appointmentList.refund_status === '1'  && !firstStep) || (appointmentList.refund_status === '3' && !firstStep)">
           	<mt-button type="primary" @click.native="refund">{{appointmentList.refund_status === '1'? '发起退款': '重新发起退款'}}</mt-button>
 					</div>
 					<!-- <div class="submitBtn" v-if="initiateRefund">
           	<mt-button type="primary" @click.native="refund">{{refundLan}}</mt-button>
 					</div> -->
-					<div class="successBtn" v-if="appointmentList.status === '1003'">
+					<div class="successBtn" v-if="appointmentList.status === '1003' && !firstStep">
 					<!-- <div class="successBtn" v-if="sucBtn"> -->
           	<mt-button plain type="default" @click.native="cancleAppointment">取消预约</mt-button>
           	<mt-button type="primary" @click.native="submitPayMaterials">提交打款材料</mt-button>
 					</div>
-					<div class="submitBtn" v-if="appointmentList.status === '2002'">
+					<div class="submitBtn" v-if="appointmentList.status === '2002' && !firstStep">
 					<!-- <div class="submitBtn" v-if="repeatPayMaterials"> -->
           	<mt-button type="primary" @click.native="repeatSubmitPayMaterials">重新提交打款材料</mt-button>
 					</div>
-					<div class="submitBtn" v-if="appointmentList.status === '3003'">
+					<div class="submitBtn" v-if="appointmentList.status === '3003' && !firstStep">
 					<!-- <div class="submitBtn" v-if="uploadContract"> -->
           	<mt-button type="primary" @click.native="emailContract">重新提交</mt-button>
 					</div>
-					<div class="mailBtn" v-if="appointmentList.status === '2004'">
+					<div class="mailBtn" v-if="appointmentList.status === '2004' && !firstStep">
 					<!-- <div class="mailBtn" v-if="giveMoneySuc"> -->
           	<mt-button type="primary" @click.native="emailContract">去邮寄合同</mt-button>
           	<!-- <mt-button type="primary" @click.native="closeOrderform">订单关闭</mt-button> -->
@@ -802,7 +802,8 @@ export default {
 					'bank_subname': this.bankname1 || this.cardName1,
 					'bank_id': this.bankId,
 					'card_no': this.cardnum || this.cardNum,
-					'remit_amount': parseInt(this.remitAmount)
+					'remit_amount': parseInt(this.remitAmount),
+					'client_id': this.appointmentList.client_id
 				}
 				MessageBox({
 					title: '提交确认',
@@ -858,6 +859,7 @@ export default {
 					'bank_id': this.bankId,
 					'card_no': this.cardnum || this.cardNum,
 					'remit_amount': parseInt(this.remitAmount),
+					'client_id': this.appointmentList.client_id,
 					'flag': '1'
 				}
 				MessageBox({
@@ -1658,9 +1660,9 @@ export default {
 		// console.log(this.appointmentList.client_id)
 		console.log('this.$route.params')
 		console.log(this.$route.params)
-    window.onpopstate = () => {
-      this.back()
-    }
+		window.onpopstate = () => {
+			this.back()
+		}
 	}
 }
 </script>
@@ -1829,6 +1831,7 @@ export default {
 			background: #fff;
 			display: flex;
 			padding: 0 40px 20px;
+			line-height: 40px;
 			.reason-title {
 				color: #F05D59;
 				font-size: 30px;
@@ -1836,13 +1839,25 @@ export default {
 				white-space: nowrap;
 			}
 			.reason-content {
-				font-size: 28px;
+				font-size: 26px;
 				color: #4A4A4A;
 				margin-left: 20px;
 			}
 		}
 		.info{
 			margin-top: 20px;
+			.mint-cell{
+				.mint-cell-wrapper{
+					.mint-cell-value{
+						.iconfont{
+							color: #E6E6E6;
+						}
+					}
+				}
+			}
+			.iconfont{
+				color: #E6E6E6;
+			}
 			.mint-cell.watch{
 				.mint-cell-wrapper{
 					.mint-cell-value{
@@ -1876,13 +1891,15 @@ export default {
 						color: #4A4A4A;
 						position: relative;
 						padding-left: 15px;
+						line-height: 80px;
 						&::before {
 							position: absolute;
 							width: 6px;
 							height: 30px;
 							background-color: @font-color-orange1;
 							content: '';
-							top: 8px;
+							top: 50%;
+							transform: translate(0, -50%);
 							left: 0;
 						}
 					}
@@ -1911,7 +1928,7 @@ export default {
 							height: 56px;
 							line-height: 56px;
 							padding: 0 30px;
-							color: #2672ba;
+							color: @text-font-color;
 							font-size: 34px;
 							position: absolute;
 							border-bottom: 1px solid #ddd;
@@ -1930,7 +1947,7 @@ export default {
 				}
 				.mint-cell{
 					height: 80px;
-					border-bottom: 1px solid #CCCCCC;
+					border-bottom: 1px solid #e9e9e9;/*px*/
 					.mint-cell-wrapper{
 						line-height: 80px;
 						height: 80px;

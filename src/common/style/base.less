@@ -290,7 +290,7 @@ input:-ms-input-placeholder {
       width: 100%;
       position: absolute;
       bottom: 0;
-      border-top: 0.013333rem solid #ddd;
+      border-top: 0.013333rem solid #ddd;/*px*/
       .mint-msgbox-btn{
         font-size: @font-size-thirtyS;/*px*/
         color: @font-color-9B;
@@ -437,6 +437,10 @@ input:-ms-input-placeholder {
       .mint-radio-core::after {
         width: 16px;
         height: 16px;
+        top: 50%;
+        left: 50%;
+        margin-top: -8px;
+        margin-left: -8px;
       }
       .mint-radio-input:checked + .mint-radio-core::after{
         background-color: #2672BA;

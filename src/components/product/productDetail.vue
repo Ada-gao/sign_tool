@@ -14,10 +14,10 @@
         <div class="top-detail text-center">
           <!-- <div class="num-percent"> -->
             <div v-if="item.is_float === 0">
-              <span class="float">浮动</span>
+              <span class="float">浮动收益</span>
             </div>
             <div v-else>
-              <span class="number">{{item.annualized_return}}</span><span class="percent">%</span>
+              <span class="number">{{item.annualized_return | twoDecimals}}</span><span class="percent">%</span>
               <div class="text">收益对标基准</div>
             </div>
             <div class="tit">
@@ -169,7 +169,7 @@
 <script type="text/ecmascript-6">
 import { XHeader, Group, CellBox, Cell } from 'vux'
 import { getProductDetail } from '@/service/api/products'
-
+import {twoDecimals} from '@/common/js/filter'
 export default {
   data () {
     return {

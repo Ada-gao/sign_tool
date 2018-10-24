@@ -189,7 +189,7 @@ export default {
      wrap.className = 'fixed-water-mark' // 给div添加类名
      var wm = document.createElement('canvas') // 单个水印画布
      wm.id = 'watermark' // 给canvas标签添加id
-     wm.width = 200 // 设置canvas宽
+     wm.width = 150 // 设置canvas宽
      wm.height = 80 // 设置canvas高
      wm.style.display = 'none' // 设置画布隐藏属性
      wrap.appendChild(wm) // 在div中添加画布
@@ -201,7 +201,7 @@ export default {
      // 绘制单个水印
      var cw = document.getElementById('watermark')
      var ctx = cw.getContext('2d')
-     ctx.clearRect(0, 0, 100, 80) // 清空矩形
+     ctx.clearRect(0, 0, 150, 80) // 清空矩形
      ctx.font = '30px 黑体' // 设置字体
      ctx.rotate(-20 * Math.PI / 180) // 逆时针旋转20度
      ctx.fillStyle = 'rgba(100,100,100,0.2)' // 填充透明度为0.2的灰色
@@ -275,7 +275,7 @@ export default {
     display: block;
     border-bottom: 1px solid black;
     margin: 0 auto;
-    width: 100% !important;
+    // width: 100% !important;
   }
 }
 .fixed-water-mark {

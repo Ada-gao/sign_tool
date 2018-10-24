@@ -26,7 +26,7 @@
       </div>
       <div class="space"></div>
       <ul class="signed_ul">
-        <li v-for="item in list" :key="item.id" @click="handleRoute(item.activityClientId)">
+        <li v-for="item in list" :key="item.id" @click="handleRoute(item.activityId, item.activityClientId)">
           <div class="left">
             {{item.clientName}}（{{item.mobile}}）
           </div>
@@ -45,7 +45,7 @@
 <script>
   import {XHeader} from 'vux'
   import { getSignedClientList } from '@/service/api/activity'
-  import { getStore } from '@/config/mUtils'
+//  import { getStore } from '@/config/mUtils'
   export default {
     components: {
       XHeader
@@ -74,12 +74,12 @@
           }
         })
       },
-      handleRoute (id) {
-        this.$router.push({name: 'clientSigned', params: {id}})
+      handleRoute (activityId, clientId) {
+        this.$router.push({name: 'clientSigned', params: {activityId, clientId}})
       }
     },
     mounted () {
-      this.activityId = getStore('activityId')
+      this.activityId = this.$route.params.id
       this.getList()
     }
   }

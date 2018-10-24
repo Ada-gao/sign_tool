@@ -15,7 +15,7 @@
           <div v-else class="left vertical-align">
             <!-- <span v-if="item.is_float === 0" class="number mar vertical-align">-</span> -->
             <span>
-              <span class="number vertical-align">{{item.annualized_return}}</span><span class="percent vertical-align">%</span>
+              <span class="number vertical-align">{{item.annualized_return | twoDecimals}}</span><span class="percent vertical-align">%</span>
             </span>
             <div class="text text-left">收益对标基准</div>
           </div>
@@ -73,6 +73,7 @@
 
 <script>
   import { XHeader, Group, CellBox, Flexbox, FlexboxItem } from 'vux'
+  import {twoDecimals} from '@/common/js/filter'
   export default {
     name: 'SellingProducts',
     components: {
@@ -139,6 +140,7 @@
       }
     },
     mounted () {
+      console.log(twoDecimals(100))
       if (this.$route.name === 'HomePage') {
         // console.log('homePage')
         // console.log(this.childData)
