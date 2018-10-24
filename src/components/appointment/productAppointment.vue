@@ -155,10 +155,15 @@
 								</div>
 							</div> -->
 							<div class="materialsNeeded">
-								<mt-cell title="交易所需材料" class="tit border-b-0">
+								<mt-cell title="客户所需提交材料" class="tit border-b-0">
 									<i class="iconfont" :class="[transcInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('transcInfo')"></i>
 								</mt-cell>
 								<div class="camera" v-show="transcInfoShow">
+									<ul>
+										<li v-for="(item, index) in customerMaterials" :key="index">
+											<span class="title">{{index + 1}}.{{item.file_name}}</span>
+										</li>
+									</ul>
 									<camera v-if="uploadCardMaterials" :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
               							:imageArr="materialsUrls"
@@ -316,6 +321,7 @@
 <script type="text/ecmascript-6">
 import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput } from 'vux'
 import camera from '@/base/camera/camera'
+import { getCustomerMaterials } from '@/service/api/products'
 import { submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
 import { getProducts } from '@/service/api/products'
 import { checkBankDetail } from '@/service/api/customers'
@@ -433,6 +439,7 @@ export default {
 			imgIndex: '',
 			timer1: null,
 			client_id: '',
+			customerMaterials: [],
 			slotsM: [
 				{
           flex: 1,
@@ -1044,9 +1051,10 @@ export default {
 				this.orderCloseSuc = false
 				this.showNameClick = false
 				this.firstStep = false
+				
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
-					this.client_id = this.appointmentList.product_id
+					this.client_id = this.appointmentList.client_id
 					this.product_id = this.appointmentList.product_id
 					this.showMoneyClick = false
 					this.appointmentCode = true
@@ -1071,6 +1079,13 @@ export default {
 					this.closeReason = this.appointmentList.order_closure_remark || this.appointmentList.contract_no_pass_remark
 					// this.emailClose = this.appointmentList.contract_no_pass_remark
 					this.remitAmount = this.appointmentList.remit_amount
+					getCustomerMaterials(this.product_id).then(res => {
+						if (this.appointmentList.client_type === '0') {
+							this.customerMaterials = res.data.data.filter(item => item.client_type == '0')
+						} else if (this.appointmentList.client_type === '1'){
+							this.customerMaterials = res.data.data.filter(item => item.client_type == '1')
+						}
+					})
 					if (this.appointmentList.audit_contract_express === '0') {
 						this.emailType = '自取'
 					} else if (this.appointmentList.audit_contract_express === '1') {
@@ -2266,6 +2281,15 @@ export default {
 							width: 132px;
 							height: 120px;
 							margin-right: 20px;
+						}
+					}
+				}
+				.materialsNeeded{
+					ul{
+						margin-bottom: 30px;
+						li{
+							font-size: 26px;/*px*/
+							color: #333333;
 						}
 					}
 				}
