@@ -306,7 +306,7 @@ export function getBankInfos () {
  */
 export function getProReasons () {
   return axios({
-    url: 'v1/client/customers/cert/reasons/',
+    url: '/v1/client/customers/cert/reasons/',
     method: 'get'
   })
 }
@@ -319,5 +319,13 @@ export function getDict () {
   return axios({
     url: 'v1/common/dicts/',
     method: 'get'
+  })
+}
+
+export function getCertifyInfo (data) {
+  return axios({
+    url: 'v1/client/customers/cert/reshow/',
+    data,
+    method: 'post'
   })
 }
