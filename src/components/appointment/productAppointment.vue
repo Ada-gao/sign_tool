@@ -322,9 +322,8 @@
 <script type="text/ecmascript-6">
 import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput } from 'vux'
 import camera from '@/base/camera/camera'
-import { getCustomerMaterials } from '@/service/api/products'
 import { submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
-import { getProducts } from '@/service/api/products'
+import { getProducts, getCustomerMaterials } from '@/service/api/products'
 import { checkBankDetail } from '@/service/api/customers'
 import { formatDate } from '@/common/js/date'
 import thumbnails from '@/base/camera/thumbnails'
@@ -1052,7 +1051,6 @@ export default {
 				this.orderCloseSuc = false
 				this.showNameClick = false
 				this.firstStep = false
-				
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
 					this.client_id = this.appointmentList.client_id
@@ -1082,9 +1080,9 @@ export default {
 					this.remitAmount = this.appointmentList.remit_amount
 					getCustomerMaterials(this.product_id).then(res => {
 						if (this.appointmentList.client_type === '0') {
-							this.customerMaterials = res.data.data.filter(item => item.client_type == '0')
-						} else if (this.appointmentList.client_type === '1'){
-							this.customerMaterials = res.data.data.filter(item => item.client_type == '1')
+							this.customerMaterials = res.data.data.filter(item => item.client_type === '0')
+						} else if (this.appointmentList.client_type === '1') {
+							this.customerMaterials = res.data.data.filter(item => item.client_type === '1')
 						}
 					})
 					if (this.appointmentList.audit_contract_express === '0') {
@@ -2313,24 +2311,37 @@ export default {
 						}
 					}
 					.remitAmount{
-						.mint-cell-wrapper{
+						padding: 0 20px;
+						font-size: 30px;
+						color: #4A4A4A;
+						// .mint-cell-wrapper{
+						// 	color: #333;
+						// 	font-size: 26px;
+						// 	.mint-cell-title{
+						// 		.mint-cell-text{
+						// 			font-weight: 400;
+						// 		}
+						// 	}
+						// 	.mint-cell-value{
+						// 		.mint-field-core{
+						// 			width: 180px;
+						// 			height: 40px;
+						// 		}
+						// 		span{
+						// 			color: #333;
+						// 			font-size: 26px;
+						// 		}
+						// 	}
+						// }
+						input{
+							width: 180px;
+							height: 30px;
+							vertical-align: middle;
 							color: #333;
 							font-size: 26px;
-							.mint-cell-title{
-								.mint-cell-text{
-									font-weight: 400;
-								}
-							}
-							.mint-cell-value{
-								.mint-field-core{
-									width: 180px;
-									height: 40px;
-								}
-								span{
-									color: #333;
-									font-size: 26px;
-								}
-							}
+							border: none;
+							float: right;
+							text-align: right;
 						}
 					}
 				}

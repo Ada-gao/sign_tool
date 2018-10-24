@@ -17,7 +17,7 @@
           <mt-field style="display: inline-block" class="vertical-align" placeholder="请输入验证码" :disableClear="clearAll" v-model="num" @focus.native.capture="numChange"></mt-field>
           <button class="send right text-center" @click="getIdentifyingCode" v-show="show">发送验证码</button>
           <span class="count right text-center" v-show="!show">{{count}}s后重新发送</span>
-          <counter :timeCount='timeout'></counter>
+          <!-- <counter :timeCount='timeout'></counter> -->
         </div>
         <div class="error" >{{errorMsg}}</div>
       </div>
@@ -62,7 +62,7 @@ import { getVerificationCode, getAuthToken, getDict } from '@/service/api/login'
 // import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
 import { getStore } from '@/config/mUtils'
-import counter from '@/base/countDown/countDown'
+// import counter from '@/base/countDown/countDown'
 
 export default {
   data () {
@@ -94,8 +94,7 @@ export default {
     XHeader,
     XButton,
     XInput,
-    Group,
-    counter
+    Group
   },
   mounted () {
     this.$store.commit(types.TITLE, 'Your Repositories')

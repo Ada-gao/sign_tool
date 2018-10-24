@@ -184,13 +184,14 @@ export default {
       })
     },
     paintFixedWaterMark (workId) { // 在Vue中可改为ES6写法
+    console.log(workId.length)
      var material = document.querySelector('#material')
      var wrap = document.createElement('div') // 创建一个div
      wrap.className = 'fixed-water-mark' // 给div添加类名
      var wm = document.createElement('canvas') // 单个水印画布
      wm.id = 'watermark' // 给canvas标签添加id
-     wm.width = 150 // 设置canvas宽
-     wm.height = 80 // 设置canvas高
+     wm.width = workId.length * 18 // 设置canvas宽
+     wm.height = 150 // 设置canvas
      wm.style.display = 'none' // 设置画布隐藏属性
      wrap.appendChild(wm) // 在div中添加画布
      var rwm = document.createElement('canvas') // 重复绘制水印画布，用于整个页面
@@ -201,11 +202,11 @@ export default {
      // 绘制单个水印
      var cw = document.getElementById('watermark')
      var ctx = cw.getContext('2d')
-     ctx.clearRect(0, 0, 150, 80) // 清空矩形
+     ctx.clearRect(0, 0, workId.length * 18, 150) // 清空矩形
      ctx.font = '30px 黑体' // 设置字体
      ctx.rotate(-20 * Math.PI / 180) // 逆时针旋转20度
      ctx.fillStyle = 'rgba(100,100,100,0.2)' // 填充透明度为0.2的灰色
-     ctx.fillText(workId, -10, 60) // 填充内容为工号
+     ctx.fillText(workId, -40, 140) // 填充内容为工号
      // 在另一个画布上重复绘制单个水印
      var crw = document.getElementById('repeat-watermark')
      crw.width = window.innerWidth // 设置画布宽度等于窗口显示宽度
