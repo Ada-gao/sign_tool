@@ -10,7 +10,7 @@
             </div>
         </template>
       </check-list>
-      <ul v-if="!checkListShow">
+      <ul v-if="this.$route.params.mark === 2 && documentList.length !== 0">
         <li v-for="(item, index) in documentList" :key="index">
           <span class="title">{{index + 1}}.{{eyeShow ? item.name : item.file_name}}</span>
           <div class="eye" @click="get(item)" v-if="eyeShow">
@@ -18,6 +18,17 @@
           </div>
         </li>
       </ul>
+      <div class="customerList" v-if="this.$route.params.mark === 3 && documentList.length !== 0">
+        <button-tab>
+          <button-tab-item>普通投资者</button-tab-item>
+          <button-tab-item selected>专业投资者</button-tab-item>
+        </button-tab>
+        <ul>
+          <li v-for="(item, index) in documentList" :key="index">
+            <span class="title">{{index + 1}}.{{item.file_name}}</span>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="select" v-if="selectShow">
       <div :class="'my_checkbox' + (this.flag ? ' checked' : '' )">
@@ -50,7 +61,7 @@
 </template>
 <script type="text/ecmascript-6">
 import CheckList from '@/base/checkList/checkList'
-import { XHeader, XDialog, XInput, XButton } from 'vux'
+import { XHeader, XDialog, XInput, XButton, ButtonTab, ButtonTabItem } from 'vux'
 import { getTransaction, sendTrade, getProductFiles, getAnnoucement, getCustomerMaterials } from '@/service/api/products'
 import pdf from '@/base/report/pdf'
 import { Toast, MessageBox } from 'mint-ui'
@@ -63,6 +74,8 @@ export default {
     XDialog,
     XInput,
     XButton,
+    ButtonTab,
+    ButtonTabItem,
     pdf
   },
   data () {
@@ -90,7 +103,9 @@ export default {
       customerNameList: [],
       selectShow: true,
       checkListShow: true,
-      eyeShow: false
+      eyeShow: false,
+      clientNormal: [],
+      clientPro: []
     }
 	},
 	watch: {
@@ -251,10 +266,11 @@ export default {
           }
         })
       } else if (this.$route.params.mark === 3) {
-        this.title = '上传客户材料'
+        this.title = '客户所需上传材料'
         this.selectShow = false
         getCustomerMaterials(this.id).then(res => {
           this.documentList = res.data.data
+          console.log(this.documentList.filter(item => item.client_type === '1'))
           if (this.documentList.length !== 0) {
             this.checkListShow = false
           }
@@ -321,6 +337,29 @@ export default {
         position: absolute;
         right: 0;
         top: 0;
+      }
+    }
+    .customerList{
+      .vux-button-group{
+        height: 80px;
+        width: 390px;
+        margin: 0 auto;
+        .vux-button-tab-item{
+          height: 59px;
+          line-height: 59px;
+          flex: none;
+          width: 194px;
+          font-size: 30px;
+          color: #666666;
+          border-radius: 5px;
+        }
+        .vux-button-tab-item:after{
+          border: none;
+        }
+        .vux-button-group-current{
+          background: #BD9D62;
+          color: #fff;
+        }
       }
     }
 	}

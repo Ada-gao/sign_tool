@@ -10,7 +10,7 @@
         </div>
       </mt-button>
     </mt-header> -->
-    <x-header class="header" :left-options="{backText: ''}">活动详情
+    <x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">活动详情
       <i slot="right" class="iconfont mes" @click="showShareBtn">&#xe606;</i>
     </x-header>
     <div class="detail">
@@ -163,6 +163,9 @@
       }
     },
     methods: {
+      back () {
+        this.$router.push({name: 'activityList'})
+      },
       getData () {
         getActivityDet(this.activityId).then(res => {
           if (res.status === 200) {
@@ -178,7 +181,6 @@
       handleShare () {
         this.showShare1 = true
         this.i = 2
-        console.log(this.detail.qrcodeTargetUrl)
         this.drawAndShareImage(this.i)
       },
       hideBigImg () {
@@ -487,7 +489,7 @@
       }
     }
     .detail {
-      padding-top: 126px;
+      padding-top: 88px;
       line-height: 0;
       img{
         width: 100%;
