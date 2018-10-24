@@ -130,7 +130,8 @@
 								<mt-cell title="打款凭证" class="tit border-b-0">
 									<i class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('remitInfo')"></i>
 								</mt-cell>
-								<mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
+								<div v-show="remitInfoShow" class="remitAmount">打款金额(万): <input class="remitAmount" v-model="remitAmount" type="number" pattern="\d*" placeholder="输入打款金额"></div>
+								<!-- <mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额" ></mt-field> -->
 								<div class="camera" v-show="remitInfoShow">
 									<camera
 										 v-if="evidenceShow"
