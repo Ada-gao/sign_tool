@@ -144,7 +144,7 @@ export function tfCerIdToText (status) {
       params.disabled = false
       break
     case '4':
-      params.flag = '已过期'
+      params.flag = '已过期，请重新认证'
       params.disabled = false
       break
     default:

@@ -9,7 +9,7 @@
       </div>
       <div class="pop_validate">
         <span>验证码：</span>
-        <input class="pop_right" type="text" placeholder="请输入验证码" v-model="verificate.code">
+        <input maxlength="6" class="pop_right" type="text" placeholder="请输入验证码" v-model="verificate.code">
         <span class="send"
               @click="sendVerCode"
               v-if="!verificate.isTimeout">发送验证码</span>

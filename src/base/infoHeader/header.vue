@@ -12,7 +12,7 @@ import { XHeader } from 'vux'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
 import { qscan } from '@/service/api/activity'
-import { activityUrl } from '@/config/env'
+// import { activityUrl } from '@/config/env'
 import { toast } from '@/common/js/filter'
 import { getInfoList } from '@/service/api/aboutMe'
 
@@ -79,18 +79,22 @@ export default {
           // flashlight
           'flashlightEnable': 'true'
           // (支持手电筒, 默认false)
-        }, result => {
-          alert('result', result)
-          let url = window.decodeURI(JSON.parse(result).result).split(activityUrl)[1]
+        },
+        function (result) {
+//          console.log(JSON.parse(result).result)
+//          console.log(JSON.parse(result).result.split('activity/'))
+          let url = JSON.parse(result).result.split('activity/')[1]
           qscan(url).then(res => {
-            alert('已扫到')
-            // console.log('req', res)
+            console.log('res', res)
             if (res.data.code === 0) {
               toast('签到成功')
             }
+          }).catch(err => {
+            console.log('err', err)
           })
-        }, error => {
-          alert('err', error)// 原因
+        },
+        function (error) {
+          console.log(error)
         }
       )
     }

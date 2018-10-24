@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'development') {
     baseUrl = 'http://10.9.60.141:5000/api/'
     imgBaseUrl = 'http://10.9.60.141:5000/api/'
     appVersionUrl = 'http://10.9.60.141:9999/admin/'
-    activityUrl = 'http://10.9.70.231:9999/activity/'
+    activityUrl = 'http://203.156.231.251:9999/activity/'
     // baseUrl = 'https://crm-uat.suxianginvestment.com/starmap/api/'
     // imgBaseUrl = 'https://crm-uat.suxianginvestment.com/starmap/api/'
     // activityUrl = 'https://crm-uat.suxianginvestment.com/starmap/activity/'

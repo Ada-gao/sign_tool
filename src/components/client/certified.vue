@@ -110,7 +110,14 @@
 <script>
   import {XHeader} from 'vux'
   import {Popup, Radio} from 'mint-ui'
-  import {sendEmail, sendFiles, perfectInfos, checkCusomersDetail, getProReasons} from '@/service/api/customers'
+  import {
+    sendEmail,
+    sendFiles,
+    perfectInfos,
+    checkCusomersDetail,
+    getProReasons
+//    getCertifyInfo
+  } from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import {toast} from '@/common/js/filter'
   import camera from '@/base/clientCamera'
@@ -213,6 +220,15 @@
       perfectInfos({client_id: id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
+//          let params = {
+//            client_id: res.data.client_id,
+//            client_certification_id: res.data.client_certification_id
+//          }
+//          getCertifyInfo(params).then(result => {
+//            if (result.status === 200) {
+//              console.log('result', res.data)
+//            }
+//          })
 //          console.log('certified：' + this.uploadData.clientCertificationId)
         }
       })
