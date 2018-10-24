@@ -62,7 +62,7 @@
 			</div>
     </div>
 		<!-- 版本升级 -->
-    <div class="v_dialog" v-show="versionVisible">
+    <div class="v_dialog" v-if="versionVisible">
       <div class="v_main">
         <!-- <div class="bgImg">
           <p class="version_number">V{{versionData.versionName}}</p>
@@ -135,39 +135,27 @@ export default {
 	},
 	created () {
 		let _this = this
-		console.log(Vue.cordova.device)
-		if (Vue.cordova.device.platform === 'browser') {
-			// just for test
-			// alert('browser')
-			// let temPramas = {
-			// 	appPackage: 'com.suxianginvestment.crm01',
-			// 	platform: 'iOS',
-			// 	versionName: '1.0.0',
-			// 	versionCode: '1'
-			// }
-			// this.updateVersionApp(temPramas)
-			return
-		}
-		_this.devicePlatform = Vue.cordova.device.platform
-		/* global cordova */
-    cordova.getAppVersion.getVersionCode(function (version) {
-      _this.versionCode = version
-			let versionName = Vue.cordova.appInfo.version
-			// alert(versionName)
-			let params = {
-				appPackage: _this.appPackage,
-				platform: _this.devicePlatform,
-				versionName: versionName,
-				versionCode: _this.versionCode
-			}
-			// alert(JSON.stringify(params))
-			let closeData = JSON.parse(sessionStorage.getItem('closeVersions'))
-      if (closeData) {
-        this.versionVisible = false
-      } else {
-      	_this.updateVersionApp(params)
-			}
-    })
+		setTimeout(() => {
+			if (Vue.cordova.device.platform === 'browser') return
+			_this.devicePlatform = Vue.cordova.device.platform
+			/* global cordova */
+			cordova.getAppVersion.getVersionCode(function (version) {
+				_this.versionCode = version
+				let versionName = Vue.cordova.appInfo.version
+				let params = {
+					appPackage: _this.appPackage,
+					platform: _this.devicePlatform,
+					versionName: versionName,
+					versionCode: _this.versionCode
+				}
+				let closeData = JSON.parse(sessionStorage.getItem('closeVersions'))
+				if (closeData) {
+					this.versionVisible = false
+				} else {
+					_this.updateVersionApp(params)
+				}
+			})
+		}, 1000)
 	},
 	mounted () {
 		// this.email = this.$route.params.email
@@ -230,7 +218,6 @@ export default {
       // if (closeData) {
       //   this.versionVisible = false
       // } else {
-//				alert('start request...')
         getLatestVersion(params).then(res => {
 					// alert(JSON.stringify(res.data))
 					// localStorage.setItem('appVersion', JSON.stringify(res.data))

@@ -1,6 +1,6 @@
 <template>
   <div id="infoPage">
-    <x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">我的消息</x-header>
+    <x-header class="header" :left-options="{backText: '',preventGoBack: true}" @on-click-back="back()">我的消息</x-header>
     <div class="wrapper">
         <div class="no-info text-center" v-if="this.infoList.length === 0">
           <div class="warn absolute-center-xy">
@@ -57,12 +57,15 @@ export default {
   },
   methods: {
     back () {
-      console.log(window.localStorage.infoFlag)
-      this.$router.push({name: window.localStorage.infoFlag})
+      // console.log(window.localStorage.infoFlag)
+      this.$router.push({name: 'AboutMe'})
+      // this.$router.push({name: window.localStorage.infoFlag})
     },
     checkDetail (data) {
       this.$router.push({name: 'WriteNotes', params: {id: data}})
     }
+  },
+  created () {
   },
   mounted () {
     getInfoList().then(res => {
@@ -75,6 +78,7 @@ export default {
 <style lang="less">
 @import "../../common/style/variable.less";
 #infoPage{
+  height: 100%;
   .vux-header.header{
     background: @header-bg;
     .vux-header-left{

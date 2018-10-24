@@ -20,11 +20,16 @@
       </ul>
       <div class="customerList" v-if="this.$route.params.mark === 3 && documentList.length !== 0">
         <button-tab>
-          <button-tab-item>普通投资者</button-tab-item>
-          <button-tab-item selected>专业投资者</button-tab-item>
+          <button-tab-item :selected="this.selected" @on-item-click="clickIndex()">普通投资者</button-tab-item>
+          <button-tab-item :selected="!this.selected" @on-item-click="clickIndex()">专业投资者</button-tab-item>
         </button-tab>
-        <ul>
-          <li v-for="(item, index) in documentList" :key="index">
+        <ul v-if="this.selected">
+          <li v-for="(item, index) in clientNormal" :key="index">
+            <span class="title">{{index + 1}}.{{item.file_name}}</span>
+          </li>
+        </ul>
+        <ul v-if="!this.selected">
+          <li v-for="(item, index) in clientPro" :key="index">
             <span class="title">{{index + 1}}.{{item.file_name}}</span>
           </li>
         </ul>
@@ -105,7 +110,8 @@ export default {
       checkListShow: true,
       eyeShow: false,
       clientNormal: [],
-      clientPro: []
+      clientPro: [],
+      selected: true
     }
 	},
 	watch: {
@@ -130,6 +136,9 @@ export default {
     },
     back (id) {
 			this.$router.push({name: 'ProductDetail', params: {id: id}})
+    },
+    clickIndex () {
+      this.selected = !this.selected
     },
     sendEmail () {
       // this.dialogTableVisible = true
@@ -270,7 +279,8 @@ export default {
         this.selectShow = false
         getCustomerMaterials(this.id).then(res => {
           this.documentList = res.data.data
-          console.log(this.documentList.filter(item => item.client_type === '1'))
+          this.clientNormal = this.documentList.filter(item => item.client_type === '0')
+          this.clientPro = this.documentList.filter(item => item.client_type === '1')
           if (this.documentList.length !== 0) {
             this.checkListShow = false
           }
