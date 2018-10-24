@@ -22,13 +22,13 @@
       :title="title"
       :value="defineVal"
       class="def_mtcell"
-      :to="{name: 'clientList'}"
+      :to="{name: 'clientList', params: {id}}"
       is-link>
     </mt-cell>
   </div>
 </template>
 <script>
-  import { activityUrl } from '@/config/env'
+//  import { activityUrl } from '@/config/env'
   import { Qrcode, XHeader } from 'vux'
   import { signedData } from '@/service/api/activity'
   export default {
@@ -48,12 +48,12 @@
     },
     methods: {
       toLink () {
-        this.$router.push({name: 'clientSignedList'})
+        this.$router.push({name: 'clientSignedList', params: {id: this.id}})
       },
       getData () {
         signedData(this.id).then(res => {
           this.result = Object.assign({}, res.data)
-          this.value = activityUrl + this.result.qrcodeTargetUrl
+          this.value = this.result.qrcodeTargetUrl
           this.title = this.result.mobile ? (this.result.clientName + '（' + this.result.mobile + '）') : this.result.clientName
           this.defineVal = this.result.registrationType === 0 ? '自报名' : '代报名'
           console.log(this.value, this.title)
@@ -61,7 +61,8 @@
       }
     },
     mounted () {
-      this.id = this.$route.params.id
+      console.log('route', this.$route.params)
+      this.id = this.$route.params.clientId
       this.getData()
     }
   }

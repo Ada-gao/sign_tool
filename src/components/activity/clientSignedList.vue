@@ -26,7 +26,7 @@
       </div>
       <div class="space"></div>
       <ul class="signed_ul">
-        <li v-for="item in list" :key="item.id" @click="handleRoute(item.activityClientId)">
+        <li v-for="item in list" :key="item.id" @click="handleRoute(item.activityId, item.activityClientId)">
           <div class="left">
             {{item.clientName}}（{{item.mobile}}）
           </div>
@@ -74,8 +74,8 @@
           }
         })
       },
-      handleRoute (id) {
-        this.$router.push({name: 'clientSigned', params: {id}})
+      handleRoute (activityId, clientId) {
+        this.$router.push({name: 'clientSigned', params: {activityId, clientId}})
       }
     },
     mounted () {

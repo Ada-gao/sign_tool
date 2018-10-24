@@ -30,7 +30,7 @@ export default {
 		infoList () {
       this.$router.push({name: 'MyInfo'})
 		},
-		barcodescanner () {
+    barcodescanner () {
       if (Vue.cordova.device.platform !== 'iOS' && Vue.cordova.device.platform !== 'Android') {
         Notifier.alert('请在移动设备上扫描二维码')
         return
@@ -80,21 +80,23 @@ export default {
           'flashlightEnable': 'true'
           // (支持手电筒, 默认false)
         }, result => {
+          alert('result', result)
           let url = window.decodeURI(JSON.parse(result).result).split(activityUrl)[1]
           qscan(url).then(res => {
+            alert('已扫到')
             // console.log('req', res)
             if (res.data.code === 0) {
               toast('签到成功')
             }
           })
         }, error => {
-          console.log(error)// 原因
+          alert('err', error)// 原因
         }
       )
     }
 	},
 	mounted () {
-    window.localStorage.setItem('infoFlag', this.flag)
+    // window.localStorage.setItem('infoFlag', this.flag)
 		this.$nextTick(function () {
 			getInfoList().then(res => {
 				let noCheckInfo = res.data.filter(item => item.is_read === '0')

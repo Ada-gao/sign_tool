@@ -154,10 +154,10 @@
           <div class="doc" v-if="item.after_buy_file === '1'" @click="toProductReport(id)">投后报告<span class="iconfont right">&#xe8d5;</span></div>
         </div>
 			  <div class="space"></div>
-        <div class="reservation" v-if="showBtn">
+        <div class="reservation-btn" v-if="showBtn">
           <mt-button @click="toAppointment">预约</mt-button>
         </div>
-        <div class="reservation" v-if="item.product_status == 2 && item.is_pause === '1'">
+        <div class="reservation-btn" v-if="item.product_status == 2 && item.is_pause === '1'">
           <mt-button disabled>预约</mt-button>
         </div>
         <!-- <div class="space32"></div> -->
@@ -557,7 +557,8 @@ export default {
         }
       }
     }
-    .reservation{
+    .reservation-btn{
+      margin-bottom: 32px;
       .mint-button.mint-button--default{
         width: 670px;
       }

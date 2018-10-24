@@ -372,7 +372,7 @@ const router = new Router({
       }
     },
     {
-      path: '/clientSigned/:id',
+      path: '/clientSigned/:activityId/:clientId',
       name: 'clientSigned',
       component: clientSigned,
       meta: {

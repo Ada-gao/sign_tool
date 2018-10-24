@@ -360,7 +360,7 @@
           this.data.id_type = tfIdtype(this.data.id_type)
           setStore('selfInfos', res.data)
           this.data.asset_amount = this.data.asset_amount || 0
-          this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
+//          this.data.create_time = new Date(this.data.create_time).toLocaleDateString().split('/').join('.')
           this.clientId = res.data.client_id
           this.clientName = res.data.name
           this.clientType = res.data.client_type

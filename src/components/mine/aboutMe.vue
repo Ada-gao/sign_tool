@@ -11,8 +11,8 @@
     <div class="wrapper">
       <div class="top">
         <div class="img text-center">
-          <img src="static/img/男.png" alt="" v-if="this.gender === '0'">
-          <img src="static/img/女.png" alt="" v-else>
+          <img :src="this.gender === '0' ? 'static/img/男.png' : 'static/img/女.png'" alt="">
+          <!-- <img src="static/img/女.png" alt="" v-else> -->
         </div>
         <div class="right">
           <p>{{this.name}}</p>
@@ -22,7 +22,7 @@
       </div>
       <div class="space"></div>
       <group class="list">
-        <cell title="我的消息" :is-link='isLink' @click.native="toInfoList">
+        <cell title="我的消息" :link="{name: 'MyInfo'}">
           <div class="num text-center" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</div>
 				  <i slot="icon" class="iconfont icon vertical-align">&#xe607;</i>
         </cell>
@@ -109,11 +109,11 @@
 import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, Qrcode } from 'vux'
 import { removeStore } from '@/config/mUtils'
 import Vue from 'vue'
-import Notifier from '@/common/js/Notifier'
+// import Notifier from '@/common/js/Notifier'
 import { getShare, getInfoList } from '@/service/api/aboutMe'
-import { qscan } from '@/service/api/activity'
-import { activityUrl } from '@/config/env'
-import { toast } from '@/common/js/filter'
+// import { qscan } from '@/service/api/activity'
+// import { activityUrl } from '@/config/env'
+// import { toast } from '@/common/js/filter'
 import commonHeader from '@/base/infoHeader/header'
 import { MessageBox } from 'mint-ui'
 
@@ -191,8 +191,8 @@ export default {
     //   // this.dialogTableVisible = false
     // },
     toInfoList () {
-      window.localStorage.setItem('infoFlag', 'AboutMe')
-      this.$router.push({name: 'MyInfo'})
+      // window.localStorage.setItem('infoFlag', 'AboutMe')
+      // this.$router.push({name: 'MyInfo'})
     },
     showQrcode () {
       this.showMyQrcode = true
@@ -302,72 +302,13 @@ export default {
         console.log(failReason)
       }, args)
     },
-    barcodescanner () {
-      if (Vue.cordova.device.platform !== 'iOS' && Vue.cordova.device.platform !== 'Android') {
-        Notifier.alert('请在移动设备上扫描二维码')
-        return
-      }
-      if (Vue.cordova.device.isVirtual) {
-        Notifier.alert('不支持虚拟设备扫描二维码')
-        return
-      }
-      Vue.cordova.scanner.scan(
-        {// 全部参数
-          'baseColor': '#4e8dec',
-          // (边框、按钮、导航栏等背景颜色，优先级最低，单独设置可覆盖)
-
-          // bar
-          'title': '我是标题',
-          // (标题文字)
-          'barColor': '4e8dec',
-          // (导航栏颜色)
-          'statusBarColor': 'white',
-          // (状态栏字体颜色 white为白，不填为默认)
-
-          // describe string
-          'describe': '我是提示语',
-          // (提示用户文字，支持 \n 换行，多行文字需注意小屏幕设备适配问题)
-          'describeFontSize': '15',
-          // (字体大小)
-          'describeLineSpacing': '8',
-          // (行间距)
-          'describeColor': 'ffffff',
-          // (文字颜色)
-
-          // scan border
-          'borderColor': '4e8dec',
-          // (扫描框颜色)
-          'borderScale': '0.6',
-          // (边框大小，0.1 ~ 1)
-
-          // choose photo button
-          'choosePhotoEnable': 'true',
-          // (支持相册选取, 默认false)
-          'choosePhotoBtnTitle': '相册',
-          // (选取按钮文字)
-          'choosePhotoBtnColor': 'BD9D62',
-          // (选取按钮颜色)
-
-          // flashlight
-          'flashlightEnable': 'true'
-          // (支持手电筒, 默认false)
-        }, result => {
-          let url = window.decodeURI(JSON.parse(result).result).split(activityUrl)[1]
-          qscan(url).then(res => {
-            // console.log('req', res)
-            if (res.data.code === 0) {
-              toast('签到成功')
-            }
-          })
-        }, error => {
-          console.log(error)// 原因
-        }
-      )
-    },
     infoList () {
       this.$router.push({name: 'MyInfo'})
     }
   },
+  // created () {
+  //   window.scroll(0, 0)
+  // },
   mounted () {
     this.qheight = 'height:' + window.innerHeight + 'px'
     let data = JSON.parse(window.localStorage.data)

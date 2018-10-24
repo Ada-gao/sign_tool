@@ -36,7 +36,7 @@
               <span class="date_tit">认证原因</span>
             <div class="date_box">
               <div class="date_cont">
-                <span class="date_time">{{reason}}</span>
+                <span :class="{'date_time': true, 'date_time1': changeClass}">{{reason}}</span>
                 <i class="iconfont right_icon">&#xe8d5;</i>
               </div>
             </div>
@@ -123,6 +123,7 @@
     },
     data () {
       return {
+        changeClass: false,
         showSubmit: {
           isShow: false,
           isSuccess: 0
@@ -240,6 +241,7 @@
       ensureCerCode (val) {
         this.reason = this.apply_reason
         this.reason_id = this.apply_reason_id
+        this.changeClass = true
         this.showCerCode = false
       },
       onValuesChange (picker, values) {
@@ -606,7 +608,8 @@
                 /*border-radius: 8px;*/
                 /*background-color: #f3f3f3;*/
               }
-              span.date_time {
+              span.date_time,
+              span.date_time1 {
 			          font-family: @font-family-M;
                 min-height: 40px;
                 line-height: 40px;
@@ -617,9 +620,14 @@
                 /*text-overflow: ellipsis;*/
                 display: inline-block;
                 /*white-space: nowrap;*/
-                text-align: right;
                 font-size: 30px;
                 color: @font-color-4A;
+              }
+              span.date_time {
+                text-align: right;
+              }
+              span.date_time1 {
+                text-align: left;
               }
               i {
                 position: absolute;
