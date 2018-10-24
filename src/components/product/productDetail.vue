@@ -170,7 +170,7 @@
 <script type="text/ecmascript-6">
 import { XHeader, Group, CellBox, Cell } from 'vux'
 import { getProductDetail } from '@/service/api/products'
-import {twoDecimals} from '@/common/js/filter'
+// import {twoDecimals} from '@/common/js/filter'
 export default {
   data () {
     return {
@@ -281,6 +281,9 @@ export default {
       $marqueeContent.style.animationDuration = onceTime + 'ms'
     }
   },
+  created () {
+    window.scroll(0, 0)
+  },
   mounted () {
     this.id = this.$route.params.id
     this.getList(this.id)
@@ -305,6 +308,7 @@ export default {
 <style lang="less">
 @import "../../common/style/variable.less";
 #detailPage{
+  height: 100%;
   .vux-header.header{
     background: #D4B67F;
     .vux-header-left{
@@ -318,7 +322,7 @@ export default {
   }
   .wrapper {
     // background: #F5F5F5;
-    padding-bottom: 0;
+    // padding-bottom: 0;
     // padding-top: 126px;
     .rate-top {
       // text-align: center;

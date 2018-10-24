@@ -2,17 +2,14 @@
   <div id="app">
     <!-- <tab-bottom v-show="$route.meta.navShow"></tab-bottom> -->
     <transition :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
-      <keep-alive>
-        <router-view v-if="$route.meta.keepAlive">
-          <!-- 这里是会被缓存的视图组件 -->
-        </router-view>
+      <keep-alive :include="includeComponent">
+        <router-view/>
       </keep-alive>
     </transition>
-    <transition :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
+    <!-- <transition :enter-active-class="enterAnimate" :leave-active-class="leaveAnimate">
       <router-view v-if="!$route.meta.keepAlive">
-        <!-- 这里是不被缓存的视图组件 -->
       </router-view>
-    </transition>
+    </transition> -->
   </div>
 </template>
 
@@ -29,13 +26,20 @@ export default {
       enterAnimate: '', // 页面进入动效
       leaveAnimate: '', // 页面离开动效
       firstPage: ['/HomePage', '/reservationList', '/customerList', '/aboutMe'],
-      secondPage: ['/productDetail', '/productAppointment', '/customerManagement', '/myInfo', '/remark', '/myVersion']
+      secondPage: ['/productDetail', '/productAppointment', '/customerManagement', '/myInfo', '/remark', '/myVersion'],
+      includeComponent: 'ProductAppointment'
     }
   },
   watch: {
     $route (to, from) {
       console.log(from.path)
       console.log(to.path)
+      // keep-alive include
+      if (to.name === 'HomePage') {
+        this.includeComponent = ''
+      } else {
+        this.includeComponent = 'ProductAppointment'
+      }
       if (to.path.includes('HomePage')) {
         Vue.cordova.statusBar && Vue.cordova.statusBar.styleDefault()
         console.log(Vue.cordova.statusBar)
@@ -62,13 +66,16 @@ export default {
       // 同一级页面无需设置过渡效果
       const fromPath = '/' + from.path.split('/')[1]
       const toPath = '/' + to.path.split('/')[1]
+      console.log('from: ' + fromPath, 'to: ' + toPath)
       if (this.firstPage.includes(toPath) && this.firstPage.includes(fromPath)) {
         this.enterAnimate = ''
         this.leaveAnimate = ''
       } else if (this.firstPage.includes(fromPath) && this.secondPage.includes(toPath)) {
+        console.log('从一级页面到二级页面')
         this.enterAnimate = 'animated fadeInRight'
         this.leaveAnimate = 'animated fadeOutLeft'
       } else if (this.secondPage.includes(fromPath) && this.firstPage.includes(toPath)) {
+        console.log('从二级页面到一级页面')
         this.enterAnimate = 'animated fadeInLeft'
         this.leaveAnimate = 'animated fadeOutRight'
       } else {
@@ -92,6 +99,6 @@ export default {
   /*text-align: center;*/
   // color: #666;
   height: 100%;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 }
 </style>

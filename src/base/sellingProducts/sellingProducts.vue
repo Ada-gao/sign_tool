@@ -73,7 +73,7 @@
 
 <script>
   import { XHeader, Group, CellBox, Flexbox, FlexboxItem } from 'vux'
-  import {twoDecimals} from '@/common/js/filter'
+  // import {twoDecimals} from '@/common/js/filter'
   export default {
     name: 'SellingProducts',
     components: {
@@ -140,7 +140,7 @@
       }
     },
     mounted () {
-      console.log(twoDecimals(100))
+      // console.log(twoDecimals(100))
       if (this.$route.name === 'HomePage') {
         // console.log('homePage')
         // console.log(this.childData)

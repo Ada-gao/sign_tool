@@ -202,7 +202,7 @@ export default {
 	height: 100%;
 	font-family: PingFangSC-Regular;
 	.wrapper{
-		padding-bottom: 96px;
+		padding-bottom: 96px!important;
 		.mint-navbar{
 			// height: 90%;
 			.mint-tab-item{

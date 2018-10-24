@@ -495,6 +495,7 @@
     font-family: @font-family-R;
     font-size: 30px;
     color: #4A4A4A;
+    height: 100%;
     .cell_right {
       i {
         font-size: 30px;
