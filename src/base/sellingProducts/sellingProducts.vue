@@ -211,7 +211,7 @@
       display: inline-block;
       font-family: @font-family-M;
       .float{
-        font-size: 60px;/*px*/
+        font-size: 50px;/*px*/
         color: #FF2E24;
       }
       .number{

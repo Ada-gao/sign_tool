@@ -184,7 +184,6 @@ export default {
       })
     },
     paintFixedWaterMark (workId) { // 在Vue中可改为ES6写法
-    console.log(workId.length)
      var material = document.querySelector('#material')
      var wrap = document.createElement('div') // 创建一个div
      wrap.className = 'fixed-water-mark' // 给div添加类名

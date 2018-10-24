@@ -893,13 +893,16 @@ export default {
 			},
 			imageHandler2 (data) {
 				this.materialSrc = data
+				this.materialsUrls = data
 			},
 			imageHandler3 (data) {
 				this.refundSrc = data
+				this.refundUrls = data
 			},
 			imageHandler4 (data) {
 				// console.log(data)
 				this.evidenceUrl = data
+				this.evidenceUrls = data
 			},
 			refund () {
 				if (this.refundSrc.length === 0) {
