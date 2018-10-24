@@ -181,7 +181,6 @@
       handleShare () {
         this.showShare1 = true
         this.i = 2
-        console.log(this.detail.qrcodeTargetUrl)
         this.drawAndShareImage(this.i)
       },
       hideBigImg () {
@@ -491,7 +490,7 @@
       }
     }
     .detail {
-      padding-top: 126px;
+      padding-top: 88px;
       line-height: 0;
       img{
         width: 100%;

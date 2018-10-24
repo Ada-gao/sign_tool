@@ -98,8 +98,8 @@
       }
     }
     .activity_cont {
-      // padding-top: 88px;
-      padding-top: 126px;
+      padding-top: 88px;
+      // padding-top: 126px;
       background-color: @new-bg-color;
       li {
         height: 488px;

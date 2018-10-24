@@ -228,7 +228,7 @@
       },
       handlerClick (id, name) {
         this.signedName = name
-        MessageBox.confirm('', `确定给${name}报名活动吗？`).then(action => {
+        MessageBox.confirm(`确定给${name}报名活动吗？`, '提交确认').then(action => {
           let params = {
             clientId: id,
             activityId: this.activityId
@@ -243,6 +243,7 @@
       },
       continueSigned () {
         this.popupVisible = false
+        location.reload()
       },
       onItemClick (index) {
         this.idx = index
@@ -331,6 +332,9 @@
     font-family: @font-family-R;
     font-size: @font-size-thirtyT;/*px*/
     color: #4A4A4A;
+    img{
+      width: 283px;
+    }
     .confirm_cont{
       margin: 25px 0;
     }
@@ -411,7 +415,7 @@
   //   }
   // }
   .wrapper{
-    padding-top: 117px;
+    padding-top: 88px;
   }
   .tabbar {
     height: 88px;
