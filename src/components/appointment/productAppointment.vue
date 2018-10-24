@@ -324,6 +324,7 @@ import thumbnails from '@/base/camera/thumbnails'
 import { MessageBox, Toast } from 'mint-ui'
 
 export default {
+	name: 'ProductAppointment',
 	data () {
 		return {
 		  itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
@@ -1131,16 +1132,18 @@ export default {
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 						let arr = []
 						console.log('localstorage')
-						getProducts().then(res => {
-							res.data.map((item, index) => {
-								item.products.map((info, index) => {
-									arr.push(info)
-								})
-							})
-							let item = arr.find(item => item.product_id === this.product_id)
-							this.minimalAmount = item.minimal_amount
-							this.collectionAmount = item.collection_amount
-						})
+						// getProducts().then(res => {
+						// 	res.data.map((item, index) => {
+						// 		item.products.map((info, index) => {
+						// 			arr.push(info)
+						// 		})
+						// 	})
+						// 	let item = arr.find(item => item.product_id === this.product_id)
+						// 	this.minimalAmount = item.minimal_amount
+						// 	this.collectionAmount = item.collection_amount
+						// })
+						this.minimalAmount = localStorage.getItem('minimalAmount')
+						this.collectionAmount = localStorage.getItem('collectionAmount')
 						this.name = this.appointmentList.client_name
 						this.cMob = this.appointmentList.client_mobile
 						this.money = this.appointmentList.appointment_amount
@@ -1681,6 +1684,7 @@ export default {
 	color: @font-color-9E!important;
 }
 .productAppointment{
+	height: 100%;
 	font-family: PingFangSC-Regular;
 		.spaceBack{
 			position: fixed;

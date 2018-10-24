@@ -17,7 +17,6 @@
           <mt-field style="display: inline-block" class="vertical-align" placeholder="请输入验证码" :disableClear="clearAll" v-model="num" @focus.native.capture="numChange"></mt-field>
           <button class="send right text-center" @click="getIdentifyingCode" v-show="show">发送验证码</button>
           <span class="count right text-center" v-show="!show">{{count}}s后重新发送</span>
-          <counter :timeCount='timeout'></counter>
         </div>
         <div class="error" >{{errorMsg}}</div>
       </div>
@@ -62,7 +61,6 @@ import { getVerificationCode, getAuthToken, getDict } from '@/service/api/login'
 // import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
 import { getStore } from '@/config/mUtils'
-import counter from '@/base/countDown/countDown'
 
 export default {
   data () {
@@ -85,7 +83,9 @@ export default {
       disabledSend: true,
       registrationId: '',
       clearAll: true,
-      timeout: 60
+      timeout: 60,
+      tempCount: 0,
+      leavePageNum: 0
       // telTip: false
       // start: false
     }
@@ -94,8 +94,9 @@ export default {
     XHeader,
     XButton,
     XInput,
-    Group,
-    counter
+    Group
+  },
+  created () {
   },
   mounted () {
     this.$store.commit(types.TITLE, 'Your Repositories')
@@ -105,6 +106,40 @@ export default {
     } else if (!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) === true) {
       this.platform = 'iOS'
     }
+    sessionStorage.setItem('leavePageNum', 0)
+    // 添加监听器，在title里显示状态变化
+    let leaveCount = 0
+    // let leavePageNum = this.leavePageNum
+    if (this.show) return
+    document.addEventListener('visibilitychange', function () {
+      var tempTimer = null
+      let leavePageNum = sessionStorage.getItem('leavePageNum') - 0
+      leavePageNum++
+      sessionStorage.setItem('leavePageNum', leavePageNum)
+      // document.title = document[state]
+      // console.log('leavePageNum: ' + leavePageNum)
+      if (leavePageNum % 2 === 0) {
+        console.log('clear ...')
+        clearInterval(tempTimer)
+      } else {
+        this.leavePageNum = leavePageNum
+        this.tempCount = leaveCount
+        console.log(this.tempCount)
+      }
+      if (tempTimer) {
+        console.log('has timer')
+        clearInterval(tempTimer)
+      }
+      tempTimer = setInterval(() => {
+        leaveCount++
+        console.log('leaveCount: ' + leaveCount)
+        if (leaveCount > 10) {
+          console.log('no no no')
+          clearInterval(tempTimer)
+          tempTimer = null
+        }
+      }, 1000)
+    }, false)
   },
   methods: {
     touchScreen () {
@@ -149,7 +184,7 @@ export default {
         this.logIn = false
       }
     },
-     nextStep () {
+    nextStep () {
       console.log('click...')
       this.$store.state.token = '100'
       // window.JPush.getRegistrationID((id) => {
@@ -218,19 +253,14 @@ export default {
     getIdentifyingCode () {
       if (!this.disabledSend) return
       const TIME_COUNT = 60
+      this.count = this.count - this.tempCount
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false
         this.timer = setInterval(() => {
           --this.count
-          // if (this.count === 0) {
-          //   this.show = true
-          //   this.timer = null
-          //   clearInterval(this.timer)
-          // }
           if (this.count > 0) {
             this.count--
-            console.log(this.count)
           } else {
             this.show = true
             this.timer = null
@@ -260,7 +290,7 @@ export default {
             this.msgTip = ''
           }, 3000)
         } else {
-          console.log('数据库查看验证码')
+          // console.log('数据库查看验证码')
         }
       })
       .catch(err => {

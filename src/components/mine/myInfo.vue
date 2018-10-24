@@ -58,14 +58,12 @@ export default {
   methods: {
     back () {
       // console.log(window.localStorage.infoFlag)
-      this.$router.push({name: 'AboutMe'})
-      // this.$router.push({name: window.localStorage.infoFlag})
+      // this.$router.push({name: 'AboutMe'})
+      this.$router.push({name: window.localStorage.infoFlag})
     },
     checkDetail (data) {
       this.$router.push({name: 'WriteNotes', params: {id: data}})
     }
-  },
-  created () {
   },
   mounted () {
     getInfoList().then(res => {

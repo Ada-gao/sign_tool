@@ -62,26 +62,23 @@
 			</div>
     </div>
 		<!-- 版本升级 -->
-    <div class="v_dialog" v-if="versionVisible">
-      <div class="v_main">
-        <!-- <div class="bgImg">
-          <p class="version_number">V{{versionData.versionName}}</p>
-        </div> -->
-        <img class="img" src="static/img/version.png" alt=""/>
-        <div class="content">
-          <div class="v_title">【新版本特性】</div>
-          <pre class="v_list" v-html="versionData.promptText">
-          </pre>
-          <a :href="versionData.packageUrl" class="ves_buttom">立即升级</a>
-        </div>
-        <i class="iconfont icon-guanbi" v-if="versionClose" @click="closeVersion"></i>
+		<x-dialog v-model="versionVisible" class="dialog-demo submitDialog v_main">
+      <!-- <div class="bgImg">
+        <p class="version_number">V{{versionData.versionName}}</p>
+      </div> -->
+			<img class="img" src="static/img/version.png" alt=""/>
+      <div class="content">
+        <div class="v_title">【新版本特性】</div>
+        <pre class="v_list" v-html="versionData.promptText"></pre>
+        <a :href="versionData.packageUrl" class="ves_buttom">立即升级</a>
       </div>
-    </div>
+      <i class="iconfont icon-guanbi" v-if="versionClose" @click="closeVersion"></i>
+		</x-dialog>
   </div>
 </template>
 
 <script>
-import { XHeader, Group, CellBox, Cell } from 'vux'
+import { XHeader, Group, CellBox, Cell, XDialog } from 'vux'
 import SellingProducts from '@/base/sellingProducts/sellingProducts'
 import commonHeader from '@/base/infoHeader/header'
 import { getProducts } from '@/service/api/products'
@@ -98,7 +95,8 @@ export default {
 		CellBox,
 		Cell,
 		SellingProducts,
-		commonHeader
+		commonHeader,
+		XDialog
 	},
   data () {
     return {
@@ -136,17 +134,16 @@ export default {
 	created () {
 		let _this = this
 		setTimeout(() => {
-			if (Vue.cordova.device.platform === 'browser') return
 			_this.devicePlatform = Vue.cordova.device.platform
-			/* global cordova */
-			cordova.getAppVersion.getVersionCode(function (version) {
-				_this.versionCode = version
-				let versionName = Vue.cordova.appInfo.version
+			if (_this.devicePlatform === 'browser') return
+			// /* global cordova */
+			// cordova.getAppVersion.getVersionCode(function (version) {
+			// })
 				let params = {
 					appPackage: _this.appPackage,
 					platform: _this.devicePlatform,
-					versionName: versionName,
-					versionCode: _this.versionCode
+					versionName: Vue.cordova.appInfo.version,
+					versionCode: Vue.cordova.appInfo.build
 				}
 				let closeData = JSON.parse(sessionStorage.getItem('closeVersions'))
 				if (closeData) {
@@ -154,7 +151,6 @@ export default {
 				} else {
 					_this.updateVersionApp(params)
 				}
-			})
 		}, 1000)
 	},
 	mounted () {
@@ -406,14 +402,48 @@ export default {
 	// .icon-finance-4{
 	// 	color: orange;
 	// }
-	.v_dialog {
-    width: 100%;
-    height: 100%;
-    background-color: #353535c7;
-    position: absolute;
-		z-index: 999;
-		top: 0;
-    .iconfont {
+	.vux-x-dialog.submitDialog{
+		.weui-dialog{
+			width: 618px;
+			height: 680px;
+			overflow: visible;
+		}
+    .img {
+      width: 100%;
+      height: 230px;
+      border-radius: 8px 8px 0 0;
+    }
+		.content {
+      width: 477px;
+			margin: 0 auto;
+      .v_title {
+        color: #505050;
+				font-size: 32px;
+				margin-bottom: 20px;
+      }
+      .v_list {
+				color: #505050;
+        font-size: 26px;
+        white-space: pre-wrap;
+        overflow-wrap: break-word;
+        width: 93%;
+        margin: 0 auto;
+				font-family: -webkit-body;
+				line-height: 37px;
+      }
+      .ves_buttom {
+        background: linear-gradient(to right, #dfc189, #BD9D62);
+        color: #fff;
+        border-radius: 50px;
+        margin-top: 43px;
+        display: block;
+        text-align: center;
+        height: 90px;
+				line-height: 90px;
+				font-size: 36px;
+      }
+		}
+		.iconfont {
       position: absolute;
       bottom: -20%;
       left: 50%;
@@ -421,6 +451,8 @@ export default {
       color: #fff;
       font-size: 60px;
     }
+	}
+	.v_dialog {
     .v_main {
       width: 618px;
       // height: 650px;
@@ -450,41 +482,6 @@ export default {
           left: 41%;
 					border-radius: 6px;
 					font-size: 26px;
-        }
-      }
-      .img {
-        width: 100%;
-        height: 230px;
-        border-radius: 8px 8px 0 0;
-      }
-      .content {
-        width: 477px;
-				margin: 0 auto;
-        .v_title {
-          color: #505050;
-					font-size: 32px;
-					margin-bottom: 20px;
-        }
-        .v_list {
-					color: #505050;
-          font-size: 26px;
-          white-space: pre-wrap;
-          overflow-wrap: break-word;
-          width: 93%;
-          margin: 0 auto;
-					font-family: -webkit-body;
-					line-height: 37px;
-        }
-        .ves_buttom {
-          background: linear-gradient(to right, #dfc189, #BD9D62);
-          color: #fff;
-          border-radius: 50px;
-          margin-top: 43px;
-          display: block;
-          text-align: center;
-          height: 90px;
-					line-height: 90px;
-					font-size: 36px;
         }
       }
     }

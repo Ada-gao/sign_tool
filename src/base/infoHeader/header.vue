@@ -96,7 +96,7 @@ export default {
     }
 	},
 	mounted () {
-    // window.localStorage.setItem('infoFlag', this.flag)
+    window.localStorage.setItem('infoFlag', this.flag)
 		this.$nextTick(function () {
 			getInfoList().then(res => {
 				let noCheckInfo = res.data.filter(item => item.is_read === '0')
