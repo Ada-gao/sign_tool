@@ -215,6 +215,9 @@ export function tfIdtype (status) {
     case '4':
       text = '港澳通行证'
       break
+    case '5':
+      text = '其他'
+      break
   }
   return text
 }

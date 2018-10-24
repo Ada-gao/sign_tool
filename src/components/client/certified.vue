@@ -115,8 +115,8 @@
     sendFiles,
     perfectInfos,
     checkCusomersDetail,
-    getProReasons
-//    getCertifyInfo
+    getProReasons,
+    getCertifyInfo
   } from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import {toast} from '@/common/js/filter'
@@ -220,15 +220,15 @@
       perfectInfos({client_id: id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
-//          let params = {
-//            client_id: res.data.client_id,
-//            client_certification_id: res.data.client_certification_id
-//          }
-//          getCertifyInfo(params).then(result => {
-//            if (result.status === 200) {
-//              console.log('result', res.data)
-//            }
-//          })
+          let params = {
+            client_id: res.data.client_id,
+            client_certification_id: res.data.client_certification_id
+          }
+          getCertifyInfo(params).then(result => {
+            if (result.status === 200) {
+              console.log('result', res.data)
+            }
+          })
 //          console.log('certified：' + this.uploadData.clientCertificationId)
         }
       })
@@ -384,7 +384,7 @@
     top: 35%;
     border-radius: 8px;
     width: 74.67%;
-    padding-top: 34px;
+    padding-top: 60px;
     font-family: @font-family-R;
     font-size: 26px;
     color: #4A4A4A;
@@ -415,7 +415,7 @@
       }
       span:nth-of-type(1) {
         color: #9B9B9B;
-        border-right: 1px solid #9b9b9b;/*no*/
+        border-right: 1px solid #D2D3D5;/*no*/
         box-sizing: border-box;
       }
       span:nth-of-type(2) {

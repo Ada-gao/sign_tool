@@ -259,7 +259,7 @@
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
 //  import {idcardValidate, toast} from '@/common/js/filter'
-  import {toast} from '@/common/js/filter'
+  import {toast, tfIdtype} from '@/common/js/filter'
 
   export default {
     name: 'PerfectInfos',
@@ -365,9 +365,11 @@
       console.log('form', this.form)
       this.isSubmit = this.$route.params.isSubmit
       let perInfos = JSON.parse(getStore('perInfos'))
+      this.idSymbol = this.form.id_type > 1 ? 0 : 1
       if (this.form.id_type < 0) {
         this.form.id_type = '请选择'
       }
+      this.form.id_type = this.form.id_type ? tfIdtype(this.form.id_type) : ''
       this.id_start_date = this.form.id_start_date || ''
       this.id_expiration = this.form.id_expiration || ''
       this.birthday = this.form.birthday || ''
