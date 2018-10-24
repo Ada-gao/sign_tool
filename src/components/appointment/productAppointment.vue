@@ -111,7 +111,7 @@
 											@imgHandler="imageHandler1"
 											:imageSrc="cardUrl"
 											:isFromAppointment="fromAppointment"
-              								:isFromBank="fromBankCard"
+              				:isFromBank="fromBankCard"
 											@showPopup="showPopup"
 											@hidePopup="hidePopup"
 											v-if="cameraShow">
@@ -134,7 +134,7 @@
 								<!-- <mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额" ></mt-field> -->
 								<div class="camera" v-show="remitInfoShow">
 									<camera
-										 v-if="evidenceShow"
+										v-if="evidenceShow"
 										:popupVisible="popupVisible"
 										@imgHandler="imageHandler4"
 										:imageArr='evidenceUrls'
