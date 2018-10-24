@@ -144,7 +144,7 @@ export function tfCerIdToText (status) {
       params.disabled = false
       break
     case '4':
-      params.flag = '已过期'
+      params.flag = '已过期，请重新认证'
       params.disabled = false
       break
     default:
@@ -214,6 +214,9 @@ export function tfIdtype (status) {
       break
     case '4':
       text = '港澳通行证'
+      break
+    case '5':
+      text = '其他'
       break
   }
   return text

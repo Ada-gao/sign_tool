@@ -22,7 +22,7 @@
       :title="title"
       :value="defineVal"
       class="def_mtcell"
-      :to="{name: 'clientList', params: {id}}"
+      :to="{name: 'clientList', params: {id: activityId}}"
       is-link>
     </mt-cell>
   </div>
@@ -40,6 +40,7 @@
       return {
         value: '',
         defineVal: '',
+        activityId: '',
         size: 500,
         id: null,
         result: null,
@@ -48,11 +49,12 @@
     },
     methods: {
       toLink () {
-        this.$router.push({name: 'clientSignedList', params: {id: this.id}})
+        this.$router.push({name: 'clientSignedList', params: {id: this.activityId}})
       },
       getData () {
         signedData(this.id).then(res => {
           this.result = Object.assign({}, res.data)
+          this.activityId = this.result.activityId
           this.value = this.result.qrcodeTargetUrl
           this.title = this.result.mobile ? (this.result.clientName + '（' + this.result.mobile + '）') : this.result.clientName
           this.defineVal = this.result.registrationType === 0 ? '自报名' : '代报名'
@@ -62,7 +64,7 @@
     },
     mounted () {
       console.log('route', this.$route.params)
-      this.id = this.$route.params.clientId
+      this.id = this.$route.params.clientId // activityClientId
       this.getData()
     }
   }

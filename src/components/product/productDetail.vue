@@ -37,11 +37,11 @@
 			<div class="space"></div>
       <div class="middle-cont">
         <span class="left">
-          产品期限
+          <span>产品期限</span>
           <p>{{item.investment_horizon}}{{item.investment_horizon_unit|turnText(investmentHorizonUnit)}}</p>
         </span>
         <span class="right">
-          起投金额
+          <span>起投金额</span>
           <p class="cont-text">{{item.minimal_amount}}万</p>
         </span>
       </div>
@@ -160,6 +160,7 @@
         <div class="reservation-btn" v-if="item.product_status == 2 && item.is_pause === '1'">
           <mt-button disabled>预约</mt-button>
         </div>
+        <div class="space" v-if="showBtn"></div>
         <!-- <div class="space32"></div> -->
       <!-- </div> -->
     </div>
@@ -338,6 +339,7 @@ export default {
         font-size: @font-size-twentyE;/*px*/
         padding: 0 30px;
         background: rgba(255, 0, 0, 0.15);
+        position: relative;
         @-webkit-keyframes kf-marque-animation{
           0% {
             -webkit-transform: translateX(0);
@@ -473,9 +475,13 @@ export default {
       .left, .right{
         display: inline-block;
         width: 370px;
-        padding-left: 80px;
+        // padding-left: 80px;
+        text-align: center;
         font-size: @font-size-twentyF;/*px*/
         color: @font-color-9B;
+        span{
+          margin-bottom: 10px;
+        }
         p{
           line-height: 50px;
           font-family: @font-family-M;
@@ -562,7 +568,7 @@ export default {
       }
     }
     .reservation-btn{
-      margin-bottom: 32px;
+      // margin-bottom: 32px;
       .mint-button.mint-button--default{
         width: 670px;
       }

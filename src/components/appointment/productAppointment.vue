@@ -130,7 +130,8 @@
 								<mt-cell title="打款凭证" class="tit border-b-0">
 									<i class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('remitInfo')"></i>
 								</mt-cell>
-								<mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
+								<div v-show="remitInfoShow" class="remitAmount">打款金额(万): <input class="remitAmount" v-model="remitAmount" type="number" pattern="\d*" placeholder="输入打款金额"></div>
+								<!-- <mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额" ></mt-field> -->
 								<div class="camera" v-show="remitInfoShow">
 									<camera
 										 v-if="evidenceShow"
@@ -155,10 +156,15 @@
 								</div>
 							</div> -->
 							<div class="materialsNeeded">
-								<mt-cell title="交易所需材料" class="tit border-b-0">
+								<mt-cell title="客户所需提交材料" class="tit border-b-0">
 									<i class="iconfont" :class="[transcInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('transcInfo')"></i>
 								</mt-cell>
 								<div class="camera" v-show="transcInfoShow">
+									<ul>
+										<li v-for="(item, index) in customerMaterials" :key="index">
+											<span class="title">{{index + 1}}.{{item.file_name}}</span>
+										</li>
+									</ul>
 									<camera v-if="uploadCardMaterials" :popupVisible="popupVisible"
 										@imgHandler="imageHandler2"
               							:imageArr="materialsUrls"
@@ -317,7 +323,7 @@
 import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput } from 'vux'
 import camera from '@/base/camera/camera'
 import { submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
-import { getProducts } from '@/service/api/products'
+import { getProducts, getCustomerMaterials } from '@/service/api/products'
 import { checkBankDetail } from '@/service/api/customers'
 import { formatDate } from '@/common/js/date'
 import thumbnails from '@/base/camera/thumbnails'
@@ -434,6 +440,7 @@ export default {
 			imgIndex: '',
 			timer1: null,
 			client_id: '',
+			customerMaterials: [],
 			slotsM: [
 				{
           flex: 1,
@@ -1047,7 +1054,7 @@ export default {
 				this.firstStep = false
 				statusDetail(this.appointmentId).then(res => {
 					this.appointmentList = res.data
-					this.client_id = this.appointmentList.product_id
+					this.client_id = this.appointmentList.client_id
 					this.product_id = this.appointmentList.product_id
 					this.showMoneyClick = false
 					this.appointmentCode = true
@@ -1072,6 +1079,13 @@ export default {
 					this.closeReason = this.appointmentList.order_closure_remark || this.appointmentList.contract_no_pass_remark
 					// this.emailClose = this.appointmentList.contract_no_pass_remark
 					this.remitAmount = this.appointmentList.remit_amount
+					getCustomerMaterials(this.product_id).then(res => {
+						if (this.appointmentList.client_type === '0') {
+							this.customerMaterials = res.data.data.filter(item => item.client_type === '0')
+						} else if (this.appointmentList.client_type === '1') {
+							this.customerMaterials = res.data.data.filter(item => item.client_type === '1')
+						}
+					})
 					if (this.appointmentList.audit_contract_express === '0') {
 						this.emailType = '自取'
 					} else if (this.appointmentList.audit_contract_express === '1') {
@@ -2273,6 +2287,15 @@ export default {
 						}
 					}
 				}
+				.materialsNeeded{
+					ul{
+						margin-bottom: 30px;
+						li{
+							font-size: 26px;/*px*/
+							color: #333333;
+						}
+					}
+				}
 				.card{
 					background-color: #fff;
 					.camera{
@@ -2292,24 +2315,37 @@ export default {
 						}
 					}
 					.remitAmount{
-						.mint-cell-wrapper{
+						padding: 0 20px;
+						font-size: 30px;
+						color: #4A4A4A;
+						// .mint-cell-wrapper{
+						// 	color: #333;
+						// 	font-size: 26px;
+						// 	.mint-cell-title{
+						// 		.mint-cell-text{
+						// 			font-weight: 400;
+						// 		}
+						// 	}
+						// 	.mint-cell-value{
+						// 		.mint-field-core{
+						// 			width: 180px;
+						// 			height: 40px;
+						// 		}
+						// 		span{
+						// 			color: #333;
+						// 			font-size: 26px;
+						// 		}
+						// 	}
+						// }
+						input{
+							width: 180px;
+							height: 30px;
+							vertical-align: middle;
 							color: #333;
 							font-size: 26px;
-							.mint-cell-title{
-								.mint-cell-text{
-									font-weight: 400;
-								}
-							}
-							.mint-cell-value{
-								.mint-field-core{
-									width: 180px;
-									height: 40px;
-								}
-								span{
-									color: #333;
-									font-size: 26px;
-								}
-							}
+							border: none;
+							float: right;
+							text-align: right;
 						}
 					}
 				}
