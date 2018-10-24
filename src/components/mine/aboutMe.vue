@@ -319,9 +319,10 @@ export default {
     getInfoList().then(res => {
       let noCheckInfo = res.data.filter(item => item.is_read === '0')
       this.noCheckNum = noCheckInfo.length
-      Vue.cordova.jPush.setBadge(this.noCheckNum)
-      Vue.cordova.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
-      console.log('Jpush...........7777777')
+      console.log(this.noCheckNum, noCheckInfo.length)
+      // window.jPush.setBadge(this.noCheckNum)
+      // window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
+      console.log('Jpush...........7777777', this.noCheckNum, noCheckInfo.length)
     })
   }
 }

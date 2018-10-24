@@ -10,7 +10,7 @@
         <span v-else-if="item.product_status === 3" class="box gray vertical-align">已关帐</span>
         <div class="item">
           <div v-if="item.is_float === 0" class="left vertical-align">
-            <span class="float">浮动</span>
+            <span class="float">浮动收益</span>
           </div>
           <div v-else class="left vertical-align">
             <!-- <span v-if="item.is_float === 0" class="number mar vertical-align">-</span> -->
