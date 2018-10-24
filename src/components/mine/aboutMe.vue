@@ -11,8 +11,8 @@
     <div class="wrapper">
       <div class="top">
         <div class="img text-center">
-          <img src="static/img/男.png" alt="" v-if="this.gender === '0'">
-          <img src="static/img/女.png" alt="" v-else>
+          <img :src="this.gender === '0' ? 'static/img/男.png' : 'static/img/女.png'" alt="">
+          <!-- <img src="static/img/女.png" alt="" v-else> -->
         </div>
         <div class="right">
           <p>{{this.name}}</p>
@@ -22,7 +22,7 @@
       </div>
       <div class="space"></div>
       <group class="list">
-        <cell title="我的消息" :is-link='isLink' @click.native="toInfoList">
+        <cell title="我的消息" :link="{name: 'MyInfo'}">
           <div class="num text-center" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</div>
 				  <i slot="icon" class="iconfont icon vertical-align">&#xe607;</i>
         </cell>
@@ -191,8 +191,8 @@ export default {
     //   // this.dialogTableVisible = false
     // },
     toInfoList () {
-      window.localStorage.setItem('infoFlag', 'AboutMe')
-      this.$router.push({name: 'MyInfo'})
+      // window.localStorage.setItem('infoFlag', 'AboutMe')
+      // this.$router.push({name: 'MyInfo'})
     },
     showQrcode () {
       this.showMyQrcode = true
@@ -368,6 +368,9 @@ export default {
       this.$router.push({name: 'MyInfo'})
     }
   },
+  // created () {
+  //   window.scroll(0, 0)
+  // },
   mounted () {
     this.qheight = 'height:' + window.innerHeight + 'px'
     let data = JSON.parse(window.localStorage.data)

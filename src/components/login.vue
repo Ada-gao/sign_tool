@@ -17,6 +17,7 @@
           <mt-field style="display: inline-block" class="vertical-align" placeholder="请输入验证码" :disableClear="clearAll" v-model="num" @focus.native.capture="numChange"></mt-field>
           <button class="send right text-center" @click="getIdentifyingCode" v-show="show">发送验证码</button>
           <span class="count right text-center" v-show="!show">{{count}}s后重新发送</span>
+          <counter :timeCount='timeout'></counter>
         </div>
         <div class="error" >{{errorMsg}}</div>
       </div>
@@ -54,13 +55,14 @@
 </template>
 
 <script type="text/ecmascript-6">
-import { XHeader, XButton, Countdown, XInput, Group } from 'vux'
+import { XHeader, XButton, XInput, Group } from 'vux'
 import { setInterval, clearInterval, setTimeout } from 'timers'
 import * as types from 'common/js/types'
 import { getVerificationCode, getAuthToken, getDict } from '@/service/api/login'
 // import { getTags } from '@/service/api/mineJPush'
 import Vue from 'vue'
 import { getStore } from '@/config/mUtils'
+import counter from '@/base/countDown/countDown'
 
 export default {
   data () {
@@ -82,7 +84,8 @@ export default {
       device: '',
       disabledSend: true,
       registrationId: '',
-      clearAll: true
+      clearAll: true,
+      timeout: 60
       // telTip: false
       // start: false
     }
@@ -90,9 +93,9 @@ export default {
   components: {
     XHeader,
     XButton,
-    Countdown,
     XInput,
-    Group
+    Group,
+    counter
   },
   mounted () {
     this.$store.commit(types.TITLE, 'Your Repositories')
@@ -104,8 +107,6 @@ export default {
     }
   },
   methods: {
-    registJPush () {
-    },
     touchScreen () {
       Array.from(document.querySelectorAll("input[type='text']")).map(item => {
         item.blur()
@@ -205,7 +206,7 @@ export default {
         if (err) {
           this.errorTip = true
           this.errorMsg = '验证码错误，请重新发送！'
-          clearInterval(this.tiemr)
+          clearInterval(this.timer)
           this.timer = null
           this.show = true
           setTimeout(() => {
@@ -215,63 +216,65 @@ export default {
       })
     },
     getIdentifyingCode () {
-      this.registJPush()
-      // window.JPush.getRegistrationID((id) => {
-      //   this.registrationId = id
-      // })
-      if (this.disabledSend === true) {
-        const TIME_COUNT = 60
-        if (!this.timer) {
-          this.count = TIME_COUNT
-          this.show = false
-          this.tiemr = setInterval(() => {
-            if (this.count > 0) {
-              this.count--
-            } else {
-              this.show = true
-              clearInterval(this.tiemr)
-              this.timer = null
-            }
-          }, 1000)
-        }
-        // let domain = document.domain === 'localhost' ? '10.60.2.141' : document.domain
-        this.device = Vue.cordova.device
-
-        // 浏览器环境拿不到设备号处理。
-        let uuid = ''
-        if (this.device) uuid = this.device.uuid
-        let obj = {
-          username: this.username,
-          platform: this.platform,
-          app_version: 'v1.0',
-          code_flag: 0,
-          registration_id: uuid
-        }
-        getVerificationCode(obj).then(res => {
-          if (res.data.code === 404) {
-            this.msgTip = res.data.message
-            clearInterval(this.tiemr)
-            this.timer = null
-            this.show = true
-            setTimeout(() => {
-              this.msgTip = ''
-            }, 3000)
+      if (!this.disabledSend) return
+      const TIME_COUNT = 60
+      if (!this.timer) {
+        this.count = TIME_COUNT
+        this.show = false
+        this.timer = setInterval(() => {
+          --this.count
+          // if (this.count === 0) {
+          //   this.show = true
+          //   this.timer = null
+          //   clearInterval(this.timer)
+          // }
+          if (this.count > 0) {
+            this.count--
+            console.log(this.count)
           } else {
-            console.log('数据库查看验证码')
-          }
-        })
-        .catch(err => {
-          if (err) {
-            this.errorMsg = '验证码发送失败'
-            clearInterval(this.tiemr)
-            this.timer = null
             this.show = true
-            setTimeout(() => {
-              this.errorMsg = ''
-            }, 5000)
+            this.timer = null
+            clearInterval(this.timer)
           }
-        })
+        }, 1000)
       }
+      // let domain = document.domain === 'localhost' ? '10.60.2.141' : document.domain
+      this.device = Vue.cordova.device
+      // 浏览器环境拿不到设备号处理。
+      let uuid = ''
+      if (this.device) uuid = this.device.uuid
+      let obj = {
+        username: this.username,
+        platform: this.platform,
+        app_version: 'v1.0',
+        code_flag: 0,
+        registration_id: uuid
+      }
+      getVerificationCode(obj).then(res => {
+        if (res.data.code === 404) {
+          this.msgTip = res.data.message
+          clearInterval(this.timer)
+          this.timer = null
+          this.show = true
+          setTimeout(() => {
+            this.msgTip = ''
+          }, 3000)
+        } else {
+          console.log('数据库查看验证码')
+        }
+      })
+      .catch(err => {
+        if (err) {
+          this.errorMsg = '验证码发送失败'
+          clearInterval(this.timer)
+          this.timer = null
+          this.show = true
+          setTimeout(() => {
+            this.errorMsg = ''
+          }, 5000)
+        }
+      })
+      // }
     },
     storeDict () {
       getDict().then(res => {
