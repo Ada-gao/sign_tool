@@ -230,7 +230,7 @@ export default {
       // if (closeData) {
       //   this.versionVisible = false
       // } else {
-				alert('start request...')
+//				alert('start request...')
         getLatestVersion(params).then(res => {
 					// alert(JSON.stringify(res.data))
 					// localStorage.setItem('appVersion', JSON.stringify(res.data))
