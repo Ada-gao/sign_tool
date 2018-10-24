@@ -345,7 +345,7 @@ export default {
           // (支持相册选取, 默认false)
           'choosePhotoBtnTitle': '相册',
           // (选取按钮文字)
-          'choosePhotoBtnColor': '4e8dec',
+          'choosePhotoBtnColor': 'BD9D62',
           // (选取按钮颜色)
 
           // flashlight

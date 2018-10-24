@@ -10,7 +10,7 @@
         </div>
       </mt-button>
     </mt-header> -->
-    <x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">活动详情
+    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink" class='header'>活动详情
       <i slot="right" class="iconfont mes" @click="showShareBtn">&#xe606;</i>
     </x-header>
     <div class="detail">
@@ -133,7 +133,7 @@
   import { getShare } from '@/service/api/aboutMe'
   import { getActivityDet, getActivityLogo } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
-  import {getStore, setStore, removeStore} from '@/config/mUtils'
+//  import {getStore, setStore, removeStore} from '@/config/mUtils'
   import Vue from 'vue'
   export default {
     components: {
@@ -154,16 +154,16 @@
         i: 1
       }
     },
-    beforeRouteLeave (to, from, next) {
-      if (to.name === 'activityList') {
-        removeStore('activityId')
-        next()
-      } else {
-        next()
-      }
-    },
+//    beforeRouteLeave (to, from, next) {
+//      if (to.name === 'activityList') {
+//        removeStore('activityId')
+//        next()
+//      } else {
+//        next()
+//      }
+//    },
     methods: {
-      back () {
+      toLink () {
         this.$router.push({name: 'activityList'})
       },
       getData () {
@@ -195,10 +195,10 @@
         this.showShare = false
       },
       toSigned () {
-        this.$router.push({name: 'clientList'})
+        this.$router.push({name: 'clientList', params: {id: this.activityId}})
       },
       toList () {
-        this.$router.push({name: 'clientSignedList'})
+        this.$router.push({name: 'clientSignedList', params: {id: this.activityId}})
       },
       wachatShare () {
         let Wechat = Vue.cordova.Wechat
@@ -354,11 +354,12 @@
       }
     },
     mounted () {
-      let activityId = getStore('activityId')
-      this.activityId = this.$route.params.id || activityId
-      if (!activityId) {
-        setStore('activityId', this.activityId)
-      }
+//      let activityId = getStore('activityId')
+//      this.activityId = this.$route.params.id || activityId
+      this.activityId = this.$route.params.id
+//      if (!activityId) {
+//        setStore('activityId', this.activityId)
+//      }
       getActivityLogo().then(res => {
         this.qrcodeUrl = res.data
       })

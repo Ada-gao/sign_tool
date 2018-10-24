@@ -5,8 +5,9 @@
         <mt-button icon="back" class="def_btn"></mt-button>
       </router-link>
     </mt-header> -->
-    <x-header class="header" :left-options="{backText: '', preventGoBack: true}" @on-click-back="back()">活动列表</x-header>
+    <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink" class='header'>活动列表</x-header>
     <div class="activity_cont">
+      <loading :show="isShowSpinner"></loading>
       <ul>
         <li v-for="(item, index) in list" :key="index" @click="handleRouter(item.activityId)">
           <div class="img"><img :src="item.activityBannerUrl" alt=""></div>
@@ -36,23 +37,27 @@
   import { XHeader } from 'vux'
   import { getActivityList } from '@/service/api/activity'
   import { parseTime } from '@/common/js/filter'
+  import Loading from 'base/loading'
   export default {
     components: {
-      XHeader
+      XHeader,
+      Loading
     },
     data () {
       return {
         src: 'static/img/测试banner.jpg',
-        list: []
+        list: [],
+        isShowSpinner: true
       }
     },
     methods: {
-      back () {
+      toLink () {
         this.$router.push({name: 'HomePage'})
       },
       getList () {
         getActivityList().then(res => {
           if (res.status === 200) {
+            this.isShowSpinner = false
             this.list = Object.assign([], res.data.records)
             this.list.forEach(item => {
               item.activityStart = parseTime(item.activityStart, '{y}.{m}.{d} {h}:{i}')
