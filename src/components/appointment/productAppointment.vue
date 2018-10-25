@@ -1147,7 +1147,7 @@ export default {
 						this.topTitle = '预约失败'
 						this.failTitle = '预约失败原因：'
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
-						let arr = []
+//						let arr = []
 						console.log('localstorage')
 						// getProducts().then(res => {
 						// 	res.data.map((item, index) => {
