@@ -322,6 +322,11 @@ export function getDict () {
   })
 }
 
+/**
+ * 数据回显
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function getCertifyInfo (data) {
   return axios({
     url: 'v1/client/customers/cert/reshow/',

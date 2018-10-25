@@ -115,8 +115,8 @@
     sendFiles,
     perfectInfos,
     checkCusomersDetail,
-    getProReasons,
-    getCertifyInfo
+    getProReasons
+//    getCertifyInfo
   } from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import {toast} from '@/common/js/filter'
@@ -220,15 +220,18 @@
       perfectInfos({client_id: id}).then(res => {
         if (res.status === 200) {
           this.uploadData.clientCertificationId = res.data.client_certification_id
-          let params = {
-            client_id: res.data.client_id,
-            client_certification_id: res.data.client_certification_id
-          }
-          getCertifyInfo(params).then(result => {
-            if (result.status === 200) {
-              console.log('result', res.data)
-            }
-          })
+//          if (this.userInfos.type === '0' || this.userInfos.type === '1') {
+//            let params = {
+//              client_id: res.data.client_id,
+//              certification_type: this.userInfos.type
+//            }
+//            getCertifyInfo(params).then(result => {
+//              if (result.status === 200) {
+//                this.reason = result.data.apply_reason || ''
+//                this.changeClass = true
+//              }
+//            })
+//          }
 //          console.log('certified：' + this.uploadData.clientCertificationId)
         }
       })

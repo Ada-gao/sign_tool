@@ -1,29 +1,11 @@
 <template>
   <div class="bankList">
     <mt-popup v-model="popupVisible">
-      <mt-spinner type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
+      <mt-spinner color="#bd9d62" type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
     </mt-popup>
     <x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">银行卡
-      <!-- 在该页面关闭新增银行卡入口 -->
-      <!-- <div slot="right" class="add_card_btn"
-           v-if="addCard"
-           @click="routerPush">
-        <i class="iconfont">&#xe6bd;</i>
-        <span>新增银行卡</span>
-      </div> -->
     </x-header>
     <div class="wrapper">
-      <!-- <div class="top"> -->
-        <!-- <mt-cell title="银行卡信息">
-          <span slot="icon" class="iconfont">&#xe621;</span>
-        </mt-cell> -->
-        <!-- <div class="add_card_btn"
-             v-if="addCard !== '2'"
-             @click="routerPush">
-          <i class="iconfont">&#xe640;</i>
-          <span>银行卡</span>
-        </div> -->
-      <!-- </div> -->
       <div class="space"></div>
       <div class="list">
         <div class="item" :data="bankList" v-for="(item, index) in bankList" :key="index" @click="selected(item)">
@@ -62,33 +44,11 @@
         popupVisible: true,
         timer: null,
        addCard: null
-//        stat: null
       }
     },
     beforeRouteEnter (to, from, next) {
       next(vm => {
-        // console.log(from)
         vm.fromPath = from.path
-        // console.log(vm.fromPath)
-//        if (from.name === 'Bankcard' || from.name === 'PotentialCustomerList') {
-//          vm.addCard = '0'
-//        } else if (from.name === 'CustomerManagement') {
-//          vm.addCard = '1'
-//        } else {
-//          vm.addCard = '2'
-//        }
-//        if (from.name === 'PotentialCustomerList') {
-//          vm.addCard = '0'
-//          vm.stat = true
-//        } else if (from.name === 'CustomerManagement') {
-//          vm.addCard = '1'
-//          vm.stat = true
-//        } else if (from.name === 'Bankcard') {
-//          vm.stat = true
-//        } else {
-//          vm.addCard = '2'
-//          vm.stat = false
-//        }
       })
     },
     methods: {
@@ -124,7 +84,6 @@
     mounted () {
       console.log(this.$route.params)
       this.addCard = this.$route.params.addCard
-      // let selfInfos = JSON.parse(getStore('selfInfos'))
       this.clientId = this.$route.params.id || JSON.parse(getStore('selfInfos')).client_id
       this.getList()
     }
@@ -136,15 +95,9 @@
     font-family: @font-family-R;
     .vux-header.header{
       .vux-header-right{
-        // width: 23%;
-        // height: 42px;
-        // right: 30px;
-        // top: 66px;
         .add_card_btn {
           display: inline-block;
           position: absolute;
-          // right: 32px;
-          // top: 19px;
           line-height: 42px;
           font-size: @font-size-twentyS;/*px*/
           color: #BD9D62;
@@ -162,30 +115,10 @@
       .top{
         position: relative;
         height: 80px;
-        // .mint-cell{
-        //   height: 100%;
-        //   .mint-cell-wrapper{
-        //     height: 100%;
-        //     line-height: 100%;
-        //     padding-left: 35px;
-        //     .mint-cell-title{
-        //       font-family: PingFangSC-Medium;
-        //       font-size: 30px;
-        //       color: #2672BA;
-        //       .iconfont{
-        //         font-size: 40px;
-        //         vertical-align: middle;
-        //       }
-        //     }
-        //   }
-        // }
       }
       .list{
-        // width: 710px;
         margin: 0 auto;
         .item{
-          /*width: 710px;*/
-          // width: 94.7%;
           padding: 30px 40px;
           height: 238px;
           margin-bottom: 20px;
@@ -209,21 +142,6 @@
             right: 40px;
             font-size: 35px;
           }
-          // .tip{
-          //   line-height: 56px;
-          //   .tit{
-          //     font-size: 30px;
-          //     color: #333333;
-          //   }
-          //   .detail{
-          //     font-size: 28px;
-          //     color: #151515;
-          //   }
-          //   .col{
-          //     color: #666;
-          //   }
-          // }
-
         }
         .item:nth-child(3n+1){
           background: linear-gradient(90deg, #E8CE9D 0%, #C6A570 100%);

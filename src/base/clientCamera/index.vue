@@ -58,7 +58,7 @@
                     v-show="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
-      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe609;</i>
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe60c;</i>
     </div>
     <mt-popup v-model="show"
               position="bottom"
@@ -183,6 +183,7 @@
               this.imgSrc = 'data:image/jpeg;base64,' + imageData
             }
           }).catch(err => {
+            this.spinnerShow = false
             console.log('error: ' + err)
             this.alertMsg = true
           })
@@ -195,6 +196,7 @@
               this.$emit('imgHandler', this.idSrc)
             }
           }).catch(err => {
+            this.spinnerShow = false
             console.log('error: ' + err)
             this.alertMsg = true
           })
@@ -208,6 +210,7 @@
               this.fileArr.push(res.data.file_url)
             }
           }).catch(err => {
+            this.spinnerShow = false
             console.log('error: ' + err)
             this.alertMsg = true
           })
@@ -295,6 +298,7 @@
     line-height: 30px;
     margin-right: 0;
     z-index: 11;
+    color: #ccc;
   }
   .upload_small {
     width: 100%;
