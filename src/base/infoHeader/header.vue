@@ -81,17 +81,19 @@ export default {
           // (支持手电筒, 默认false)
         },
         function (result) {
+          if (result && JSON.parse(result).result) {
+            let url = JSON.parse(result).result.split('activity/')[1]
+            qscan(url).then(res => {
+              console.log('res', res)
+              if (res.data.code === 0) {
+                toast('签到成功')
+              }
+            }).catch(err => {
+              console.log('err', err)
+            })
+          }
 //          console.log(JSON.parse(result).result)
 //          console.log(JSON.parse(result).result.split('activity/'))
-          let url = JSON.parse(result).result.split('activity/')[1]
-          qscan(url).then(res => {
-            console.log('res', res)
-            if (res.data.code === 0) {
-              toast('签到成功')
-            }
-          }).catch(err => {
-            console.log('err', err)
-          })
         },
         function (error) {
           console.log(error)

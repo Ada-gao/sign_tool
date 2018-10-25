@@ -9,7 +9,10 @@
         <i class="arrow_down"></i><span>展开</span>
         <!--<i class="iconfont">&#xe601;</i><span>展开</span>-->
       </p>
-      <div>{{item.create_time}}</div>
+      <div>
+        <span>{{item.client_name}}</span>
+        <span style="float: right">{{item.create_time}}</span>
+      </div>
     </li>
   </ul>
 </template>

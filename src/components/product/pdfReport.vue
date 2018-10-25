@@ -350,8 +350,9 @@ export default {
     .customerList{
       .vux-button-group{
         height: 80px;
-        width: 390px;
-        margin: 0 auto;
+        width: 100%;
+        padding: 0 183px;
+        background-color: #f5f5f5;
         .vux-button-tab-item{
           height: 59px;
           line-height: 59px;
