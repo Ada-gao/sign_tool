@@ -1147,7 +1147,7 @@ export default {
 						this.topTitle = '预约失败'
 						this.failTitle = '预约失败原因：'
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
-//						let arr = []
+						// let arr = []
 						console.log('localstorage')
 						// getProducts().then(res => {
 						// 	res.data.map((item, index) => {
@@ -1848,7 +1848,7 @@ export default {
 				}
 			}
 		}
-		.closeReason {
+		.closeReason, .emailReason {
 			background: #fff;
 			display: flex;
 			padding: 0 40px 20px;
@@ -1863,6 +1863,15 @@ export default {
 				font-size: 26px;
 				color: #4A4A4A;
 				margin-left: 20px;
+			}
+		}
+		.emailReason{
+			.reason-title{
+				width: 180px;
+			}
+			.reason-content{
+				position: absolute;
+				right: 40px;
 			}
 		}
 		.info{
@@ -2292,9 +2301,10 @@ export default {
 				}
 				.materialsNeeded{
 					ul{
-						margin-bottom: 30px;
+						margin-bottom: 10px;
 						li{
 							font-size: 26px;/*px*/
+							margin-bottom: 20px;
 							color: #333333;
 						}
 					}
