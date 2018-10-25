@@ -129,16 +129,16 @@ export default {
 			}
 			.num{
 				display: inline-block;
-				width: 20px;
-				height: 20px;
-				line-height: 20px;
-				background: #B68458;
+				width: 24px;
+				height: 24px;
+				line-height: 24px;
+				background: #EE5250;
 				border-radius: 50%;
 				position: absolute;
-				top: -2px;
-				right: -2px;
+				top: -6px;
+				right: -4px;
 				font-family: @font-family-M;
-				font-size: 14px;
+				font-size: 12px;/*px*/
 				color: #FFFFFF;
 				// text-align: center;
 			}

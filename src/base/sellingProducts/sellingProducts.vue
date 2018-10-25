@@ -2,8 +2,8 @@
   <div class="flexbox-wrapper">
     <ul>
       <li v-if="!((parseInt((new Date() - new Date(item.close_date)) / 1000) > item.cooling_period * 60 * 60) && (item.product_status === 3))" v-for="(item, index) in childDataTemp" :key="index" @click="toProductDetail(item.product_id,item)">
+      <span class="important text-center" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
       <div class="content">
-        <span class="important text-center" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
         <span class="tit vertical-align">{{item.product_name}}&nbsp;&nbsp;</span>
         <span v-if="item.product_status === 1" class="box red vertical-align">预热中</span>
         <span v-else-if="item.product_status === 2" class="box green vertical-align">募集中</span>
@@ -157,28 +157,35 @@
 
 <style scoped lang="less">
 @import "../../common/style/variable.less";
-.content{
-  padding: 40px;
-  height: 247px;
+ul{
   border-top: 1px solid #E9E9E9;/*no*/
-  position: relative;
-  overflow: hidden;
-  background: @back-color-white;
-  .important{
-    width: 200px;
-    height: 40px;
-    line-height: 40px;
-    background: #BD9D62;
-    transform: rotate(40deg);
-    position: absolute;
-    top: 30px;
-    right: -50px;
-    display: inline-block;
-    background: @text-font-color;
-    font-family: @font-family-R;
-    font-size: 22px;/*px*/
-    color: @back-color-white;
+  li{
+    background: #fff;
+    padding: 0 40px;
+    position: relative;
+    overflow: hidden;
+    .important{
+      width: 200px;
+      height: 40px;
+      line-height: 40px;
+      background: #BD9D62;
+      transform: rotate(40deg);
+      position: absolute;
+      top: 30px;
+      right: -50px;
+      display: inline-block;
+      background: @text-font-color;
+      font-family: @font-family-R;
+      font-size: 22px;/*px*/
+      color: @back-color-white;
+    }
   }
+}
+.content{
+  padding: 40px 0;
+  height: 247px;
+  border-bottom: 1px solid #E9E9E9;/*no*/
+  background: @back-color-white;
   .tit{
     font-family: @font-family-M;
     font-size: @font-size-twentyE;/*px*/
@@ -211,7 +218,7 @@
       display: inline-block;
       font-family: @font-family-M;
       .float{
-        font-size: 50px;/*px*/
+        font-size: 46px;/*px*/
         color: #FF2E24;
       }
       .number{
@@ -253,8 +260,8 @@
     }
     .right-btn{
       position: absolute;
-      right: 40px;
-      top: 50%;
+      right: 20px;
+      top: 45%;
       font-size: 60px;/*px*/
       color: #F2F2F2;
     }

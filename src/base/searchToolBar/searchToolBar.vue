@@ -77,7 +77,7 @@ export default {
     font-size: 26px;
     position: absolute;
     left: 15px;
-    top: 50%;
+    top: 55%;
     transform: translateY(-50%);
     color: #fff;
     opacity: 0.4;
