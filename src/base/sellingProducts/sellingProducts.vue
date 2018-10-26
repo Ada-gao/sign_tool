@@ -2,8 +2,8 @@
   <div class="flexbox-wrapper">
     <ul>
       <li v-if="!((parseInt((new Date() - new Date(item.close_date)) / 1000) > item.cooling_period * 60 * 60) && (item.product_status === 3))" v-for="(item, index) in childDataTemp" :key="index" @click="toProductDetail(item.product_id,item)">
+      <span class="important text-center" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
       <div class="content">
-        <span class="important text-center" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
         <span class="tit vertical-align">{{item.product_name}}&nbsp;&nbsp;</span>
         <span v-if="item.product_status === 1" class="box red vertical-align">预热中</span>
         <span v-else-if="item.product_status === 2" class="box green vertical-align">募集中</span>
@@ -12,10 +12,11 @@
           <div v-if="item.is_float === 0" class="left vertical-align">
             <span class="float">浮动收益</span>
           </div>
-          <div v-else class="left vertical-align">
+          <div v-else class="left">
             <!-- <span v-if="item.is_float === 0" class="number mar vertical-align">-</span> -->
             <span>
-              <span class="number vertical-align">{{item.annualized_return | twoDecimals}}</span><span class="percent vertical-align">%</span>
+              <!--<span class="number vertical-align">{{item.annualized_return | twoDecimals}}</span><span class="percent vertical-align">%</span>-->
+              <span class="number">{{item.annualized_return ? item.annualized_return : 0}}</span><span class="percent vertical-align">%</span>
             </span>
             <div class="text text-left">收益对标基准</div>
           </div>
@@ -28,36 +29,8 @@
           <span class="iconfont right-btn">&#xe8d5;</span>
         </div>
       </div>
-        <!-- <flexbox :gutter="2" wrap="wrap">
-          <flexbox-item :span="4" class="item-left">
-            <div class="flex-product">
-              <div class="flex-left">
-                <p v-if="item.is_float === 0" class="line">一</p>
-                <p v-else class="rate"><span class="number">{{item.annualized_return}}</span>%</p>
-                <p class="text">{{item.is_float === 0 ? '浮动收益' : '收益对标基准'}}</p>
-              </div>
-            </div>
-          </flexbox-item>
-          <flexbox-item class="item-right">
-            <div class="flex-product">
-              <div class="flex-right">
-                <p class="firstp">{{item.product_name}}</p><span class="important" v-if="Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))">重点产品</span>
-                <p v-if="item.minimal_amount != undefined">起投金额：{{item.minimal_amount}}万</p>
-                <p v-else>购买金额：{{item.amount}}万</p>
-                <p>产品期限：{{item.investment_horizon}}{{item.investment_horizon_unit === '0' ? '月' : '年'}}</p>
-                <span v-if="item.product_status === 1" class="box blue">预热中</span>
-                <span v-else-if="item.product_status === 2" class="box green">募集中</span>
-                <span v-else-if="item.product_status === 3" class="box gray">已关帐</span>
-              </div>
-            </div>
-          </flexbox-item>
-        </flexbox> -->
       </li>
     </ul>
-    <!--<div class="no_product" v-show="childData.length === 0 && !mark">-->
-    <!--<img src="static/img/purchasedIcon.png">-->
-    <!--<span>亲，请您购买产品哦</span>-->
-    <!--</div>-->
     <div class="no_product text-center" v-show="flag && !mark">
       <div class="warn absolute-center-xy">
         <i class="iconfont">&#xe869;</i>
@@ -65,7 +38,7 @@
       </div>
     </div>
     <mt-popup v-model="popupVisible">
-      <mt-spinner type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
+      <mt-spinner color="#bd9d62" type="fading-circle" class="spinner_box" v-show="popupVisible"></mt-spinner>
     </mt-popup>
 
   </div>
@@ -73,7 +46,6 @@
 
 <script>
   import { XHeader, Group, CellBox, Flexbox, FlexboxItem } from 'vux'
-  // import {twoDecimals} from '@/common/js/filter'
   export default {
     name: 'SellingProducts',
     components: {
@@ -116,9 +88,7 @@
       setData () {
         this.timer = setTimeout(() => {
           if (this.childDataFlag) {
-            // console.log('come in')
             this.childDataTemp = this.childData
-            // console.log(this.childDataTemp)
             if (this.childDataTemp.length === 0) {
               this.flag = true
             } else {
@@ -130,8 +100,6 @@
         }, 300)
       },
       toProductDetail (id, item) {
-        // console.log(Date.parse(new Date(item.important_start)), Date.parse(new Date(item.important_end)), new Date().getTime(), Date.parse(new Date(item.important_start)) < new Date().getTime(), new Date().getTime() < Date.parse(new Date(item.important_end)))
-        // console.log(Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end)))
         if (item.minimal_amount === undefined) {
           return false
         }
@@ -140,45 +108,44 @@
       }
     },
     mounted () {
-      // console.log(twoDecimals(100))
       if (this.$route.name === 'HomePage') {
-        // console.log('homePage')
-        // console.log(this.childData)
         this.childDataTemp = this.childData
-        // this.childDataTemp.map(item => {
-          // console.log(item.product_status === 3)
-          // console.log(item.cooling_period, item.close_date)
-        // })
       }
-      //  console.log(new Date().getTime())
     }
   }
 </script>
 
 <style scoped lang="less">
 @import "../../common/style/variable.less";
-.content{
-  padding: 40px;
-  height: 247px;
+ul{
   border-top: 1px solid #E9E9E9;/*no*/
-  position: relative;
-  overflow: hidden;
-  background: @back-color-white;
-  .important{
-    width: 200px;
-    height: 40px;
-    line-height: 40px;
-    background: #BD9D62;
-    transform: rotate(40deg);
-    position: absolute;
-    top: 30px;
-    right: -50px;
-    display: inline-block;
-    background: @text-font-color;
-    font-family: @font-family-R;
-    font-size: 22px;/*px*/
-    color: @back-color-white;
+  li{
+    background: #fff;
+    padding: 0 40px;
+    position: relative;
+    overflow: hidden;
+    .important{
+      width: 200px;
+      height: 40px;
+      line-height: 40px;
+      background: #BD9D62;
+      transform: rotate(40deg);
+      position: absolute;
+      top: 30px;
+      right: -50px;
+      display: inline-block;
+      background: @text-font-color;
+      font-family: @font-family-R;
+      font-size: 22px;/*px*/
+      color: @back-color-white;
+    }
   }
+}
+.content{
+  padding: 40px 0;
+  height: 247px;
+  border-bottom: 1px solid #E9E9E9;/*no*/
+  background: @back-color-white;
   .tit{
     font-family: @font-family-M;
     font-size: @font-size-twentyE;/*px*/
@@ -211,7 +178,7 @@
       display: inline-block;
       font-family: @font-family-M;
       .float{
-        font-size: 50px;/*px*/
+        font-size: 46px;/*px*/
         color: #FF2E24;
       }
       .number{
@@ -253,8 +220,8 @@
     }
     .right-btn{
       position: absolute;
-      right: 40px;
-      top: 50%;
+      right: 20px;
+      top: 45%;
       font-size: 60px;/*px*/
       color: #F2F2F2;
     }

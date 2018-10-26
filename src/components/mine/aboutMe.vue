@@ -335,7 +335,7 @@ export default {
     background: transparent;
     .vux-header-left{
       position: absolute;
-      left: 500px;
+      left: 530px;
       margin-top: 5px;
       .warn{
         .mes{
@@ -378,7 +378,8 @@ export default {
         height: 110px;
         overflow: hidden;
         display: inline-block;
-        background: #383636;
+        background: #464545;
+        padding-top: 10px;
         img{
           height: 100%;
         }

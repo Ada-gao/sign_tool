@@ -480,7 +480,8 @@ export default {
         font-size: @font-size-twentyF;/*px*/
         color: @font-color-9B;
         span{
-          margin-bottom: 10px;
+          display: inline-block;
+          line-height: 20px;
         }
         p{
           line-height: 50px;

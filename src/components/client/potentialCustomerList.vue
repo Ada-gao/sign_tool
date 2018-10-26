@@ -622,7 +622,7 @@
       }
       span:nth-of-type(1) {
         color: #9B9B9B;
-        border-right: 1px solid #9b9b9b;/*no*/
+        border-right: 1px solid #D2D3D5;/*no*/
         box-sizing: border-box;
       }
       span:nth-of-type(2) {

@@ -1463,6 +1463,7 @@ export default {
 						this.orderCloseSuc = false
 						this.popupVisible = false
 						this.sureCancleA = false
+						this.closeOrderReason = false
 						this.selected = '2'
 						// this.transcInfoShow = false // 数据收起
 						// this.bankInfoShow = false // 数据收起
@@ -1847,7 +1848,7 @@ export default {
 				}
 			}
 		}
-		.closeReason {
+		.closeReason, .emailReason {
 			background: #fff;
 			display: flex;
 			padding: 0 40px 20px;
@@ -1862,6 +1863,15 @@ export default {
 				font-size: 26px;
 				color: #4A4A4A;
 				margin-left: 20px;
+			}
+		}
+		.emailReason{
+			.reason-title{
+				width: 180px;
+			}
+			.reason-content{
+				position: absolute;
+				right: 40px;
 			}
 		}
 		.info{
@@ -2291,9 +2301,10 @@ export default {
 				}
 				.materialsNeeded{
 					ul{
-						margin-bottom: 30px;
+						margin-bottom: 10px;
 						li{
 							font-size: 26px;/*px*/
+							margin-bottom: 20px;
 							color: #333333;
 						}
 					}

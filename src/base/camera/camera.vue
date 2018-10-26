@@ -34,7 +34,7 @@
                     type="fading-circle"></mt-spinner>
       </div>
       <!-- <thumbnails v-if="showImg" :imgTotal="imgSrc" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
-      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg('imgSrc')">&#xe609;</i>
+      <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg('imgSrc')">&#xe60c;</i>
     </div>
     <thumbnails v-if="showImg" :imgTotal="bigImg" :imgKey="bigImgIndex" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails>
     <mt-popup v-model="show"
@@ -355,6 +355,7 @@
     font-size: 30px;
     line-height: 30px;
     z-index: 11;
+    color: #ccc;
   }
   .upload_small {
     width: 100%;

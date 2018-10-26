@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1" id="com.suxianginvestment.crmapp" ios-CFBundleVersion="1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="1" id="com.suxianginvestment.crm01" ios-CFBundleVersion="1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>财智滙</name>
     <description>
         An App
@@ -91,6 +91,6 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="skwas-cordova-plugin-appinfo" spec="^1.0.1" />
     <engine name="android" spec="^7.1.0" />
-    <engine name="browser" spec="^5.0.3" />
+    <engine name="browser" spec="^5.0.4" />
     <engine name="ios" spec="^4.5.5" />
 </widget>

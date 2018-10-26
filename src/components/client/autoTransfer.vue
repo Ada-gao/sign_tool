@@ -11,7 +11,7 @@
             <span class="date_tit">认证原因</span>
             <div class="date_box">
               <div class="date_cont">
-                <span class="date_time">{{reason}}</span>
+                <span :class="{'date_time': true, 'date_time1': changeClass}">{{reason}}</span>
                 <i class="iconfont right_icon">&#xe8d5;</i>
               </div>
             </div>
@@ -45,13 +45,28 @@
       <button class="next" @click="submitInfos">提 交</button>
     </div>
     <div class="popup_box">
-      <mt-popup v-model="showSubmit.isShow" closeOnclickModel="false">
-        <div class="confirm_box">
-          <i class="iconfont icon_success"
-             v-show="showSubmit.isSuccess != 2">&#xe60a;</i>
-          <i class="iconfont icon_fail"
-             v-show="showSubmit.isSuccess === 2">&#xe626;</i>
-          <div class="confirm_cont" :class="{'fail': showSubmit.isSuccess === 2}">{{showSubmit.cont}}</div>
+      <!--<mt-popup v-model="showSubmit.isShow" closeOnclickModel="false">-->
+        <!--<div class="confirm_box">-->
+          <!--<i class="iconfont icon_success"-->
+             <!--v-show="showSubmit.isSuccess != 2">&#xe60a;</i>-->
+          <!--<i class="iconfont icon_fail"-->
+             <!--v-show="showSubmit.isSuccess === 2">&#xe626;</i>-->
+          <!--<div class="confirm_cont" :class="{'fail': showSubmit.isSuccess === 2}">{{showSubmit.cont}}</div>-->
+          <!--<span class="confirm_btn" @click="popupConfirm(toRoute(showSubmit.isSuccess))">确 定</span>-->
+        <!--</div>-->
+      <!--</mt-popup>-->
+
+      <mt-popup v-model="showSubmit.isShow"
+                closeOnclickModel="false">
+        <div class="confirm_box text-center popup">
+          <img src="static/img/certify_right.png" v-show="showSubmit.isSuccess !== 2" alt="">
+          <!-- <i class="iconfont icon_success"
+             v-show="showSubmit.isSuccess !== 2">&#xe60a;</i> -->
+          <img src="static/img/certify_wrong.png" v-show="showSubmit.isSuccess === 2" alt="">
+          <!-- <i class="iconfont icon_fail"
+             v-show="showSubmit.isSuccess === 2">&#xe626;</i> -->
+          <div class="confirm_cont" :class="{'fail': showSubmit.isSuccess === 2}">{{showSubmit.cont}}<br>
+            请您耐心等待审核结果！</div>
           <span class="confirm_btn" @click="popupConfirm(toRoute(showSubmit.isSuccess))">确 定</span>
         </div>
       </mt-popup>
@@ -73,6 +88,7 @@
     },
     data () {
       return {
+        changeClass: false,
         showSubmit: {
           isShow: false,
           cont: '您的资料已上传成功！',
@@ -133,6 +149,7 @@
         this.reason = this.apply_reason
         this.reason_id = this.apply_reason_id
         this.showCerCode = false
+        this.changeClass = true
       },
       onValuesChange (picker, values) {
         if (values[0] !== undefined) {
@@ -286,7 +303,7 @@
                 height: 56px;
                 line-height: 56px;
                 padding: 0 30px;
-                color: #2672ba;
+                color: #bd9d62;
                 font-size: 34px;
                 position: absolute;
                 border-bottom: 1px solid #ddd;
@@ -326,19 +343,26 @@
                 /*border-radius: 8px;*/
                 /*background-color: #f3f3f3;*/
               }
-              span.date_time {
-                height: 40px;
+              span.date_time,
+              span.date_time1 {
+                font-family: @font-family-M;
+                min-height: 40px;
                 line-height: 40px;
                 position: absolute;
                 width: calc(100% - 70px);
-                overflow-y: hidden;
-                overflow-x: scroll;
+                /*overflow-y: hidden;*/
+                /*overflow-x: scroll;*/
                 /*text-overflow: ellipsis;*/
                 display: inline-block;
-                white-space: nowrap;
-                text-align: right;
+                /*white-space: nowrap;*/
                 font-size: 30px;
-                color: #4A4A4A;
+                color: @font-color-4A;
+              }
+              span.date_time {
+                text-align: right;
+              }
+              span.date_time1 {
+                text-align: left;
               }
               i {
                 position: absolute;
