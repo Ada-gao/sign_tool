@@ -12,7 +12,6 @@ import { XHeader } from 'vux'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
 import { qscan } from '@/service/api/activity'
-// import { activityUrl } from '@/config/env'
 import { toast } from '@/common/js/filter'
 import { getInfoList } from '@/service/api/aboutMe'
 
@@ -89,13 +88,13 @@ export default {
                 toast('签到成功')
               }
             }).catch(err => {
+              toast('签到失败')
               console.log('err', err)
             })
           }
-//          console.log(JSON.parse(result).result)
-//          console.log(JSON.parse(result).result.split('activity/'))
         },
         function (error) {
+          toast('签到失败')
           console.log(error)
         }
       )

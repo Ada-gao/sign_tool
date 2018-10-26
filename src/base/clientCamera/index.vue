@@ -116,6 +116,7 @@
         this.imgSrc = this.imageSrc
       },
       selectcamera () {
+        this.alertMsg = false
         this.show = true
         this.$emit('showPopup', this.show)
       },
