@@ -24,8 +24,9 @@
 
       <!--<div v-if="fromBank === 2" style="display: inline-block;height: 120px">-->
       <div v-if="fromBank === 2" class="ul_box">
-        <ul class="ul" v-if="fileArr.length > 0">
-          <li v-for="(item, index) in fileArr"
+        <!--<ul class="ul" v-if="fileArr.length > 0">-->
+          <div v-for="(item, index) in fileArr"
+               class="ul"
               :key="index"
               @click="showBigImg(index)"
               v-show="item">
@@ -33,8 +34,8 @@
             <span class="delete_img" @click.prevent='delImage(index, $event)'>
               <i>x</i>
             </span>
-          </li>
-        </ul>
+          </div>
+        <!--</ul>-->
         <div class="addsmall_box" @click="selectcamera()">
           <span class="iconfont icon_bg">
             <i>+</i>
@@ -264,7 +265,7 @@
   .upload_cont {
     text-align: center;
     width: 270px;
-    height: 180px;
+    /*height: 180px;*/
     /*line-height: 180px;*/
     background-color: #ddd;
     border-radius: 8px;
@@ -310,43 +311,40 @@
     box-sizing: border-box;
     .ul {
       display: inline-block;
-      height: 100%;
-      /*width: 150px;*/
-      li {
-        width: 150px;
-        height: 150px;
-        /*width: 100%;*/
-        /*height: 100%;*/
-        position: relative;
+      /*height: 100%;*/
+      width: 150px;
+      height: 150px;
+      /*width: 100%;*/
+      /*height: 100%;*/
+      position: relative;
+      display: inline-block;
+      img {
         display: inline-block;
-        img {
+        width: 100%;
+        height: 100%;
+      }
+      .delete_img {
+        position: absolute;
+        display: block;
+        top: -20px;
+        right: -6px;
+        font-size: 50px;
+        line-height: 22px;
+        color: #000;
+        width: 40px;
+        height: 40px;
+        border-radius: 100%;
+        text-align: center;
+        background: rgba(0,0,0,0.60);
+        i {
           display: inline-block;
-          width: 100%;
-          height: 100%;
-        }
-        .delete_img {
-          position: absolute;
-          display: block;
-          top: -20px;
-          right: -6px;
-          font-size: 50px;
-          line-height: 22px;
-          color: #000;
-          width: 40px;
-          height: 40px;
-          border-radius: 100%;
-          text-align: center;
-          background: rgba(0,0,0,0.60);
-          i {
-            display: inline-block;
-            font-size: 30px;
-            color: #fff;
-          }
+          font-size: 30px;
+          color: #fff;
         }
       }
-      li:not(:last-child) {
-        margin-right: 10px;
-      }
+    }
+    .ul:not(:last-child) {
+      margin-right: 10px;
     }
     .addsmall_box {
       display: inline-block;

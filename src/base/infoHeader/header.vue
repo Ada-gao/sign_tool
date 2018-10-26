@@ -89,9 +89,10 @@ export default {
                 toast('签到成功')
               }
             }).catch(err => {
-              toast('签到失败')
               console.log('err', err)
             })
+          } else {
+            toast('换一张二维码哦')
           }
         },
         function (error) {

@@ -42,7 +42,8 @@
                   </div>
                   <div class="customer_right">
                     <div class="right_cont">
-                      <span class="success_certy">实名已认证</span>
+                      <span class="success_certy" v-if="item.realname_status === '2'">实名已认证</span>
+                      <span class="expire_certy" v-if="item.realname_status === '4'">实名认证已过期</span>
                       <span class="wait_certy" v-if="item.certification_status === '1'">投资者认证待审核</span>
                       <span class="no_certy" v-else-if="item.certification_status === '3'">投资者认证失败</span>
                       <span class="expire_certy" v-else-if="item.certification_status === '4'">投资者认证已过期</span>
@@ -179,15 +180,6 @@
         CancelToken: this.$axios.CancelToken
       }
     },
-//    beforeRouteEnter (to, from, next) {
-//      next(vm => {
-//        if (!from.params.mark) {
-//          vm.idx = 0
-//        } else {
-//          vm.idx = from.params.mark
-//        }
-//      })
-//    },
     mounted () {
       this.idx = this.$route.params.mark ? this.$route.params.mark : 0
       this.getList()
@@ -261,6 +253,21 @@
   @import '~vux/src/styles/1px.less';
   @import '~vux/src/styles/center.less';
   @import '../../common/style/variable';
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    .is-iOS .reservation-wrapper {
+      padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
+    }
+  }
+  @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio:3) {
+    .is-iOS .reservation-wrapper {
+      padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
+    }
+  }
+  @media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio:2) {
+    .is-iOS .reservation-wrapper {
+      padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
+    }
+  }
   .tabbar {
     height: 80px;
     line-height: 80px;

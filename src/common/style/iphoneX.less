@@ -1,19 +1,4 @@
 // 适配 iphoneX 样式
-@media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
-  .is-iOS .reservation-wrapper {
-    padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
-  }
-}
-@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio:3) {
-  .is-iOS .reservation-wrapper {
-    padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
-  }
-}
-@media only screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio:2) {
-  .is-iOS .reservation-wrapper {
-    padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
-  }
-}
 .is-iOS .vux-header {
   padding-top: constant(safe-area-inset-top)!important; // iOs 11
   padding-top: env(safe-area-inset-top)!important; // iOs 11+ (feature)
@@ -23,9 +8,9 @@
   padding-top: calc(88px + env(safe-area-inset-top))!important;
   padding-bottom: env(safe-area-inset-bottom)!important;
 }
-// .is-iOS .reservation-wrapper {
-//   padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
-// }
+.is-iOS .reservation-wrapper {
+  padding-bottom: calc(96px + env(safe-area-inset-bottom))!important;
+}
 .is-iOS .weui-tabbar {
   padding-bottom: constant(safe-area-inset-bottom)!important;
   padding-bottom: env(safe-area-inset-bottom)!important;

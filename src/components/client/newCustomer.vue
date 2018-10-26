@@ -59,14 +59,17 @@
       </group>
       <div class="space"></div>
       <group>
-        <mt-field disableClear
-                  type="tel"
-                  label="手机号码："
-                  placeholder="请输入手机号"
-                  :attr="{ maxlength: 11 }"
-                  v-model="mobile"
-                  class="new_field ipt tal">
-        </mt-field>
+        <div class="must_fill">
+          <i class="iconfont necessary_icon">&#xe8d4;</i>
+          <mt-field disableClear
+                    type="tel"
+                    label="手机号码："
+                    placeholder="请输入手机号"
+                    :attr="{ maxlength: 11 }"
+                    v-model="mobile"
+                    class="new_field ipt tal">
+          </mt-field>
+        </div>
         <div class="bb"></div>
         <mt-field disableClear
                   type="tel"

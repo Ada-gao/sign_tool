@@ -12,7 +12,7 @@
           <div v-if="item.is_float === 0" class="left vertical-align">
             <span class="float">浮动收益</span>
           </div>
-          <div v-else class="left">
+          <div v-else class="left vertical-align">
             <!-- <span v-if="item.is_float === 0" class="number mar vertical-align">-</span> -->
             <span>
               <!--<span class="number vertical-align">{{item.annualized_return | twoDecimals}}</span><span class="percent vertical-align">%</span>-->
