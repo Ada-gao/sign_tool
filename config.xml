@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-versionCode="1" id="com.suxianginvestment.crmapp" ios-CFBundleVersion="1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-versionCode="1" id="com.suxianginvestment.crm01" ios-CFBundleVersion="1" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>财智滙</name>
     <description>
         An App
@@ -75,10 +75,10 @@
     <plugin name="cordova-plugin-device" spec="^2.0.2" />
     <plugin name="cordova-plugin-file-transfer" spec="^1.7.1" />
     <plugin name="jpush-phonegap-plugin" spec="^3.4.3">
-        <variable name="APP_KEY" value="1a08f552ec200520baccf2bb" />
+        <variable name="APP_KEY" value="d15b4666b97d5bd358c5b6c8" />
     </plugin>
     <plugin name="cordova-plugin-qqsdk" spec="^0.9.7">
-        <variable name="QQ_APP_ID" value="1107707505" />
+        <variable name="QQ_APP_ID" value="1107854132" />
     </plugin>
     <plugin name="cordova-plugin-wechatv2" spec="^2.1.3">
         <variable name="WECHATAPPID" value="wx0bb7de63a5d6e772" />
@@ -91,6 +91,6 @@
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="skwas-cordova-plugin-appinfo" spec="^1.0.1" />
     <engine name="browser" spec="^5.0.4" />
-    <engine name="ios" spec="^4.5.5" />
     <engine name="android" spec="^7.1.0" />
+    <engine name="ios" spec="^4.5.4" />
 </widget>
