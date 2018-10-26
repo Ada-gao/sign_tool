@@ -63,10 +63,10 @@
     </div>
 		<!-- 版本升级 -->
 		<x-dialog v-model="versionVisible" class="dialog-demo submitDialog v_main">
-      <!-- <div class="bgImg">
+      <div class="bgImg">
         <p class="version_number">V{{versionData.versionName}}</p>
-      </div> -->
-			<img class="img" src="static/img/version.png" alt=""/>
+      </div>
+			<!-- <img class="img" src="static/img/version.png" alt=""/> -->
       <div class="content">
         <div class="v_title">【新版本特性】</div>
         <pre class="v_list" v-html="versionData.promptText"></pre>
@@ -123,7 +123,9 @@ export default {
 			products: [],
 			choosePro: [],
 			versionVisible: false,
-			versionData: {},
+			versionData: {
+				versionName: '1.1.0'
+			},
 			versionClose: true,
 			appPackage: 'com.suxianginvestment.crm01',
 			appVersionFirstClick: sessionStorage.getItem('appVersionFirstClick') || 0
@@ -135,22 +137,18 @@ export default {
 		let _this = this
 		setTimeout(() => {
 			_this.devicePlatform = Vue.cordova.device.platform
-			if (_this.devicePlatform === 'browser') return
-			// /* global cordova */
-			// cordova.getAppVersion.getVersionCode(function (version) {
-			// })
+			// if (_this.devicePlatform === 'browser') return
+			if (JSON.parse(sessionStorage.getItem('hasCloseVersion'))) {
+				this.versionVisible = false
+			} else {
 				let params = {
 					appPackage: _this.appPackage,
 					platform: _this.devicePlatform,
 					versionName: Vue.cordova.appInfo.version,
 					versionCode: Vue.cordova.appInfo.build
 				}
-				let closeData = JSON.parse(sessionStorage.getItem('closeVersions'))
-				if (closeData) {
-					this.versionVisible = false
-				} else {
-					_this.updateVersionApp(params)
-				}
+				_this.updateVersionApp(params)
+			}
 		}, 1000)
 	},
 	mounted () {
@@ -206,11 +204,11 @@ export default {
     closeVersion () {
 			this.versionVisible = false
 			// sessionStorage.setItem('appVersionFirstClick', 1)
-      sessionStorage.setItem('closeVersions', true)
+      sessionStorage.setItem('hasCloseVersion', true)
       // localStorage.setItem('versionRemark', this.versionVisible)
 		},
 		updateVersionApp (params) {
-      // let closeData = JSON.parse(sessionStorage.getItem('closeVersions'))
+      // let closeData = JSON.parse(sessionStorage.getItem('hasCloseVersion'))
       // if (closeData) {
       //   this.versionVisible = false
       // } else {
@@ -408,6 +406,27 @@ export default {
 			height: 680px;
 			overflow: visible;
 		}
+		.bgImg {
+        width: 100%;
+        height: 230px;
+        background: url('../../../static/img/version.png') 50% no-repeat;
+        background-size: cover;
+        border-radius: 8px 8px 0 0;
+        .version_number {
+          width: 100px;
+          height: 37px;
+          border: 1px solid #ffffff; /*no*/
+          color: #ffffff;
+          // line-height: 42px;
+          // text-align: center;
+          // margin: 0 auto;
+          position: absolute;
+          top: 112px;
+          left: 41%;
+					border-radius: 4px;
+					font-size: 26px;
+        }
+      }
     .img {
       width: 100%;
       height: 230px;
@@ -416,6 +435,7 @@ export default {
 		.content {
       width: 477px;
 			margin: 0 auto;
+			text-align: left;
       .v_title {
         color: #505050;
 				font-size: 32px;
@@ -430,17 +450,21 @@ export default {
         margin: 0 auto;
 				font-family: -webkit-body;
 				line-height: 37px;
+				// min-height: 200px;
       }
       .ves_buttom {
         background: linear-gradient(to right, #dfc189, #BD9D62);
         color: #fff;
         border-radius: 50px;
-        margin-top: 43px;
-        display: block;
+        margin-top: 40px;
+        // display: block;
         text-align: center;
-        height: 90px;
+				height: 90px;
+				width: 500px;
 				line-height: 90px;
 				font-size: 36px;
+				position: absolute;
+				bottom: 40px;
       }
 		}
 		.iconfont {
