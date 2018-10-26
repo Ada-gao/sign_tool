@@ -2,7 +2,7 @@
     <div id="material">
         <x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
         <div class="spinner">
-          <mt-spinner type="fading-circle" color="#158FD2" v-if="spinner"></mt-spinner>
+          <mt-spinner type="fading-circle" color="#BD9D62" v-if="spinner"></mt-spinner>
         </div>
         <div class="wrapper">
             <div class="pdf">
@@ -43,6 +43,7 @@ export default {
       this.$router.push({name: 'PdfReport', params: {id: this.$route.params.id, mark: this.$route.params.mark}})
     },
     handleTouch (e) {
+      console.log(e.type)
       // e.preventDefault()
 			switch (e.type) {
 				case 'touchstart':
@@ -150,18 +151,22 @@ export default {
         let canvas = document.getElementById('the-canvas' + num)
         let ctx = canvas.getContext('2d')
         let dpr = window.devicePixelRatio || 1
+        // console.log(window.devicePixelRatio)
         let bsr = ctx.webkitBackingStorePixelRatio ||
                   ctx.mozBackingStorePixelRatio ||
                   ctx.msBackingStorePixelRatio ||
                   ctx.oBackingStorePixelRatio ||
                   ctx.backingStorePixelRatio || 1
-        let ratio = dpr / bsr
+        // console.log(bsr)
+        // let ratio = dpr / bsr
+        // console.log(screen.availWidth, page.getViewport(1).width)
         var viewport = page.getViewport(screen.availWidth / page.getViewport(1).width)
-        canvas.width = viewport.width * ratio
-        canvas.height = viewport.height * ratio
+        // console.log(viewport)
+        canvas.width = viewport.width * 1
+        canvas.height = viewport.height * 1
         canvas.style.width = canvas.width + 'px'
         canvas.style.height = canvas.height + 'px'
-        ctx.setTransform(ratio, 0, 0, ratio, 0, 0)
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
         var renderContext = {
           canvasContext: ctx,
           viewport: viewport
@@ -221,6 +226,11 @@ export default {
     this.spinner = true
     this.title = this.$route.params.tip
     this.wrapper = document.querySelector('.wrapper')
+    console.log(this.wrapper)
+    // this.wrapper.addEventListener('touchstart', function () {
+    //   console.log('adddddddd...........')
+    //   this.handleTouch()
+    // })
     this.wrapper.addEventListener('touchstart', this.handleTouch)
 		this.wrapper.addEventListener('touchmove', this.handleTouch)
 		this.wrapper.addEventListener('touchend', this.handleTouch)

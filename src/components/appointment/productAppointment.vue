@@ -1464,6 +1464,7 @@ export default {
 						this.orderCloseSuc = false
 						this.popupVisible = false
 						this.sureCancleA = false
+						this.closeOrderReason = false
 						this.selected = '2'
 						// this.transcInfoShow = false // 数据收起
 						// this.bankInfoShow = false // 数据收起

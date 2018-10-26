@@ -81,7 +81,8 @@ export default {
           // (支持手电筒, 默认false)
         },
         function (result) {
-          if (result && JSON.parse(result).result) {
+          console.log('scan', result)
+          if (result && JSON.parse(result).result && JSON.parse(result).result.indexOf('activity') > 0) {
             let url = JSON.parse(result).result.split('activity/')[1]
             qscan(url).then(res => {
               console.log('res', res)
