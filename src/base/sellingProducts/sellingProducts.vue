@@ -16,7 +16,9 @@
             <!-- <span v-if="item.is_float === 0" class="number mar vertical-align">-</span> -->
             <span>
               <!--<span class="number vertical-align">{{item.annualized_return | twoDecimals}}</span><span class="percent vertical-align">%</span>-->
-              <span class="number">{{item.annualized_return ? item.annualized_return : 0}}</span><span class="percent vertical-align">%</span>
+              <span class="number" v-if="item.annualized_return">{{item.annualized_return | twoDecimals}}</span>
+              <span class="number" v-else>{{0 | twoDecimals}}</span>
+              <span class="percent vertical-align">%</span>
             </span>
             <div class="text text-left">收益对标基准</div>
           </div>
