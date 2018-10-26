@@ -56,13 +56,13 @@
       "cordova-plugin-device": {},
       "cordova-plugin-file-transfer": {},
       "jpush-phonegap-plugin": {
-        "APP_KEY": "1a08f552ec200520baccf2bb"
+        "APP_KEY": "d15b4666b97d5bd358c5b6c8"
       },
       "cordova-plugin-wechatv2": {
         "WECHATAPPID": "wx0bb7de63a5d6e772"
       },
       "cordova-plugin-qqsdk": {
-        "QQ_APP_ID": "1107707505"
+        "QQ_APP_ID": "1107854132"
       },
       "shuyunqrcodescanner": {
         "CAMERA_USAGE_DESCRIPTION": "This app needs camera access",
