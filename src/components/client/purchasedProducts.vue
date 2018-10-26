@@ -57,7 +57,7 @@
     },
     mounted () {
       this.id = this.$route.params.id
-      this.liWidth = document.documentElement.offsetWidth / 5
+      this.liWidth = document.documentElement.offsetWidth / 4.5
       this.getList()
     },
     methods: {
@@ -77,7 +77,7 @@
               this.products[index + 1].push(ele)
             })
           })
-          let cnt = Math.ceil(this.tabBars.length / 5)
+          let cnt = Math.ceil(this.tabBars.length / 4)
           this.ulWidth = cnt * 100 + '%'
         })
       },

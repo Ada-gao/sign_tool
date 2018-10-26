@@ -255,6 +255,7 @@
           delete params.client_class
           addCusomer(params).then(res => {
             if (res.status === 200) {
+              toast('添加成功')
               if (res.data.mobile_validated === '0') {
                 this.$router.push({name: 'CustomerList', params: {mark: 1}})
               } else if (res.data.mobile_validated === '1') {

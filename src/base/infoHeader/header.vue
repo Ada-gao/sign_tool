@@ -12,7 +12,6 @@ import { XHeader } from 'vux'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
 import { qscan } from '@/service/api/activity'
-// import { activityUrl } from '@/config/env'
 import { toast } from '@/common/js/filter'
 import { getInfoList } from '@/service/api/aboutMe'
 
@@ -63,7 +62,7 @@ export default {
           // (文字颜色)
 
           // scan border
-          'borderColor': 'ffcd32',
+          'borderColor': 'BD9D62',
           // (扫描框颜色)
           'borderScale': '0.6',
           // (边框大小，0.1 ~ 1)
@@ -73,7 +72,7 @@ export default {
           // (支持相册选取, 默认false)
           'choosePhotoBtnTitle': '相册',
           // (选取按钮文字)
-          'choosePhotoBtnColor': 'ffcd32',
+          'choosePhotoBtnColor': 'BD9D62',
           // (选取按钮颜色)
 
           // flashlight
@@ -90,13 +89,13 @@ export default {
                 toast('签到成功')
               }
             }).catch(err => {
+              toast('签到失败')
               console.log('err', err)
             })
           }
-//          console.log(JSON.parse(result).result)
-//          console.log(JSON.parse(result).result.split('activity/'))
         },
         function (error) {
+          toast('签到失败')
           console.log(error)
         }
       )

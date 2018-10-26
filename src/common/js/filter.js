@@ -114,7 +114,8 @@ export function toast (text) {
   Toast({
     // title: ' ',
     message: text,
-    position: 'top'
+    position: 'top',
+    duration: 1000
   })
 }
 
