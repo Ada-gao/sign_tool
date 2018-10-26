@@ -73,9 +73,9 @@
       "skwas-cordova-plugin-appinfo": {}
     },
     "platforms": [
-      "android",
       "browser",
-      "ios"
+      "ios",
+      "android"
     ]
   },
   "devDependencies": {

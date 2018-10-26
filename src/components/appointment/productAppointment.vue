@@ -231,9 +231,9 @@
               <div class="space"></div>
 						</div>
 						<div class="cont" v-if="sendEmailW">
-							<mt-field label="合同编号：" v-model="cantractNum"></mt-field>
-							<mt-field label="快递公司：" v-model="expressCompany"></mt-field>
-							<mt-field label="快递编号：" v-model="expressNum"></mt-field>
+							<mt-field label="合同编号：" v-model="cantractNum" placeholder="请输入合同编号"></mt-field>
+							<mt-field label="快递公司：" v-model="expressCompany" placeholder="请输入快递公司"></mt-field>
+							<mt-field label="快递编号：" v-model="expressNum" placeholder="请输入快递编号"></mt-field>
 						</div>
 					</div>
 					<!-- <div class="mailingContract" v-if="sendEmailW">
