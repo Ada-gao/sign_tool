@@ -150,13 +150,13 @@ export default {
       this.pdfDoc.getPage(num).then(function (page) {
         let canvas = document.getElementById('the-canvas' + num)
         let ctx = canvas.getContext('2d')
-        let dpr = window.devicePixelRatio || 1
+        // let dpr = window.devicePixelRatio || 1
         // console.log(window.devicePixelRatio)
-        let bsr = ctx.webkitBackingStorePixelRatio ||
-                  ctx.mozBackingStorePixelRatio ||
-                  ctx.msBackingStorePixelRatio ||
-                  ctx.oBackingStorePixelRatio ||
-                  ctx.backingStorePixelRatio || 1
+        // let bsr = ctx.webkitBackingStorePixelRatio ||
+        //           ctx.mozBackingStorePixelRatio ||
+        //           ctx.msBackingStorePixelRatio ||
+        //           ctx.oBackingStorePixelRatio ||
+        //           ctx.backingStorePixelRatio || 1
         // console.log(bsr)
         // let ratio = dpr / bsr
         // console.log(screen.availWidth, page.getViewport(1).width)
