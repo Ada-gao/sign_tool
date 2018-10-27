@@ -289,7 +289,7 @@
       position: relative;
     }
     .active {
-      color: @new-font-color;
+      color: @text-font-color;
       &:after {
         position: absolute;
         display: inline-block;
@@ -299,7 +299,7 @@
         bottom: 0;
         width: 86%;
         height: 6px;
-        background-color: @new-font-color;
+        background-color: @text-font-color;
       }
     }
   }
