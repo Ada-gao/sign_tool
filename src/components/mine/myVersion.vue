@@ -11,7 +11,7 @@
       </div>
       <div class="tips text-center absolute-center-x">
         <p>版权所有：上海数赟科技有限公司</p>
-        <p class="copyRight">Copyright © 2018 Shuyun.All Rights Reserved</p>
+        <p class="copyRight">Copyright © 2018 Suxiang.All Rights Reserved</p>
       </div>
     </div>
   </div>
