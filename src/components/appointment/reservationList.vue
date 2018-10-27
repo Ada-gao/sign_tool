@@ -137,6 +137,7 @@ import { getList } from '@/service/api/appointment'
 import counter from '@/base/countDown/countDown'
 
 export default {
+	name: 'reservationList',
 	data () {
 		return {
 			selectedTip: '',
@@ -156,7 +157,7 @@ export default {
 	},
 	methods: {
 		toDetail (id) {
-			this.$router.push({name: 'ProductAppointment', params: {appointmentId: id, fromUrl: 'reservationList'}})
+			this.$router.push({name: 'ProductAppointment', params: {appointmentId: id, fromUrl: 'reservationList', selected: this.selected}})
 		},
 		getList () {
 			getList().then(res => {

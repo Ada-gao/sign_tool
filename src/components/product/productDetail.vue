@@ -172,6 +172,7 @@ import { XHeader, Group, CellBox, Cell } from 'vux'
 import { getProductDetail } from '@/service/api/products'
 // import {twoDecimals} from '@/common/js/filter'
 export default {
+  name: 'productDetail',
   data () {
     return {
       item: [],

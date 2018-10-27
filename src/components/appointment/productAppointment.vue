@@ -1,6 +1,8 @@
 <template>
     <div class="productAppointment" @touchmove="touchScreen">
-    	<x-header class="balck-header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{topBar}}</x-header>
+    	<x-header class="balck-header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">
+				{{params.selected === '1' ? '预约' : (params.selected === '2' ? '打款' : '合同管理')}}
+			</x-header>
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
 			<div class="wrapper">
 				<div class="topBar">
@@ -14,37 +16,46 @@
 						}">
 						<i class="iconfont"
 							:class="{
-							'icon-shenhezhong':appointmentList.status==='1001'||appointmentList.status==='2001'||appointmentList.status==='2002'||(appointmentList.status==='2003' && appointmentList.refund_status==='2')||appointmentList.status==='3001'||appointmentList.status==='3002',
-							'icon-guanbi':appointmentList.status==='1002' || appointmentList.status==='1004'||(appointmentList.status==='2003' && appointmentList.refund_status==='0')||(appointmentList.status==='2003' && appointmentList.refund_status==='1')||appointmentList.status==='3003',
+							'icon-shenhezhong':appointmentList.status==='1001'||appointmentList.status==='2001'||(appointmentList.status==='2003' && appointmentList.refund_status==='2')||appointmentList.status==='3001'||appointmentList.status==='3002',
+							'icon-guanbi':appointmentList.status==='1002'|| appointmentList.status==='1004'||(appointmentList.status==='2003' && appointmentList.refund_status==='0')||(appointmentList.status==='2003' && appointmentList.refund_status==='1')||appointmentList.status==='3003',
 							'icon-yuyuechenggong':appointmentList.status==='1003'||appointmentList.status==='2004'||(appointmentList.status==='2003' && appointmentList.refund_status==='4')||appointmentList.status==='3004',
-							'icon-alert-warning':appointmentList.status==='1005'||(appointmentList.status==='2003' && appointmentList.refund_status==='3')
+							'icon-alert-warning':appointmentList.status==='1005'||appointmentList.status==='2002'||(appointmentList.status==='2003' && appointmentList.refund_status==='3')
 						}"></i>
 						{{appointmentList.status|turnText(appointmentStatus)}} {{appointmentList.refund_status|turnText(refundStatus)}}
 					</div>
 					<div class="title statusYellow" v-else>预约提交中</div>
 					<flow>
 						<flow-state title="预约" is-done></flow-state>
-						<flow-line line-span=224 tip="ing" :is-done="appointmentDone"></flow-line>
-						<flow-state title="打款" :is-done="giveMoneyDone"></flow-state>
+						<!-- <flow-line line-span=224 tip="ing" :is-done="appointmentDone"></flow-line> -->
+						<!-- <flow-state title="打款" :is-done="giveMoneyDone"></flow-state>
 						<flow-line line-span=224 :is-done="giveMoneyIng"></flow-line>
-						<flow-state title="合同管理" :is-done="contractManage"></flow-state>
+						<flow-state title="合同管理" :is-done="contractManage"></flow-state> -->
+						<flow-line line-span=224 tip="ing" :is-done="appointmentList.status==='1003'||params.selected==='2'||params.selected==='3'"></flow-line>
+						<flow-state title="打款" :is-done="params.selected==='2'||params.selected==='3'"></flow-state>
+						<flow-line line-span=224 :is-done="params.selected==='3'"></flow-line>
+						<flow-state title="合同管理" :is-done="appointmentList.status==='3004'"></flow-state>
 					</flow>
 				</div>
-				<div class="closeReason" v-if="closeOrderReason">
-					<!-- <mt-cell :title= failTitle>{{closeReason}}</mt-cell> -->
+				<!-- <div class="closeReason" v-if="closeOrderReason"> -->
+				<div class="closeReason" v-if="appointmentList.status==='1002'||appointmentList.status==='2002'||appointmentList.status==='2003'||appointmentList.status==='3003'">
 					<span class="reason-title">原因: </span>
-					<span class="reason-content">{{closeReason}}</span>
+					<span class="reason-content">
+						<i>{{closeReason}}</i>
+					</span>
 				</div>
 				<div class="emailReason"  v-if="appointmentList.status === '3003'">
 					<!-- <mt-cell title="原因：">{{emailClose}}</mt-cell>
 					<mt-cell title="寄出合同方式：">{{emailType}}</mt-cell> -->
 					<span class="reason-title">寄出合同方式：</span>
-					<span class="reason-content">{{emailType}}</span>
+					<span class="reason-content">
+						<i>{{emailType}}</i>
+					</span>
 				</div>
 				<div class="info">
 					<mt-cell title="预约信息" class="tit">
-						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[appointInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('appointInfo')"></i>
+						<i v-if="!firstStep" class="iconfont" :class="[appointInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('appointInfo')"></i>
 					</mt-cell>
+					<!-- <div class="cont" v-show="appointInfoShow"> -->
 					<div class="cont" v-show="appointInfoShow">
 						<!-- <mt-field label="用户名: " placeholder="请输入用户名" v-model="name" readonly></mt-field> -->
 						<!-- <mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell> -->
@@ -59,14 +70,15 @@
 					</div>
 					<div class="mb20"></div>
 					<mt-cell title="产品信息" class="tit">
-						<i v-if="!topBar.includes('预约')" class="iconfont" :class="[productInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('productInfo')"></i>
+						<i v-if="!firstStep" class="iconfont" :class="[productInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('productInfo')"></i>
 					</mt-cell>
 					<div class="cont" v-show="productInfoShow">
 						<mt-cell title="产品名称：">{{product_name}}</mt-cell>
 						<mt-cell title="产品信息：" value="查看" is-link @click.native="returnProductInfo" class="watch"></mt-cell>
 					</div>
 					<div class="mb20"></div>
-					<div class="uploadCustomer" v-if="uploadShow">
+					<div class="uploadCustomer" v-if="appointmentList.status==='1003'||appointmentList.status.includes('200')||appointmentList.status.includes('300')">
+					<!-- <div class="uploadCustomer" v-if="uploadShow"> -->
 						<div class="cont">
 							<div class="fightMoney">
 								<!--  :to="{name: 'BankList', params: {id: this.client_id, flag: this.$route.params.fromUrl || this.$route.params.flag}}"  -->
@@ -74,7 +86,7 @@
 									<span class="cardSelected">选择已绑定银行卡</span>
 								</mt-cell>
 								<mt-cell v-else title="银行卡信息" class="tit border-b-0">
-									<i class="iconfont" :class="[bankInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('bankInfo')"></i>
+									<i class="iconfont" :class="[bankInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('bankInfo')"></i>
 								</mt-cell>
 								<div class="warn" v-if="chooseSelectedBank">
 									<i class="iconfont icon-alert-warning" style=""></i>
@@ -105,7 +117,7 @@
                         </mt-picker>
                       </div>
 										</mt-popup>
-										<mt-field label="支行名称:" v-model="bankname1" placeholder="请输入支行名称"></mt-field>
+										<mt-field label="支行名称:" v-model="subBankName" placeholder="请输入支行名称"></mt-field>
 										<div class="camera">
 											<camera :popupVisible="popupVisible"
 											@imgHandler="imageHandler1"
@@ -119,16 +131,19 @@
 										</div>
 								</div>
 								<div class="card1" v-show="uploadCardS && bankInfoShow">
-									<mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
-									<mt-cell title="银行名称:" :value="cardName"></mt-cell>
-									<mt-cell title="支行名称:" :value="cardName1"></mt-cell>
+									<!-- <mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
+									<mt-cell title="银行名称:" :value="cardName"></mt-cell> -->
+									<!-- <mt-cell title="支行名称:" :value="cardName1"></mt-cell> -->
+									<mt-cell title="银行卡号:" :value="cardnum"></mt-cell>
+									<mt-cell title="银行名称:" :value="bankname"></mt-cell>
+									<mt-cell title="支行名称:" :value="subBankName"></mt-cell>
 									<img class="camera" :src="cardUrl" @click="showBigImg('bank')">
         						<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
 								</div>
 							</div>
 							<div class="evidence">
 								<mt-cell title="打款凭证" class="tit border-b-0">
-									<i class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('remitInfo')"></i>
+									<i v-if="appointmentList.status!=='1003'" class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('remitInfo')"></i>
 								</mt-cell>
 								<div v-show="remitInfoShow" class="remitAmount">打款金额(万): <input class="remitAmount" v-model="remitAmount" type="number" pattern="\d*" placeholder="输入打款金额"></div>
 								<!-- <mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额" ></mt-field> -->
@@ -146,18 +161,9 @@
 									<img v-else v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)" :src="item">
 								</div>
 							</div>
-							<!-- <div class="evidence" v-if="!evidenceShow">
-								<mt-cell class="remitAmount tit border-b-0" title="打款凭证">
-									<i class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1"></i>
-								</mt-cell>
-								<mt-field class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额"></mt-field>
-								<div class="camera">
-									<img v-for="(item, index) in evidenceUrl" :key="index" @click="showBigImg('remit', index)" :src="item">
-								</div>
-							</div> -->
 							<div class="materialsNeeded">
 								<mt-cell title="客户所需提交材料" class="tit border-b-0">
-									<i class="iconfont" :class="[transcInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('transcInfo')"></i>
+									<i v-if="appointmentList.status!=='1003'" class="iconfont" :class="[transcInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('transcInfo')"></i>
 								</mt-cell>
 								<div class="camera" v-show="transcInfoShow">
 									<ul>
@@ -176,18 +182,12 @@
 									<img v-else v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)" :src="item">
 								</div>
 							</div>
-							<!-- <div class="materialsNeeded" v-if="!uploadCardMaterials">
-								<mt-cell title="交易所需材料" class="tit"></mt-cell>
-								<div class="camera" v-for="(item, index) in tradeUrl" :key="index" @click="showBigImg('material', index)">
-									<img :src="item">
-								</div>
-							</div> -->
 						</div>
 						<div class="mb20"></div>
 					</div>
 					<div class="refund" v-if="uploadRefund||repeatUploadRefund">
 						<mt-cell title="退款申请书" class="tit">
-							<i class="iconfont" :class="[refundInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('refundInfo')"></i>
+							<i v-if="appointmentList.refund_status !== '1'" class="iconfont" :class="[refundInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('refundInfo')"></i>
 						</mt-cell>
 						<div class="cont" v-show="refundInfoShow">
 							<div class="camera">
@@ -211,40 +211,23 @@
 						</div>
 						<div class="mb20"></div>
 					</div>
-					<!-- <div class="mb20"></div> -->
-					<!-- <div class="refund" v-if="repeatUploadRefund">
-						<div class="cont">
-							<mt-cell title="提交退款申请书"></mt-cell>
-							<div class="camera">
-								<img v-for="(item, index) in refundUrl" :key="index" @click="showBigImg('refund', index)" :src="item">
-							</div>
-						</div>
-					</div> -->
-					<div class="mailingContract" v-if="sendEmail||sendEmailW">
+					<div class="mailingContract" v-if="appointmentList.status==='2004'||appointmentList.status.includes('300')">
 						<mt-cell title="邮寄合同" class="tit">
-							<i class="iconfont" :class="[contractInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow1('contractInfo')"></i>
+							<i v-if="contractOperationIconShow" class="iconfont" :class="[contractInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('contractInfo')"></i>
 						</mt-cell>
 						<div class="cont last_cont" v-if="sendEmail && contractInfoShow">
-							<mt-cell title="合同编号：" :value="contractNumW"></mt-cell>
-							<mt-cell title="快递公司：" :value="expresszCom"></mt-cell>
-							<mt-cell title="快递编号：" :value="expressNums"></mt-cell>
+							<mt-cell title="合同编号：" :value="cantractNum"></mt-cell>
+							<mt-cell title="快递公司：" :value="expressCompany"></mt-cell>
+							<mt-cell title="快递编号：" :value="expressNum"></mt-cell>
               <div class="space"></div>
 						</div>
-						<div class="cont" v-if="sendEmailW">
+						<!-- <div class="cont" v-if="sendEmailW"> -->
+						<div class="cont" v-if="appointmentList.status==='2004'||appointmentList.status==='3003'">
 							<mt-field label="合同编号：" v-model="cantractNum"></mt-field>
 							<mt-field label="快递公司：" v-model="expressCompany"></mt-field>
 							<mt-field label="快递编号：" v-model="expressNum"></mt-field>
 						</div>
 					</div>
-					<!-- <div class="mailingContract" v-if="sendEmailW">
-						<mt-cell title="邮寄合同" class="tit">
-						</mt-cell>
-						<div class="cont">
-							<mt-field label="合同编号：" v-model="cantractNum"></mt-field>
-							<mt-field label="快递公司：" v-model="expressCompany"></mt-field>
-							<mt-field label="快递编号：" v-model="expressNum"></mt-field>
-						</div>
-					</div> -->
 					<div class="submitBtn" v-if="firstStep">
 					<!-- <div class="submitBtn" v-if="submitAppointmentBtnShow"> -->
           	<mt-button type="primary" @click.native="submitAppointmentBtn">提交预约</mt-button>
@@ -291,23 +274,14 @@
 						<div class="success">订单关闭成功</div>
 						<x-button @click.native="closeOrderSuc" type="primary">返回列表</x-button>
 					</x-dialog>
-					<x-dialog v-model="alertMsg" class="dialog-demo submitDialog" hide-on-blur>
+					<!-- <x-dialog v-model="alertMsg" class="dialog-demo submitDialog" hide-on-blur>
 						<div class="quit">{{msgDetail}}</div>
 						<x-button type="primary" @click.native="hideAlert">确 定</x-button>
-					</x-dialog>
+					</x-dialog> -->
 					<x-dialog v-model="closeOrderR" class="dialog-demo submitDialog" hide-on-blur>
 						<div class="quit">确定关闭订单吗</div>
 						<x-button @click.native="sendMessage" type="primary">确 定</x-button>
 					</x-dialog>
-					<!-- <x-dialog v-model="sureCancleA" class="dialog-demo submitDialog" hide-on-blur>
-						<div class="quit">确定取消预约吗</div>
-						<x-button @click.native="sureCancle" type="primary">确 定</x-button>
-					</x-dialog> -->
-					<!-- <x-dialog v-model="submitSucDialog" class="dialog-demo submitDialog" hide-on-blur>
-						<i class="iconfont suc">&#xe60a;</i>
-						<div class="success">您的提交已成功</div>
-						<x-button @click.native="sucMakeSure" type="primary">返回产品详情</x-button>
-					</x-dialog> -->
 					<x-dialog v-model="failSubmit" class="dialog-demo submitDialog" hide-on-blur>
 						<!-- <i class="iconfont noS fail">&#xe626;</i> -->
 						<div class="success sorry">对不起！申请提交未成功</div>
@@ -334,20 +308,19 @@ export default {
 	data () {
 		return {
 		  itemHeight: getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0,
-			topBar: '预约',
+			// topBar: '预约',
 			count: '',
-			topTitle: '',
+			// topTitle: '',
 			step1: 1,
 			popupVisible: false,
 			cardnum: '',
 			bankname: '',
-			bankname1: '',
+			subBankName: '',
 			submitDialog: false,
 			failSubmit: false,
-			submitSucDialog: false,
-			uploadShow: false,
+			// uploadShow: false,
 			alertMsg: false,
-			sucBtn: false,
+			// sucBtn: false,
 			product_name: '',
 			product_id: '',
 			prePath: '',
@@ -368,18 +341,18 @@ export default {
 			appointmentId: '',
 			showMoneyClick: true,
 			showNameClick: true,
-			submitAppointmentBtnShow: true,
-			repeatAppointmentBtnShow: false,
+			// submitAppointmentBtnShow: true,
+			// repeatAppointmentBtnShow: false,
 			codeA: '',
 			appointmentCode: false,
-			appointmentDone: false,
-			giveMoneyDone: false,
-			giveMoneyIng: false,
-			contractManage: false,
+			// appointmentDone: false,
+			// giveMoneyDone: false,
+			// giveMoneyIng: false,
+			// contractManage: false,
 			chooseSelectedBank: true,
-			giveMoneySuc: false,
+			// giveMoneySuc: false,
 			sendEmail: false,
-			sendEmailW: false,
+			// sendEmailW: false,
 			uploadCard: true,
 			uploadCardS: false,
 			uploadCardMaterials: true,
@@ -402,26 +375,23 @@ export default {
 			orderCloseSuc: false,
 			uploadRefund: false,
 			repeatUploadRefund: false,
-			initiateRefund: false,
+			// initiateRefund: false,
 			alreadyPass: false,
-			uploadContract: false,
-			closeOrderReason: false,
-			refundLan: '发起退款',
+			// uploadContract: false,
+			// closeOrderReason: false,
+			// refundLan: '发起退款',
 			alreadyPassTime: '',
 			closeOrderR: false,
 			clear: false,
 			reason: '',
 			emailType: '',
-			contractNumW: '',
-			expresszCom: '',
-			expressNums: '',
 			cameraShow: true,
 			bankId: '',
 			closeReason: '',
 			emailClose: '',
 			selected: '',
 			firstFromUrl: '',
-			repeatPayMaterials: false,
+			// repeatPayMaterials: false,
 			msgDetail: '',
 			minimalAmount: '',
 			collectionAmount: '',
@@ -431,9 +401,7 @@ export default {
 			evidenceUrls: [],
 			showSpace: false,
 			noReasonShow: '',
-			sureCancleA: false,
 			submitAppointDetail: '已提交待审核中…',
-			failTitle: '',
 			remitAmount: '',
 			showImg: false,
 			imgTotal: null,
@@ -486,10 +454,16 @@ export default {
 			transcInfoShow: true,
 			refundInfoShow: true,
 			contractInfoShow: true,
+			contractOperationIconShow: true,
+			refundOperationIconShow: true,
 			appointmentStatus: JSON.parse(localStorage.getItem('appointment_status')),
 			refundStatus: JSON.parse(localStorage.getItem('refund_status')),
 			routeParams: null,
-			firstStep: false
+			firstStep: false,
+			selectText: '',
+			params: {
+				selected: '1'
+			}
 		}
 	},
 	computed: {
@@ -509,10 +483,8 @@ export default {
 		thumbnails
 	},
 	methods: {
-			toggleShow1 (type) {
-				if (type === 'remitInfo') {
-					this.remitInfoShow = !this.remitInfoShow
-				} else if (type === 'productInfo') {
+			toggleShow (type) {
+				if (type === 'productInfo') {
 					this.productInfoShow = !this.productInfoShow
 				} else if (type === 'appointInfo') {
 					this.appointInfoShow = !this.appointInfoShow
@@ -595,9 +567,9 @@ export default {
 					item.blur()
 				})
 				this.timer1 = null
-                this.timer1 = setTimeout(() => {
+        this.timer1 = setTimeout(() => {
 					this.popupVisible = data
-                }, 3000)
+        }, 3000)
 			},
       hidePopup (data) {
         this.popupVisible = data
@@ -607,13 +579,16 @@ export default {
 					item.blur()
 				})
 				this.timer1 = null
-				if (this.alertMsg === true) {
-					// return
-				} else {
-					this.timer1 = setTimeout(() => {
-						this.showBankCardName = true
-					}, 600)
-				}
+				this.timer1 = setTimeout(() => {
+					this.showBankCardName = true
+				}, 600)
+				// if (this.alertMsg === true) {
+				// 	// return
+				// } else {
+				// 	this.timer1 = setTimeout(() => {
+				// 		this.showBankCardName = true
+				// 	}, 600)
+				// }
 			},
 			onValuesChange (picker, values) {
 				if (values[0] !== undefined) {
@@ -671,7 +646,6 @@ export default {
 					// this.alertMsg = true
 					return
 				}
-				// let selectObj = this.appointmentList.find(item => item.mobile === this.cMob)
 				let obj = {
 					'client_id': this.selectClientObj.client_id,
 					'client_mobile': this.cMob,
@@ -784,7 +758,7 @@ export default {
 			},
 			submitPayMaterials () {
 				// console.log(this.materialSrc)
-				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.subBankName === '' || this.cardnum === '') {
 					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
 					Toast({
@@ -806,10 +780,13 @@ export default {
 					'file_urls_payments': this.evidenceUrl,
 					'file_urls_trades': this.materialSrc,
 					'bank_card_front_url': this.cardUrl,
-					'bank_name': this.bankname || this.cardName,
-					'bank_subname': this.bankname1 || this.cardName1,
+					// 'bank_name': this.bankname || this.cardName,
+					'bank_name': this.bankname,
+					// 'bank_subname': this.subBankName || this.cardName1,
+					'bank_subname': this.subBankName,
 					'bank_id': this.bankId,
-					'card_no': this.cardnum || this.cardNum,
+					// 'card_no': this.cardnum || this.cardNum,
+					'card_no': this.cardnum,
 					'remit_amount': parseInt(this.remitAmount),
 					'client_id': this.appointmentList.client_id
 				}
@@ -849,7 +826,7 @@ export default {
 					})
 					return
 				}
-				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.bankname1 === '' || this.cardnum === '') {
+				if (this.evidenceUrl === undefined || this.materialSrc === undefined || this.cardUrl === undefined || this.bankname === '' || this.subBankName === '' || this.cardnum === '') {
 					// this.alertMsg = true
 					this.msgDetail = '还有信息没填写哦～'
 					Toast({
@@ -862,10 +839,13 @@ export default {
 					'file_urls_payments': this.evidenceUrl,
 					'file_urls_trades': this.materialSrc,
 					'bank_card_front_url': this.cardUrl,
-					'bank_name': this.bankname || this.cardName,
-					'bank_subname': this.bankname1 || this.cardName1,
+					// 'bank_name': this.bankname || this.cardName,
+					'bank_name': this.bankname,
+					// 'bank_subname': this.subBankName || this.cardName1,
+					'bank_subname': this.subBankName,
 					'bank_id': this.bankId,
-					'card_no': this.cardnum || this.cardNum,
+					// 'card_no': this.cardnum || this.cardNum,
+					'card_no': this.cardnum,
 					'remit_amount': parseInt(this.remitAmount),
 					'client_id': this.appointmentList.client_id,
 					'flag': '1'
@@ -934,7 +914,6 @@ export default {
 				})
 			},
 			cancleAppointment () {
-				// this.sureCancleA = true
 				MessageBox({
 					title: '取消预约',
 					message: '确定取消预约吗?',
@@ -952,10 +931,9 @@ export default {
 					if (res.status === 200) {
 						// window.reload()
 						this.appointmentList.status = '1004'
-						this.topTitle = '预约取消'
-						this.sucBtn = false
-						this.uploadShow = false
-						this.sureCancleA = false
+						// this.topTitle = '预约取消'
+						// this.sucBtn = false
+						// this.uploadShow = false // 1004 已做判断
 					}
 				})
 			},
@@ -1011,36 +989,24 @@ export default {
 					this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 					this.product_name = this.$route.params.productInfo
 					this.product_id = this.$route.params.productId
-					this.topBar = '预约'
-					this.topTitle = '预约' // 已用变量代替
+					// this.topBar = '预约'
+					// this.topTitle = '预约' // 已用变量代替
 					this.name = ''
 					this.cMob = ''
 					this.money = ''
 					this.appointInfoShow = true
-					this.closeOrderReason = false
+					// this.closeOrderReason = false
 					this.showNameClick = true
 					this.showMoneyClick = true
-					this.uploadShow = false
+					// this.uploadShow = false
 					this.uploadRefund = false
 					this.repeatUploadRefund = false
 					this.sendEmail = false
-					this.sendEmailW = false
-					this.submitAppointmentBtnShow = true
-					this.repeatAppointmentBtnShow = false
-					this.initiateRefund = false
-					this.sucBtn = false
-					this.uploadContract = false
-					this.giveMoneySuc = false
 					this.alreadyPass = false
 					this.appointmentCode = false
-					this.repeatPayMaterials = false
+					// this.repeatPayMaterials = false
 					this.orderCloseSuc = false
 					this.popupVisible = false
-					this.sureCancleA = false
-					this.appointmentDone = false
-					this.giveMoneyDone = false
-					this.giveMoneyIng = false
-					this.contractManage = false
 					localStorage.setItem('riskLevel', this.$route.params.riskLevel)
 					localStorage.setItem('minimalAmount', this.$route.params.minimalAmount)
 					localStorage.setItem('collectionAmount', this.$route.params.collectionAmount)
@@ -1049,6 +1015,9 @@ export default {
 					// 	this.appointmentList = res.data
 					// })
 					console.log(this.appointmentList)
+					this.appointmentList = {
+						status: '-1'
+					}
 			},
 			getList () {
 				this.appointmentId = this.$route.params.appointmentId
@@ -1067,18 +1036,22 @@ export default {
 					this.money = this.appointmentList.appointment_amount
 					this.nowTime = this.appointmentList.appointment_date
 					this.product_name = this.appointmentList.product_name
-					this.cardNum = this.appointmentList.cardno
-					this.cardName = this.appointmentList.bank_name
-					this.cardName1 = this.appointmentList.bank_subname
+					// this.cardNum = this.appointmentList.cardno
+					this.cardnum = this.appointmentList.cardno
+					// this.cardName = this.appointmentList.bank_name
+					this.bankname = this.appointmentList.bank_name
+					// this.cardName1 = this.appointmentList.bank_subname
+					this.subBankName = this.appointmentList.bank_subname
 					this.cardUrl = this.appointmentList.bankcard_front_url
 					this.evidenceUrl = this.appointmentList.file_urls_payments
 					this.materialSrc = this.appointmentList.file_urls_trades
 					this.tradeUrl = this.appointmentList.file_urls_trades
 					this.refundUrl = this.appointmentList.file_urls_refunds
+					this.refundUrls = this.appointmentList.file_urls_refunds
 					this.alreadyPassTime = this.appointmentList.remit_audit_date
-					this.contractNumW = this.appointmentList.contract_no
-					this.expresszCom = this.appointmentList.express_company
-					this.expressNums = this.appointmentList.express_no
+					this.cantractNum = this.appointmentList.contract_no
+					this.expressCompany = this.appointmentList.express_company
+					this.expressNum = this.appointmentList.express_no
 					this.closeReason = this.appointmentList.order_closure_remark || this.appointmentList.contract_no_pass_remark
 					// this.emailClose = this.appointmentList.contract_no_pass_remark
 					this.remitAmount = this.appointmentList.remit_amount
@@ -1094,58 +1067,63 @@ export default {
 					} else if (this.appointmentList.audit_contract_express === '1') {
 						this.emailType = '快递寄出'
 					}
-					if (this.appointmentList.status.includes('100')) { // 控制信息展开/收起
+					if (this.appointmentList.status === '-1' || (this.params.selected === '1' && this.appointmentList.status !== '1003')) { // 控制信息展开/收起
 						this.appointInfoShow = true
 						this.productInfoShow = true
 					} else {
 						this.appointInfoShow = false
 						this.productInfoShow = false
 					}
-					if (this.appointmentList.status === '1004') {
-						this.remitInfoShow = false
-					}
-					if (this.appointmentList.status.includes('2003') || this.appointmentList.status.includes('2004') || this.appointmentList.status.includes('300')) { // 订单关闭
+					// if (this.appointmentList.status === '1004') {
+					// 	this.remitInfoShow = false
+					// }
+					// if (this.appointmentList.status.includes('2003') || this.appointmentList.status.includes('2004') || this.appointmentList.status.includes('300')) { // 订单关闭
+					// 	this.transcInfoShow = false
+					// 	this.bankInfoShow = false
+					// 	this.remitInfoShow = false
+					// }
+					if (this.appointmentList.status === '1003' || this.appointmentList.status === '2001' || this.appointmentList.status === '2002') {
+						this.transcInfoShow = true
+						this.bankInfoShow = true
+						this.remitInfoShow = true
+					} else {
 						this.transcInfoShow = false
 						this.bankInfoShow = false
 						this.remitInfoShow = false
 					}
+					if (this.appointmentList.status === '2004' || (this.appointmentList.status.includes('300') && this.appointmentList.status !== '3004')) {
+						this.contractInfoShow = true
+					} else {
+						this.contractInfoShow = false
+					}
+					if (this.appointmentList.status.includes('300') && this.appointmentList.status !== '3003') {
+						this.contractOperationIconShow = true
+					} else {
+						this.contractOperationIconShow = false
+					}
+					if (this.appointmentList.refund_status === '1' || this.appointmentList.refund_status === '3') {
+						this.refundInfoShow = true
+					} else {
+						this.refundInfoShow = false
+					}
 					if (this.appointmentList.status === '1001') {
-						this.topBar = '预约'
-						this.topTitle = '预约(申请中)'
-						this.repeatAppointmentBtnShow = false
-						this.sucBtn = false
-						this.uploadShow = false
-						this.appointmentDone = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
 						this.uploadCardS = false
-						this.submitAppointmentBtnShow = false
-						this.uploadContract = false
-						this.closeOrderReason = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.repeatAppointmentBtnShow = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.giveMoneyDone = false
-						this.giveMoneyIng = false
-						this.contractManage = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1002') {
-						this.topBar = '预约'
-						this.topTitle = '预约失败'
-						this.failTitle = '预约失败原因：'
+						// this.topBar = '预约'
+						// this.topTitle = '预约失败'
 						this.nowTime = formatDate(new Date(), 'yyyy-MM-dd hh:mm')
 						// let arr = []
 						// getProducts().then(res => {
@@ -1164,207 +1142,105 @@ export default {
 						this.cMob = this.appointmentList.client_mobile
 						this.money = this.appointmentList.appointment_amount
 						this.closeReason = this.appointmentList.appoint_failure
-						this.submitAppointmentBtnShow = false
-						this.repeatAppointmentBtnShow = true
 						this.showNameClick = false // 预约失败时，应根据原因修改预约数据，而非客户
 						this.showMoneyClick = true
-						this.closeOrderReason = true
-						this.sucBtn = false
-						this.uploadShow = false
-						this.appointmentDone = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
 						this.uploadCardS = false
-						this.uploadContract = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.giveMoneyDone = false
-						this.giveMoneyIng = false
-						this.contractManage = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1003') {
-						this.topBar = '预约'
-						this.topTitle = '预约成功'
-						this.sucBtn = true
-						this.uploadShow = true
-						this.appointmentDone = true
 						this.uploadCard = true
 						this.uploadCardMaterials = true
 						this.evidenceShow = true
 						this.chooseSelectedBank = true
 						this.cameraShow = true
 						this.uploadCardS = false
-						this.submitAppointmentBtnShow = false
-						this.uploadContract = false
-						this.closeOrderReason = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.repeatAppointmentBtnShow = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.giveMoneyDone = false
-						this.giveMoneyIng = false
-						this.contractManage = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.cardnum = ''
 						this.bankname = ''
-						this.bankname1 = ''
+						this.subBankName = ''
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1004') {
-						this.topBar = '预约'
-						this.topTitle = '预约取消'
-						this.submitAppointmentBtnShow = false
-						this.repeatAppointmentBtnShow = false
-						this.sucBtn = false
-						this.uploadShow = false
-						this.appointmentDone = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
 						this.uploadCardS = false
-						this.uploadContract = false
-						this.closeOrderReason = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.giveMoneyDone = false
-						this.giveMoneyIng = false
-						this.contractManage = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
-						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '1005') {
-						this.topBar = '预约'
-						this.topTitle = '预约失效'
 						this.showNameClick = false
 						this.showMoneyClick = false
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
-						this.uploadShow = false
-						this.appointmentDone = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
 						this.uploadCardS = false
-						this.uploadContract = false
-						this.closeOrderReason = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.giveMoneyDone = false
-						this.giveMoneyIng = false
-						this.contractManage = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '1'
 					} else if (this.appointmentList.status === '2001') {
-						this.topBar = '打款'
-						this.topTitle = '打款审核中'
-						this.uploadShow = true
-						this.giveMoneyDone = true
-						this.giveMoneyDone = true
-						this.appointmentDone = true
 						this.uploadCardS = true
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.evidenceShow = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
-						this.uploadContract = false
-						this.closeOrderReason = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.contractManage = false
-						this.giveMoneyIng = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '2'
 						this.appointInfoShow = false
 					} else if (this.appointmentList.status === '2002') {
-						this.topBar = '打款'
-						this.topTitle = '已到账待补全材料'
-						this.failTitle = '待补全材料原因：'
 						this.closeReason = this.appointmentList.pending_material_remark
-						this.uploadShow = true
-						this.appointmentDone = true
 						this.uploadCard = true
 						this.uploadCardMaterials = true
 						this.evidenceShow = true
 						this.chooseSelectedBank = true
 						this.cameraShow = true
-						this.giveMoneyDone = true
-						this.repeatPayMaterials = true
-						this.closeOrderReason = true
-						this.sucBtn = false
 						this.uploadCardS = false
-						this.submitAppointmentBtnShow = false
-						this.uploadContract = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.repeatAppointmentBtnShow = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.giveMoneyIng = false
-						this.contractManage = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.bankId = this.appointmentList.bank_card_id
 						this.cardnum = this.appointmentList.cardno
 						this.bankname = this.appointmentList.bank_name
-						this.bankname1 = this.appointmentList.bank_subname
+						this.subBankName = this.appointmentList.bank_subname
 						this.cardUrl = this.appointmentList.bankcard_front_url
 						this.materialsUrls = this.appointmentList.file_urls_trades
 						this.evidenceUrls = this.appointmentList.file_urls_payments
@@ -1373,182 +1249,105 @@ export default {
 						this.refundSrc = []
 						this.selected = '2'
 					} else if (this.appointmentList.status === '2003') {
-						this.topBar = '打款'
-						this.topTitle = '订单关闭'
-						this.failTitle = '订单关闭原因'
-						this.appointmentDone = true
-						this.giveMoneyDone = true
-						this.closeOrderReason = true
-						this.uploadShow = true
+						// this.topBar = '打款'
+						// this.topTitle = '订单关闭'
+						// this.appointmentDone = true
+						// this.giveMoneyDone = true
+						// this.closeOrderReason = true
+						// this.uploadShow = true
 						this.uploadCardS = true
 						this.emailReason = false
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
+						// this.repeatAppointmentBtnShow = false
+						// this.submitAppointmentBtnShow = false
+						// this.sucBtn = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.evidenceShow = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
-						this.uploadContract = false
+						// this.uploadContract = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.alreadyPass = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.sendEmailW = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.contractManage = false
-						this.giveMoneyIng = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '2'
 						if (this.appointmentList.refund_status === '0') {
-							// this.topTitle = '订单关闭 无需退款'
 						} else if (this.appointmentList.refund_status === '1') {
-							// this.topTitle = '需要退款'
 							this.uploadRefund = true
-							this.initiateRefund = true
+							// this.initiateRefund = true
 						} else if (this.appointmentList.refund_status === '2') {
-							this.topTitle = '退款申请中'
 							this.repeatUploadRefund = true
-							this.refundInfoShow = false // 数据收起
 						} else if (this.appointmentList.refund_status === '3') {
-							this.topTitle = '退款驳回'
-							this.failTitle = '退款驳回原因：'
 							this.closeReason = this.appointmentList.refund_failure
 							this.uploadRefund = true
-							this.initiateRefund = true
-							this.refundLan = '重新发起退款'
+							// this.initiateRefund = true
+							// this.refundLan = '重新发起退款'
 						} else if (this.appointmentList.refund_status === '4') {
-							this.topTitle = '已退款'
+							// this.topTitle = '已退款'
 							this.repeatUploadRefund = true
-							this.refundInfoShow = false // 数据收起
 						}
 					} else if (this.appointmentList.status === '2004') {
-						this.topBar = '打款'
-						this.topTitle = '打款审核通过'
+						// this.topBar = '打款'
+						// this.topTitle = '打款审核通过'
 						this.cantractNum = ''
 						this.expressCompany = ''
 						this.expressNum = ''
-						this.uploadShow = true
 						this.uploadCardS = true
-						this.giveMoneySuc = true
-						this.sendEmailW = true
-						this.giveMoneyDone = true
-						this.appointmentDone = true
 						this.alreadyPass = true
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.evidenceShow = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
-						this.uploadContract = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
 						this.sendEmail = false
-						this.initiateRefund = false
-						this.contractManage = false
-						this.giveMoneyIng = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
-						this.closeOrderReason = false
 						this.selected = '2'
-						// this.transcInfoShow = false // 数据收起
-						// this.bankInfoShow = false // 数据收起
-						// this.remitInfoShow = false // 数据收起
 					} else if (this.appointmentList.status === '3001') {
-						this.topBar = '合同管理'
-						this.topTitle = '待收到合同'
-						this.uploadShow = true
 						this.uploadCardS = true
 						this.sendEmail = true
-						this.giveMoneyDone = true
-						this.appointmentDone = true
-						this.giveMoneyIng = true
 						this.alreadyPass = true
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.evidenceShow = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
-						this.uploadContract = false
+						// this.uploadContract = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.contractManage = false
-						this.closeOrderReason	= false
-						this.repeatPayMaterials = false
-						this.sendEmailW = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3002') {
-						this.topBar = '合同管理'
-						this.topTitle = '合同审核中'
-						this.uploadShow = true
 						this.uploadCardS = true
 						this.sendEmail = true
-						this.giveMoneyDone = true
-						this.appointmentDone = true
-						this.giveMoneyIng = true
 						this.alreadyPass = true
-						this.contractManage = false
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.evidenceShow = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
-						this.uploadContract = false
+						// this.uploadContract = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.closeOrderReason	= false
-						this.repeatPayMaterials = false
-						this.sendEmailW = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3003') {
-						this.topBar = '合同管理'
-						this.topTitle = '合同审核不通过'
-						this.uploadContract = true
-						this.uploadShow = true
 						this.uploadCardS = true
-						this.sendEmailW = true
-						this.giveMoneyDone = true
-						this.appointmentDone = true
-						this.giveMoneyIng = true
 						this.alreadyPass = true
-						this.contractManage = false
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.evidenceShow = false
@@ -1558,49 +1357,26 @@ export default {
 						this.showMoneyClick = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.closeOrderReason	= false
 						this.sendEmail = false
-						this.repeatPayMaterials = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '3'
 					} else if (this.appointmentList.status === '3004') {
-						this.topBar = '合同管理'
-						this.topTitle = '合同审核通过'
-						this.contractManage = true
-						this.uploadShow = true
 						this.uploadCardS = true
 						this.sendEmail = true
-						this.giveMoneyDone = true
-						this.appointmentDone = true
-						this.giveMoneyIng = true
 						this.alreadyPass = true
-						this.repeatAppointmentBtnShow = false
-						this.submitAppointmentBtnShow = false
-						this.sucBtn = false
 						this.uploadCard = false
 						this.uploadCardMaterials = false
 						this.evidenceShow = false
 						this.chooseSelectedBank = false
 						this.cameraShow = false
-						this.uploadContract = false
 						this.showNameClick = false
 						this.showMoneyClick = false
 						this.uploadRefund = false
 						this.repeatUploadRefund = false
-						this.initiateRefund = false
-						this.giveMoneySuc = false
-						this.closeOrderReason	= false
-						this.repeatPayMaterials = false
-						this.sendEmailW = false
 						this.orderCloseSuc = false
 						this.popupVisible = false
-						this.sureCancleA = false
 						this.selected = '3'
-						this.contractInfoShow = false
 					}
 				})
 			},
@@ -1637,8 +1413,10 @@ export default {
 		})
 	},
 	activated () {
-		console.log('the params in this.$route')
-		console.log(this.$route.params)
+		// console.log('缓存。。')
+		// console.log(this.$route.params)
+		this.params = this.$route.params
+		// this.selectText = this.$route.params.selected === '1' ? '预约2' : (this.$route.params.selected === '2' ? '打款2' : '合同2')
 		if (this.$route.params.fromUrl === 'productDetail') {
 			this.writeAppointment()
 			// this.getList()
@@ -1650,7 +1428,6 @@ export default {
 			this.evidenceUrl = []
 			this.materialSrc = []
 			this.refundSrc = []
-			console.log('重新预约')
 			this.getList()
 			this.getBankList()
 		} else if (this.$route.params.mark === 'selected') {
@@ -1661,7 +1438,7 @@ export default {
 			let obj = this.$route.params.item
 			this.cardnum = obj.card_no
 			this.bankname = obj.bank_name
-			this.bankname1 = obj.sub_branch_name
+			this.subBankName = obj.sub_branch_name
 			this.cardUrl = obj.card_front_url
 			this.bankId = obj.bank_id
 		} else if (this.$route.params.selectFlag === 'selectFlag') {
@@ -1678,8 +1455,9 @@ export default {
 		window.scroll(0, 0)
 		// console.log('this.appointmentList.client_id')
 		// console.log(this.appointmentList.client_id)
-		console.log('this.$route.params')
-		console.log(this.$route.params)
+		// console.log('this.$route.params')
+		// console.log(this.$route.params)
+		this.params = this.$route.params
 		window.onpopstate = () => {
 			this.back()
 		}
@@ -1820,7 +1598,7 @@ export default {
 				}
 			}
 		}
-		.closeReason,.emailReason{
+		.closeReason, .emailReason{
 			// border-bottom: 1px solid #CCC;
 			.mint-cell{
 				// border-top: 1px solid #CCC;
@@ -1858,20 +1636,22 @@ export default {
 				font-size: 30px;
 				width: 90px;
 				white-space: nowrap;
+				flex: 1;
 			}
 			.reason-content {
-				font-size: 26px;
+				font-size: 28px;
 				color: #4A4A4A;
-				margin-left: 20px;
+				margin-left: 40px;
+				flex: 5;
+				// text-align: right;
+				i {
+					float: right;
+				}
 			}
 		}
 		.emailReason{
 			.reason-title{
 				width: 180px;
-			}
-			.reason-content{
-				position: absolute;
-				right: 40px;
 			}
 		}
 		.info{
@@ -2060,7 +1840,7 @@ export default {
 				.mint-button.mint-button--primary.mint-button--normal{
 					width: 670px;
 					height: 88px;
-					margin-top: 10px;
+					margin-top: 30px;
 					margin-bottom: 30px;
 					padding: 0;
 					background: linear-gradient(to right, #DFC189, #BD9D62);
@@ -2076,25 +1856,26 @@ export default {
 				text-align: center;
 				padding: 10px 0 30px 0;
 				.mint-button.mint-button--default {
-					border: 1px solid #C4902D;
+					border: 1px solid #C4902D; /*no*/
 					color: #C4902D;
 					background: #fff;
 					display: inline-block;
 					width: 40%;
 					height: 88px;
 					vertical-align: middle;
+					border-radius: 4px;
 				}
 				.mint-button.mint-button--primary.mint-button--normal{
 					/*width: 300px;*/
           width: 40%;
 					height: 88px;
 					background: linear-gradient(to right, #DFC189, #BD9D62);
-					vertical-align: text-top;
-					// border-radius: 8px;
+					// vertical-align: text-top;
+					border-radius: 4px;
 					vertical-align: middle;
 					label{
 						font-family: PingFangSC-Regular;
-						font-size: 28px;
+						font-size: 36px;
 						color: #FFFFFF;
 					}
 				}
@@ -2107,7 +1888,7 @@ export default {
 			}
 			.mailBtn{
 				.mint-button.mint-button--primary.mint-button--normal{
-          			width: 84%;
+          width: 84%;
 				}
 			}
 			.uploadCustomer{

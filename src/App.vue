@@ -32,17 +32,21 @@ export default {
   },
   watch: {
     $route (to, from) {
-      console.log(from.path)
-      console.log(to.path)
       // keep-alive include
-      if (to.name === 'HomePage') {
+      // if (!from.path.includes('/reservationList') && to.path === '/productAppointment') {
+      //   this.includeComponent = 'ProductAppointment'
+      // } else {
+      //   this.includeComponent = ''
+      // }
+      if (to.name === 'reservationList') {
         this.includeComponent = ''
       } else {
         this.includeComponent = 'ProductAppointment'
       }
+      // statusBar
       if (to.path.includes('HomePage')) {
         Vue.cordova.statusBar && Vue.cordova.statusBar.styleDefault()
-        console.log(Vue.cordova.statusBar)
+        // console.log(Vue.cordova.statusBar)
       } else {
         // console.log('不是首页')
         Vue.cordova.statusBar && Vue.cordova.statusBar.styleBlackTranslucent()
@@ -66,16 +70,16 @@ export default {
       // 同一级页面无需设置过渡效果
       const fromPath = '/' + from.path.split('/')[1]
       const toPath = '/' + to.path.split('/')[1]
-      console.log('from: ' + fromPath, 'to: ' + toPath)
+      // console.log('from: ' + fromPath, 'to: ' + toPath)
       if (this.firstPage.includes(toPath) && this.firstPage.includes(fromPath)) {
         this.enterAnimate = ''
         this.leaveAnimate = ''
       } else if (this.firstPage.includes(fromPath) && this.secondPage.includes(toPath)) {
-        console.log('从一级页面到二级页面')
+        // console.log('从一级页面到二级页面')
         this.enterAnimate = 'animated fadeInRight'
         this.leaveAnimate = 'animated fadeOutLeft'
       } else if (this.secondPage.includes(fromPath) && this.firstPage.includes(toPath)) {
-        console.log('从二级页面到一级页面')
+        // console.log('从二级页面到一级页面')
         this.enterAnimate = 'animated fadeInLeft'
         this.leaveAnimate = 'animated fadeOutRight'
       } else {
