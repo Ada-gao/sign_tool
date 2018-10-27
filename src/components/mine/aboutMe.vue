@@ -411,7 +411,7 @@ export default {
       .weui-cell{
         height: 103px;
         line-height: 103px;
-        border-bottom: 1px solid #E9E9E9;
+        border-bottom: 1px solid #E9E9E9;/*px*/
         .weui-cell__hd{
           .icon{
             font-size: 33px;/*px*/
