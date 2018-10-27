@@ -1,7 +1,8 @@
 <template>
     <div class="productAppointment" @touchmove="touchScreen">
     	<x-header class="balck-header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">
-				{{params.selected === '1' ? '预约' : (params.selected === '2' ? '打款' : '合同管理')}}
+				<span v-if="params.selected">{{params.selected === '1' ? '预约' : (params.selected === '2' ? '打款' : '合同管理')}}</span>
+				<span v-else>预约</span>
 			</x-header>
 			<!-- <div class="spaceBack" v-if="showSpace" @click="spaceClick"></div> -->
 			<div class="wrapper">
