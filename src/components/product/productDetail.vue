@@ -558,7 +558,7 @@ export default {
       .doc{
         height: 104px;
         line-height: 104px;
-        border-bottom: 1px solid #E9E9E9;
+        border-bottom: 1px solid @line-color-light;/*no*/
         font-size: @font-size-thirty;/*px*/
         color: #171A27;
         .right{

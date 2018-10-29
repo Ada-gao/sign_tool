@@ -256,7 +256,7 @@ export default {
 					padding-bottom: 20px;
 					margin-bottom: 20px;
 					&::after {
-						border-bottom: 1px solid #E9E9E9;
+						border-bottom: 1px solid @line-color-light; /*no*/
 						content: '';
 						position: absolute;
 						bottom: 0;

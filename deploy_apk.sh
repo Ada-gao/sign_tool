@@ -5,4 +5,4 @@
 
 # Shuyun@123
 
-scp platforms/android/app/build/outputs/apk/release/app-release.apk root@47.94.248.24:~/apk/uat
+scp platforms/android/app/build/outputs/apk/release/app-release.apk root@47.94.248.24:~/uat

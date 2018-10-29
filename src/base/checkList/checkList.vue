@@ -88,7 +88,7 @@ export default {
       height: 100px;
       line-height: 100px;
       background: @back-color-white;
-      border-bottom: 1px solid #E9E9E9;/*no*/
+      border-bottom: 1px solid @line-color-light;/*no*/
       // margin-bottom: 8px;
       // padding: 0 20px;
       .box{
