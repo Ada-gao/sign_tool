@@ -397,7 +397,7 @@
       }
       .vux-header-right{
         .mes{
-          font-size: 38px;/*px*/
+          font-size: 40px;/*px*/
           margin-right: 30px;
           color: @text-font-color;
         }

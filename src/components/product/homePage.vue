@@ -245,6 +245,12 @@ export default {
 .homePage{
 	height: 100%;
 	background: #F5F5F5;
+	.vux-header-title {
+		margin-right: 0!important;
+	}
+	.vux-header-right {
+		padding: 0!important;
+	}
 	img {
 		width: 100%;
 		// padding-top: 126px;

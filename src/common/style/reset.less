@@ -21,15 +21,15 @@ a {
   justify-content: space-between;
   align-items: center;
   .vux-header-left {
-    margin-left: 40px;
+    margin-left: 20px;
+    // padding: 5px 20px;
+    // font-size: 80px;
   }
   .vux-header-right {
-    margin-right: 40px;
+    // margin-right: 40px;
+    margin-right: 20px;
+    padding: 5px 20px;
   }
-  // .vux-header-title {
-  //   width: 100%;
-  //   margin-left: 20px;
-  // }
   .vux-header-title {
     font-size: @font-size-thirtyS; /*px*/
     line-height: 88px;
@@ -37,17 +37,21 @@ a {
     font-family: @font-family-R;
     width: 100%;
     // margin-left: 20px;
-    margin: 0;
+    // margin: 0;
+    margin-left: 0;
+    margin-right: 40px; // 为了使在有返回箭头的页面左右间距相等
   }
   .left-arrow {
     // bottom: 2px !important;
     // left: 10px !important;
     position: relative!important;
+    width: 80px!important;
     &:before {
       border-color: #333;
       width: 20px !important;
       height: 20px !important;
       top: 0!important;
+      left: 30px!important;
     }
   }
   .vux-header-left,
@@ -315,13 +319,22 @@ a {
     .vux-header-title {
       height: 84px;
       line-height: 84px;
-      margin: 0;
-      width: 84%!important;
+      // margin: 0;
+      margin-left: 0;
+      margin-right: 0!important;
+      // width: 84%!important;
+      width: 480px!important;
     }
     .vux-header-right {
       // height: 60px;
       // line-height: 60px;
       margin-right: 40px!important;
+      padding: 0!important;
+    }
+    .vux-header-left {
+      // margin-left: 40px!important;
+      padding: 0!important;
+      margin: 0!important;
     }
   }
   .vux-header.define_header {
@@ -337,6 +350,10 @@ a {
           color: #fff;
         }
       }
+    }
+    .vux-header-left {
+      margin-left: 40px!important;
+      padding: 0!important;
     }
   }
 }

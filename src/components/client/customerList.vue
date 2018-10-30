@@ -7,7 +7,7 @@
                    @ensure="handlerEnsure"></search-tool>
       <router-link v-if="isCancel===false" slot="right" :to="{name: 'NewCustomer'}" class="add_newcustomer">
         <i class="iconfont add_icon">&#xe6bd;</i>
-        <i>新增潜客</i>
+        新增潜客
       </router-link>
     </x-header>
     <div class="wrapper reservation-wrapper">

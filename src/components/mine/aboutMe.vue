@@ -335,11 +335,12 @@ export default {
     background: transparent;
     .vux-header-left{
       position: absolute;
-      left: 530px;
-      margin-top: 5px;
+      left: 510px;
+      // margin-top: 5px;
+      padding: 0;
       .warn{
         .mes{
-          font-size: 45px;
+          font-size: 40px;/*px*/
           color: @text-font-color;
         }
         .num{
@@ -355,9 +356,10 @@ export default {
     }
     .vux-header-right{
       // right: 40px;
-      margin-top: 20px;
+      // margin-top: 20px;
+      padding: 0;
       .mes{
-        font-size: 45px;/*px*/
+        font-size: 40px;/*px*/
         color: @text-font-color;
       }
     }

@@ -98,7 +98,7 @@
         .add_card_btn {
           display: inline-block;
           position: absolute;
-          line-height: 42px;
+          // line-height: 42px;
           font-size: @font-size-twentyS;/*px*/
           color: #BD9D62;
           i {
