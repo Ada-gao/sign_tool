@@ -81,7 +81,7 @@
         <variable name="QQ_APP_ID" value="1107854132" />
     </plugin>
     <plugin name="cordova-plugin-wechatv2" spec="^2.1.3">
-        <variable name="WECHATAPPID" value="wx0bb7de63a5d6e772" />
+        <variable name="WECHATAPPID" value="wxbcf485d995856d37" />
     </plugin>
     <plugin name="shuyunqrcodescanner" spec="^1.1.19">
         <variable name="CAMERA_USAGE_DESCRIPTION" value="如果不允许，你将无法拍摄照片和视频。" />
