@@ -120,7 +120,7 @@
 <style scoped lang="less">
 @import "../../common/style/variable.less";
 ul{
-  border-top: 1px solid #E9E9E9;/*no*/
+  border-top: 1px solid @line-color-light;/*no*/
   li{
     background: #fff;
     padding: 0 40px;
@@ -146,7 +146,7 @@ ul{
 .content{
   padding: 40px 0;
   height: 247px;
-  border-bottom: 1px solid #E9E9E9;/*no*/
+  border-bottom: 1px solid @line-color-light;/*no*/
   background: @back-color-white;
   .tit{
     font-family: @font-family-M;
@@ -217,7 +217,7 @@ ul{
       display: inline-block;
       width: 1px;/*no*/
       height: 87px;
-      background: #E9E9E9;
+      background: @line-color-light;
       margin-right: 80px;
     }
     .right-btn{

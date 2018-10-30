@@ -4,7 +4,10 @@
 			<i class="iconfont mes">&#xe607;</i>
 			<i class="text-center num" v-if="this.noCheckNum !== 0">{{this.noCheckNum}}</i>
 		</span>
-		<i slot="right" class="iconfont mes" @click="barcodescanner">&#xe622;</i>
+    <span slot="right" class="warn" @click="barcodescanner">
+      <i class="iconfont mes">&#xe622;</i>
+    </span>
+		<!-- <i slot="right" class="iconfont mes" @click="barcodescanner">&#xe622;</i> -->
 	</x-header>
 </template>
 <script>
@@ -118,16 +121,18 @@ export default {
 <style lang="less">
 @import "../../common/style/variable.less";
 .vux-header.header-top{
-	.vux-header-left{
+  .vux-header-left,
+  .vux-header-right{
 		left: 20px;
 		.warn{
 			display: inline-block;
 			position: relative;
-			width: 40px;
-			height: 40px;
-			line-height: 40px;
+			width: 80px;
+			height: 80px;
+      line-height: 80px;
+      text-align: center;
 			.mes{
-				font-size: 36px;/*px*/
+				font-size: 40px;/*px*/
 				color: @font-color-000;
 			}
 			.num{
@@ -150,7 +155,7 @@ export default {
 	.vux-header-right{
 		// right: 20px;
 		.mes{
-			font-size: 38px;/*px*/
+			font-size: 40px;/*px*/
 			color: @font-color-000;
 		}
 	}

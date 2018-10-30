@@ -202,6 +202,11 @@ export default {
 .reservation{
 	height: 100%;
 	font-family: PingFangSC-Regular;
+	.vux-header .vux-header-left,
+	.vux-header-right {
+		padding: 0!important;
+		margin: 0!important;
+	}
 	.wrapper{
 		padding-bottom: 96px!important;
 		.mint-navbar{
@@ -256,7 +261,7 @@ export default {
 					padding-bottom: 20px;
 					margin-bottom: 20px;
 					&::after {
-						border-bottom: 1px solid #E9E9E9;
+						border-bottom: 1px solid @line-color-light; /*no*/
 						content: '';
 						position: absolute;
 						bottom: 0;

@@ -542,7 +542,7 @@
       background: #fff;
       .edit-remark{
         margin: 0 40px;
-        border-top: 1px solid #E9E9E9;/*no*/
+        border-top: 1px solid @line-color-light;/*no*/
       }
       .add_remark {
         width: 87%;

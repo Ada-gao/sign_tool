@@ -355,7 +355,7 @@
       position: relative;
       height: 110px;
       line-height: 110px;
-      border-bottom: 1px solid #E9E9E9;
+      border-bottom: 1px solid @line-color-light;/*no*/
       // padding: 0 20px;
       // border-bottom: 1px solid #ddd;
       span {
@@ -416,7 +416,7 @@
         line-height: 110px;
         color: @font-color-4A;
         height: 110px;
-        border-bottom: 1px solid #E9E9E9;/*no*/
+        border-bottom: 1px solid @line-color-light;/*no*/
         // padding: 0 20px;
         // border-bottom: 1px solid #ddd;
       }

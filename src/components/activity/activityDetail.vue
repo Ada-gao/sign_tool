@@ -1,27 +1,13 @@
 <template>
   <div id="activity_list">
-    <!-- <mt-header fixed title="活动详情" class="header">
-      <router-link :to="{name: 'activityList'}" slot="left">
-        <mt-button icon="back" class="def_btn"></mt-button>
-      </router-link>
-      <mt-button slot="right">
-        <div @click="showShareBtn">
-          <mt-button class="right_btn"><span>分享</span><i class="iconfont">&#xea31;</i></mt-button>
-        </div>
-      </mt-button>
-    </mt-header> -->
     <x-header :left-options="{backText: '', preventGoBack:true}" @on-click-back="toLink" class='header'>活动详情
-      <i slot="right" class="iconfont mes" @click="showShareBtn">&#xe606;</i>
+      <i slot="right"
+         class="iconfont mes"
+         v-if="shareObj.showBtn"
+         @click="showShareBtn">&#xe606;</i>
     </x-header>
     <div class="detail">
       <img :src="this.detail.activityBannerUrl" alt="">
-      <!-- <div class="tit">
-        <div class="left">{{detail.activityName}}</div>
-        <div class="right">
-          <span>编号：</span>
-          <span>{{detail.activityCode}}</span>
-        </div>
-      </div> -->
       <main class="cont">
         <p>{{detail.activityName}}</p>
         <section class="detail_item">
@@ -73,18 +59,6 @@
         <mt-button class="def_mtcell def_mtcell_left" @click.native="toSigned">代客户报名</mt-button>
         <mt-button class="def_mtcell" @click.native="toList">查看报名列表</mt-button>
       </div>
-        <!-- <mt-cell
-          title="代客户报名"
-          class="def_mtcell"
-          :to="{name: 'clientList'}"
-          is-link>
-        </mt-cell>
-        <mt-cell
-          title="查看报名列表"
-          class="def_mtcell"
-          :to="{name: 'clientSignedList'}"
-          is-link>
-        </mt-cell> -->
     </div>
     <div class="popup_banner" v-if="showShare">
       <img src=""
@@ -93,13 +67,6 @@
            id="avatar">
       <qrcode class="qrcode" :value="this.detail.qrcodeTargetUrl" :size="size" style="display: none"></qrcode>
     </div>
-     <!-- <div class="popup_banner" v-if="showShare1">
-      <img src=""
-           v-if="showShare1"
-           alt=""
-           id="avatar">
-      <qrcode class="qrcode" :value="this.detail.qrcodeTargetUrl" :size="size" style="display: none"></qrcode>
-    </div> -->
     <mt-popup class="bigImg"
       v-model="showShare1"
       @click.native="hideBigImg">
@@ -112,19 +79,12 @@
     <mt-popup v-model="showShare"
               position="bottom"
               class="activity_popup">
-      <!-- <div> -->
-      <!-- <div class="topBorder">
-        <span class="line1"></span>
-        <span class="topTitle">分享到</span>
-        <span class="line2"></span>
-      </div> -->
       <div class="content">
-        <span><img src="static/img/wechat.png" class="iconfont" @click="wachatShare"><p>微信好友</p></span>
-        <span><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>朋友圈</p></span>
-        <span><img src="static/img/qq.png" class="iconfont" @click="qqShare"><p>QQ好友</p></span>
+        <span v-if="shareObj.showWeChat"><img src="static/img/wechat.png" class="iconfont" @click="wachatShare"><p>微信好友</p></span>
+        <span v-if="shareObj.showMoments"><img src="static/img/friend.png" class="iconfont" @click="friendShare"><p>朋友圈</p></span>
+        <span v-if="shareObj.showQQ"><img src="static/img/qq.png" class="iconfont" @click="qqShare"><p>QQ好友</p></span>
       </div>
       <div class="hideBtn" @click="hideShareBtn">取消</div>
-      <!-- </div> -->
     </mt-popup>
   </div>
 </template>
@@ -151,17 +111,15 @@
         activityId: null,
         size: 50,
         qrcodeUrl: '',
+        shareObj: {
+          showBtn: true,
+          showWeChat: true,
+          showMoments: true,
+          showQQ: true
+        },
         i: 1
       }
     },
-//    beforeRouteLeave (to, from, next) {
-//      if (to.name === 'activityList') {
-//        removeStore('activityId')
-//        next()
-//      } else {
-//        next()
-//      }
-//    },
     methods: {
       toLink () {
         this.$router.push({name: 'activityList'})
@@ -169,12 +127,23 @@
       getData () {
         getActivityDet(this.activityId).then(res => {
           if (res.status === 200) {
-            // console.log(res.data)
+            console.log(res.data)
             this.detail = Object.assign({}, res.data)
             this.detail.activityStart = parseTime(this.detail.activityStart, '{y}.{m}.{d} {h}:{i}')
             this.detail.activityEnd = parseTime(this.detail.activityEnd, '{y}.{m}.{d} {h}:{i}')
             this.detail.registrationStart = parseTime(this.detail.registrationStart, '{y}.{m}.{d} {h}:{i}')
             this.detail.registrationEnd = parseTime(this.detail.registrationEnd, '{y}.{m}.{d} {h}:{i}')
+            // 分享按钮显示与否
+            if (!this.detail.activityShare) {
+              this.shareObj.showBtn = false
+            } else {
+              // wechat显示与否
+              this.shareObj.showWeChat = this.detail.activityShare.indexOf('0') > -1
+              // moments显示与否
+              this.shareObj.showMoments = this.detail.activityShare.indexOf('1') > -1
+              // QQ显示与否
+              this.shareObj.showQQ = this.detail.activityShare.indexOf('2') > -1
+            }
           }
         })
       },
@@ -354,12 +323,7 @@
       }
     },
     mounted () {
-//      let activityId = getStore('activityId')
-//      this.activityId = this.$route.params.id || activityId
       this.activityId = this.$route.params.id
-//      if (!activityId) {
-//        setStore('activityId', this.activityId)
-//      }
       getActivityLogo().then(res => {
         this.qrcodeUrl = res.data
       })
@@ -393,54 +357,14 @@
     box-sizing: border-box;
     font-family: @font-family-M;
     letter-spacing: 0;
-    // .topBorder{
-    //   font-size: 28px;
-    //   color: #000000;
-    //   .line1{
-    //     display: inline-block;
-    //     height: 1px;
-    //     width: 205px;
-    //     background: #666;
-    //     margin-right: 40px;
-    //     vertical-align: middle;
-    //   }
-    //   .line2{
-    //     display: inline-block;
-    //     height: 1px;
-    //     width: 205px;
-    //     background: #666;
-    //     margin-left: 40px;
-    //     vertical-align: middle;
-    //   }
-    //   .topTitle:before{
-    //     display: inline-block;
-    //     content: '';
-    //     width: 16px;
-    //     height: 16px;
-    //     border-radius: 50%;
-    //     background: #666;
-    //     right: 60px;
-    //     position: relative;
-    //   }
-    //   .topTitle:after{
-    //     display: inline-block;
-    //     content: '';
-    //     width: 16px;
-    //     height: 16px;
-    //     border-radius: 50%;
-    //     background: #666;
-    //     left: 60px;
-    //     position: relative;
-    //   }
-    // }
     .content{
+      display: flex;
       text-align: center;
-      // padding-top: 50px;
       padding-bottom: 50px;
       font-size: @font-size-twentyF;/*px*/
       color: #000000;
       span{
-        display: inline-block;
+        flex: 1;
         img{
           width: 100px;
           height: 100px;
@@ -448,9 +372,6 @@
         p{
           margin-top: 20px;
         }
-      }
-      span:nth-child(2){
-        margin: 0 100px;
       }
     }
     .hideBtn{
@@ -464,13 +385,6 @@
   }
   #activity_list {
     font-family: @font-family-R;
-    // .mint-header.header {
-    //   height: 88px;
-    //   background-color: @new-header-color;
-    //   font-size: 36px;
-    //   color: #333;
-    //   padding-top: 40px;
-    // }
     .vux-header.header{
       background: @header-bg;
       .vux-header-left{
@@ -483,7 +397,7 @@
       }
       .vux-header-right{
         .mes{
-          font-size: 38px;/*px*/
+          font-size: 40px;/*px*/
           margin-right: 30px;
           color: @text-font-color;
         }
@@ -495,26 +409,6 @@
       img{
         width: 100%;
       }
-      // .left, .right {
-      //   position: absolute;
-      //   top: 50%;
-      //   transform: translateY(-50%);
-      // }
-      // .left {
-      //   left: 20px;
-      //   font-size: 30px;
-      //   color: @new-font-color;
-      // }
-      // .right {
-      //   right: 20px;
-      //   font-size: 28px;
-      //   color: #333;
-      // }
-      // .tit {
-      //   position: relative;
-      //   height: 75px;
-      //   line-height: 75px;
-      // }
       .cont {
         font-family: @font-family-M;
         font-size: @font-size-twentyS;/*px*/
@@ -526,11 +420,6 @@
           font-size: @font-size-thirtyT;/*px*/
           color: #2E2E2E;
         }
-        // img {
-        //   display: block;
-        //   width: 100%;
-        //   height: 370px;
-        // }
         .detail_item {
           // height: 42px;
           line-height: 42px;
@@ -553,14 +442,6 @@
         .detail_item:last-child {
           margin-bottom: 0px;
         }
-        // .def_item {
-        //   i, span {
-        //     vertical-align: baseline;
-        //   }
-        //   i {
-        //     font-size: 22px;
-        //   }
-        // }
       }
       .brief_info {
         padding: 30px;

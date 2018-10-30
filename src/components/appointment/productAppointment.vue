@@ -1758,7 +1758,7 @@ export default {
 				}
 				.mint-cell{
 					height: 80px;
-					border-bottom: 1px solid #e9e9e9;/*px*/
+					border-bottom: 1px solid @line-color-light;/*no*/
 					.mint-cell-wrapper{
 						line-height: 80px;
 						height: 80px;

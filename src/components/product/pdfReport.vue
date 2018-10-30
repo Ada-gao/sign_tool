@@ -332,7 +332,7 @@ export default {
       // font-family: PingFangSC-Regular;
       font-size: @font-size-twentyE;/*px*/
       color: @font-color-333;
-      border-bottom: 1px solid #E9E9E9;/*no*/
+      border-bottom: 1px solid @line-color-light;/*no*/
       position: relative;
       .title{
         width: 82%;
@@ -380,7 +380,7 @@ export default {
 		background: @back-color-white;
 		height: 98px;
 		z-index: 55;
-    border-top: 1px solid #E9E9E9;
+    border-top: 1px solid @line-color-light;/*no*/
 		.my_checkbox{
    		display: flex;
       justify-content: space-between;
