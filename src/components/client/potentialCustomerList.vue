@@ -187,7 +187,7 @@
           <div class="cell_box" @click="handlerBank">
             <div class="cell_left">银行卡信息</div>
             <div class="cell_right">
-              <span>查看</span>
+              <span class="font-30">查看</span>
               <i class="iconfont right_icon">&#xe8d5;</i>
             </div>
           </div>
@@ -533,6 +533,9 @@
       i {
         font-size: 30px;
         margin-right: 0;
+      }
+      .font-30 {
+        font-size: 30px!important;
       }
     }
     .remark {
