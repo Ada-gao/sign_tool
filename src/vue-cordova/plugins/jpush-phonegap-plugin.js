@@ -11,6 +11,8 @@ export const install = function (Vue, options, cb) {
     }, false)
 
     var getRegistrationID = function () {
+      console.log('getRegistrationID event ....')
+      console.log(window.JPush)
       window.JPush.getRegistrationID(onGetRegistrationID)
     }
     var onGetRegistrationID = function (data) {

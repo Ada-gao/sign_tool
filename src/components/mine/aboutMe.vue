@@ -349,8 +349,8 @@ export default {
           line-height: 36px;
           background: #EE5250;
           font-size: @font-size-twentyS;/*px*/
-          top: -20px;
-          right: -20px;
+          top: 0px;
+          right: 0px;
         }
       }
     }

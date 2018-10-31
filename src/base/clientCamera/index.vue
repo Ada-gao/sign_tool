@@ -345,6 +345,7 @@
     }
     .ul:not(:last-child) {
       margin-right: 10px;
+      margin-bottom: 30px;
     }
     .addsmall_box {
       display: inline-block;

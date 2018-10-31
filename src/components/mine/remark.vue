@@ -9,7 +9,8 @@
 				</div>
 				<div class="toggle-item">
 					<div class="item01" v-show="isChecked">
-            <button class="time-search1" @click="open('pickerStart')">{{pickerValue1 | formatDate}}</button>
+            <button class="time-search1" @click="open('pickerStart')" v-if="pickerValue1 === ''">起始日期</button>
+            <button class="time-search1" @click="open('pickerStart')" v-else>{{pickerValue1 | formatDate}}</button>
 						<mt-datetime-picker
 							ref="pickerStart"
 							type="date"
@@ -20,7 +21,8 @@
 							:value="pickerValue1">
 						</mt-datetime-picker>
 						<span class="line">——</span>
-						<button class="time-search2" @click="open('pickerEnd')">{{pickerValue2 | formatDate}}</button>
+						<button class="time-search2" @click="open('pickerEnd')" v-if="pickerValue2 === ''">结束日期</button>
+						<button class="time-search2" @click="open('pickerEnd')" v-else>{{pickerValue2 | formatDate}}</button>
 						<mt-datetime-picker
 							ref="pickerEnd"
 							type="date"
@@ -275,7 +277,7 @@ export default {
           .mint-popup.mint-datetime.mint-popup-bottom{
             .picker.mint-datetime-picker{
               .picker-toolbar{
-                height: 44px;
+                height: 60px;
                 .mint-datetime-action.mint-datetime-cancel,.mint-datetime-action.mint-datetime-confirm{
                   line-height: 44px;
                   font-size: 28px;/*px*/
