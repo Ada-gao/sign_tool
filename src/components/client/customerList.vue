@@ -319,6 +319,7 @@
           box-sizing: border-box;
           background-color: #fff;
           margin-bottom: 20px;
+          padding: 0;
           a {
             width: 100%;
             display: block;
@@ -354,6 +355,7 @@
               .customer_right {
                 right: 75px;
                 height: 100%;
+                margin-right: 0px;
                 .right_cont {
                   position: relative;
                   width: 100%;

@@ -21,7 +21,7 @@
     "axios": "^0.18.0",
     "better-scroll": "^1.12.4",
     "cordova-android": "^7.1.0",
-    "cordova-browser": "^5.0.4",
+    "cordova-browser": "^5.0.3",
     "cordova-ios": "^4.5.4",
     "cordova-plugin-add-swift-support": "^1.7.2",
     "cordova-plugin-android-permissions": "^1.0.0",
@@ -39,7 +39,7 @@
     "echarts-gl": "^1.1.0",
     "element-ui": "^2.3.9",
     "http2": "^3.3.7",
-    "jpush-phonegap-plugin": "^3.4.3",
+    "jpush-phonegap-plugin": "^3.4.7",
     "mint-ui": "^2.2.13",
     "shuyunqrcodescanner": "^1.1.19",
     "skwas-cordova-plugin-appinfo": "^1.0.1",
@@ -74,8 +74,8 @@
     },
     "platforms": [
       "browser",
-      "ios",
-      "android"
+      "android",
+      "ios"
     ]
   },
   "devDependencies": {

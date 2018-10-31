@@ -35,124 +35,131 @@ export default {
       vendors: null,
       origin: null,
       wrapper: null,
-      element: null
+      element: null,
+      pageX: '',
+		  pageY: '',
+		  initX: '',
+		  initY: '',
+		  isTouch: false,
+		  start: []
     }
   },
   methods: {
     back () {
       this.$router.push({name: 'PdfReport', params: {id: this.$route.params.id, mark: this.$route.params.mark}})
     },
-    // handleTouch (e) {
-    //   console.log(e.type)
-    //   // e.preventDefault()
-		// 	switch (e.type) {
-		// 		case 'touchstart':
-		// 			if (e.touches.length > 1) {
-    //         console.log('11111111111111')
-	 	// 				this.distance.start = this.getDistance({
-	 	// 					x: e.touches[0].screenX,
-	 	// 					y: e.touches[0].screenY
-		// 				}, {
-	 	// 					x: e.touches[1].screenX,
-	 	// 					y: e.touches[1].screenY
-    //          })
-	 	// 				this.setScaleAnimation(this.scale, true)
-	 	// 			}
-		// 			break
-		// 		case 'touchmove':
-		// 			if (e.touches.length === 2) {
-    //         console.log('2222222222222')
-	 	// 				this.origin = this.getOrigin({
-		// 					x: event.touches[0].pageX,
-		// 					y: event.touches[0].pageY
-		// 				}, {
-		// 					x: event.touches[1].pageX,
-		// 					y: event.touches[1].pageY
-		// 				})
-		// 				this.distance.stop = this.getDistance({
-	 	// 					x: e.touches[0].screenX,
-	 	// 					y: e.touches[0].screenY
-		// 				}, {
-	 	// 					x: e.touches[1].screenX,
-	 	// 					y: e.touches[1].screenY
-	 	// 				})
-	 	// 				this.scale = this.distance.stop / this.distance.start
-	 	// 				this.isCanScale = true
-	 	// 				this.setScaleAnimation(this.scale, true)
-	 	// 			}
-		// 			break
-		// 		case 'touchend':
-		// 			this.scale = 1
-		// 			this.setScaleAnimation(this.scale)
-		// 			break
-		// 		case 'touchcancel':
-		// 			this.scale = 1
-		// 			this.setScaleAnimation(this.scale)
-		// 			break
-		// 		default:;
-		// 	}
-    // },
-    // vendor () {
-		// 	var TRANSITION = 'transition'
-		// 	var TRANSITION_END = 'transitionend'
-		// 	var TRANSFORM = 'transform'
-		// 	var TRANSFORM_PROPERTY = 'transform'
-    //   var TRANSITION_PROPERTY = 'transition'
-    //   var WIDTH = 'width'
-    //   var HEIGHT = 'height'
-		// 	if (typeof document.body.style.webkitTransform !== 'undefined') {
-		// 		TRANSFORM = 'webkitTransform'
-		// 		TRANSITION = 'webkitTransition'
-		// 		TRANSITION_END = 'webkitTransitionEnd'
-		// 		TRANSFORM_PROPERTY = '-webkit-transform'
-		// 		TRANSITION_PROPERTY = '-webkit-transition'
-		// 	}
-		// 	return {
-		// 		TRANSFORM: TRANSFORM,
-		// 		TRANSITION: TRANSITION,
-		// 		TRANSITION_END: TRANSITION_END,
-		// 		TRANSFORM_PROPERTY: TRANSFORM_PROPERTY,
-    //     TRANSITION_PROPERTY: TRANSITION_PROPERTY,
-    //     WIDTH: WIDTH,
-    //     HEIGHT: HEIGHT
-		// 	}
-    // },
-    // getOrigin (first, second) {
-		// 	return {
-		// 		x: (first.x + second.x) / 2,
-		// 		y: (first.y + second.y) / 2
-		// 	}
-    // },
-    // getDistance (start, stop) {
-		// 	return Math.sqrt(Math.pow((stop.x - start.x), 2) + Math.pow((stop.y - start.y), 2))
-    // },
-    // setScaleAnimation (scale, animation) {
-		// 	var transitionAnimation = ''
-    //   var x, y
-    //   // var width, height
-    //   var element = document.querySelector('.pdf')
-		// 	if (!this.isCanScale) {
-		// 		return
-		// 	}
-		// 	this.isCanScale = false
-		// 	if (animation) {
-		// 		transitionAnimation = 'none'
-		// 	} else {
-		// 		transitionAnimation = this.vendors.TRANSFORM_PROPERTY + ' 0.3s ease-out'
-    //   }
-		// 	element.style[this.vendors.TRANSITION] = transitionAnimation
-		// 	x = this.origin.x + (-this.origin.x) * this.scale
-    //   y = this.origin.y + (-this.origin.y) * this.scale
-    //   // console.log('before', element.offsetWidth, this.scale)
-    //   // console.log('before', element.offsetHeight, this.scale)
-    //   // width = element.offsetWidth * this.scale
-    //   // height = element.offsetHeight * this.scale
-    //   // console.log('after', width, this.scale)
-    //   // console.log('after', height, this.scale)
-    //   // element.style[this.vendors.WIDTH] = width + 'px'
-    //   // element.style[this.vendors.HEIGHT] = height + 'px'
-		// 	element.style[this.vendors.TRANSFORM] = 'matrix(' + this.scale + ', 0, 0, ' + this.scale + ', ' + x + ', ' + y + ')'
-		// },
+    handleTouch (e) {
+      console.log(e.type)
+      // e.preventDefault()
+			switch (e.type) {
+				case 'touchstart':
+					if (e.touches.length > 1) {
+	 					this.distance.start = this.getDistance({
+	 						x: e.touches[0].screenX,
+	 						y: e.touches[0].screenY
+						}, {
+	 						x: e.touches[1].screenX,
+	 						y: e.touches[1].screenY
+             })
+	 				}
+					break
+        case 'touchmove':
+          if (e.touches.length === 1) {
+            console.log('111111')
+          }
+					if (e.touches.length === 2) {
+            console.log('2222222222222')
+	 					this.origin = this.getOrigin({
+							x: event.touches[0].pageX,
+							y: event.touches[0].pageY
+						}, {
+							x: event.touches[1].pageX,
+							y: event.touches[1].pageY
+						})
+						this.distance.stop = this.getDistance({
+	 						x: e.touches[0].screenX,
+	 						y: e.touches[0].screenY
+						}, {
+	 						x: e.touches[1].screenX,
+	 						y: e.touches[1].screenY
+	 					})
+	 					this.scale = this.distance.stop / this.distance.start
+	 					this.isCanScale = true
+	 					this.setScaleAnimation(this.scale)
+	 				}
+					break
+				case 'touchend':
+					this.scale = 1
+					this.setScaleAnimation(this.scale)
+					break
+				case 'touchcancel':
+					this.scale = 1
+					this.setScaleAnimation(this.scale)
+					break
+				default:;
+			}
+    },
+    vendor () {
+			var TRANSITION = 'transition'
+			var TRANSITION_END = 'transitionend'
+			var TRANSFORM = 'transform'
+			var TRANSFORM_PROPERTY = 'transform'
+      var TRANSITION_PROPERTY = 'transition'
+      var WIDTH = 'width'
+      var HEIGHT = 'height'
+			if (typeof document.body.style.webkitTransform !== 'undefined') {
+				TRANSFORM = 'webkitTransform'
+				TRANSITION = 'webkitTransition'
+				TRANSITION_END = 'webkitTransitionEnd'
+				TRANSFORM_PROPERTY = '-webkit-transform'
+				TRANSITION_PROPERTY = '-webkit-transition'
+			}
+			return {
+				TRANSFORM: TRANSFORM,
+				TRANSITION: TRANSITION,
+				TRANSITION_END: TRANSITION_END,
+				TRANSFORM_PROPERTY: TRANSFORM_PROPERTY,
+        TRANSITION_PROPERTY: TRANSITION_PROPERTY,
+        WIDTH: WIDTH,
+        HEIGHT: HEIGHT
+			}
+    },
+    getOrigin (first, second) {
+			return {
+				x: (first.x + second.x) / 2,
+				y: (first.y + second.y) / 2
+			}
+    },
+    getDistance (start, stop) {
+			return Math.sqrt(Math.pow((stop.x - start.x), 2) + Math.pow((stop.y - start.y), 2))
+    },
+    setScaleAnimation (scale, animation) {
+			var transitionAnimation = ''
+      var x, y
+      // var width, height
+      var element = document.querySelector('.pdf')
+			if (!this.isCanScale) {
+				return
+			}
+			this.isCanScale = false
+			if (animation) {
+				transitionAnimation = 'none'
+			} else {
+				transitionAnimation = this.vendors.TRANSFORM_PROPERTY + ' 0.3s ease-out'
+      }
+			element.style[this.vendors.TRANSITION] = transitionAnimation
+			x = this.origin.x + (-this.origin.x) * this.scale
+      y = this.origin.y + (-this.origin.y) * this.scale
+      // console.log('before', element.offsetWidth, this.scale)
+      // console.log('before', element.offsetHeight, this.scale)
+      // width = element.offsetWidth * this.scale
+      // height = element.offsetHeight * this.scale
+      // console.log('after', width, this.scale)
+      // console.log('after', height, this.scale)
+      // element.style[this.vendors.WIDTH] = width + 'px'
+      // element.style[this.vendors.HEIGHT] = height + 'px'
+			element.style[this.vendors.TRANSFORM] = 'matrix(' + this.scale + ', 0, 0, ' + this.scale + ', ' + x + ', ' + y + ')'
+		},
     renderPage (num) {
       let _this = this
       this.pdfDoc.getPage(num).then(function (page) {
@@ -228,80 +235,76 @@ export default {
      var pat = ctxr.createPattern(cw, 'repeat') // 在水平和垂直方向重复绘制单个水印
      ctxr.fillStyle = pat
      ctxr.fillRect(0, 0, crw.width, crw.height)
-		},
-		//	缩放 勾股定理方法
-		getDistance (p1, p2) {
-			var x = p2.pageX - p1.pageX
-			var y = p2.pageY - p1.pageY
-			return Math.sqrt((x * x) + (y * y))
 		}
   },
   mounted () {
     this.spinner = true
     this.title = this.$route.params.tip
     this.wrapper = document.querySelector('.pdf')
-		var pageX
-		var pageY
-		var initX
-		var initY
-		var isTouch = false
-		var start = []
-    this.wrapper.addEventListener('touchstart', function (e) {
-      console.log('start')
-      //	手指按下时的手指所在的X，Y坐标
-      pageX = e.targetTouches[0].pageX
-      pageY = e.targetTouches[0].pageY
-      //	初始位置的X，Y坐标
-      initX = e.target.offsetLeft
-      initY = e.target.offsetTop
-      //	记录初始 一组数据 作为缩放使用
-      if (e.touches.length >= 2) { //	判断是否有两个点在屏幕上
-          start = e.touches //	得到第一组两个点
-			}
-      //	表示手指已按下
-      isTouch = true
-		}, false)
-		//	监听 touchmove 事件 手指 移动时 做的事情
-		this.wrapper.addEventListener('touchmove', function (e) {
-      console.log('touchmove')
-      e.preventDefault()
-      // 一根 手指 执行 目标元素移动 操作
-      if (e.touches.length === 1 && isTouch) {
-        //	移动目标的 X Y 坐标
-        var touchMoveX = e.targetTouches[0].pageX
-        var touchMoveY = e.targetTouches[0].pageY
-        //	设置当前点击元素的 top left 定位值
-        e.target.style.left = parseInt(touchMoveX) - parseInt(pageX) + parseInt(initX) + 'px'
-        e.target.style.top = parseInt(touchMoveY) - parseInt(pageY) + parseInt(initY) + 'px'
-      }
-      // 2 根 手指执行 目标元素放大操作
-      function getDistance (p1, p2) {
-        var x = p2.pageX - p1.pageX
-        var y = p2.pageY - p1.pageY
-        return Math.sqrt((x * x) + (y * y))
-      }
-      if (e.touches.length >= 2 && isTouch && e.scale < 2.5) {
-        //	得到第二组两个点
-        var now = e.touches
-        //	得到缩放比例， getDistance 是勾股定理的一个方法
-        var scale = getDistance(now[0], now[1]) / getDistance(start[0], start[1])
-        // 对缩放 比例 取整
-        e.scale = scale.toFixed(2)
-        // 执行目标元素的缩放操作
-        e.target.style.transform = 'scale(' + scale + ')'
-      }
-    }, false)
-			//	监听 手指离开屏幕时
-    this.wrapper.addEventListener('touchend', function (e) {
-      console.log('touchend')
-      //	将 isTouch 修改为false  表示 手指已经离开屏幕
-      if (isTouch) { isTouch = false }
-		}, false)
-    // this.wrapper.addEventListener('touchstart', this.handleTouch)
-		// this.wrapper.addEventListener('touchmove', this.handleTouch)
-		// this.wrapper.addEventListener('touchend', this.handleTouch)
-		// this.wrapper.addEventListener('touchcancel', this.handleTouch)
-    // this.vendors = this.vendor()
+		// var pageX
+		// var pageY
+		// var initX
+		// var initY
+		// var isTouch = false
+		// var start = []
+    // this.wrapper.addEventListener('touchstart', function (e) {
+    //   console.log(e)
+    //   console.log('start')
+    //   //	手指按下时的手指所在的X，Y坐标
+    //   this.pageX = e.targetTouches[0].pageX
+    //   this.pageY = e.targetTouches[0].pageY
+    //   //	初始位置的X，Y坐标
+    //   this.initX = e.target.offsetLeft
+    //   this.initY = e.target.offsetTop
+    //   //	记录初始 一组数据 作为缩放使用
+    //   if (e.touches.length >= 2) { //	判断是否有两个点在屏幕上
+    //       this.start = e.touches //	得到第一组两个点
+		// 	}
+    //   //	表示手指已按下
+    //   this.isTouch = true
+		// }, false)
+		// //	监听 touchmove 事件 手指 移动时 做的事情
+		// this.wrapper.addEventListener('touchmove', function (e) {
+    //   console.log('touchmove')
+    //   e.preventDefault()
+    //   // 一根 手指 执行 目标元素移动 操作
+    //   if (e.touches.length === 1 && this.isTouch) {
+    //     console.log('one')
+    //     //	移动目标的 X Y 坐标
+    //     var touchMoveX = e.targetTouches[0].pageX
+    //     var touchMoveY = e.targetTouches[0].pageY
+    //     //	设置当前点击元素的 top left 定位值
+    //     e.target.style.left = parseInt(touchMoveX) - parseInt(this.pageX) + parseInt(this.initX) + 'px'
+    //     e.target.style.top = parseInt(touchMoveY) - parseInt(this.pageY) + parseInt(this.initY) + 'px'
+    //   }
+    //   // 2 根 手指执行 目标元素放大操作
+    //   function getDistance (p1, p2) {
+    //     var x = p2.pageX - p1.pageX
+    //     var y = p2.pageY - p1.pageY
+    //     return Math.sqrt((x * x) + (y * y))
+    //   }
+    //   if (e.touches.length >= 2 && this.isTouch && e.scale < 2.5) {
+    //     //	得到第二组两个点
+    //     var now = e.touches
+    //     //	得到缩放比例， getDistance 是勾股定理的一个方法
+    //     var scale = getDistance(now[0], now[1]) / getDistance(this.start[0], this.start[1])
+    //     // 对缩放 比例 取整
+    //     // e.scale = scale.toFixed(2)
+    //     // 执行目标元素的缩放操作
+    //     e.target.style.transform = 'scale(' + scale + ')'
+    //   }
+    // }, false)
+		// 	//	监听 手指离开屏幕时
+    // this.wrapper.addEventListener('touchend', function (e) {
+    //   console.log('touchend')
+    //   //	将 isTouch 修改为false  表示 手指已经离开屏幕
+    //   if (this.isTouch) { this.isTouch = false }
+		// }, false)
+    this.wrapper.addEventListener('touchstart', this.handleTouch)
+		this.wrapper.addEventListener('touchmove', this.handleTouch)
+		this.wrapper.addEventListener('touchend', this.handleTouch)
+		this.wrapper.addEventListener('touchcancel', this.handleTouch)
+    this.vendors = this.vendor()
     let url = Base64.decode(this.$route.params.url)
     this.loadFile(url)
     let paint = JSON.parse(window.localStorage.getItem('data')).name + ',' + JSON.parse(window.localStorage.getItem('data')).mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')

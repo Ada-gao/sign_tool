@@ -7,9 +7,9 @@
     <div class="wrapper">
 			<div class="swipe">
 				<mt-swipe :auto="4000">
-					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
-					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
-					<mt-swipe-item><img src="static/img/测试banner.jpg"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/banner.png"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/banner.png"></mt-swipe-item>
+					<mt-swipe-item><img src="static/img/banner.png"></mt-swipe-item>
 				</mt-swipe>
 			</div>
 			<div class="announcement">
@@ -137,7 +137,6 @@ export default {
 		let _this = this
 		setTimeout(() => {
 			_this.devicePlatform = Vue.cordova.device.platform
-			// if (_this.devicePlatform === 'browser') return
 			if (JSON.parse(sessionStorage.getItem('hasCloseVersion'))) {
 				this.versionVisible = false
 			} else {
@@ -421,6 +420,7 @@ export default {
         .version_number {
           width: 100px;
           height: 37px;
+          line-height: 37px;
           border: 1px solid #ffffff; /*no*/
           color: #ffffff;
           // line-height: 42px;
@@ -496,7 +496,7 @@ export default {
       .bgImg {
         width: 100%;
         height: 230px;
-        background: url('../../../static/img/version.png') 50% no-repeat;
+        // background: url('../../../static/img/version.png') 50% no-repeat;
         background-size: cover;
         border-radius: 8px 8px 0 0;
         .version_number {

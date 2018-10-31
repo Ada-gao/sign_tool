@@ -143,8 +143,8 @@ export default {
 				background: #EE5250;
 				border-radius: 50%;
 				position: absolute;
-				top: -6px;
-				right: -4px;
+				top: 10px;
+				right: 10px;
 				font-family: @font-family-M;
 				font-size: 12px;/*px*/
 				color: #FFFFFF;

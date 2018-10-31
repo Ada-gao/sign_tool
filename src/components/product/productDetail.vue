@@ -64,7 +64,7 @@
             <td>产品期限</td><td>{{item.investment_horizon}}{{item.investment_horizon_unit|turnText(investmentHorizonUnit)}}</td>
           </tr>
           <tr><td>募集额度</td><td>{{item.collection_amount}}万</td></tr>
-          <tr><td>募集人数</td><td>{{item.product_lp}}</td></tr>
+          <tr><td>募集人数</td><td>{{item.product_lp}}人</td></tr>
           <tr><td>起投金额</td><td>{{item.minimal_amount}}万</td></tr>
           <tr><td>最低追加金额</td><td>{{item.minimal_add_amount}}万</td></tr>
           <tr><td>收益分配方式</td><td>{{item.income_distribution}}</td></tr>
