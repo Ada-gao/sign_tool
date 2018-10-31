@@ -4,10 +4,10 @@ import { setStore } from '@/config/mUtils'
 export const install = function (Vue, options, cb) {
   document.addEventListener('deviceready', () => {
     document.addEventListener('jpush.receiveRegistrationId', function (event) {
-          // alert('receiveRegistrationId' + JSON.stringify(event))
-          // $('#registrationId').html(event.registrationId)
-          console.log(event.registrationId)
-          setStore('registrationId', event.registrationId)
+      // alert('receiveRegistrationId' + JSON.stringify(event))
+      // $('#registrationId').html(event.registrationId)
+      // console.log(event.registrationId)
+      setStore('registrationId', event.registrationId)
     }, false)
 
     var getRegistrationID = function () {
@@ -28,7 +28,7 @@ export const install = function (Vue, options, cb) {
     }
     var initiateUI = function () {
       if ('JPush' in window) {
-        console.log('init jpush')
+        console.log('jpush in window')
       } else {
         console.log('jpush is not exit')
       }

@@ -374,8 +374,8 @@
       height: 120px;
       position: relative;
       display: inline-block;
-      margin-right: 10px;
-      margin-bottom: 10px;
+      margin-right: 20px;
+      margin-bottom: 15px;
       img {
         display: inline-block;
         width: 100%;

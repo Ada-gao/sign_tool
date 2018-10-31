@@ -295,7 +295,7 @@
 		</div>
 </template>
 <script type="text/ecmascript-6">
-import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput } from 'vux'
+import { XHeader, Flow, FlowState, FlowLine, XDialog, XButton, XInput, ConfigPlugin } from 'vux'
 import camera from '@/base/camera/camera'
 import { submitAppointment, cancelAppointment, submitMaterials, statusDetail, sendEmail, orderClose, requestRefund } from '@/service/api/appointment'
 import { getProducts, getCustomerMaterials } from '@/service/api/products'
@@ -303,6 +303,10 @@ import { checkBankDetail } from '@/service/api/customers'
 import { formatDate } from '@/common/js/date'
 import thumbnails from '@/base/camera/thumbnails'
 import { MessageBox, Toast } from 'mint-ui'
+import Vue from 'vue'
+Vue.use(ConfigPlugin, {
+  $layout: 'VIEW_BOX'
+})
 
 export default {
 	name: 'ProductAppointment',
@@ -2110,7 +2114,7 @@ export default {
 						}
 					}
 					.remitAmount{
-						padding: 0 20px;
+						padding: 5px 20px 0;
 						font-size: 30px;
 						color: #4A4A4A;
 						// .mint-cell-wrapper{
