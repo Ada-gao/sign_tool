@@ -128,7 +128,7 @@ export default {
   methods: {
     get (test) {
       console.log(test)
-			this.$router.push({name: 'Report', params: {url: Base64.encode(test.file_path), tip: this.title, mark: this.type, id: this.id}})
+			this.$router.push({name: 'singlePDF', params: {url: Base64.encode(test.file_path), tip: this.title, mark: this.type, id: this.id}})
     },
     checkAll () {
 			this.flag = !this.flag

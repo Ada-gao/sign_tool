@@ -196,7 +196,7 @@ export default {
         app_version: 'v1.0',
         registration_id: getStore('registrationId'),
         AppID: 'e72e439f2c79455bac3a9c7eef517b6c',
-        AppSecret: 'e8473ceace6344a8b9f3ae4a32d09820' 
+        AppSecret: 'e8473ceace6344a8b9f3ae4a32d09820'
       }).then(res => {
         if (res.status === 200) {
           this.$store.state.token = res.data.token

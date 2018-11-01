@@ -279,7 +279,7 @@ export default {
               .picker-toolbar{
                 height: 60px;
                 .mint-datetime-action.mint-datetime-cancel,.mint-datetime-action.mint-datetime-confirm{
-                  line-height: 44px;
+                  line-height: 60px;
                   font-size: 28px;/*px*/
                   color: @text-font-color;
                 }

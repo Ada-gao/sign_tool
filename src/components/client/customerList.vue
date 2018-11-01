@@ -205,7 +205,7 @@
         CancelToken: this.$axios.CancelToken,
         clientType: JSON.parse(localStorage.getItem('client_type')),
         realnameStatus: JSON.parse(localStorage.getItem('realname_status')),
-        certificationStatus: JSON.parse(localStorage.getItem('certification_status')),
+        certificationStatus: JSON.parse(localStorage.getItem('certification_status'))
       }
     },
     mounted () {
