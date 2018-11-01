@@ -33,6 +33,7 @@ export const install = function (Vue, options, cb) {
         console.log('jpush is not exit')
       }
       try {
+        console.log(window.plugins.jPushPlugin)
         window.JPush.init()
         window.JPush.setDebugMode(true)
         window.setTimeout(getRegistrationID, 1000)

@@ -178,7 +178,8 @@ export default {
 			this.choosePro = this.products[this.n]
 		},
     handleRoute () {
-      this.$router.push({name: 'activityList'})
+			// this.$router.push({name: 'activityList'})
+			this.$router.push({name: 'singlePDF'})
 		},
     showContent (status, index) {
 		  this.showContentList[index] = !status

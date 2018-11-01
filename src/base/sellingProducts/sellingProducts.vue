@@ -28,7 +28,7 @@
             <div class="text line-height" v-if="item.minimal_amount != undefined">起投金额：<span class="tit cont">{{item.minimal_amount}}万</span></div>
             <div class="text line-height" v-else>购买金额：<span class="tit cont">{{item.amount}}万</span></div>
           </div>
-          <span class="iconfont right-btn">&#xe8d5;</span>
+          <span v-if="item.minimal_amount !== undefined" class="iconfont right-btn">&#xe8d5;</span>
         </div>
       </div>
       </li>

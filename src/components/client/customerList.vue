@@ -392,6 +392,9 @@
                   width: 100%;
                   height: 100%;
                   text-align: right;
+                  .no_certy{
+                    font-size: 26px;
+                  }
                   .iconfont {
                     position: absolute;
                     font-size: 50px;
