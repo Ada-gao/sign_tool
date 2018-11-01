@@ -104,40 +104,40 @@ export default {
     } else if (!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/) === true) {
       this.platform = 'iOS'
     }
-    sessionStorage.setItem('leavePageNum', 0)
-    // 添加监听器，在title里显示状态变化
-    let leaveCount = 0
-    // let leavePageNum = this.leavePageNum
-    if (this.show) return
-    document.addEventListener('visibilitychange', function () {
-      var tempTimer = null
-      let leavePageNum = sessionStorage.getItem('leavePageNum') - 0
-      leavePageNum++
-      sessionStorage.setItem('leavePageNum', leavePageNum)
-      // document.title = document[state]
-      // console.log('leavePageNum: ' + leavePageNum)
-      if (leavePageNum % 2 === 0) {
-        console.log('clear ...')
-        clearInterval(tempTimer)
-      } else {
-        this.leavePageNum = leavePageNum
-        this.tempCount = leaveCount
-        console.log(this.tempCount)
-      }
-      if (tempTimer) {
-        console.log('has timer')
-        clearInterval(tempTimer)
-      }
-      tempTimer = setInterval(() => {
-        leaveCount++
-        console.log('leaveCount: ' + leaveCount)
-        if (leaveCount > 10) {
-          console.log('no no no')
-          clearInterval(tempTimer)
-          tempTimer = null
-        }
-      }, 1000)
-    }, false)
+    // sessionStorage.setItem('leavePageNum', 0)
+    // // 添加监听器，在title里显示状态变化
+    // let leaveCount = 0
+    // // let leavePageNum = this.leavePageNum
+    // if (this.show) return
+    // document.addEventListener('visibilitychange', function () {
+    //   var tempTimer = null
+    //   let leavePageNum = sessionStorage.getItem('leavePageNum') - 0
+    //   leavePageNum++
+    //   sessionStorage.setItem('leavePageNum', leavePageNum)
+    //   // document.title = document[state]
+    //   // console.log('leavePageNum: ' + leavePageNum)
+    //   if (leavePageNum % 2 === 0) {
+    //     console.log('clear ...')
+    //     clearInterval(tempTimer)
+    //   } else {
+    //     this.leavePageNum = leavePageNum
+    //     this.tempCount = leaveCount
+    //     console.log(this.tempCount)
+    //   }
+    //   if (tempTimer) {
+    //     console.log('has timer')
+    //     clearInterval(tempTimer)
+    //   }
+    //   tempTimer = setInterval(() => {
+    //     leaveCount++
+    //     console.log('leaveCount: ' + leaveCount)
+    //     if (leaveCount > 10) {
+    //       console.log('no no no')
+    //       clearInterval(tempTimer)
+    //       tempTimer = null
+    //     }
+    //   }, 1000)
+    // }, false)
   },
   methods: {
     touchScreen () {

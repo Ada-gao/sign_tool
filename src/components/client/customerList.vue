@@ -42,12 +42,25 @@
                   </div>
                   <div class="customer_right">
                     <div class="right_cont">
-                      <span class="success_certy" v-if="item.realname_status === '2'">实名已认证</span>
-                      <span class="expire_certy" v-if="item.realname_status === '4'">实名认证已过期</span>
-                      <span class="wait_certy" v-if="item.certification_status === '1'">投资者认证待审核</span>
-                      <span class="no_certy" v-else-if="item.certification_status === '3'">投资者认证失败</span>
-                      <span class="expire_certy" v-else-if="item.certification_status === '4'">投资者认证已过期</span>
-                      <span class="success_certy" v-else-if="item.certification_status === '2'">{{item.client_type === "1" ? "专业投资者" : "普通投资者"}}</span>
+                      <span :class="{
+                        'success_certy': item.realname_status === '2',
+                        'expire_certy': item.realname_status === '4'
+                      }">{{item.realname_status|turnText(realnameStatus)}}</span>
+                      <span :class="{
+                        'no_certy': item.certification_status === '3',
+                        'wait_certy': item.certification_status === '1',
+                        'success_certy': item.certification_status === '2',
+                        'expire_certy': item.certification_status === '4'
+                      }">
+                        <i v-if="item.certification_status==='2'">{{item.client_type|turnText(clientType)}}</i>
+                        <i v-else>投资者身份{{item.certification_status|turnText(certificationStatus)}}</i>
+                      </span>
+                      <!-- <span class="success_certy" v-if="item.realname_status === '2'">实名已认证</span>
+                      <span class="expire_certy" v-if="item.realname_status === '4'">实名认证已过期</span> -->
+                      <!-- <span class="wait_certy" v-if="item.certification_status === '1'">投资者身份认证待审核</span>
+                      <span class="no_certy" v-else-if="item.certification_status === '3'">投资者身份认证失败</span>
+                      <span class="expire_certy" v-else-if="item.certification_status === '4'">投资者身份认证已过期</span>
+                      <span class="success_certy" v-else-if="item.certification_status === '2'">{{item.client_type|turnText(clientType)}}</span> -->
                       <i class="iconfont">&#xe8d5;</i>
                     </div>
                   </div>
@@ -70,7 +83,19 @@
                   </div>
                   <div class="customer_right">
                     <div class="right_cont">
-                      <span class="no_certy" v-if="item.realname_status === '0'">实名未认证</span>
+                      <span :class="{
+                        'no_certy': item.realname_status === '0' || item.realname_status === '3',
+                        'wait_certy': item.realname_status === '1',
+                        'success_certy': item.realname_status === '2',
+                        'expire_certy': item.realname_status === '4'
+                      }">{{item.realname_status|turnText(realnameStatus)}}</span>
+                      <span :class="{
+                        'no_certy': item.certification_status === '0' || item.certification_status === '3',
+                        'wait_certy': item.certification_status === '1',
+                        'success_certy': item.certification_status === '2',
+                        'expire_certy': item.certification_status === '4'
+                      }">投资者身份{{item.certification_status|turnText(certificationStatus)}}</span>
+                      <!-- <span class="no_certy" v-if="item.realname_status === '0'">实名未认证</span>
                       <span class="wait_certy" v-else-if="item.realname_status === '1'">实名认证待审核</span>
                       <span class="success_certy" v-else-if="item.realname_status === '2'">实名已认证</span>
                       <span class="no_certy" v-else-if="item.realname_status === '3'">实名认证失败</span>
@@ -79,7 +104,7 @@
                       <span class="wait_certy" v-else-if="item.certification_status === '1'">投资者身份认证待审核</span>
                       <span class="success_certy" v-else-if="item.certification_status === '2'">投资者身份已认证</span>
                       <span class="no_certy" v-else-if="item.certification_status === '3'">投资者身份认证失败</span>
-                      <span class="expire_certy" v-else-if="item.certification_status === '4'">投资者身份认证已过期</span>
+                      <span class="expire_certy" v-else-if="item.certification_status === '4'">投资者身份认证已过期</span> -->
                       <i class="iconfont">&#xe8d5;</i>
                     </div>
                   </div>
@@ -177,7 +202,10 @@
         loadedData: true,
         cancel: null,
         isClick: null,
-        CancelToken: this.$axios.CancelToken
+        CancelToken: this.$axios.CancelToken,
+        clientType: JSON.parse(localStorage.getItem('client_type')),
+        realnameStatus: JSON.parse(localStorage.getItem('realname_status')),
+        certificationStatus: JSON.parse(localStorage.getItem('certification_status')),
       }
     },
     mounted () {

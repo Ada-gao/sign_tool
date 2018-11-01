@@ -9,7 +9,7 @@ import store from 'common/js/store'
 import 'common/style/index.less'
 import 'lib-flexible'
 import * as filters from 'common/js/filter.js'
-import { LoadingPlugin } from 'vux'
+import { LoadingPlugin, ConfigPlugin } from 'vux'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 Vue.use(MintUI)
@@ -20,6 +20,10 @@ Vue.config.debug = true
 Vue.config.productionTip = false
 
 Vue.use(VueCordova)
+// x-dialog 禁止滑动底部
+Vue.use(ConfigPlugin, {
+  $layout: 'VIEW_BOX'
+})
 // console.log('----------port:' + window.location.port)
 if (window.location.protocol === 'file:' ||
     window.location.port === '8080' ||
