@@ -12,11 +12,11 @@
 					<mt-swipe-item><img src="static/img/banner.png"></mt-swipe-item>
 				</mt-swipe>
 			</div>
-			<div class="announcement">
+			<!-- <div class="announcement">
 				<i class="iconfont vertical-align">&#xe62e;</i>
 				<span>点击查看更多活动…</span>
 				<span class="more" @click="handleRoute">查看 <i class="iconfont vertical-align">&#xe6d6;</i></span>
-			</div>
+			</div> -->
 			<div class="space"></div>
 			<div style="overflow: hidden; overflow-x: auto;" v-if="!spinner">
         <ul class="tabbar" :style="{'width': ulWidth}">
@@ -178,8 +178,8 @@ export default {
 			this.choosePro = this.products[this.n]
 		},
     handleRoute () {
-			// this.$router.push({name: 'activityList'})
-			this.$router.push({name: 'singlePDF'})
+			this.$router.push({name: 'activityList'})
+			// this.$router.push({name: 'singlePDF'})
 		},
     showContent (status, index) {
 		  this.showContentList[index] = !status
