@@ -30,14 +30,14 @@
     let Base64 = require('js-base64').Base64
     export default {
         created () {
-            let paint = JSON.parse(window.localStorage.getItem('data')).name + ',' + JSON.parse(window.localStorage.getItem('data')).mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
+            this.paint = JSON.parse(window.localStorage.getItem('data')).name + ',' + JSON.parse(window.localStorage.getItem('data')).mobile.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
             this.title = this.$route.params.tip
             this.$nextTick(() => {
                 let url = Base64.decode(this.$route.params.url)
                 this.url = url
                 this.handleInitPdf(this.pageNum)
                 if (this.$route.params.mark === 1 || this.$route.params.mark === 2) {
-                    this.paintFixedWaterMark(paint)
+                    this.paintFixedWaterMark(this.paint)
                 }
             })
         },
@@ -55,7 +55,8 @@
                 scrollX: true,
                 freeScroll: true,
                 isLoading: true,
-                text: ''
+                text: '',
+                paint: ''
             }
         },
         methods: {
@@ -63,7 +64,7 @@
                 this.$router.push({name: 'PdfReport', params: {id: this.$route.params.id, mark: this.$route.params.mark}})
             },
             paintFixedWaterMark (workId) { // 在Vue中可改为ES6写法
-                var material = document.querySelector('.scroll-content-info')
+                var material = document.querySelector('.page-pdf')
                 var wrap = document.createElement('div') // 创建一个div
                 wrap.className = 'fixed-water-mark' // 给div添加类名
                 var wm = document.createElement('canvas') // 单个水印画布
