@@ -26,10 +26,14 @@ axios.interceptors.request.use(
             // console.log('断网')
             router.replace({name: 'NoInternet'})
         }
+        if (config.url.indexOf('auth_token') !== -1) {
+          config.headers['AppID'] = 'e72e439f2c79455bac3a9c7eef517b6c'
+          config.headers['AppSecret'] = 'e8473ceace6344a8b9f3ae4a32d09820'
+        }
+        console.log(config)
         return config
     },
     err => {
-        console.log('dfghjdk', err)
         return Promise.reject(err)
     })
 
