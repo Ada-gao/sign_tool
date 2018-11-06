@@ -83,7 +83,7 @@ export default {
       }
     }
     .tips {
-      width: 505px;
+      width: 100%;
       position: absolute;
       bottom: 40px;
       .copyRight{
