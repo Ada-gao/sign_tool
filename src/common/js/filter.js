@@ -3,7 +3,7 @@ import { Toast } from 'mint-ui'
  * 保留两位小数
  */
 export function twoDecimals (value) {
-	value = parseInt(value)
+	// value = parseInt(value)
 	return value.toFixed(2)
 }
 

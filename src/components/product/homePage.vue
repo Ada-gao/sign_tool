@@ -161,6 +161,13 @@ export default {
 				this.tabBars.push(item.name)
 				this.products.push(item.products)
 			})
+			this.products.map(item => {
+				item.map(value => {
+					if (value.close_date !== null) {
+						value.close_date = value.close_date.replace(/-/g, '/')
+					}
+				})
+			})
 			this.choosePro = this.products[this.n]
 			// let cnt = Math.ceil(this.tabBars.length / 4)
 			let cnt = this.tabBars.length / 4

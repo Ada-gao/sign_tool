@@ -287,9 +287,17 @@ export default {
         args.title = '注册理财师'
         args.description = '扫一扫注册理财师'
         args.image = this.shareUrl
-        qqsdk.shareImage(function () {
+        console.log('qqsdk', qqsdk)
+        // qqsdk.shareImage(function () {
+        //   console.log('shareImage success')
+        // }, function (failReason) {
+        //   console.log('失败')
+        //   console.log(failReason)
+        //   Notifier.toast(failReason)
+        // }, args)
+        qqsdk.shareImage(() => {
           console.log('shareImage success')
-        }, function (failReason) {
+        }, failReason => {
           console.log('失败')
           console.log(failReason)
           Notifier.toast(failReason)
@@ -384,9 +392,11 @@ export default {
         display: inline-block;
         margin-left: 20px;
         vertical-align: top;
+        padding-top: 16px;
         p{
           font-family: @font-family-R;
           font-size: @font-size-thirtyS;/*px*/
+          line-height: 36px;
           color: @text-font-color;
           margin-bottom: 20px;
         }

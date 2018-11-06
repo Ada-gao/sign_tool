@@ -14,10 +14,10 @@
                 <span class="pageTotal">/{{pageTotal}}</span>
             </div>
             <div class="wrapper-todo">
-                <div class="btn" @click="handlePrev">上一页<i></i></div>
-                <div class="btn" @click="handleNext">下一页<i></i></div> &nbsp;
-                <div class="btn" @click="handleAddscale">放大<i></i></div>
-                <div class="btn" @click="handleMinus">缩小<i></i></div>
+                <div class="btn" @click="handlePrev"><i class="iconfont">&#xe60d;</i>上一页</div>
+                <div class="btn" @click="handleNext"><i class="iconfont">&#xe8d7;</i>下一页</div>
+                <div class="btn" @click="handleAddscale"><i class="iconfont">&#xe673;</i>放大</div>
+                <div class="btn" @click="handleMinus"><i class="iconfont">&#xe61a;</i>缩小</div>
             </div>
         </div>
     </div>
@@ -147,7 +147,9 @@
                 })
                 pdfJS.getDocument(this.url).then(function (pdfDoc_) { // 初始化pdf
                     vm.pdfDoc = pdfDoc_
-                    vm.pageTotal = vm.pdfDoc.numPagesy
+                    console.log(vm.pdfDoc)
+                    vm.pageTotal = vm.pdfDoc._pdfInfo.numPages
+                    console.log(vm.pageTotal)
                 }).catch(function (err) {
                     if (err) {
                         console.log(err)
@@ -198,6 +200,7 @@
             * */
             handleNext () {
                 let vm = this
+                console.log(vm.pageTotal)
                 if (vm.pageNum >= vm.pageTotal) {
                     return
                 }
@@ -274,89 +277,116 @@
         .showPage {
             position: absolute;
             right: 10px;
-            bottom: 80px;
-            width: 40px;
-            height: 40px;
+            bottom: 120px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             background-color: rgba(0,0,0,0.3);
             color: #fff;
             text-align: center;
-            line-height: 40px;
+            line-height: 50px;
             font-size: 12px;
             .currentPage {
-                font-size: 17px;
+                font-size: 16px;
             }
         }
         .wrapper-todo {
             background-color: #fff;
-            z-index: 10;
+            z-index: 1700;
             position: absolute;
             left: 0;
             bottom: 0;
             width: 100%;
-            height: 70px;
+            height: 100px;
             display: flex;
             box-shadow: 0px -2px 18px 2px rgba(0, 0, 0, 0.1);
             .btn {
-                line-height: 80px;
+                // line-height: 80px;
                 display: block;
                 flex: 1;
                 text-align: center;
-                font-size: 11px;
-                color: #666;
+                font-size: 20px;
+                color: #4A4A4A;
                 position: relative;
-                i {
-                    width: 25px;
-                    height: 25px;
+                border: none;
+                padding: 0;
+                i{
                     display: block;
-                    border-radius: 50%;
-                    background-color: #FFB700;
-                    position: absolute;
-                    left: 50%;
-                    margin-left: -12px;
-                    top: 4px;
-                }
-                &:nth-child(1) {
-                    i:before {
-                        content: '';
-                        width: 25px;
-                        height: 25px;
-                        display: block;
-                        .bg-image('icon-arrow-prev');
-                        background-size: 7px;
-                    }
-                }
-                &:nth-child(2) {
-                    i:before {
-                        content: '';
-                        width: 25px;
-                        height: 25px;
-                        display: block;
-                        .bg-image('icon-arrow-next');
-                        background-size: 7px;
-                    }
-                }
-                &:nth-child(3) {
-                    i:before {
-                        content: '';
-                        width: 25px;
-                        height: 25px;
-                        display: block;
-                        .bg-image('icon-arrow-bigger');
-                        background-size: 11px;
-                    }
-                }
-                &:nth-child(4) {
-                    i:before {
-                        content: '';
-                        width: 25px;
-                        height: 25px;
-                        display: block;
-                        .bg-image('icon-arrow-smaller');
-                        background-size: 11px;
-                    }
+                    font-size: 40px;
+                    margin: 12px 0;
                 }
             }
         }
+        // .wrapper-todo {
+        //     background-color: #fff;
+        //     z-index: 10;
+        //     position: absolute;
+        //     left: 0;
+        //     bottom: 0;
+        //     width: 100%;
+        //     height: 70px;
+        //     display: flex;
+        //     box-shadow: 0px -2px 18px 2px rgba(0, 0, 0, 0.1);
+        //     .btn {
+        //         line-height: 80px;
+        //         display: block;
+        //         flex: 1;
+        //         text-align: center;
+        //         font-size: 11px;
+        //         color: #666;
+        //         position: relative;
+        //         i {
+        //             width: 25px;
+        //             height: 25px;
+        //             display: block;
+        //             border-radius: 50%;
+        //             background-color: #FFB700;
+        //             position: absolute;
+        //             left: 50%;
+        //             margin-left: -12px;
+        //             top: 4px;
+        //         }
+        //         &:nth-child(1) {
+        //             i:before {
+        //                 content: '';
+        //                 width: 25px;
+        //                 height: 25px;
+        //                 display: block;
+        //                 .bg-image('icon-arrow-prev');
+        //                 background-size: 7px;
+        //             }
+        //         }
+        //         &:nth-child(2) {
+        //             i:before {
+        //                 content: '';
+        //                 width: 25px;
+        //                 height: 25px;
+        //                 display: block;
+        //                 .bg-image('icon-arrow-next');
+        //                 background-size: 7px;
+        //             }
+        //         }
+        //         &:nth-child(3) {
+        //             i:before {
+        //                 content: '';
+        //                 width: 25px;
+        //                 height: 25px;
+        //                 display: block;
+        //                 .bg-image('icon-arrow-bigger');
+        //                 background-size: 11px;
+        //             }
+        //         }
+        //         &:nth-child(4) {
+        //             i:before {
+        //                 content: '';
+        //                 width: 25px;
+        //                 height: 25px;
+        //                 display: block;
+        //                 .bg-image('icon-arrow-smaller');
+        //                 background-size: 11px;
+        //             }
+        //         }
+        //     }
+        // }
     }
 </style>
