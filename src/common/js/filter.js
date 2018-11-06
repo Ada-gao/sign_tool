@@ -112,10 +112,10 @@ export function passportValidate (value) {
  */
 export function toast (text) {
   Toast({
-    // title: ' ',
+    title: '',
     message: text,
-    position: 'top',
-    duration: 1000
+    position: 'middle'
+    // duration: 1000
   })
 }
 

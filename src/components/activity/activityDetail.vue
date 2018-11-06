@@ -339,7 +339,8 @@
     box-sizing: border-box;
     // padding: 34px 25px;
     position: fixed;
-    height: 667px;
+    height: 62%;
+    // height: 667px;
     top: 36%;
     left: 50%;
     z-index: 9999;
@@ -347,6 +348,7 @@
     img {
       display: inline-block;
       // width: 100%;
+      height: 100%;
     }
   }
   .activity_popup.mint-popup{
@@ -490,7 +492,13 @@
       }
     }
     .mint-popup.bigImg{
-      height: 1334px;
+      // height: 1334px;
+      height: 100%;
+      background-color: transparent;
+      img {
+        height: 90%;
+        margin-top: 10%;
+      }
     }
   }
 </style>

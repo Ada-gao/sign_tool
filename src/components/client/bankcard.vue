@@ -515,6 +515,7 @@
           background: #fff;
           border: 1px dashed #E1E1E1;/*no*/
           border-radius: 0;
+          height: 180px;
         }
         .front_class {
           font-size: @font-size-twenty;/*px*/
