@@ -1,4 +1,4 @@
-import { MessageBox } from 'mint-ui'
+import { Toast } from 'mint-ui'
 /**
  * 保留两位小数
  */
@@ -111,10 +111,10 @@ export function passportValidate (value) {
  * @param text
  */
 export function toast (text) {
-  MessageBox({
+  Toast({
     title: '',
-    message: text
-    // position: 'top',
+    message: text,
+    position: 'middle'
     // duration: 1000
   })
 }
