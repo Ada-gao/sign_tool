@@ -135,9 +135,9 @@
 									<!-- <mt-cell title="银行卡号:" :value="cardNum"></mt-cell>
 									<mt-cell title="银行名称:" :value="cardName"></mt-cell> -->
 									<!-- <mt-cell title="支行名称:" :value="cardName1"></mt-cell> -->
-									<mt-cell title="银行卡号:" :value="cardnum"></mt-cell>
-									<mt-cell title="银行名称:" :value="bankname"></mt-cell>
-									<mt-cell title="支行名称:" :value="subBankName"></mt-cell>
+									<mt-cell title="银行卡号:" class="required" :value="cardnum"></mt-cell>
+									<mt-cell title="银行名称:" class="required" :value="bankname"></mt-cell>
+									<mt-cell title="支行名称:" class="required" :value="subBankName"></mt-cell>
 									<img class="camera" :src="cardUrl" @click="showBigImg('bank')">
         						<!-- <thumbnails v-if="showImg" :imgTotal="cardUrl" :showImg="showImg" v-on:hideBigPop="hideBigImg"></thumbnails> -->
 								</div>
@@ -146,8 +146,10 @@
 								<mt-cell title="打款凭证" class="tit border-b-0">
 									<i v-if="appointmentList.status!=='1003'" class="iconfont" :class="[remitInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('remitInfo')"></i>
 								</mt-cell>
-								<div v-show="remitInfoShow" class="remitAmount required">打款金额(万): <input class="" v-model="remitAmount" type="number" pattern="\d*" placeholder="输入打款金额"></div>
-								<!-- <mt-field v-show="remitInfoShow" class="remitAmount" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额" ></mt-field> -->
+								<div class="page-padding">
+									<mt-field v-show="remitInfoShow" class="required" label="打款金额(万):" v-model="remitAmount" placeholder="输入打款金额" ></mt-field>
+								</div>
+								<!-- <div v-show="remitInfoShow" class="remitAmount required">打款金额(万): <input class="" v-model="remitAmount" type="number" pattern="\d*" placeholder="输入打款金额"></div> -->
 								<div class="camera" v-show="remitInfoShow">
 									<camera
 										v-if="evidenceShow"
@@ -210,8 +212,8 @@
 									:src="item">
 							</div>
 						</div>
-						<div class="mb20"></div>
 					</div>
+					<!-- <div class="mb20"></div> -->
 					<div class="mailingContract" v-if="appointmentList.status==='2004'||appointmentList.status.includes('300')">
 						<mt-cell title="邮寄合同" class="tit">
 							<i v-if="contractOperationIconShow" class="iconfont" :class="[contractInfoShow ? 'icon-shouqi' : 'icon-xiala']" @click="toggleShow('contractInfo')"></i>
@@ -1796,7 +1798,7 @@ export default {
 						}
 						.mint-cell-value{
 							.mint-field-core{
-								width: 570px;
+								width: 510px;
 								height: 40px;
 								line-height: 40px;
 								// border: 1px solid #ccc;
@@ -1941,13 +1943,18 @@ export default {
 						.mint-cell-wrapper{
 							height: 100%;
 							line-height: 100%;
-							padding: 0;
+							// padding: 0;
+							padding-left: 20px;
+							padding-right: 0;
 							background-image: none;
 							.mint-cell-title{
 								width: 130px;
 								.mint-cell-text{
 									font-size: 30px;
 									font-weight: normal;
+								}
+								.mint-cell-text::before {
+									top: 20%;
 								}
 							}
 							.mint-cell-value{
@@ -2031,23 +2038,27 @@ export default {
 				}
 				.card1{
 					background: #fff;
-					padding: 30px 20px;
+					padding: 30px 40px;
 					.mint-cell{
-						height: 40px;
-						line-height: 40px;
-						border: none;
+						// height: 40px;
+						// line-height: 40px;
+						// border: none;
 						margin-bottom: 20px;
 						.mint-cell-wrapper{
 							height: 100%;
 							line-height: 100%;
-							padding: 0;
+							padding-left: 20px;
+							padding-right: 0;
 							background-image: none;
 							.mint-cell-title{
 								width: 130px;
-								flex: none;
+								// flex: none;
 								.mint-cell-text{
-									font-size: 26px;
+									font-size: 30px;
 									font-weight: normal;
+								}
+								.mint-cell-text::before{
+									top: 20%;
 								}
 							}
 							.mint-cell-value{
@@ -2094,7 +2105,7 @@ export default {
 				.card{
 					background-color: #fff;
 					.camera{
-						padding: 20px 20px 20px 0;
+						padding:35px 40px 20px 40px;
 						img{
 							width: 132px;
 							height: 120px;
@@ -2148,7 +2159,7 @@ export default {
 			.refund{
 				background: #fff;
 				.camera{
-					padding: 20px;
+					padding:35px 40px 20px 40px;
 					img{
 						width: 132px;
 						height: 120px;
@@ -2316,7 +2327,7 @@ export default {
 	// 必填项
 	.mint-cell.required,
 	.mint-cell.mint-field.required {
-		.mint-cell-title {
+		.mint-cell-text {
 			position: relative;
 			white-space: nowrap;
 		}
@@ -2327,6 +2338,13 @@ export default {
 			height: 100%;
 			content: '*';
 			color: @required-colord;
+		}
+	}
+	.page-padding {
+		padding: 5px 40px 0;
+		.mint-cell-wrapper {
+			padding-left: 20px!important;
+			padding-right: 0!important;
 		}
 	}
 }
