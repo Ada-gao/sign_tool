@@ -3,7 +3,7 @@ import { Toast } from 'mint-ui'
  * 保留两位小数
  */
 export function twoDecimals (value) {
-	value = parseInt(value)
+	// value = parseInt(value)
 	return value.toFixed(2)
 }
 
@@ -112,10 +112,10 @@ export function passportValidate (value) {
  */
 export function toast (text) {
   Toast({
-    // title: ' ',
+    title: '',
     message: text,
-    position: 'top',
-    duration: 1000
+    position: 'middle'
+    // duration: 1000
   })
 }
 

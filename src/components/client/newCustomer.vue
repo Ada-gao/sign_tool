@@ -9,6 +9,10 @@
           <span class="border_left"></span>
           <span class="text">客户信息</span>
         </div>
+        <div class="warn">
+          <span class="tit">提示：</span>
+          <span>信息提交后，不可修改。为避免实名认证失败，请确保姓名准确!</span>
+        </div>
         <div class="must_fill">
           <i class="iconfont necessary_icon">&#xe8d4;</i>
           <mt-field disableClear
@@ -283,6 +287,14 @@
     font-family: PingFangSC-Regular;
     .wrapper {
       height: auto;
+      .warn{
+        font-size: 26px;
+        color: #A0A0A0;
+        padding: 0 24px;
+        .tit{
+          color: #F05D59;
+        }
+      }
       .weui-label {
         font-size: 30px;
         color: #4a4a4a;

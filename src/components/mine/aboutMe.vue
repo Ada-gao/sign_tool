@@ -110,7 +110,7 @@ import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, 
 import { removeStore } from '@/config/mUtils'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
-import { getShare, getInfoList } from '@/service/api/aboutMe'
+import { getShare } from '@/service/api/aboutMe'
 // import { qscan } from '@/service/api/activity'
 // import { activityUrl } from '@/config/env'
 // import { toast } from '@/common/js/filter'
@@ -133,7 +133,7 @@ export default {
       value: '',
       showShare: false,
       shareUrl: '',
-      noCheckNum: 0,
+      noCheckNum: window.localStorage.getItem('badgeNum') - 0,
       name: '',
       phone: '',
       key: 'men1',
@@ -287,9 +287,17 @@ export default {
         args.title = '注册理财师'
         args.description = '扫一扫注册理财师'
         args.image = this.shareUrl
-        qqsdk.shareImage(function () {
+        console.log('qqsdk', qqsdk)
+        // qqsdk.shareImage(function () {
+        //   console.log('shareImage success')
+        // }, function (failReason) {
+        //   console.log('失败')
+        //   console.log(failReason)
+        //   Notifier.toast(failReason)
+        // }, args)
+        qqsdk.shareImage(() => {
           console.log('shareImage success')
-        }, function (failReason) {
+        }, failReason => {
           console.log('失败')
           console.log(failReason)
           Notifier.toast(failReason)
@@ -310,14 +318,16 @@ export default {
     this.name = data.name
     this.phone = data.mobile
     this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
-    getInfoList().then(res => {
-      let noCheckInfo = res.data.filter(item => item.is_read === '0')
-      this.noCheckNum = noCheckInfo.length
-      console.log(this.noCheckNum, noCheckInfo.length)
-      // window.jPush.setBadge(this.noCheckNum)
-      // window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
-      console.log('Jpush...........7777777', this.noCheckNum, noCheckInfo.length)
-    })
+    // window.JPush.setBadge(this.noCheckNum)
+    // window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
+    // getInfoList().then(res => {
+    //   let noCheckInfo = res.data.filter(item => item.is_read === '0')
+    //   this.noCheckNum = noCheckInfo.length
+    //   window.JPush.setBadge(this.noCheckNum)
+    //   window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
+    //   console.log('window.JPush', window.JPush)
+    //   console.log('Jpush...noCheckNum', this.noCheckNum)
+    // })
   }
 }
 </script>
@@ -384,9 +394,11 @@ export default {
         display: inline-block;
         margin-left: 20px;
         vertical-align: top;
+        padding-top: 16px;
         p{
           font-family: @font-family-R;
           font-size: @font-size-thirtyS;/*px*/
+          line-height: 36px;
           color: @text-font-color;
           margin-bottom: 20px;
         }

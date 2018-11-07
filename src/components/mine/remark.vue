@@ -114,14 +114,17 @@ export default {
       this.remarkList = this.startList
   	},
 		open (picker) {
-			this.$refs[picker].open()
+      this.$refs[picker].open()
+      this.pickerValue1 = new Date()
 		},
 		handleConfirm1 (val) {
       this.pickerValue1 = val
+      // debugger
       let obj = {
         from_date: formatDate(this.pickerValue1),
         to_date: formatDate(this.pickerValue2)
       }
+      console.log(obj)
       if (this.pickerValue2.getTime() > this.pickerValue1.getTime()) {
         checkAllCustomerRemarks(obj).then(res => {
           this.remarkList = res.data
@@ -279,7 +282,7 @@ export default {
               .picker-toolbar{
                 height: 60px;
                 .mint-datetime-action.mint-datetime-cancel,.mint-datetime-action.mint-datetime-confirm{
-                  line-height: 44px;
+                  line-height: 60px;
                   font-size: 28px;/*px*/
                   color: @text-font-color;
                 }

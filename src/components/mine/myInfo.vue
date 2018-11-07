@@ -2,14 +2,14 @@
   <div id="infoPage">
     <x-header class="header" :left-options="{backText: '',preventGoBack: true}" @on-click-back="back()">我的消息</x-header>
     <div class="wrapper">
-        <div class="no-info text-center" v-if="this.infoList.length === 0">
+        <div class="no-info text-center" v-if="infoList.length === 0">
           <div class="warn absolute-center-xy">
 						<i class="iconfont">&#xe614;</i>
 						<p>暂无消息</p>
 					</div>
         </div>
         <div class="info-list">
-          <div class="info" :data="infoList" v-for="(item, index) in infoList" :key="index" @click="checkDetail(item.notification_id)">
+          <div class="info" :data="infoList" v-for="(item, index) in infoList" :key="index" @click="checkDetail(item)">
             <div class="left text-center vertical-align">
               <i class="iconfont">&#xe602;</i>
             </div>
@@ -62,7 +62,7 @@ export default {
       this.$router.push({name: window.localStorage.infoFlag})
     },
     checkDetail (data) {
-      this.$router.push({name: 'WriteNotes', params: {id: data}})
+      this.$router.push({name: 'WriteNotes', params: {id: data.notification_id, isRead: data.is_read}})
     }
   },
   mounted () {

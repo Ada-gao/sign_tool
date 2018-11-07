@@ -98,7 +98,9 @@
       }
     }
     .activity_cont {
-      padding-top: 88px;
+      // padding-top: 88px;
+      padding-top: calc(88px + constant(safe-area-inset-top));
+      padding-top: calc(88px + env(safe-area-inset-top));
       // padding-top: 126px;
       background-color: @new-bg-color;
       li {
