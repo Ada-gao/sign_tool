@@ -22,17 +22,25 @@ export default {
   data () {
   	return {
 			remark: ''
-  		}
+  	}
 	},
 	methods: {
 		back () {
-      		this.$router.push({name: 'MyInfo'})
+      this.$router.push({name: 'MyInfo'})
 		}
 	},
 	mounted () {
 		infoDetail(this.$route.params.id).then(res => {
 			this.remark = res.data.notification_content
 		})
+		console.log('this.$route.params.isRead', this.$route.params.isRead)
+		let badgeNum = window.localStorage.getItem('badgeNum')
+		if (badgeNum - 0 === 0) return
+		if (this.$route.params.isRead === '0') {
+      window.JPush.setBadge(badgeNum - 1)
+			window.JPush.setApplicationIconBadgeNumber(badgeNum - 1)
+			window.localStorage.setItem('badgeNum', badgeNum - 1)
+		}
 	}
 }
 </script>

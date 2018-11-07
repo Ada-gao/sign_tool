@@ -81,11 +81,11 @@ export default {
       platform: '',
       device: '',
       disabledSend: true,
-      registrationId: '',
+      registrationId: getStore('registrationId'),
       clearAll: true,
-      timeout: 60,
-      tempCount: 0,
-      leavePageNum: 0
+      timeout: 60
+      // tempCount: 0,
+      // leavePageNum: 0
       // telTip: false
       // start: false
     }
@@ -183,18 +183,13 @@ export default {
       }
     },
     nextStep () {
-      console.log('click...')
       this.$store.state.token = '100'
-      // window.JPush.getRegistrationID((id) => {
-      //   console.log('getRegistrationID: ' + id)
-      // })
-      console.log('getStore registrationId :' + getStore('registrationId'))
       getAuthToken({
         code: this.num,
         username: this.username,
         platform: this.platform === 'iOS' ? 2 : 1,
         app_version: 'v1.0',
-        registration_id: getStore('registrationId')
+        registration_id: window.localStorage.getItem('registrationId')
       }).then(res => {
         if (res.status === 200) {
           this.$store.state.token = res.data.token
@@ -249,14 +244,15 @@ export default {
       })
     },
     getIdentifyingCode () {
+      window.JPush.getRegistrationID((id) => {
+        window.localStorage.setItem('registrationId', id)
+      })
       if (!this.disabledSend) return
       const TIME_COUNT = 60
-      this.count = this.count - this.tempCount
       if (!this.timer) {
         this.count = TIME_COUNT
         this.show = false
         this.timer = setInterval(() => {
-          --this.count
           if (this.count > 0) {
             this.count--
           } else {

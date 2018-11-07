@@ -3,24 +3,21 @@ import { setStore } from '@/config/mUtils'
 
 export const install = function (Vue, options, cb) {
   document.addEventListener('deviceready', () => {
+    // 第一次成功注册到 JPush 服务器时
     document.addEventListener('jpush.receiveRegistrationId', function (event) {
-      // alert('receiveRegistrationId' + JSON.stringify(event))
-      // $('#registrationId').html(event.registrationId)
-      // console.log(event.registrationId)
       setStore('registrationId', event.registrationId)
     }, false)
 
+    // 获取id
     var getRegistrationID = function () {
-      console.log('getRegistrationID event ....')
-      console.log(window.JPush)
       window.JPush.getRegistrationID(onGetRegistrationID)
     }
     var onGetRegistrationID = function (data) {
       try {
         console.log('JPushPlugin:registrationID is ' + data)
-        setStore('registrationId', event.registrationId)
+        window.localStorage.setItem('registrationId', data)
         if (data.length === 0) {
-          // var t1 = window.setTimeout(getRegistrationID, 1000)
+          window.setTimeout(getRegistrationID, 1000)
         }
       } catch (exception) {
         console.log(exception)
@@ -33,7 +30,6 @@ export const install = function (Vue, options, cb) {
         console.log('jpush is not exit')
       }
       try {
-        console.log(window.plugins.jPushPlugin)
         window.JPush.init()
         window.JPush.setDebugMode(true)
         window.setTimeout(getRegistrationID, 1000)

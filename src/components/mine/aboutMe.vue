@@ -110,7 +110,7 @@ import { XHeader, Group, Cell, CellBox, Actionsheet, XSwitch, XDialog, XButton, 
 import { removeStore } from '@/config/mUtils'
 import Vue from 'vue'
 import Notifier from '@/common/js/Notifier'
-import { getShare, getInfoList } from '@/service/api/aboutMe'
+import { getShare } from '@/service/api/aboutMe'
 // import { qscan } from '@/service/api/activity'
 // import { activityUrl } from '@/config/env'
 // import { toast } from '@/common/js/filter'
@@ -133,7 +133,7 @@ export default {
       value: '',
       showShare: false,
       shareUrl: '',
-      noCheckNum: 0,
+      noCheckNum: window.localStorage.getItem('badgeNum') - 0,
       name: '',
       phone: '',
       key: 'men1',
@@ -318,14 +318,16 @@ export default {
     this.name = data.name
     this.phone = data.mobile
     this.value = `{'userId': ${data.userId}, 'mobile': ${data.mobile}, 'name': ${data.name}}`
-    getInfoList().then(res => {
-      let noCheckInfo = res.data.filter(item => item.is_read === '0')
-      this.noCheckNum = noCheckInfo.length
-      console.log(this.noCheckNum, noCheckInfo.length)
-      // window.jPush.setBadge(this.noCheckNum)
-      // window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
-      console.log('Jpush...........7777777', this.noCheckNum, noCheckInfo.length)
-    })
+    // window.JPush.setBadge(this.noCheckNum)
+    // window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
+    // getInfoList().then(res => {
+    //   let noCheckInfo = res.data.filter(item => item.is_read === '0')
+    //   this.noCheckNum = noCheckInfo.length
+    //   window.JPush.setBadge(this.noCheckNum)
+    //   window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
+    //   console.log('window.JPush', window.JPush)
+    //   console.log('Jpush...noCheckNum', this.noCheckNum)
+    // })
   }
 }
 </script>

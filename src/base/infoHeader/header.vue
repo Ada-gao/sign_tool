@@ -106,13 +106,20 @@ export default {
     }
 	},
 	mounted () {
+    // window.JPush.getApplicationIconBadgeNumber(badgeNum => {
+    //   console.log('badgeNum', badgeNum)
+    //   this.noCheckNum = badgeNum
+    //   window.localStorage.setItem('badgeNum', badgeNum)
+    // })
     window.localStorage.setItem('infoFlag', this.flag)
 		this.$nextTick(function () {
 			getInfoList().then(res => {
 				let noCheckInfo = res.data.filter(item => item.is_read === '0')
-				this.noCheckNum = noCheckInfo.length
+        this.noCheckNum = noCheckInfo.length
+        window.localStorage.setItem('badgeNum', this.noCheckNum)
+        window.JPush.setBadge(this.noCheckNum)
+        window.JPush.setApplicationIconBadgeNumber(this.noCheckNum)
 				// Vue.cordova.jPush && Vue.cordova.jPush.setBadge(this.noCheckNum)
-				console.log('Jpush...........7777777')
 			})
     })
 	}
