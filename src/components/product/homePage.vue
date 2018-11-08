@@ -100,19 +100,19 @@ export default {
 	},
   data () {
     return {
-			showContentList: {
-				'0': true,
-				'1': true,
-				'2': true,
-				'3': true,
-				'4': true,
-				'5': true,
-				'6': true,
-				'7': true,
-				'8': true,
-				'9': true,
-				'10': true
-			},
+			// showContentList: {
+			// 	'0': true,
+			// 	'1': true,
+			// 	'2': true,
+			// 	'3': true,
+			// 	'4': true,
+			// 	'5': true,
+			// 	'6': true,
+			// 	'7': true,
+			// 	'8': true,
+			// 	'9': true,
+			// 	'10': true
+			// },
 			productsList: [],
 			spinner: true,
 			popupVisible: false,
@@ -188,9 +188,9 @@ export default {
 			this.$router.push({name: 'activityList'})
 			// this.$router.push({name: 'singlePDF'})
 		},
-    showContent (status, index) {
-		  this.showContentList[index] = !status
-    },
+    // showContent (status, index) {
+		//   this.showContentList[index] = !status
+    // },
     cgPopup (data) {
       this.popupVisible = data
 		},
