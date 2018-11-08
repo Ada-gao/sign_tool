@@ -3,8 +3,7 @@
     <x-header class="header" :left-options="{backText: '',preventGoBack: true}" @on-click-back="back()">关于我们</x-header>
     <div class="wrapper">
       <div class="logo text-center absolute-center-x">
-			  <img src="static/img/app_logo.png">
-			  <!-- <img src="static/img/shitu-logo.png"> -->
+        <img @click="addClickNum" src="static/img/app_logo.png">
         <p class="tit">财智滙</p>
         <p class="sub-tit">客户端版本号：{{ version }}({{ build }})</p>
         <p class="sub-tit">Build时间：{{ buildDate|parseTime('{y}-{m}-{d} {h}:{i}:{s}') }}</p>
@@ -26,7 +25,8 @@ export default {
     return {
       version: Vue.cordova.appInfo.version,
       build: Vue.cordova.appInfo.build,
-      buildDate: Vue.cordova.appInfo.compileDate
+      buildDate: Vue.cordova.appInfo.compileDate,
+      clickNum: 0
     }
   },
   components: {
@@ -38,6 +38,12 @@ export default {
   methods: {
     back () {
       this.$router.push({name: 'AboutMe'})
+    },
+    addClickNum () {
+      this.clickNum++
+      if (this.clickNum === 5) {
+        this.$router.push('/extraScene')
+      }
     }
   }
 }
