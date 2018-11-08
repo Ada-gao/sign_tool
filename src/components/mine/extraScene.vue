@@ -44,6 +44,7 @@ export default {
     background: #1D1D1D;
     img {
       width: 100%;
+      vertical-align: top;
     }
   }
 }
