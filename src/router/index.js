@@ -44,6 +44,7 @@ const clientSignedList = r => require.ensure([], () => r(require('@/components/a
 const clientList = r => require.ensure([], () => r(require('@/components/activity/clientList')), 'clientList')
 const clientSigned = r => require.ensure([], () => r(require('@/components/activity/clientSigned')), 'clientSigned')
 const singlePDF = r => require.ensure([], () => r(require('@/base/pdf/index')), 'singlePDF')
+const extraScene = r => require.ensure([], () => r(require('@/components/mine/extraScene')), 'extraScene')
 
 Vue.use(Router)
 
@@ -384,6 +385,14 @@ const router = new Router({
       path: '/clientSigned/:activityId/:clientId',
       name: 'clientSigned',
       component: clientSigned,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: '/extraScene',
+      name: 'extraScene',
+      component: extraScene,
       meta: {
         auth: true
       }
