@@ -85,7 +85,7 @@
         <variable name="WECHATAPPID" value="wxbcf485d995856d37" />
     </plugin>
     <plugin name="cordova-plugin-qqsdk" spec="^0.9.7">
-        <variable name="QQ_APP_ID" value="1107783254" />
+        <variable name="QQ_APP_ID" value="1107854132" />
     </plugin>
     <engine name="ios" spec="^4.5.4" />
     <engine name="browser" spec="^5.0.3" />

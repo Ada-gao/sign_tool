@@ -300,7 +300,7 @@ export default {
         }, failReason => {
           console.log('失败')
           console.log(failReason)
-          Notifier.toast(failReason)
+          // Notifier.toast(failReason)
         }, args)
       })
     },
