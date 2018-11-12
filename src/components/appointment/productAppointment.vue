@@ -61,8 +61,8 @@
 						<!-- <mt-field label="用户名: " placeholder="请输入用户名" v-model="name" readonly></mt-field> -->
 						<!-- <mt-cell title="预约编号：" v-if="appointmentCode">{{codeA}}</mt-cell> -->
 						<mt-cell title="客户姓名：" class="required" is-link @click.native="chooseName" v-if="showNameClick">{{name}}</mt-cell>
-						<mt-cell title="客户姓名：" class="required" v-if="!showNameClick" :value="name"></mt-cell>
-						<mt-cell title="手机号码：" :value="cMob"></mt-cell>
+						<mt-cell title="客户姓名：" class="required" v-if="!showNameClick">{{name}}</mt-cell>
+						<mt-cell title="手机号码：">{{cMob}}</mt-cell>
 						<mt-field label="预约金额(万)：" class="inputMoney required" placeholder="请输入预约金额" v-model="money" v-if="showMoneyClick"></mt-field>
 						<!-- <mt-cell title="预约金额：" is-link @click.native="chooseMoney" v-if="showMoneyClick">{{money}}</mt-cell> -->
 						<mt-cell title="预约金额：" class="required" v-if="!showMoneyClick">{{money}}万</mt-cell>
@@ -119,7 +119,7 @@
                       </div>
 										</mt-popup>
 										<mt-field label="支行名称:" class="required" v-model="subBankName" placeholder="请输入支行名称"></mt-field>
-										<div class="camera">
+										<div class="camera" style="padding-left: 0;">
 											<camera :popupVisible="popupVisible"
 											@imgHandler="imageHandler1"
 											:imageSrc="cardUrl"
@@ -2182,11 +2182,11 @@ export default {
 						.mint-cell-title{
 							width: 155px;
 						}
-						.mint-cell-value{
-							.mint-field-core{
-								width: 560px;
-							}
-						}
+						// .mint-cell-value{
+						// 	.mint-field-core{
+						// 		width: 510px;
+						// 	}
+						// }
 					}
 				}
 			}
