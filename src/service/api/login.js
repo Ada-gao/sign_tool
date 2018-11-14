@@ -1,27 +1,30 @@
 import axios from '../../config/axios'
-// import { getStore } from '../config/mUtils'
-
 /**
  * 获取用户验证码
  */
-export function getVerificationCode (username) {
+export function getVerificationCode (obj) {
     return axios({
         url: '/v1/auth/verification_code/',
         method: 'post',
-        data: { username }
+        data: obj
     })
 }
-
 /**
  * 获取用户 token
  */
-export function getAuthToken ({username, code}) {
+export function getAuthToken (obj) {
     return axios({
         url: '/v1/auth/auth_token/',
         method: 'post',
-        data: {
-            username,
-            code
-        }
+        data: obj
+    })
+}
+/**
+ * 获取数据字典
+ */
+export function getDict () {
+    return axios({
+        url: '/v1/common/dicts/',
+        method: 'get'
     })
 }

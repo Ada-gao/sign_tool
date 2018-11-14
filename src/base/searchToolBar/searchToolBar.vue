@@ -1,8 +1,9 @@
 <template>
   <div class="search" :class="{cancelSearch: isCancel}">
+    <span class="iconfont icon_search">&#xe609;</span>
 		<input class="ipt" type="text"
 			v-model.trim="searchKey"
-			placeholder="搜索姓名、电话"
+			placeholder="输入客户姓名或手机号码搜索"
 			@click="clickEvent"
 			@input="searchEvent"/>
 		<button class="btn-cancel" @click="cancelSearchEvent">取消</button>
@@ -28,7 +29,7 @@ export default {
       if (this.searchKey && this.searchKey.length > 0) {
         this.timer = setTimeout(() => {
           this.$emit('searchHandler', data)
-        }, 500)
+        }, 900)
       } else {
         this.$emit('searchHandler', data)
       }
@@ -46,6 +47,7 @@ export default {
         isCancel: this.isCancel
       }
       this.$emit('searchHandler', data)
+      this.$emit('cancel', this.isCancel)
     },
     clickEvent () {
       this.isCancel = true
@@ -53,6 +55,7 @@ export default {
         _search: this.searchKey,
         isCancel: this.isCancel
       }
+      this.$emit('ensure', this.isCancel)
       this.$emit('searchHandler', data)
     }
   }
@@ -60,17 +63,61 @@ export default {
 </script>
 
 <style scoped lang="less">
+@import "../../common/style/variable.less";
 .search {
-	padding: 161px 0 35px 30px;
+  /*padding-top: 108px;*/
+  text-align: center;
+  /*background-color: #fff;*/
+  /*height: 110px;*/
+  height: 60px;
+  line-height: 60px;
+  position: relative;
+  margin-top: 12px;
+  .icon_search {
+    font-size: 26px;
+    position: absolute;
+    left: 15px;
+    top: 55%;
+    transform: translateY(-50%);
+    color: #fff;
+    opacity: 0.4;
+  }
 	.ipt {
-		border: 1px solid #ccc; /*no*/
-		padding: 21px 34px;
-		border-radius: 5px;
-		width: 636px;
-		height: 67px;
+		border: none; /*no*/
+    padding-left: 50px;
+		border-radius: 100px;
+		width: 100%;
+    height: 100%;
+		/*height: 70px;*/
 		box-sizing: border-box;
 		font-size: 28px; /*px*/
-	}
+    vertical-align: bottom;
+    background: rgba(255, 255, 255, .1);
+    /*margin-top: 20px;*/
+  }
+  .ipt::-webkit-input-placeholder {
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
+  .ipt:-moz-placeholder {
+    /* FF 4-18 */
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
+  .ipt::-moz-placeholder {
+    /* FF 19+ */
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
+  .ipt:-ms-input-placeholder {
+    /* IE 10+ */
+    font-size: @font-size-twentyF;/*px*/
+    font-family: @font-family-R;
+    color: @font-color-9B;
+  }
 	.btn-cancel {
 		outline: none;
 		background-color: #fff;
@@ -83,7 +130,9 @@ export default {
 }
 .cancelSearch {
 	.ipt {
-		width: 549px;
+		width: 70%;
+    color: #fff;
+    border: none;
 	}
 	.btn-cancel {
 		display: inline-block;

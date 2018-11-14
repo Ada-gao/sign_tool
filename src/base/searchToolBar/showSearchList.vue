@@ -9,9 +9,13 @@ export default {
     ruleData () {
       let titleString = ''
       let cont = ''
+//      debugger
       if (this.msg.name.indexOf(this.searchValue) > -1) {
         titleString = this.msg.name
         cont = this.msg.mobile
+      } else if (this.msg.client_no.indexOf(this.searchValue) > -1) {
+        titleString = this.msg.client_no
+        cont = this.msg.name
       } else {
         titleString = this.msg.mobile
         cont = this.msg.name

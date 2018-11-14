@@ -46,7 +46,7 @@
 import { XHeader, GridItem, Tab, TabItem, Swiper, SwiperItem, CellBox, Group } from 'vux'
 import echarts from 'echarts'
 import 'echarts-gl'
-import RemarkList from 'base/remarkList/remarkList'
+import RemarkList from 'base/remarkList/index'
 
 export default {
   components: {

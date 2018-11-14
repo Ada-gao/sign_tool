@@ -4,34 +4,48 @@ import Vue from 'vue'
 import axios from 'axios'
 import App from './App'
 import router from './router'
+import VueCordova from './vue-cordova/index'
 import store from 'common/js/store'
 import 'common/style/index.less'
 import 'lib-flexible'
 import * as filters from 'common/js/filter.js'
-import { LoadingPlugin } from 'vux'
-import { DatetimePicker } from 'mint-ui'
+import { LoadingPlugin, ConfigPlugin } from 'vux'
+import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
+Vue.use(MintUI)
 
 Vue.use(LoadingPlugin)
 
+Vue.config.debug = true
 Vue.config.productionTip = false
 
+Vue.use(VueCordova)
+// x-dialog 禁止滑动底部
+Vue.use(ConfigPlugin, {
+  $layout: 'VIEW_BOX'
+})
+// console.log('----------port:' + window.location.port)
+if (window.location.protocol === 'file:' ||
+    window.location.port === '8080' ||
+    window.location.port === '80' ||
+    window.location.port === '') {
+  console.log('attach cordova.js')
+  var cordovaScript = document.createElement('script')
+  cordovaScript.setAttribute('type', 'text/javascript')
+  cordovaScript.setAttribute('src', 'cordova.js')
+  document.body.appendChild(cordovaScript)
+}
+
 Vue.directive('focus', {
-	inserted: function (el) {
-		el.focus()
-	}
+  inserted: function (el) {
+    el.focus()
+  }
 })
 
 // filter 挂到vue
 Object.keys(filters).forEach(key => {
-	Vue.filter(key, filters[key])
+  Vue.filter(key, filters[key])
 })
-
-// 以组件形式调用(有bug)
-// import { DatetimePlugin } from 'vux'
-// Vue.use(DatetimePlugin)
-
-Vue.component(DatetimePicker.name, DatetimePicker)
 
 // 将 axios 挂载到 prototype 上，在组件中可以直接使用 this.$axios 访问
 Vue.prototype.$axios = axios
@@ -41,6 +55,6 @@ new Vue({
   el: '#app',
   router,
   store, // 使用store
-  components: { App },
+  components: {App},
   template: '<App/>'
 })
