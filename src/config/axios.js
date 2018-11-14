@@ -27,8 +27,13 @@ axios.interceptors.request.use(
             router.replace({name: 'NoInternet'})
         }
         if (config.url.indexOf('auth_token') !== -1) {
-          config.headers['AppID'] = 'e72e439f2c79455bac3a9c7eef517b6c'
-          config.headers['AppSecret'] = 'e8473ceace6344a8b9f3ae4a32d09820'
+          // Staging
+          // config.headers['AppID'] = 'e72e439f2c79455bac3a9c7eef517b6c'
+          // config.headers['AppSecret'] = 'e8473ceace6344a8b9f3ae4a32d09820'
+
+          // Suxiang Product
+          config.headers['AppID'] = 'b2c9d0f4eb4848d0b385b7a35f636b9c'
+          config.headers['AppSecret'] = '930b41c9646c461b827c359bf8a23837'
         }
         console.log(config)
         return config
