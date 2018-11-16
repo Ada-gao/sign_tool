@@ -293,7 +293,7 @@
         gender: null,
         showCerCode: false,
         endDate: new Date(2100, 0, 1),
-        startDate: new Date(1960, 0, 1),
+        startDate: new Date(1910, 0, 1),
         client_certification_id: 0,
         alertCont: '还有信息没填哦～',
         isSubmit: null,
