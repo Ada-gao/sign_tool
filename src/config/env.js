@@ -12,9 +12,9 @@ let imgBaseUrl = ''
 let appVersionUrl = ''
 
 if (process.env.NODE_ENV === 'development') {
-    baseUrl = 'http://10.9.60.141:5000/api/'
-    imgBaseUrl = 'http://10.9.60.141:5000/api/'
-    appVersionUrl = 'http://10.9.60.141:9999/admin/'
+    baseUrl = 'http://10.9.61.7:5000/api/'
+    imgBaseUrl = 'http://10.9.61.7:5000/api/'
+    appVersionUrl = 'http://10.9.61.7:9999/admin/'
     activityUrl = 'http://203.156.231.251:9999/activity/'
     // activityUrl = 'http://10.9.70.231:9999/activity/'
     // activityUrl = 'http://10.9.70.235:9999/activity/'
