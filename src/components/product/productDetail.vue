@@ -217,7 +217,7 @@ export default {
       getProductDetail(id).then(res => {
         this.item = res.data
         this.item.buying_crowds = res.data.buying_crowds.split(',')
-        if (this.$route.params.showBtn === 'hide' || this.item.product_status !== 2 || this.item.is_pause === '1') {
+        if (this.$route.params.showBtn === 'hide' || this.item.product_status !== 2 || this.item.is_pause === '1' || window.localStorage.getItem('boughtProduct') === 'boughtProduct') {
           this.showBtn = false
         }
         if (!this.item.announcement) return
@@ -231,6 +231,8 @@ export default {
         this.$router.push({name: 'ProductAppointment', params: {flag: this.$route.params.flag}})
       } else if (this.$route.params.flag === 'reservationList' && this.$route.params.return === 'none') {
         this.$router.push({name: 'ReservationList'})
+      } else if (window.localStorage.getItem('boughtProduct') === 'boughtProduct') {
+        this.$router.push({name: 'PurchasedProducts', params:{id: window.localStorage.getItem('clientId')}})
       } else {
         this.$router.push({name: 'HomePage'})
       }

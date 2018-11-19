@@ -28,7 +28,7 @@
             <div class="text line-height" v-if="item.minimal_amount != undefined">起投金额：<span class="tit cont">{{item.minimal_amount}}万</span></div>
             <div class="text line-height" v-else>购买金额：<span class="tit cont">{{item.amount}}万</span></div>
           </div>
-          <span v-if="item.minimal_amount !== undefined" class="iconfont right-btn">&#xe8d5;</span>
+          <span class="iconfont right-btn">&#xe8d5;</span>
         </div>
       </div>
       </li>
@@ -103,7 +103,10 @@
       },
       toProductDetail (id, item) {
         if (item.minimal_amount === undefined) {
-          return false
+          // return false
+          window.localStorage.setItem('boughtProduct', 'boughtProduct')
+          window.localStorage.setItem('productDetail', JSON.stringify(item))
+          this.$router.push({name: 'ProductDetail', params: {id: id, item: item, important: Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))}})
         }
         window.localStorage.setItem('productDetail', JSON.stringify(item))
         this.$router.push({name: 'ProductDetail', params: {id: id, item: item, important: Date.parse(new Date(item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(item.important_end))}})
