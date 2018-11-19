@@ -223,7 +223,7 @@ export default {
 					// alert(JSON.stringify(res.data))
 					// localStorage.setItem('appVersion', JSON.stringify(res.data))
           this.versionData = res.data
-          // this.packageUrl = res.data.packageUrl
+					// this.packageUrl = res.data.packageUrl
           if (res.data) {
             // 弹出升级框
             this.versionVisible = true
@@ -235,7 +235,7 @@ export default {
               this.versionClose = false
             } else if (res.data.promptType === 'Recommend') { // 推荐升级
               this.versionClose = true
-            }
+						}
           } else {
             this.versionVisible = false
           }
