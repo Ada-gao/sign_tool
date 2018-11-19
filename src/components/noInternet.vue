@@ -1,12 +1,12 @@
 <template>
-	<div class="noInternet" @click="refresh">
-		<div class="content">
-			<img src="static/img/noInternet.png" alt="">
-			<div class="info">
-				<p>暂时没有网络哦</p>
-				<p>请点击屏幕重新加载</p>
-			</div>
-		</div>
+	<div class="noInternet">
+		<!-- <div class="content"> -->
+			<i class="iconfont icon-no_network"></i>
+			<!-- <div class="info"> -->
+				<p class="noInte-text">网络连接异常，请刷新重试</p>
+				<mt-button class="btn-refresh" @click.native="refresh">刷新</mt-button>
+			<!-- </div> -->
+		<!-- </div> -->
 	</div>
 </template>
 
@@ -35,21 +35,27 @@
 	.noInternet{
 		height: 100%;
 		text-align: center;
-		.content{
-			width: 100%;
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%,-50%);
-			img{
-				width: 100%;
-			}
-			.info{
-				margin-top: 92px;
-				font-family: PingFangSC-Regular;
-				font-size: 32px;
-				color: #888888;
-			}
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		.iconfont {
+			font-size: 250px;
+			color: #E8E8E8;
+			margin-top: -200px;
+		}
+		.noInte-text {
+			font-family: PingFangSC-Regular;
+			font-size: 26px;
+			color: #ccc;
+			// margin-top: -50px;
+			margin-top: 25px;
+		}
+		.btn-refresh {
+			width: 180px!important;
+			height: 60px!important;
+			font-size: 26px!important;
+			margin-top: 42px!important;
 		}
 	}
 </style>
