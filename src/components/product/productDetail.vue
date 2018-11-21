@@ -3,13 +3,14 @@
     <x-header class="header" :left-options="{backText: '', preventGoBack:true}" @on-click-back="back()">{{item.product_name}}</x-header>
     <div class="wrapper">
       <div class="rate-top">
-        <div class="announcement" v-show="item.announcement">
+        <div class="announcement" v-show="item.announcement" @click="toAnnouncementDetail">
           <span class="announcement-tit iconfont">&#xe603;</span>
           <span class="announcement-detail">
             <span class="detail-text">
               {{item.announcement}}&nbsp;&nbsp;
             </span>
           </span>
+          <i class="iconfont right">&#xe8d5;</i>
         </div>
         <div class="top-detail text-center">
           <!-- <div class="num-percent"> -->
@@ -235,6 +236,9 @@ export default {
         this.$router.push({name: 'HomePage'})
       }
     },
+    toAnnouncementDetail () {
+      this.$router.push({name: 'WriteNotes', params: {mark: 'announcement', announcement: this.item.announcement}})
+    },
     toPdfReport (id) {
 			this.$router.push({name: 'PdfReport', params: {id: id, mark: 0}})
     },
@@ -341,6 +345,11 @@ export default {
         padding: 0 30px;
         background: rgba(255, 0, 0, 0.15);
         position: relative;
+        .right{
+          position: absolute;
+          right: 0;
+          font-size: 60px;/*px*/
+        }
         @-webkit-keyframes kf-marque-animation{
           0% {
             -webkit-transform: translateX(0);
