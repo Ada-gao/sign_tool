@@ -12,7 +12,6 @@ axios.defaults.timeout = 30000
 axios.defaults.baseURL = baseUrl
 axios.defaults.retry = 4
 axios.defaults.retryDelay = 1000
-
 // http request 拦截器
 axios.interceptors.request.use(
     config => {
@@ -27,15 +26,20 @@ axios.interceptors.request.use(
             router.replace({name: 'NoInternet'})
         }
         if (config.url.indexOf('auth_token') !== -1) {
-          // Staging
-          // config.headers['AppID'] = 'e72e439f2c79455bac3a9c7eef517b6c'
-          // config.headers['AppSecret'] = 'e8473ceace6344a8b9f3ae4a32d09820'
-
-          // Suxiang Product
-          config.headers['AppID'] = 'b2c9d0f4eb4848d0b385b7a35f636b9c'
-          config.headers['AppSecret'] = '930b41c9646c461b827c359bf8a23837'
+          let appId = ''
+          let appSecret = ''
+          if (baseUrl.includes('10.9.61.7')) {
+            // product test
+            appId = 'b2c9d0f4eb4848d0b385b7a35f636b9c'
+            appSecret = '930b41c9646c461b827c359bf8a23837'
+          } else if (baseUrl.includes('47.94.3.138')) {
+            // Staging
+            appId = 'e72e439f2c79455bac3a9c7eef517b6c'
+            appSecret = 'e8473ceace6344a8b9f3ae4a32d09820'
+          }
+          config.headers['AppID'] = appId
+          config.headers['AppSecret'] = appSecret
         }
-        console.log(config)
         return config
     },
     err => {
