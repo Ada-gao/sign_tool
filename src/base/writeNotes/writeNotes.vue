@@ -1,6 +1,6 @@
 <template>
 	<div id="write-page">
-		<x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">消息详情</x-header>
+		<x-header class="header" :left-options="{backText: '',preventGoBack:true}" @on-click-back="back()">{{title}}</x-header>
 		<div class="wrapper">
 			<!--<input type="text" v-focus v-model="msg"/>-->
 			<!-- <textarea class="inputing" v-focus v-model="msg" name="" rows="" cols=""></textarea> -->
@@ -21,25 +21,38 @@ export default {
   },
   data () {
   	return {
-			remark: ''
+		  	title: '消息详情',
+			remark: '',
+			item: {}
   	}
 	},
 	methods: {
 		back () {
-      this.$router.push({name: 'MyInfo'})
+			if (this.$route.params.mark === 'announcement') {
+				this.item = window.localStorage.getItem('productDetail')
+				this.item = JSON.parse(this.item)
+        		this.$router.push({name: 'ProductDetail', params: {id: this.item.product_id, item: this.item, important: Date.parse(new Date(this.item.important_start)) < new Date().getTime() && new Date().getTime() < Date.parse(new Date(this.item.important_end))}})
+			} else {
+      			this.$router.push({name: 'MyInfo'})
+			}
 		}
 	},
 	mounted () {
-		infoDetail(this.$route.params.id).then(res => {
-			this.remark = res.data.notification_content
-		})
-		console.log('this.$route.params.isRead', this.$route.params.isRead)
-		let badgeNum = window.localStorage.getItem('badgeNum')
-		if (badgeNum - 0 === 0) return
-		if (this.$route.params.isRead === '0') {
-      window.JPush.setBadge(badgeNum - 1)
-			window.JPush.setApplicationIconBadgeNumber(badgeNum - 1)
-			window.localStorage.setItem('badgeNum', badgeNum - 1)
+		if (this.$route.params.mark === 'announcement') {
+			this.title = '产品公告'
+			this.remark = this.$route.params.announcement
+		} else {
+			infoDetail(this.$route.params.id).then(res => {
+				this.remark = res.data.notification_content
+			})
+			console.log('this.$route.params.isRead', this.$route.params.isRead)
+			let badgeNum = window.localStorage.getItem('badgeNum')
+			if (badgeNum - 0 === 0) return
+			if (this.$route.params.isRead === '0') {
+				window.JPush.setBadge(badgeNum - 1)
+				window.JPush.setApplicationIconBadgeNumber(badgeNum - 1)
+				window.localStorage.setItem('badgeNum', badgeNum - 1)
+			}
 		}
 	}
 }
