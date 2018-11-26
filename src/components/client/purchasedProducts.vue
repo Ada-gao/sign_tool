@@ -57,6 +57,7 @@
     },
     mounted () {
       this.id = this.$route.params.id
+      window.localStorage.setItem('clientId', this.id)
       this.liWidth = document.documentElement.offsetWidth / 4.5
       this.getList()
     },
