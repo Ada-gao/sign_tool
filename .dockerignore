@@ -1,0 +1,4 @@
+**
+!platforms/android/app/build/outputs/apk/release/*.apk
+!platforms/browser/www
+!www
