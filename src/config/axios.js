@@ -26,13 +26,18 @@ axios.interceptors.request.use(
             router.replace({name: 'NoInternet'})
         }
         if (config.url.indexOf('auth_token') !== -1) {
-          let appId = ''
-          let appSecret = ''
+          // SuXiang Product
+          let appId = 'b2c9d0f4eb4848d0b385b7a35f636b9c'
+          let appSecret = '930b41c9646c461b827c359bf8a23837'
           if (baseUrl.includes('10.9.61.7')) {
-            // product test
+            // dev
             appId = 'b2c9d0f4eb4848d0b385b7a35f636b9c'
             appSecret = '930b41c9646c461b827c359bf8a23837'
-          } else if (baseUrl.includes('47.94.3.138')) {
+          } else if (baseUrl.includes('10.9.61.3')) {
+            // Test
+            appId = '2d061a9a30f94b93ab869632840362a7'
+            appSecret = '5cd44362d34e4b91b6db3080c258bae4'
+          } else if (baseUrl.includes('47.94.248.24')) {
             // Staging
             appId = 'e72e439f2c79455bac3a9c7eef517b6c'
             appSecret = 'e8473ceace6344a8b9f3ae4a32d09820'

@@ -26,17 +26,23 @@ if (process.env.NODE_ENV === 'development') {
     // imgBaseUrl = 'http://203.156.231.251:5000/api/'
     // activityUrl = 'http://203.156.231.251:9999/activity/'
 } else if (process.env.NODE_ENV === 'production') {
-    // test
+    // dev
     // baseUrl = 'http://10.9.61.7:5000/api/'
     // imgBaseUrl = 'http://10.9.61.7:5000/api/'
     // appVersionUrl = 'http://10.9.61.7:9999/admin/'
     // activityUrl = 'http://203.156.231.251:9999/activity/'
 
+    // Test
+    // baseUrl = 'http://10.9.61.3:9999/starmap/api/'
+    // imgBaseUrl = 'http://10.9.61.3:9999/starmap/api/'
+    // appVersionUrl = 'http://10.9.61.3:9999/admin/'
+    // activityUrl = 'http://10.9.61.3:9999/activity/'
+
     // Staging
-    // baseUrl = 'http://47.94.3.138:9999/starmap/api/'
-    // imgBaseUrl = 'http://47.94.3.138:9999/starmap/api/'
-    // appVersionUrl = 'http://47.94.3.138:9999/admin/'
-    // activityUrl = 'http://47.94.3.138:9999/activity/'
+    // baseUrl = 'http://47.94.248.24:9999/starmap/api/'
+    // imgBaseUrl = 'http://47.94.248.24:9999/starmap/api/'
+    // appVersionUrl = 'http://47.94.248.24:9999/admin/'
+    // activityUrl = 'http://47.94.248.24:9999/activity/'
 
     // UAT
     // baseUrl = 'https://crm-uat.suxianginvestment.com/starmap/api/'
