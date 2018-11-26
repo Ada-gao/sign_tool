@@ -58,6 +58,14 @@ axios.interceptors.response.use(
           error.message = '参数错误'
           break
         case 400:
+          if (res.statusText === 'BAD REQUEST') {
+            console.log('return login..........')
+            store.commit(types.LOGOUT)
+            router.replace({
+              path: 'login',
+              query: {redirect: router.currentRoute.fullPath}
+            })
+          }
           // error.message = '手机号已被注册'
           if (window.location.href.indexOf('login') !== -1) {
             return
