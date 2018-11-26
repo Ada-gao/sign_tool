@@ -254,7 +254,7 @@
 
 <script>
   import {XHeader, Group, Cell, XInput, Datetime, PopupPicker, XDialog, XButton} from 'vux'
-  import {uploadId, perfectInfos, getDict} from '@/service/api/customers'
+  import {uploadId, perfectInfos, getDict, getCertifyInfo} from '@/service/api/customers'
   import camera from '@/base/clientCamera'
   import {formatDate} from '@/common/js/date'
   import {getStore, setStore, removeStore} from '@/config/mUtils'
@@ -362,33 +362,71 @@
 //      this.getIdArray()
 //      this.itemHeight = getComputedStyle(window.document.documentElement)['font-size'].split('px')[0] - 0
       this.form = JSON.parse(getStore('selfInfos'))
-      console.log('form', this.form)
       this.isSubmit = this.$route.params.isSubmit
-      let perInfos = JSON.parse(getStore('perInfos'))
+//      let perInfos = JSON.parse(getStore('perInfos'))
       this.idSymbol = this.form.id_type > 1 ? 0 : 1
       if (this.form.id_type < 0) {
         this.form.id_type = '请选择'
       }
-      this.form.id_type = this.form.id_type ? tfIdtype(this.form.id_type) : ''
-      this.id_start_date = this.form.id_start_date || ''
-      this.id_expiration = this.form.id_expiration || ''
-      this.birthday = this.form.birthday || ''
-      if (perInfos) {
-        console.log('cvbjdcfbdjbcndk')
-        this.form.gender = perInfos.gender
-        this.birthday = perInfos.birthday
-        this.id_start_date = perInfos.id_start_date
-        this.id_expiration = perInfos.id_expiration
-        this.form.id_no = perInfos.id_no
-        this.form.address = perInfos.address
-        this.form.id_front_url = perInfos.id_front_url
-        this.form.id_back_url = perInfos.id_back_url
-        this.form.id_type = this.slots[0].values[perInfos.id_type + 1]
-        this.idSymbol = perInfos.id_symbol
-      }
+      // 信息回显
+      this.reShow(this.form.client_id, 2)
+//      this.form.id_type = this.form.id_type ? tfIdtype(this.form.id_type) : ''
+//      this.id_start_date = this.form.id_start_date || ''
+//      this.id_expiration = this.form.id_expiration || ''
+//      this.birthday = this.form.birthday || ''
+//      if (perInfos) {
+//        console.log('cvbjdcfbdjbcndk')
+//        this.form.gender = perInfos.gender
+//        this.birthday = perInfos.birthday
+//        this.id_start_date = perInfos.id_start_date
+//        this.id_expiration = perInfos.id_expiration
+//        this.form.id_no = perInfos.id_no
+//        this.form.address = perInfos.address
+//        this.form.id_front_url = perInfos.id_front_url
+//        this.form.id_back_url = perInfos.id_back_url
+//        this.form.id_type = this.slots[0].values[perInfos.id_type + 1]
+//        this.idSymbol = perInfos.id_symbol
+//      }
       console.log('this.form.id_type', this.form.id_type)
     },
     methods: {
+      reShow (id, type) {
+        let params = {
+          client_id: id,
+          certification_type: type
+        }
+        let perInfos = JSON.parse(getStore('perInfos'))
+        if (perInfos) {
+//          console.log('cvbjdcfbdjbcndk')
+          this.form.gender = perInfos.gender
+          this.birthday = perInfos.birthday
+          this.id_start_date = perInfos.id_start_date
+          this.id_expiration = perInfos.id_expiration
+          this.form.id_no = perInfos.id_no
+          this.form.address = perInfos.address
+          this.form.id_front_url = perInfos.id_front_url
+          this.form.id_back_url = perInfos.id_back_url
+          this.form.id_type = this.slots[0].values[perInfos.id_type + 1]
+          this.idSymbol = perInfos.id_symbol
+        } else {
+          getCertifyInfo(params).then(res => {
+            this.form.id_no = res.data.id_no || ''
+            this.form.id_type = res.data.id_type ? tfIdtype(res.data.id_type) : ''
+            this.id_start_date = res.data.id_start_date || ''
+            this.id_expiration = res.data.id_expiration || ''
+            this.birthday = res.data.birthday || ''
+            this.form.address = res.data.address || ''
+            this.form.id_front_url = res.data.id_front_url || ''
+            this.form.id_back_url = res.data.id_back_url || ''
+            console.log('idtype', this.form.id_type)
+            if (this.form.id_type === '身份证') {
+              this.idSymbol = 1
+            } else {
+              this.idSymbol = 0
+            }
+          })
+        }
+      },
       getIdArray () {
         getDict().then(res => {
           let tempArray = []
@@ -453,10 +491,10 @@
         this.showCerCode = false
       },
       autoReturnDetail () {
-        console.log('in.........')
+//        console.log('in.........')
 				const TIME_COUNT = 10
 				if (!this.timer1) {
-          console.log('this.timer.........')
+//          console.log('this.timer.........')
 					this.count = TIME_COUNT
 					this.tiemr1 = setInterval(() => {
 						if (this.count > 0) {

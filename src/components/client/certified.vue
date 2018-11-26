@@ -61,6 +61,7 @@
         <camera :popupVisible="popupVisible"
                 @showPopup="showCamera"
                 :isFromBank="fromBank"
+                :reshowArr="reshowArr"
                 :cerId="uploadData.clientCertificationId"
                 @hidePopup="hideCamera"></camera>
       </div>
@@ -115,8 +116,8 @@
     sendFiles,
     perfectInfos,
     checkCusomersDetail,
-    getProReasons
-//    getCertifyInfo
+    getProReasons,
+    getCertifyInfo
   } from '@/service/api/customers'
   import {getStore} from '@/config/mUtils'
   import {toast} from '@/common/js/filter'
@@ -131,6 +132,7 @@
     data () {
       return {
         changeClass: false,
+        reshowArr: [],
         showSubmit: {
           isShow: false,
           isSuccess: 0
@@ -187,54 +189,13 @@
         } else if (this.userInfos.type === '1') {
           this.radio = '专业投资者'
           this.showSelect = true
-          getProReasons().then(res => {
-            if (res.status === 200) {
-              this.flag = true
-              for (let value of res.data) {
-                this.slots[0].values.push(value)
-              }
-            }
-          })
+          this.getReason()
         }
       } else {
         id = this.$route.params.id
-        checkCusomersDetail(id).then(res => {
-          this.userInfos.name = res.data.client_name
-          this.userInfos.id = res.data.client_id
-          this.userInfos.type = res.data.client_type
-          if (this.userInfos.type === '0') {
-            this.radio = '普通投资者'
-          } else if (this.userInfos.type === '1') {
-            this.radio = '专业投资者'
-            getProReasons().then(res => {
-              if (res.status === 200) {
-                this.flag = true
-                for (let value of res.data) {
-                  this.slots[0].values.push(value)
-                }
-              }
-            })
-          }
-        })
+        this.handlerCheck()
       }
-      perfectInfos({client_id: id}).then(res => {
-        if (res.status === 200) {
-          this.uploadData.clientCertificationId = res.data.client_certification_id
-//          if (this.userInfos.type === '0' || this.userInfos.type === '1') {
-//            let params = {
-//              client_id: res.data.client_id,
-//              certification_type: this.userInfos.type
-//            }
-//            getCertifyInfo(params).then(result => {
-//              if (result.status === 200) {
-//                this.reason = result.data.apply_reason || ''
-//                this.changeClass = true
-//              }
-//            })
-//          }
-//          console.log('certified：' + this.uploadData.clientCertificationId)
-        }
-      })
+      this.getPerfectInfos(id)
       this.userInfos.emailAddress = JSON.parse(getStore('data')).email
     },
     beforeRouteEnter (to, from, next) {
@@ -251,6 +212,54 @@
       }
     },
     methods: {
+      getPerfectInfos (id) {
+        perfectInfos({client_id: id}).then(res => {
+          if (res.status === 200) {
+            this.uploadData.clientCertificationId = res.data.client_certification_id
+            if (this.userInfos.type === '0' || this.userInfos.type === '1') {
+              let params = {
+                client_id: res.data.client_id,
+                certification_type: this.userInfos.type
+              }
+              this.getCertifyInfos(params)
+            }
+//            console.log('certified：' + this.uploadData.clientCertificationId)
+          }
+        })
+      },
+      getCertifyInfos (data) {
+        getCertifyInfo(data).then(result => {
+          if (result.status === 200) {
+            this.reason = result.data.apply_reason || ''
+            this.reason_id = result.data.apply_reason_id
+            this.reshowArr = JSON.parse(JSON.stringify(result.data.file_list))
+            this.changeClass = true
+          }
+        })
+      },
+      getReason () {
+        getProReasons().then(res => {
+          if (res.status === 200) {
+            this.flag = true
+            for (let value of res.data) {
+              this.slots[0].values.push(value)
+            }
+          }
+        })
+      },
+      handlerCheck (id) {
+        checkCusomersDetail(id).then(res => {
+          this.userInfos.name = res.data.client_name
+          this.userInfos.id = res.data.client_id
+          this.userInfos.type = res.data.client_type
+          if (this.userInfos.type === '0') {
+            this.radio = '普通投资者'
+          } else if (this.userInfos.type === '1') {
+            this.radio = '专业投资者'
+            this.getReason()
+          }
+        })
+      },
       showCode () {
         this.showCerCode = true
       },
@@ -276,7 +285,7 @@
         this.popupVisible = data
       },
       toLink (id) {
-        console.log('before', this.beforeRouteName)
+//        console.log('before', this.beforeRouteName)
         if (this.beforeRouteName === 'CustomerManagement') {
           this.$router.push({name: 'CustomerManagement', params: {id: id}})
         } else {
@@ -302,7 +311,7 @@
       },
       ensure () {
         this.showConvertBox = false
-        console.log(this.radio)
+//        console.log(this.radio)
         if (this.radio === '专业投资者') {
           this.showSelect = true
         } else {

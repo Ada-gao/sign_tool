@@ -14,8 +14,8 @@
     <div v-else class="thumbnails">
       <mt-popup v-model="showImg">
         <mt-swipe :show-indicators="false" :auto="0">
-          <mt-swipe-item v-show="imgSrc">
-            <img :src="imgSrc" v-show="imgSrc" style="width:100%;height:calc(100%)">
+          <mt-swipe-item v-if="imgSrc">
+            <img :src="imgSrc" style="width:100%;height:calc(100%)">
           </mt-swipe-item>
         </mt-swipe>
       </mt-popup>
@@ -29,8 +29,8 @@
                class="ul"
               :key="index"
               @click="showBigImg(index)"
-              v-show="item">
-            <img :src="item + '!132x120'" v-show="item">
+              v-if="item">
+            <img :src="item + '!132x120'">
             <span class="delete_img" @click.prevent='delImage(index, $event)'>
               <i>x</i>
             </span>
@@ -43,7 +43,7 @@
           </span>
           <mt-spinner class="camera_spinner"
                       color="#aaa"
-                      v-show="spinnerShow"
+                      v-if="spinnerShow"
                       type="fading-circle"></mt-spinner>
         </div>
       </div>
@@ -53,10 +53,10 @@
         <span class='iconfont icon_bg'>+</span>
         <img :src="imgSrc"
              class="show"
-             v-show="imgSrc">
+             v-if="imgSrc">
         <mt-spinner class="camera_spinner"
                     color="#aaa"
-                    v-show="spinnerShow"
+                    v-if="spinnerShow"
                     type="fading-circle"></mt-spinner>
       </div>
       <i v-if="imgSrc" class="iconfont enlarge" @click="showBigImg">&#xe60c;</i>
@@ -70,7 +70,7 @@
         <div class='popup-item' @click="cancel()">取消</div>
       </div>
     </mt-popup>
-    <div class="fail_msg" v-show="alertMsg">上传图片失败</div>
+    <div class="fail_msg" v-if="alertMsg">上传图片失败</div>
   </div>
 </template>
 <script>
@@ -86,7 +86,7 @@
     components: {
       'mt-popup': Popup
     },
-    props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc'],
+    props: ['popupVisible', 'isFromBank', 'cerId', 'imageSrc', 'reshowArr'],
     data () {
       return {
         imgSrc: '',
@@ -110,9 +110,18 @@
     watch: {
       'imageSrc': function (n, o) {
         this.setImgSrc()
+      },
+      'reshowArr': {
+        handler: function (n, o) {
+          this.setFileArr()
+        },
+        deep: true
       }
     },
     methods: {
+      setFileArr () {
+        this.fileArr = JSON.parse(JSON.stringify(this.reshowArr))
+      },
       setImgSrc () {
         this.imgSrc = this.imageSrc
       },
