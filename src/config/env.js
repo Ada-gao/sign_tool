@@ -50,16 +50,16 @@ if (process.env.NODE_ENV === 'development') {
     // activityUrl = 'https://crm-uat.suxianginvestment.com/starmap/activity/'
 
     // SuXiang Product
-    baseUrl = 'https://gateway.suxianginvestment.com/starmap/api/'
-    imgBaseUrl = 'https://gateway.suxianginvestment.com/starmap/api/'
-    appVersionUrl = 'https://gateway.suxianginvestment.com/admin/'
-    activityUrl = 'https://gateway.suxianginvestment.com/activity/'
+    // baseUrl = 'https://gateway.suxianginvestment.com/starmap/api/'
+    // imgBaseUrl = 'https://gateway.suxianginvestment.com/starmap/api/'
+    // appVersionUrl = 'https://gateway.suxianginvestment.com/admin/'
+    // activityUrl = 'https://gateway.suxianginvestment.com/activity/'
 
     // 251
-    // baseUrl = 'http://203.156.231.251:5000/api/'
-    // imgBaseUrl = 'http://203.156.231.251:5000/api/'
-    // activityUrl = 'http://203.156.231.251:9999/activity/'
-    // appVersionUrl = 'http://10.9.61.7:9999/admin/'
+    baseUrl = 'http://203.156.231.251:5000/api/'
+    imgBaseUrl = 'http://203.156.231.251:5000/api/'
+    activityUrl = 'http://203.156.231.251:9999/activity/'
+    appVersionUrl = 'http://10.9.61.7:9999/admin/'
 }
 
 export { baseUrl, routerMode, imgBaseUrl, activityUrl, appVersionUrl }

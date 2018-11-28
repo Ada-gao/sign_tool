@@ -41,6 +41,10 @@ axios.interceptors.request.use(
             // Staging
             appId = 'e72e439f2c79455bac3a9c7eef517b6c'
             appSecret = 'e8473ceace6344a8b9f3ae4a32d09820'
+          } else if (baseUrl.includes('203.156.231.251')) {
+            // 251
+            appId = 'e72e439f2c79455bac3a9c7eef517b6c'
+            appSecret = 'b6781c9c953c494c800803d247f251c3'
           }
           config.headers['AppID'] = appId
           config.headers['AppSecret'] = appSecret

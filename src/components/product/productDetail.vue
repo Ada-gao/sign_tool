@@ -233,7 +233,7 @@ export default {
       } else if (this.$route.params.flag === 'reservationList' && this.$route.params.return === 'none') {
         this.$router.push({name: 'ReservationList'})
       } else if (window.localStorage.getItem('boughtProduct') === 'boughtProduct') {
-        this.$router.push({name: 'PurchasedProducts', params:{id: window.localStorage.getItem('clientId')}})
+        this.$router.push({name: 'PurchasedProducts', params: {id: window.localStorage.getItem('clientId')}})
       } else {
         this.$router.push({name: 'HomePage'})
       }
